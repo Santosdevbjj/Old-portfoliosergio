@@ -1,63 +1,81 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Dictionary } from '@/lib/i18n';
+import Link from "next/link";
+import LanguageSwitcher from "./LanguageSwitcher";
 
-interface Props {
-  dict: Dictionary;   // dicionário multilíngue carregado dinamicamente
-  lang: 'pt' | 'en';  // idioma atual
-}
-
-export default function Header({ dict, lang }: Props) {
-  const pathname = usePathname() ?? '';
-  const currentLang: 'pt' | 'en' = pathname.startsWith('/en') ? 'en' : 'pt';
-
-  const getLinkClass = (langKey: 'pt' | 'en') =>
-    `px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
-      currentLang === langKey
-        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold'
-        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-    }`;
-
+export default function Header() {
   return (
     <header
-      lang={currentLang === 'en' ? 'en-US' : 'pt-BR'}
-      aria-label={currentLang === 'en' ? 'Site header' : 'Cabeçalho do site'}
-      className="w-full bg-gray-100 dark:bg-gray-900 shadow-sm transition-colors duration-500"
+      className="w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-700"
+      aria-label="Site header"
     >
-      <nav
-        className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center 
-                   px-4 py-3 sm:py-4 gap-2 sm:gap-0 lg:px-8"
-      >
-        {/* Links de idioma */}
-        <div className="flex space-x-2 sm:space-x-4">
-          <Link
-            href="/pt"
-            className={getLinkClass('pt')}
-            aria-current={currentLang === 'pt' ? 'page' : undefined}
-          >
-            {dict.header?.portuguese ?? 'Português'}
-          </Link>
-          <Link
-            href="/en"
-            className={getLinkClass('en')}
-            aria-current={currentLang === 'en' ? 'page' : undefined}
-          >
-            {dict.header?.english ?? 'English'}
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        {/* Logo / Nome */}
+        <div className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center">
+            <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
+              Sergio Santos
+            </span>
           </Link>
         </div>
 
-        {/* Texto adaptável */}
-        <span
-          className="text-[clamp(0.75rem,1vw,0.875rem)] uppercase tracking-widest font-medium 
-                     text-gray-500 dark:text-gray-400 mt-2 sm:mt-0"
-        >
-          {currentLang === 'en'
-            ? dict.header?.international ?? 'International'
-            : dict.header?.brazil ?? 'Brasil'}
-        </span>
-      </nav>
+        {/* Navegação principal */}
+        <nav className="hidden md:flex space-x-6">
+          <Link
+            href="/about"
+            className="text-sm font-medium text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400"
+          >
+            About
+          </Link>
+          <Link
+            href="/projects"
+            className="text-sm font-medium text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400"
+          >
+            Projects
+          </Link>
+          <Link
+            href="/contact"
+            className="text-sm font-medium text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400"
+          >
+            Contact
+          </Link>
+        </nav>
+
+        {/* Ações à direita (Language Switcher + Dark Mode futuro) */}
+        <div className="flex items-center space-x-4">
+          {/* Seletor de idioma elegante */}
+          <LanguageSwitcher />
+
+          {/* Exemplo: botão de dark mode (opcional futuro) */}
+          {/* <button className="p-2 rounded-md bg-gray-100 dark:bg-gray-800">
+            🌙
+          </button> */}
+        </div>
+      </div>
+
+      {/* Navegação mobile */}
+      <div className="md:hidden flex justify-center border-t border-gray-200 dark:border-gray-700 py-2">
+        <nav className="flex space-x-6">
+          <Link
+            href="/about"
+            className="text-sm font-medium text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400"
+          >
+            About
+          </Link>
+          <Link
+            href="/projects"
+            className="text-sm font-medium text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400"
+          >
+            Projects
+          </Link>
+          <Link
+            href="/contact"
+            className="text-sm font-medium text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400"
+          >
+            Contact
+          </Link>
+        </nav>
+      </div>
     </header>
   );
 }
