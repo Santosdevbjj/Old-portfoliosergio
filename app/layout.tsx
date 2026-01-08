@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className="min-h-screen flex flex-col transition-colors duration-500 bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+      <body className="min-h-screen flex flex-col bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-500">
         <Header />
         <div className="flex justify-end px-4 py-2">
           <ThemeToggle />
