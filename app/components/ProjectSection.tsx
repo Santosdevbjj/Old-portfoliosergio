@@ -1,4 +1,4 @@
-import ProjectCard from "@/app/components/ProjectCard";
+import ProjectCard from "./ProjectCard";
 import { GitHubRepo } from "@/lib/github";
 
 type Props = {
