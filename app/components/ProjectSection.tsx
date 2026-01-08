@@ -1,3 +1,4 @@
+"use client";
 import ProjectCard from "./ProjectCard";
 import { GitHubRepo } from "@/lib/github";
 
