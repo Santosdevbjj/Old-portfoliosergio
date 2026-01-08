@@ -1,28 +1,35 @@
 {
   "compilerOptions": {
+    /* Alvo moderno de compilação */
     "target": "ES2020",
+
+    /* Bibliotecas padrão incluídas */
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
 
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": false,
-    "noEmit": true,
+    /* Configurações de segurança e robustez */
+    "strict": true,                /* Ativa checagem estrita de tipos */
+    "skipLibCheck": false,         /* Checa tipos das dependências */
+    "noEmit": true,                /* Next.js cuida da emissão dos arquivos */
+    "allowJs": true,               /* Permite usar arquivos .js junto com .ts */
 
+    /* Compatibilidade com módulos e Next.js */
     "esModuleInterop": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
-
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
 
+    /* Performance */
     "incremental": true,
 
+    /* Imports absolutos */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
     },
 
+    /* Plugin Next.js */
     "plugins": [
       {
         "name": "next"
