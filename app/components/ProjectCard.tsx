@@ -1,3 +1,4 @@
+"use client";
 import { GitHubRepo } from "@/lib/github";
 
 type Props = {
