@@ -18,5 +18,9 @@
     "logica-de-programacao": "Lógica de Programação",
     "html": "Fundamentos Web (HTML e CSS)",
     "artigos-tecnicos": "Artigos Técnicos"
+  },
+  "footer": {
+    "rights": "Todos os direitos reservados.",
+    "contacto": "Contato"
   }
 }
