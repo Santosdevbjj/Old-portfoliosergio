@@ -1,35 +1,46 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
 import Header from "./components/Header";
-import ThemeToggle from "./components/ThemeToggle";
+import Footer from "./components/Footer";
+import { usePathname } from "next/navigation";
 
+// Metadados globais
 export const metadata: Metadata = {
-  title: "Sérgio Santos | Analytics Engineer",
-  description: "Portfólio de Analytics Engineering e Ciência de Dados",
+  title: "Portfólio Sergio Santos",
+  description: "Analytics Engineer | Data Science | Portfólio Multilíngue",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+// Função auxiliar para detectar idioma da rota
+function detectLang(pathname: string | null): string {
+  if (!pathname) return "en";
+  const segments = pathname.split("/");
+  const langSegment = segments[1];
+  if (langSegment === "pt") return "pt";
+  if (langSegment === "en") return "en";
+  return "en"; // fallback
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const pathname = usePathname();
+  const lang = detectLang(pathname);
+
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
-      <body className="min-h-screen flex flex-col bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-500">
-        {/* Header responsivo */}
+    <html lang={lang} className="scroll-smooth">
+      <body className="flex min-h-screen flex-col bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+        {/* Header fixo no topo */}
         <Header />
 
-        {/* Toggle de tema adaptável */}
-        <div className="flex justify-end px-4 py-2 sm:px-6 md:px-8">
-          <ThemeToggle />
-        </div>
-
-        {/* Conteúdo principal com breakpoints */}
-        <main className="flex-grow container mx-auto px-4 sm:px-6 md:px-8 py-6">
+        {/* Conteúdo principal responsivo */}
+        <main className="flex-grow mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
           {children}
         </main>
 
-        {/* Footer responsivo */}
-        <footer className="text-center text-xs sm:text-sm p-4 sm:p-6 md:p-8 border-t border-gray-200 dark:border-gray-800">
-          © {new Date().getFullYear()} Sérgio Santos
-        </footer>
+        {/* Footer fixo no final */}
+        <Footer />
       </body>
     </html>
   );
