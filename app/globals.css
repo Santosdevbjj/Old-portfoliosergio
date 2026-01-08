@@ -2,27 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Fontes variáveis */
+/* Importação da fonte Inter */
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&display=swap');
 
 html {
   font-family: 'Inter', sans-serif;
   scroll-behavior: smooth;
-  font-size: 16px; /* Base */
+  /* Tipografia base fluida */
+  font-size: clamp(14px, 1.5vw, 16px);
+  line-height: 1.6;
 }
 
 /* Tipografia fluida mobile-first */
 h1 {
   font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
 }
 h2 {
   font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: 600;
 }
 h3 {
   font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 500;
 }
 p {
   font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+  line-height: 1.6;
 }
 
 /* Gradientes animados globais */
@@ -48,15 +54,33 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Botões premium */
+/* Botões premium com acessibilidade */
 button {
   @apply transition-transform duration-300 ease-in-out;
 }
 button:hover {
   @apply scale-105;
 }
+button:focus {
+  @apply outline-none ring-2 ring-offset-2 ring-indigo-500;
+}
 
 /* Layout responsivo container */
 .container {
-  @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Imagens responsivas */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Links com transição */
+a {
+  @apply transition-colors duration-300;
+}
+a:hover {
+  @apply text-indigo-600 dark:text-indigo-400;
 }
