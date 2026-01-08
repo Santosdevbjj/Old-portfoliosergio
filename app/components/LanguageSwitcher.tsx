@@ -2,28 +2,34 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import type { Lang } from "@/lib/i18n/config";
 
-const languages = [
+const languages: { code: Lang; label: string }[] = [
   { code: "pt", label: "Português" },
   { code: "en", label: "English" },
 ];
 
-export default function LanguageSwitcher() {
+interface LanguageSwitcherProps {
+  lang: Lang;
+  dict: { language: string };
+}
+
+export default function LanguageSwitcher({ lang, dict }: LanguageSwitcherProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  const currentLang = pathname?.split("/")[1] || "en";
+  const currentLang = languages.find((l) => l.code === lang)?.code || "en";
 
-  const handleChange = (lang: string) => {
+  const handleChange = (newLang: Lang) => {
     setOpen(false);
 
-    // Remove o idioma atual da rota e substitui pelo novo
+    // Ajusta rota substituindo o idioma atual
     const segments = pathname?.split("/") || [];
     if (languages.some((l) => l.code === segments[1])) {
-      segments[1] = lang;
+      segments[1] = newLang;
     } else {
-      segments.unshift(lang);
+      segments.unshift(newLang);
     }
     const newPath = segments.join("/") || "/";
     router.push(newPath);
@@ -34,10 +40,17 @@ export default function LanguageSwitcher() {
       {/* Botão principal */}
       <button
         type="button"
-        className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
+        className="
+          inline-flex w-full justify-center items-center
+          rounded-md border border-gray-300 bg-white px-3 py-2
+          text-sm font-medium text-gray-700 shadow-sm
+          hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500
+          dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600
+        "
         onClick={() => setOpen(!open)}
         aria-haspopup="true"
         aria-expanded={open}
+        aria-label={dict.language}
       >
         🌐 {languages.find((l) => l.code === currentLang)?.label || "English"}
         <svg
@@ -58,22 +71,26 @@ export default function LanguageSwitcher() {
       {/* Dropdown responsivo */}
       {open && (
         <div
-          className="absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800"
+          className="
+            absolute right-0 mt-2 w-40 origin-top-right
+            rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5
+            focus:outline-none dark:bg-gray-800
+          "
           role="menu"
         >
           <div className="py-1">
-            {languages.map((lang) => (
+            {languages.map((langOption) => (
               <button
-                key={lang.code}
-                onClick={() => handleChange(lang.code)}
+                key={langOption.code}
+                onClick={() => handleChange(langOption.code)}
                 className={`block w-full px-4 py-2 text-sm text-left ${
-                  currentLang === lang.code
+                  currentLang === langOption.code
                     ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200"
                     : "text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
                 }`}
                 role="menuitem"
               >
-                {lang.label}
+                {langOption.label}
               </button>
             ))}
           </div>
