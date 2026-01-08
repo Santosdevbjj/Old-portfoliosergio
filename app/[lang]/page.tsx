@@ -1,3 +1,4 @@
+"use client";
 import { getPortfolioRepos } from "@/lib/github";
 import { getDictionary, TECHNOLOGY_ORDER } from "@/lib/i18n"; // Importação corrigida
 import ProjectSection from "../components/ProjectSection";
