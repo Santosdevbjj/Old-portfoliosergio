@@ -7,16 +7,16 @@
     "ciencia-de-dados": "Ciência de Dados",
     "azure-databricks": "Azure Databricks",
     "neo4j": "Banco de Dados de Grafos (Neo4j)",
-    "power-bi": "Business Intelligence",
+    "power-bi": "Inteligência de Negócios (Power BI)",
     "banco-de-dados": "Engenharia de Dados",
-    "python": "Desenvolvimento Python",
-    "dotnet": "Desenvolvimento .NET",
-    "java": "Desenvolvimento Java",
-    "machine-learning": "Machine Learning",
-    "aws": "Serviços em Nuvem AWS",
+    "python": "Desenvolvimento em Python",
+    "dotnet": "Desenvolvimento em .NET",
+    "java": "Desenvolvimento em Java",
+    "machine-learning": "Aprendizado de Máquina",
+    "aws": "Serviços em Nuvem (AWS)",
     "ciberseguranca": "Cibersegurança",
     "logica-de-programacao": "Lógica de Programação",
-    "html": "Fundamentos Web (HTML/CSS)",
+    "html": "Fundamentos Web (HTML e CSS)",
     "artigos-tecnicos": "Artigos Técnicos"
   }
 }
