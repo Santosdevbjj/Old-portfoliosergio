@@ -18,5 +18,9 @@
     "logica-de-programacao": "Programming Logic",
     "html": "Web Fundamentals (HTML & CSS)",
     "artigos-tecnicos": "Technical Articles"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "contacto": "Contact"
   }
 }
