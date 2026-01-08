@@ -1,12 +1,10 @@
-"use client";
-
 import ProjectCard from "./ProjectCard";
 import { GitHubRepo } from "@/lib/github";
 
-type ProjectSectionProps = {
+interface ProjectSectionProps {
   title: string;
   repos: GitHubRepo[];
-};
+}
 
 export default function ProjectSection({
   title,
