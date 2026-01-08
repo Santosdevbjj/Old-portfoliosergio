@@ -6,17 +6,17 @@
   "categories": {
     "ciencia-de-dados": "Data Science",
     "azure-databricks": "Azure Databricks",
-    "neo4j": "Graph Databases (Neo4j)",
-    "power-bi": "Business Intelligence",
+    "neo4j": "Graph Database (Neo4j)",
+    "power-bi": "Business Intelligence (Power BI)",
     "banco-de-dados": "Data Engineering",
     "python": "Python Development",
     "dotnet": ".NET Development",
     "java": "Java Development",
     "machine-learning": "Machine Learning",
-    "aws": "AWS Cloud Services",
+    "aws": "Cloud Services (AWS)",
     "ciberseguranca": "Cybersecurity",
     "logica-de-programacao": "Programming Logic",
-    "html": "Frontend Fundamentals",
+    "html": "Web Fundamentals (HTML & CSS)",
     "artigos-tecnicos": "Technical Articles"
   }
 }
