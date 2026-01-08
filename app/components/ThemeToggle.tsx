@@ -27,10 +27,15 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 dark:from-blue-800 dark:to-indigo-700 shadow-lg hover:scale-110 transition-transform duration-300"
+      className="w-[clamp(2.5rem,4vw,3rem)] h-[clamp(2.5rem,4vw,3rem)] flex items-center justify-center rounded-full 
+                 bg-gradient-to-br from-purple-500 to-pink-500 dark:from-blue-800 dark:to-indigo-700 
+                 shadow-lg hover:scale-110 transition-transform transition-colors duration-300 
+                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
       aria-label={theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'}
     >
-      {theme === 'dark' ? '☀️' : '🌙'}
+      <span className="text-[clamp(1rem,2vw,1.5rem)]">
+        {theme === 'dark' ? '☀️' : '🌙'}
+      </span>
     </button>
   );
 }
