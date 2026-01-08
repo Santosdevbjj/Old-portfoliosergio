@@ -1,40 +1,36 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-
-type Theme = "light" | "dark";
+import { useState, useEffect } from 'react';
 
 export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     setMounted(true);
-    const storedTheme = localStorage.getItem("theme") as Theme | null;
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initialTheme = storedTheme ?? (prefersDark ? "dark" : "light");
+    const storedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = storedTheme ?? (prefersDark ? 'dark' : 'light');
     setTheme(initialTheme);
-    document.documentElement.classList.toggle("dark", initialTheme === "dark");
+    document.documentElement.classList.toggle('dark', initialTheme === 'dark');
   }, []);
 
-  const toggleTheme = () => {
-    const nextTheme: Theme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
-    localStorage.setItem("theme", nextTheme);
-    document.documentElement.classList.toggle("dark", nextTheme === "dark");
-  };
+  function toggleTheme() {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    localStorage.setItem('theme', next);
+    document.documentElement.classList.toggle('dark', next === 'dark');
+  }
 
   if (!mounted) return <div className="w-10 h-10 opacity-0" aria-hidden="true" />;
 
   return (
     <button
       onClick={toggleTheme}
-      className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 shadow-md hover:scale-110 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-primary-light"
-      aria-label={theme === "dark" ? "Ativar modo claro" : "Ativar modo escuro"}
-      aria-pressed={theme === "dark"}
-      title={theme === "dark" ? "Modo claro" : "Modo escuro"}
+      className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 dark:from-blue-800 dark:to-indigo-700 shadow-lg hover:scale-110 transition-transform duration-300"
+      aria-label={theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'}
     >
-      {theme === "dark" ? "☀️" : "🌙"}
+      {theme === 'dark' ? '☀️' : '🌙'}
     </button>
   );
 }
