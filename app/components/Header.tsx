@@ -11,7 +11,7 @@ interface Props {
 
 export default function Header({ dict, lang }: Props) {
   const pathname = usePathname() ?? '';
-  const currentLang = pathname.startsWith('/en') ? 'en' : 'pt';
+  const currentLang: 'pt' | 'en' = pathname.startsWith('/en') ? 'en' : 'pt';
 
   const getLinkClass = (langKey: 'pt' | 'en') =>
     `px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
@@ -23,9 +23,13 @@ export default function Header({ dict, lang }: Props) {
   return (
     <header
       lang={currentLang === 'en' ? 'en-US' : 'pt-BR'}
-      className="bg-gray-100 dark:bg-gray-900 shadow-sm"
+      aria-label={currentLang === 'en' ? 'Site header' : 'Cabeçalho do site'}
+      className="w-full bg-gray-100 dark:bg-gray-900 shadow-sm transition-colors duration-500"
     >
-      <nav className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center px-4 py-3 sm:py-4 gap-2 sm:gap-0 lg:px-8">
+      <nav
+        className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center 
+                   px-4 py-3 sm:py-4 gap-2 sm:gap-0 lg:px-8"
+      >
         {/* Links de idioma */}
         <div className="flex space-x-2 sm:space-x-4">
           <Link
@@ -45,7 +49,10 @@ export default function Header({ dict, lang }: Props) {
         </div>
 
         {/* Texto adaptável */}
-        <span className="text-[clamp(0.75rem,1vw,0.875rem)] uppercase tracking-widest font-medium text-gray-500 dark:text-gray-400 mt-2 sm:mt-0">
+        <span
+          className="text-[clamp(0.75rem,1vw,0.875rem)] uppercase tracking-widest font-medium 
+                     text-gray-500 dark:text-gray-400 mt-2 sm:mt-0"
+        >
           {currentLang === 'en'
             ? dict.header?.international ?? 'International'
             : dict.header?.brazil ?? 'Brasil'}
