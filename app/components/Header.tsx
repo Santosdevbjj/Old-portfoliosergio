@@ -6,9 +6,11 @@ import { usePathname } from "next/navigation";
 type Lang = "pt" | "en";
 
 export default function Header() {
-  const pathname = usePathname() ?? "";
+  const pathname = usePathname() ?? "/";
 
-  const currentLang: Lang = pathname.startsWith("/en") ? "en" : "pt";
+  const currentLang: Lang = pathname === "/en" || pathname.startsWith("/en/")
+    ? "en"
+    : "pt";
 
   const getLinkStyle = (lang: Lang) => {
     const base =
@@ -27,6 +29,7 @@ export default function Header() {
     <header className="bg-gray-100 dark:bg-gray-800 shadow-sm">
       <nav
         className="max-w-4xl mx-auto flex justify-between items-center p-4"
+        role="navigation"
         aria-label="Language navigation"
       >
         <div className="flex space-x-2">
