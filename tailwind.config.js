@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class', // ativa modo dark via class
+  darkMode: 'class', // ativar dark mode via classe
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
@@ -9,6 +9,18 @@ module.exports = {
     extend: {
       fontFamily: {
         inter: ["'Inter Variable', sans-serif", "Inter", "sans-serif"],
+      },
+      fontSize: {
+        xs: 'clamp(0.75rem, 0.7vw, 0.875rem)',
+        sm: 'clamp(0.875rem, 0.9vw, 1rem)',
+        base: 'clamp(1rem, 1vw, 1.125rem)',
+        lg: 'clamp(1.125rem, 1.2vw, 1.25rem)',
+        xl: 'clamp(1.25rem, 1.5vw, 1.5rem)',
+        '2xl': 'clamp(1.5rem, 2vw, 2rem)',
+        '3xl': 'clamp(1.875rem, 2.5vw, 2.25rem)',
+        '4xl': 'clamp(2.25rem, 3vw, 3rem)',
+        '5xl': 'clamp(3rem, 4vw, 3.75rem)',
+        '6xl': 'clamp(3.75rem, 5vw, 4.5rem)',
       },
       colors: {
         primary: {
@@ -40,6 +52,13 @@ module.exports = {
       animation: {
         textGradient: "textGradient 5s ease infinite",
         gradientBG: "gradientBG 15s ease infinite",
+      },
+      backgroundSize: {
+        '200%': '200% 200%',
+      },
+      transitionProperty: {
+        'colors': 'background-color, border-color, color, fill, stroke',
+        'all': 'all',
       },
     },
   },
