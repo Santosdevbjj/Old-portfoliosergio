@@ -1,0 +1,16 @@
+export const TECHNOLOGY_ORDER = [
+  "ciencia-de-dados",
+  "azure-databricks",
+  "neo4j",
+  "power-bi",
+  "banco-de-dados",
+  "python",
+  "dotnet",
+  "java",
+  "machine-learning",
+  "aws",
+  "ciberseguranca",
+  "logica-de-programacao",
+  "html",
+  "artigos-tecnicos",
+];
