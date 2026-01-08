@@ -2,74 +2,63 @@
 
 import { useEffect, useState } from "react";
 
+type Theme = "light" | "dark";
+
 export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const [theme, setTheme] = useState<Theme>("light");
 
-  // Inicialização segura no cliente
+  // Executa SOMENTE no cliente, após hidratação
   useEffect(() => {
     setMounted(true);
 
-    const html = document.documentElement;
-    const dark =
-      html.classList.contains("dark") ||
-      localStorage.getItem("theme") === "dark";
+    const storedTheme = localStorage.getItem("theme") as Theme | null;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
 
-    if (dark) {
-      html.classList.add("dark");
-    } else {
-      html.classList.remove("dark");
-    }
+    const initialTheme = storedTheme ?? (prefersDark ? "dark" : "light");
 
-    setIsDark(dark);
-
-    // Sincroniza tema entre abas
-    function handleStorageChange(e: StorageEvent) {
-      if (e.key === "theme") {
-        const isDarkMode = e.newValue === "dark";
-        html.classList.toggle("dark", isDarkMode);
-        setIsDark(isDarkMode);
-      }
-    }
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    setTheme(initialTheme);
+    document.documentElement.classList.toggle(
+      "dark",
+      initialTheme === "dark"
+    );
   }, []);
 
   function toggleTheme() {
-    const html = document.documentElement;
-    const nextIsDark = !html.classList.contains("dark");
+    const nextTheme: Theme = theme === "dark" ? "light" : "dark";
 
-    html.classList.toggle("dark", nextIsDark);
-    localStorage.setItem("theme", nextIsDark ? "dark" : "light");
-    setIsDark(nextIsDark);
+    setTheme(nextTheme);
+    localStorage.setItem("theme", nextTheme);
+    document.documentElement.classList.toggle("dark", nextTheme === "dark");
   }
 
-  // Evita flash / hydration mismatch
+  // Evita hydration mismatch
   if (!mounted) {
     return (
       <div
-        className="p-2 text-xl opacity-0 w-10 h-10"
+        className="w-10 h-10 opacity-0"
         aria-hidden="true"
-      >
-        🌙
-      </div>
+      />
     );
   }
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
-      className="p-2 w-10 h-10 flex items-center justify-center rounded-full
-                 bg-gray-100 dark:bg-gray-800 shadow-sm
-                 hover:scale-110 transition-transform
-                 focus:outline-none focus:ring-2 focus:ring-blue-500
-                 cursor-pointer"
-      aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
-      aria-pressed={isDark}
-      title={isDark ? "Modo claro" : "Modo escuro"}
+      className="
+        w-10 h-10 flex items-center justify-center rounded-full
+        bg-gray-100 dark:bg-gray-800 shadow-sm
+        hover:scale-110 transition-transform
+        focus:outline-none focus:ring-2 focus:ring-blue-500
+      "
+      aria-label={theme === "dark" ? "Ativar modo claro" : "Ativar modo escuro"}
+      aria-pressed={theme === "dark"}
+      title={theme === "dark" ? "Modo claro" : "Modo escuro"}
     >
-      {isDark ? "☀️" : "🌙"}
+      {theme === "dark" ? "☀️" : "🌙"}
     </button>
   );
 }
