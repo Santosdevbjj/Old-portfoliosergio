@@ -1,0 +1,15 @@
+{
+  "portfolio": {
+    "title": "Portfólio de Analytics Engineering",
+    "description": "Transformando dados em decisões estratégicas."
+  },
+  "categories": {
+    "ciencia-de-dados": "Ciência de Dados",
+    "azure-databricks": "Azure Databricks",
+    "neo4j": "Grafos & Neo4j",
+    "power-bi": "Business Intelligence",
+    "python": "Desenvolvimento Python",
+    "machine-learning": "Machine Learning",
+    "banco-de-dados": "Engenharia de Dados"
+  }
+}
