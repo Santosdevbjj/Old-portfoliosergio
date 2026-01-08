@@ -2,17 +2,83 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Reset básico */
+/* ===== Reset e base ===== */
 html,
 body {
   margin: 0;
   padding: 0;
-  font-size: 16px; /* base para responsividade */
+  font-size: 16px; /* Base para rem e responsividade */
+  scroll-behavior: smooth;
 }
 
+/* ===== Tipografia global ===== */
 body {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  color: #1f2937; /* cinza escuro para legibilidade */
+  background-color: #ffffff;
+}
+
+/* ===== Dark mode global ===== */
+body.dark {
+  color: #f9fafb; /* texto claro */
+  background-color: #111827; /* fundo escuro */
+}
+
+/* ===== Tipografia responsiva ===== */
+h1 {
+  @apply text-3xl sm:text-4xl md:text-5xl font-bold leading-tight;
+}
+
+h2 {
+  @apply text-2xl sm:text-3xl font-semibold leading-snug;
+}
+
+h3 {
+  @apply text-xl sm:text-2xl font-semibold leading-snug;
+}
+
+p {
+  @apply text-base sm:text-lg leading-relaxed;
+}
+
+a {
+  @apply text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors;
+}
+
+/* ===== Links e botões ===== */
+button {
+  @apply cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded transition;
+}
+
+/* ===== Listas ===== */
+ul, ol {
+  @apply list-inside list-disc sm:list-inside sm:list-disc;
+}
+
+/* ===== Imagens ===== */
+img {
+  @apply max-w-full h-auto rounded;
+}
+
+/* ===== Tables ===== */
+table {
+  @apply border-collapse w-full;
+}
+
+th, td {
+  @apply border border-gray-300 dark:border-gray-700 p-2 text-left;
+}
+
+/* ===== Forms ===== */
+input, select, textarea {
+  @apply border border-gray-300 dark:border-gray-700 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+/* ===== Containers responsivos ===== */
+.container {
+  @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
 }
