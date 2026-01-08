@@ -1,3 +1,5 @@
+import { getPortfolioRepos } from "../../lib/github";
+import { getDictionary } from "../../lib/i18n";
 import { getPortfolioRepos } from "@/lib/github";
 import ProjectSection from "../components/ProjectSection";
 import { TECHNOLOGY_ORDER } from "@/lib/i18n";
