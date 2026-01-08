@@ -1,4 +1,4 @@
-'use client'; // garante interatividade
+'use client';
 
 import { ReactNode, useEffect } from 'react';
 
@@ -11,5 +11,13 @@ export default function PageWrapper({ children }: Props) {
     console.log('Página carregada');
   }, []);
 
-  return <div className="min-h-screen transition-colors duration-500">{children}</div>;
+  return (
+    <div
+      role="main"
+      aria-label="Conteúdo principal"
+      className="min-h-screen flex flex-col transition-colors duration-500 px-4 sm:px-6 lg:px-8"
+    >
+      {children}
+    </div>
+  );
 }
