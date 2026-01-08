@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -9,46 +8,19 @@ export default function Header() {
   const pathname = usePathname() ?? "";
   const currentLang: Lang = pathname.startsWith("/en") ? "en" : "pt";
 
-  const getLinkStyle = (lang: Lang) => {
-    const base =
-      "px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer";
-
-    const active =
-      "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 font-semibold";
-
-    const inactive =
-      "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700";
-
-    return `${base} ${currentLang === lang ? active : inactive}`;
-  };
+  const getLinkStyle = (lang: Lang) => `
+    px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer
+    ${currentLang === lang ? "bg-blue-900 text-blue-200 font-semibold" : "text-gray-300 hover:bg-gray-700"}
+  `;
 
   return (
-    <header className="bg-gray-100 dark:bg-gray-800 shadow-sm">
-      <nav
-        className="max-w-4xl mx-auto flex flex-wrap justify-between items-center p-4"
-        aria-label="Language navigation"
-      >
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href="/pt"
-            className={getLinkStyle("pt")}
-            aria-current={currentLang === "pt" ? "page" : undefined}
-          >
-            Português
-          </Link>
-
-          <Link
-            href="/en"
-            className={getLinkStyle("en")}
-            aria-current={currentLang === "en" ? "page" : undefined}
-          >
-            English
-          </Link>
+    <header className="bg-gray-800 dark:bg-gray-900 shadow-md">
+      <nav className="max-w-5xl mx-auto flex justify-between items-center p-4">
+        <div className="flex space-x-2">
+          <Link href="/pt" className={getLinkStyle("pt")} aria-current={currentLang === "pt" ? "page" : undefined}>Português</Link>
+          <Link href="/en" className={getLinkStyle("en")} aria-current={currentLang === "en" ? "page" : undefined}>English</Link>
         </div>
-
-        <span className="text-xs uppercase tracking-widest font-medium text-gray-500 dark:text-gray-400 mt-2 sm:mt-0">
-          {currentLang === "en" ? "International" : "Brasil"}
-        </span>
+        <span className="text-xs uppercase tracking-widest font-medium text-gray-400">{currentLang === "en" ? "International" : "Brasil"}</span>
       </nav>
     </header>
   );
