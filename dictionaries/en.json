@@ -1,15 +1,22 @@
 {
   "portfolio": {
     "title": "Analytics Engineering Portfolio",
-    "description": "Turning data into strategic decisions."
+    "description": "Transforming complex data into strategic business insights."
   },
   "categories": {
     "ciencia-de-dados": "Data Science",
     "azure-databricks": "Azure Databricks",
-    "neo4j": "Graph Databases & Neo4j",
+    "neo4j": "Graph Databases (Neo4j)",
     "power-bi": "Business Intelligence",
+    "banco-de-dados": "Data Engineering",
     "python": "Python Development",
+    "dotnet": ".NET Development",
+    "java": "Java Development",
     "machine-learning": "Machine Learning",
-    "banco-de-dados": "Data Engineering"
+    "aws": "AWS Cloud Services",
+    "ciberseguranca": "Cybersecurity",
+    "logica-de-programacao": "Programming Logic",
+    "html": "Frontend Fundamentals",
+    "artigos-tecnicos": "Technical Articles"
   }
 }
