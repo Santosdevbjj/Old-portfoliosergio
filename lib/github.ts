@@ -6,26 +6,43 @@ export type GitHubRepo = {
   description: string | null;
   html_url: string;
   topics: string[];
+  language?: string;
+  stargazers_count?: number;
+  updated_at?: string;
 };
 
-const GITHUB_USER = "Santosdevbjj";
-const GITHUB_API_URL = `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100`;
+const DEFAULT_USER = "Santosdevbjj";
+
+/**
+ * Monta a URL da API do GitHub para buscar repositórios de um usuário
+ */
+function buildApiUrl(user: string): string {
+  return `https://api.github.com/users/${user}/repos?per_page=100`;
+}
 
 /**
  * Busca repositórios públicos do GitHub marcados como "portfolio"
- * Executa no servidor com cache (ISR)
+ * - Executa no servidor com cache (ISR)
+ * - Trata rate limit e erros de API
+ * - Ordena resultados por data de atualização (mais recentes primeiro)
  */
-export async function getPortfolioRepos(): Promise<GitHubRepo[]> {
+export async function getPortfolioRepos(
+  user: string = DEFAULT_USER
+): Promise<GitHubRepo[]> {
   try {
-    const res = await fetch(GITHUB_API_URL, {
+    const res = await fetch(buildApiUrl(user), {
       headers: {
-        Accept: "application/vnd.github.mercy-preview+json",
+        Accept: "application/vnd.github+json", // header atualizado
       },
-      next: { revalidate: 3600 },
+      next: { revalidate: 3600 }, // cache de 1 hora
     });
 
     if (!res.ok) {
-      console.error("GitHub API error:", res.status, res.statusText);
+      if (res.status === 403) {
+        console.error("GitHub API rate limit exceeded. Tente novamente mais tarde.");
+      } else {
+        console.error("GitHub API error:", res.status, res.statusText);
+      }
       return [];
     }
 
@@ -41,7 +58,15 @@ export async function getPortfolioRepos(): Promise<GitHubRepo[]> {
         ...repo,
         description: repo.description ?? "",
         topics: repo.topics ?? [],
-      }));
+        language: repo.language ?? undefined,
+        stargazers_count: repo.stargazers_count ?? 0,
+        updated_at: repo.updated_at ?? undefined,
+      }))
+      .sort((a, b) => {
+        const dateA = a.updated_at ? new Date(a.updated_at).getTime() : 0;
+        const dateB = b.updated_at ? new Date(b.updated_at).getTime() : 0;
+        return dateB - dateA; // mais recentes primeiro
+      });
   } catch (error) {
     console.error("Failed to fetch GitHub repos:", error);
     return [];
