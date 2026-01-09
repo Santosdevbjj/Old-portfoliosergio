@@ -70,8 +70,8 @@ export default function Page() {
         <h2 className="text-2xl font-semibold text-blue-600 mb-4">📧 Contact</h2>
         <p>Get in touch for collaborations or opportunities:</p>
         <ul className="mt-4 space-y-2">
-          <li>Email: <a href="mailto:sergio.santos@email.com" className="text-blue-600 hover:underline">sergio.santos@email.com</a></li>
-          <li>LinkedIn: <a href="https://linkedin.com/in/seuperfil" className="text-blue-600 hover:underline">linkedin.com/in/seuperfil</a></li>
+          <li>Email: <a href="mailto:santossergiorealbjj@outlook.com" className="text-blue-600 hover:underline">sergio.santos@email.com</a></li>
+          <li>LinkedIn: <a href="https://www.linkedin.com/in/santossergioluiz" className="text-blue-600 hover:underline">linkedin.com/in/seuperfil</a></li>
           <li>GitHub: <a href="https://github.com/Santosdevbjj" className="text-blue-600 hover:underline">github.com/Santosdevbjj</a></li>
         </ul>
       </section>
