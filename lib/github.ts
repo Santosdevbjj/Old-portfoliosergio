@@ -15,9 +15,10 @@ const DEFAULT_USER = "Santosdevbjj";
 
 /**
  * Categorias fixas para organizar os repositórios
+ * Alinhadas com as chaves usadas em i18n.ts (projectCategories)
  */
 export const CATEGORIES_ORDER = [
-  "ciencia-de-dados",
+  "data-science",
   "azure-databricks",
   "neo4j",
   "power-bi",
@@ -29,9 +30,9 @@ export const CATEGORIES_ORDER = [
   "machine-learning",
   "amazon-aws",
   "cybersecurity",
-  "logica-de-programacao",
+  "programming-logic",
   "html",
-  "articles",
+  "articles-repo",
 ] as const;
 
 export type Category = (typeof CATEGORIES_ORDER)[number];
@@ -57,8 +58,8 @@ export async function getPortfolioRepos(
     const repos: GitHubRepo[] = await res.json();
 
     // Filtra apenas repositórios com o tópico principal
-    const portfolioRepos = repos.filter((repo) =>
-      Array.isArray(repo.topics) && repo.topics.includes(mainTopic)
+    const portfolioRepos = repos.filter(
+      (repo) => Array.isArray(repo.topics) && repo.topics.includes(mainTopic)
     );
 
     // Categoriza conforme ordem fixa
