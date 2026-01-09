@@ -1,3 +1,4 @@
+`html
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -5,25 +6,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sérgio Santos — Portfólio</title>
   <meta name="description" content="Sérgio Santos — Analista de Ciência de Dados. Python, SQL, Azure Databricks, eficiência operacional e governança de dados." />
+
+  <!-- Open Graph for social sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://portfoliosergiosantos.vercel.app/">
+  <meta property="og:title" content="Sérgio Santos — Portfólio Ciência de Dados">
+  <meta property="og:description" content="Especialista em Ciência de Dados, Azure Databricks e eficiência operacional. 15+ anos de experiência em sistemas críticos.">
+  <meta property="og:image" content="https://portfoliosergiosantos.vercel.app/og-image.jpg">
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --primary-color: #0D6EFD;
-      --secondary-color: #198754;
+      --secondary-color: #198754; / Ajustada em dark mode para maior contraste /
       --text-color: #212529;
       --bg-color: #F8F9FA;
       --card-bg: #ffffff;
       --card-shadow: rgba(0,0,0,0.1);
       --font-family: 'Inter', sans-serif;
     }
+
+    / Smooth scroll /
+    html {
+      scroll-behavior: smooth;
+    }
+
     @media (prefers-color-scheme: dark) {
       :root {
         --text-color: #f8f9fa;
         --bg-color: #121212;
         --card-bg: #1e1e1e;
         --card-shadow: rgba(0,0,0,0.5);
+        --secondary-color: #2ECC71; / Verde mais claro para melhor contraste sobre fundo escuro /
       }
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: var(--font-family);
@@ -100,6 +117,7 @@
       header p { font-size: 1rem; }
       .btn-circle { width: 44px; height: 44px; font-size: 1.1rem; }
     }
+    / Dark manual toggle (classe) /
     .dark {
       --text-color: #f8f9fa;
       --bg-color: #121212;
@@ -182,7 +200,7 @@
             <li data-i18n="proj1Audience">Público-alvo: Gestores de obras, PMOs, diretoria operacional e áreas de planejamento.</li>
             <li data-i18n="proj1Deliver">Entrega: Modelo preditivo + Bot no Telegram + Simulador Streamlit + Relatório PDF corporativo.</li>
           </ul>
-          <a href="https://github.com/Santosdevbjj/analiseRiscosAtrasoObras" target="_blank" rel="noopener" data-i18n="viewProject">Ver projeto</a>
+          <a href="https://github.com/Santosdevbjj/analiseRiscosAtrasoObras" target="_blank" rel="noopener noreferrer" data-i18n="viewProject">Ver projeto</a>
         </div>
 
         <div class="card">
@@ -190,7 +208,7 @@
           <p data-i18n="proj2Desc">
             Sistema de recomendação de músicas baseado em grafos, utilizando Neo4j Aura e Graph Data Science (GDS) para identificar padrões de escuta, similaridade entre usuários e artistas, e sugerir novas músicas de forma contextual e explicável.
           </p>
-          <a href="https://github.com/Santosdevbjj/recomendMusicasGrafos" target="_blank" rel="noopener" data-i18n="viewProject">Ver projeto</a>
+          <a href="https://github.com/Santosdevbjj/recomendMusicasGrafos" target="_blank" rel="noopener noreferrer" data-i18n="viewProject">Ver projeto</a>
         </div>
 
         <div class="card">
@@ -198,7 +216,7 @@
           <p data-i18n="proj3Desc">
             Sistema corporativo de RH com arquitetura de microsserviços, em Azure (AKS), CI/CD, mensageria assíncrona e práticas modernas de engenharia e DevOps — um case de arquitetura cloud nativa.
           </p>
-          <a href="https://github.com/Santosdevbjj/sistemaRHnuvemAzure" target="_blank" rel="noopener" data-i18n="viewProject">Ver projeto</a>
+          <a href="https://github.com/Santosdevbjj/sistemaRHnuvemAzure" target="_blank" rel="noopener noreferrer" data-i18n="viewProject">Ver projeto</a>
         </div>
 
         <div class="card">
@@ -206,7 +224,7 @@
           <p data-i18n="proj4Desc">
             Arquitetura de microserviços moderna em .NET 8, com RabbitMQ, MySQL, Ocelot API Gateway e autenticação JWT. Serviços de Vendas e Estoque integrados via mensagens assíncronas.
           </p>
-          <a href="https://github.com/Santosdevbjj/desafioAvanadeMicroservico" target="_blank" rel="noopener" data-i18n="viewProject">Ver projeto</a>
+          <a href="https://github.com/Santosdevbjj/desafioAvanadeMicroservico" target="_blank" rel="noopener noreferrer" data-i18n="viewProject">Ver projeto</a>
         </div>
 
         <div class="card">
@@ -214,7 +232,7 @@
           <p data-i18n="proj5Desc">
             Conjunto de quatro microserviços Spring Boot com Eureka (discovery), H2, Spring Cloud Gateway e autenticação. Comunicação via HTTP com roteamento e discovery centralizado.
           </p>
-          <a href="https://github.com/Santosdevbjj/NTTDataDesafio" target="_blank" rel="noopener" data-i18n="viewProject">Ver projeto</a>
+          <a href="https://github.com/Santosdevbjj/NTTDataDesafio" target="_blank" rel="noopener noreferrer" data-i18n="viewProject">Ver projeto</a>
         </div>
       </div>
     </section>
@@ -230,18 +248,18 @@
         <li data-i18n="award2">🏆 Melhor Artigo do Mês — Setembro 2025</li>
       </ul>
       <p>
-        <a href="https://web.dio.me/articles/low-code-na-saude-como-criar-apps-medicos-em-semanas-d77f6760fa5a?back=/articles" target="_blank" rel="noopener" data-i18n="readOnDio">Ler na DIO</a> |
-        <a href="https://www.linkedin.com/pulse/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-luiz-dos-santos-xen7e?utm_source=share&utm_medium=member_android&utm_campaign=share_via" target="_blank" rel="noopener" data-i18n="readOnLinkedin">Ler no LinkedIn</a> |
-        <a href="https://medium.com/@sergioluiz.santos/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e" target="_blank" rel="noopener" data-i18n="readOnMedium">Ler no Medium</a>
+        <a href="https://web.dio.me/articles/low-code-na-saude-como-criar-apps-medicos-em-semanas-d77f6760fa5a?back=/articles" target="_blank" rel="noopener noreferrer" data-i18n="readOnDio">Ler na DIO</a> |
+        <a href="https://www.linkedin.com/pulse/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-luiz-dos-santos-xen7e?utmsource=share&utmmedium=memberandroid&utmcampaign=sharevia" target="blank" rel="noopener noreferrer" data-i18n="readOnLinkedin">Ler no LinkedIn</a> |
+        <a href="https://medium.com/@sergioluiz.santos/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e" target="_blank" rel="noopener noreferrer" data-i18n="readOnMedium">Ler no Medium</a>
       </p>
     </section>
 
     <section id="contato">
       <h2 data-i18n="contactTitle">Contato</h2>
       <p>
-        <span>📧 Email: </span><a href="mailto:sergio@ccbjj.com">sergio@ccbjj.com</a><br />
-        <span>🌐 GitHub: </span><a href="https://github.com/Santosdevbjj" target="_blank" rel="noopener">github.com/Santosdevbjj</a><br />
-        <span>🔗 LinkedIn: </span><a href="https://www.linkedin.com/in/sergio-santos/" target="_blank" rel="noopener">linkedin.com/in/sergio-santos</a>
+        <span>📧 Email: </span><a href="mailto:santossergiorealbjj@outlook.com">santossergiorealbjj@outlook.com</a><br />
+        <span>🌐 GitHub: </span><a href="https://github.com/Santosdevbjj" target="_blank" rel="noopener noreferrer">github.com/Santosdevbjj</a><br />
+        <span>🔗 LinkedIn: </span><a href="https://www.linkedin.com/in/santossergioluiz" target="_blank" rel="noopener noreferrer">linkedin.com/in/sergio-santos</a>
       </p>
     </section>
   </main>
@@ -402,3 +420,4 @@
   </script>
 </body>
 </html>
+`
