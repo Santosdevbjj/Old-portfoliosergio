@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProjectSection from "@/components/ProjectSection";
 import { translations } from "@/lib/i18n";
-import { getPortfolioRepos } from "@/lib/github";
+import { getPortfolioRepos, Category, CATEGORIES_ORDER, GitHubRepo } from "@/lib/github";
 
 interface Props {
   params: { lang: "pt" | "en" };
@@ -13,6 +13,26 @@ interface Props {
 export default async function Page({ params }: Props) {
   const t = translations[params.lang];
   const repos = await getPortfolioRepos();
+
+  // Mapa de correspondência entre categorias do GitHub (kebab-case)
+  // e traduções do i18n.ts (camelCase)
+  const categoryMap: Record<Category, string> = {
+    "data-science": t.projectCategories.dataScience,
+    "azure-databricks": t.projectCategories.azureDatabricks,
+    "neo4j": t.projectCategories.neo4j,
+    "power-bi": t.projectCategories.powerBI,
+    "database": t.projectCategories.database,
+    "python": t.projectCategories.python,
+    "csharp": t.projectCategories.dotnet,
+    "dotnet": t.projectCategories.dotnet,
+    "java": t.projectCategories.java,
+    "machine-learning": t.projectCategories.machineLearning,
+    "amazon-aws": t.projectCategories.aws,
+    "cybersecurity": t.projectCategories.cybersecurity,
+    "programming-logic": t.projectCategories.logic,
+    "html": t.projectCategories.html,
+    "articles-repo": t.projectCategories.articlesRepo,
+  };
 
   return (
     <PageWrapper>
@@ -33,9 +53,7 @@ export default async function Page({ params }: Props) {
           <h2 className="text-2xl font-semibold text-blue-600 mb-4">
             🏆 {t.sections.featuredArticle}
           </h2>
-          <h3 className="text-xl font-bold mb-2">
-            {t.featuredArticle.title}
-          </h3>
+          <h3 className="text-xl font-bold mb-2">{t.featuredArticle.title}</h3>
           <p className="mb-2">{t.featuredArticle.description}</p>
           <ul className="list-disc list-inside mb-4">
             <li>{t.featuredArticle.award1}</li>
@@ -110,24 +128,15 @@ export default async function Page({ params }: Props) {
           <h2 className="text-2xl font-semibold text-blue-600 mb-4">
             📂 {t.sections.projectsTitle}
           </h2>
-          {[
-            t.projectCategories.dataScience,
-            t.projectCategories.azureDatabricks,
-            t.projectCategories.neo4j,
-            t.projectCategories.powerBI,
-            t.projectCategories.database,
-            t.projectCategories.python,
-            t.projectCategories.dotnet,
-            t.projectCategories.java,
-            t.projectCategories.machineLearning,
-            t.projectCategories.aws,
-            t.projectCategories.cybersecurity,
-            t.projectCategories.logic,
-            t.projectCategories.html,
-            t.projectCategories.articlesRepo
-          ].map((cat) => (
-            <ProjectSection key={cat} title={cat} projects={repos[cat] || []} />
-          ))}
+          {(Object.entries(repos) as [Category, GitHubRepo[]][])
+            .sort(([a], [b]) => CATEGORIES_ORDER.indexOf(a) - CATEGORIES_ORDER.indexOf(b))
+            .map(([cat, projects]) => (
+              <ProjectSection
+                key={cat}
+                title={categoryMap[cat] || cat}
+                projects={projects}
+              />
+            ))}
         </section>
       </main>
       <Footer lang={params.lang} dict={t} />
