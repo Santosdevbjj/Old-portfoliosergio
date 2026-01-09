@@ -4,15 +4,34 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProjectSection from "@/components/ProjectSection";
 import { translations } from "@/lib/i18n";
-import { getPortfolioRepos } from "@/lib/github";
+import { getPortfolioRepos, Category, CATEGORIES_ORDER, GitHubRepo } from "@/lib/github";
 
 interface Props {
-  params: { lang: "pt" | "en" };
+  params: { lang: "pt" | "en" | "es" };
 }
 
 export default async function Page({ params }: Props) {
   const t = translations[params.lang];
   const repos = await getPortfolioRepos();
+
+  // Mapa de correspondência entre categorias (kebab-case) e traduções
+  const categoryMap: Record<Category, string> = {
+    "data-science": t.projectCategories.dataScience,
+    "azure-databricks": t.projectCategories.azureDatabricks,
+    "neo4j": t.projectCategories.neo4j,
+    "power-bi": t.projectCategories.powerBI,
+    "database": t.projectCategories.database,
+    "python": t.projectCategories.python,
+    "csharp": t.projectCategories.dotnet,
+    "dotnet": t.projectCategories.dotnet,
+    "java": t.projectCategories.java,
+    "machine-learning": t.projectCategories.machineLearning,
+    "amazon-aws": t.projectCategories.aws,
+    "cybersecurity": t.projectCategories.cybersecurity,
+    "programming-logic": t.projectCategories.logic,
+    "html": t.projectCategories.html,
+    "articles-repo": t.projectCategories.articlesRepo,
+  };
 
   return (
     <PageWrapper>
@@ -29,37 +48,26 @@ export default async function Page({ params }: Props) {
         {/* Featured Article */}
         <section className="mb-8 bg-gray-100 p-6 rounded-lg shadow">
           <h2 className="text-2xl font-semibold text-blue-600 mb-4">🏆 {t.sections.featuredArticle}</h2>
-          <h3 className="text-xl font-bold mb-2">
-            Low-Code in Healthcare: How to Build Medical Apps in Weeks
-          </h3>
-          <p className="mb-2">
-            Analysis of the application of low-code platforms in the healthcare sector, addressing benefits,
-            challenges, and practical use cases for accelerated development of medical applications.
-          </p>
+          <h3 className="text-xl font-bold mb-2">{t.featuredArticle.title}</h3>
+          <p className="mb-2">{t.featuredArticle.description}</p>
           <ul className="list-disc list-inside mb-4">
-            <li>🏆 Winner of the 35th DIO Article Competition</li>
-            <li>🏆 Best Article of the Month – September 2025</li>
+            <li>{t.featuredArticle.award1}</li>
+            <li>{t.featuredArticle.award2}</li>
           </ul>
-          <p className="mb-2">You can read the article on the following platforms:</p>
+          <p className="mb-2">{t.featuredArticle.readOn}</p>
           <ul className="list-disc list-inside space-y-2">
             <li>
-              <a href="https://web.dio.me/articles/low-code-na-saude-como-criar-apps-medicos-em-semanas-d77f6760fa5a?back=/articles"
-                 target="_blank" rel="noopener noreferrer"
-                 className="text-blue-600 hover:underline">
+              <a href={t.featuredArticle.links.dio} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                 DIO
               </a>
             </li>
             <li>
-              <a href="https://www.linkedin.com/pulse/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-luiz-dos-santos-xen7e"
-                 target="_blank" rel="noopener noreferrer"
-                 className="text-blue-600 hover:underline">
+              <a href={t.featuredArticle.links.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                 LinkedIn
               </a>
             </li>
             <li>
-              <a href="https://medium.com/@sergioluiz.santos/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
-                 target="_blank" rel="noopener noreferrer"
-                 className="text-blue-600 hover:underline">
+              <a href={t.featuredArticle.links.medium} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                 Medium
               </a>
             </li>
@@ -67,20 +75,17 @@ export default async function Page({ params }: Props) {
 
           {/* Direct Contacts */}
           <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-2">📧 Direct Contact</h3>
+            <h3 className="text-lg font-semibold mb-2">📧 {t.sections.contactTitle}</h3>
             <ul className="space-y-2">
               <li>
                 Email:{" "}
-                <a href="mailto:santossergiorealbjj@outlook.com"
-                   className="text-blue-600 hover:underline">
+                <a href="mailto:santossergiorealbjj@outlook.com" className="text-blue-600 hover:underline">
                   santossergiorealbjj@outlook.com
                 </a>
               </li>
               <li>
                 LinkedIn:{" "}
-                <a href="https://www.linkedin.com/in/santossergioluiz"
-                   target="_blank" rel="noopener noreferrer"
-                   className="text-blue-600 hover:underline">
+                <a href="https://www.linkedin.com/in/santossergioluiz" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                   linkedin.com/in/santossergioluiz
                 </a>
               </li>
@@ -91,24 +96,11 @@ export default async function Page({ params }: Props) {
         {/* Projects by Technology */}
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-blue-600 mb-4">📂 {t.sections.projectsTitle}</h2>
-          {[
-            "Data Science",
-            "Azure Databricks",
-            "Neo4J",
-            "Power BI & Data Analysis",
-            "Databases",
-            "Python",
-            "C#/dotnet .NET",
-            "Java",
-            "Machine Learning",
-            "Amazon AWS",
-            "Cybersecurity",
-            "Programming Logic",
-            "HTML",
-            "Technical Articles Repository"
-          ].map((cat) => (
-            <ProjectSection key={cat} title={cat} projects={repos[cat] || []} />
-          ))}
+          {(Object.entries(repos) as [Category, GitHubRepo[]][])
+            .sort(([a], [b]) => CATEGORIES_ORDER.indexOf(a) - CATEGORIES_ORDER.indexOf(b))
+            .map(([cat, projects]) => (
+              <ProjectSection key={cat} title={categoryMap[cat] || cat} projects={projects} />
+            ))}
         </section>
       </main>
       <Footer lang={params.lang} dict={t} />
