@@ -1,3 +1,4 @@
+// app/[lang]/page.tsx
 import PageWrapper from "@/components/PageWrapper";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -17,75 +18,116 @@ export default async function Page({ params }: Props) {
     <PageWrapper>
       <Header lang={params.lang} />
       <main className="flex-1 p-4 max-w-7xl mx-auto">
-        {/* Sobre mim */}
+        
+        {/* Personal Introduction */}
         <section className="mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2">
             {t.sections.aboutTitle}
           </h1>
-          <p className="text-base sm:text-lg md:text-xl">
-            {t.sections.aboutIntro}
-          </p>
-          <p className="mt-2 text-sm sm:text-base md:text-lg">
-            {t.sections.aboutDetails}
-          </p>
+          <p className="text-lg sm:text-xl">{t.sections.aboutIntro}</p>
+          <p className="mt-2 text-base sm:text-lg">{t.sections.aboutDetails}</p>
         </section>
 
-        {/* Experiência Técnica */}
-        <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4">
-            {t.sections.experienceTitle}
+        {/* Featured Article */}
+        <section className="mb-8 bg-gray-100 p-6 rounded-lg shadow">
+          <h2 className="text-2xl font-semibold text-blue-600 mb-4">
+            🏆 {t.sections.featuredArticle}
           </h2>
-          <ul className="list-disc list-inside space-y-2 text-sm sm:text-base md:text-lg">
-            <li>
-              Sistema automatizado de IPVA eliminando{" "}
-              <strong>2.920 horas anuais</strong> de processamento manual
-            </li>
-            <li>
-              Infraestrutura de rede corporativa para 500+ usuários com{" "}
-              <strong>99,5% de disponibilidade</strong>
-            </li>
-            <li>
-              Sistemas jurídicos interdepartamentais com rastreabilidade completa
-              e conformidade LGPD
-            </li>
+          <h3 className="text-xl font-bold mb-2">
+            {t.featuredArticle.title}
+          </h3>
+          <p className="mb-2">{t.featuredArticle.description}</p>
+          <ul className="list-disc list-inside mb-4">
+            <li>{t.featuredArticle.award1}</li>
+            <li>{t.featuredArticle.award2}</li>
           </ul>
-          <p className="mt-2 text-sm sm:text-base md:text-lg">
-            <strong>{t.sections.stackConsolidated}:</strong> Visual Basic, C,
-            SQL Server, Windows Server, Emulação Mainframe IBM, Active Directory
-          </p>
-          <p className="mt-1 text-sm sm:text-base md:text-lg">
-            <strong>{t.sections.stackUpdating}:</strong> Java, C#/.NET, Python,
-            Azure Databricks, Azure AI, Power BI, Machine Learning, Docker,
-            Neo4J
-          </p>
-        </section>
-
-        {/* Projetos */}
-        <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4">
-            {t.sections.projectsTitle}
-          </h2>
-          {Object.entries(repos).map(([cat, projects]) => (
-            <ProjectSection key={cat} title={cat} projects={projects} />
-          ))}
-        </section>
-
-        {/* Artigos em destaque */}
-        <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4">
-            {t.sections.articlesTitle}
-          </h2>
-          <ul className="list-disc list-inside space-y-2 text-sm sm:text-base md:text-lg">
+          <p className="mb-2">{t.featuredArticle.readOn}</p>
+          <ul className="list-disc list-inside space-y-2">
             <li>
-              <a
-                href="https://github.com/Santosdevbjj/myArticles/blob/main/artigos/low_code/low_code_saude.md"
-                target="_blank"
-                className="text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                Low-Code na Saúde: Como Criar Apps Médicos em Semanas 🏆
+              <a href={t.featuredArticle.links.dio}
+                 target="_blank" rel="noopener noreferrer"
+                 className="text-blue-600 hover:underline">
+                DIO
+              </a>
+            </li>
+            <li>
+              <a href={t.featuredArticle.links.linkedin}
+                 target="_blank" rel="noopener noreferrer"
+                 className="text-blue-600 hover:underline">
+                LinkedIn
+              </a>
+            </li>
+            <li>
+              <a href={t.featuredArticle.links.medium}
+                 target="_blank" rel="noopener noreferrer"
+                 className="text-blue-600 hover:underline">
+                Medium
               </a>
             </li>
           </ul>
+
+          {/* Direct Contacts */}
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold mb-2">📧 {t.sections.contactTitle}</h3>
+            <ul className="space-y-2">
+              <li>
+                Email:{" "}
+                <a href="mailto:santossergiorealbjj@outlook.com"
+                   className="text-blue-600 hover:underline">
+                  santossergiorealbjj@outlook.com
+                </a>
+              </li>
+              <li>
+                LinkedIn:{" "}
+                <a href="https://www.linkedin.com/in/santossergioluiz"
+                   target="_blank" rel="noopener noreferrer"
+                   className="text-blue-600 hover:underline">
+                  linkedin.com/in/santossergioluiz
+                </a>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Technical Experience */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold mb-4">{t.sections.experienceTitle}</h2>
+          <ul className="list-disc list-inside space-y-2 text-base">
+            <li>{t.experience.item1}</li>
+            <li>{t.experience.item2}</li>
+            <li>{t.experience.item3}</li>
+          </ul>
+          <p className="mt-2 text-base">
+            <strong>{t.sections.stackConsolidated}:</strong> {t.experience.stackConsolidated}
+          </p>
+          <p className="mt-1 text-base">
+            <strong>{t.sections.stackUpdating}:</strong> {t.experience.stackUpdating}
+          </p>
+        </section>
+
+        {/* Projects by Technology */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold text-blue-600 mb-4">
+            📂 {t.sections.projectsTitle}
+          </h2>
+          {[
+            t.projectCategories.dataScience,
+            t.projectCategories.azureDatabricks,
+            t.projectCategories.neo4j,
+            t.projectCategories.powerBI,
+            t.projectCategories.database,
+            t.projectCategories.python,
+            t.projectCategories.dotnet,
+            t.projectCategories.java,
+            t.projectCategories.machineLearning,
+            t.projectCategories.aws,
+            t.projectCategories.cybersecurity,
+            t.projectCategories.logic,
+            t.projectCategories.html,
+            t.projectCategories.articlesRepo
+          ].map((cat) => (
+            <ProjectSection key={cat} title={cat} projects={repos[cat] || []} />
+          ))}
         </section>
       </main>
       <Footer lang={params.lang} dict={t} />
