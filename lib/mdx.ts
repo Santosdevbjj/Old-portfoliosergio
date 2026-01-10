@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import matter from "gray-matter";
+import { cache } from "react";
 
 export type Lang = "pt" | "en" | "es";
 
@@ -25,7 +26,10 @@ function getProjectPath(lang: Lang, slug: string) {
   return path.join(MDX_PATH, lang, `${slug}.mdx`);
 }
 
-/** Lê um projeto por slug e idioma, com fallback para EN se não existir */
+/**
+ * Lê um projeto por slug e idioma.
+ * Se não existir no idioma solicitado, faz fallback para EN.
+ */
 export async function getProjectBySlug(
   slug: string,
   lang: Lang
@@ -63,8 +67,11 @@ export async function getProjectBySlug(
   }
 }
 
-/** Lista todos os slugs de um idioma */
-export async function listSlugsByLang(lang: Lang): Promise<string[]> {
+/**
+ * Lista todos os slugs de um idioma.
+ * ⚡ Otimização: uso de cache() para evitar leituras repetidas em cenários com muitos projetos.
+ */
+export const listSlugsByLang = cache(async (lang: Lang): Promise<string[]> => {
   const dir = path.join(MDX_PATH, lang);
   try {
     const entries = await fs.readdir(dir, { withFileTypes: true });
@@ -74,4 +81,16 @@ export async function listSlugsByLang(lang: Lang): Promise<string[]> {
   } catch {
     return [];
   }
+});
+
+/**
+ * Retorna todos os projetos de um idioma.
+ * Útil para páginas de índice ou listagem de cards.
+ */
+export async function getAllProjects(lang: Lang): Promise<ProjectData[]> {
+  const slugs = await listSlugsByLang(lang);
+  const projects = await Promise.all(
+    slugs.map(async (slug) => await getProjectBySlug(slug, lang))
+  );
+  return projects.filter((p): p is ProjectData => p !== null);
 }
