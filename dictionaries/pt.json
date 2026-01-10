@@ -1,23 +1,24 @@
 {
   "portfolio": {
     "title": "Portfólio de Analytics Engineering",
-    "description": "Transformando dados complexos em insights estratégicos de negócio."
+    "description": "Transformando dados complexos em insights estratégicos de negócio.",
+    "buttonLabel": "Ver projeto →"
   },
   "categories": {
-    "ciencia-de-dados": "Ciência de Dados",
+    "data-science": "Ciência de Dados",
     "azure-databricks": "Azure Databricks",
     "neo4j": "Banco de Dados de Grafos (Neo4j)",
     "power-bi": "Inteligência de Negócios (Power BI)",
-    "banco-de-dados": "Engenharia de Dados",
+    "database": "Engenharia de Dados",
     "python": "Desenvolvimento em Python",
     "dotnet": "Desenvolvimento em .NET",
     "java": "Desenvolvimento em Java",
     "machine-learning": "Aprendizado de Máquina",
     "aws": "Serviços em Nuvem (AWS)",
-    "ciberseguranca": "Cibersegurança",
-    "logica-de-programacao": "Lógica de Programação",
+    "cybersecurity": "Cibersegurança",
+    "programming-logic": "Lógica de Programação",
     "html": "Fundamentos Web (HTML e CSS)",
-    "artigos-tecnicos": "Artigos Técnicos"
+    "articles-repo": "Artigos Técnicos"
   },
   "footer": {
     "rights": "Todos os direitos reservados.",
