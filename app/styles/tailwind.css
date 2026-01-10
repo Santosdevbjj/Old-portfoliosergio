@@ -6,193 +6,110 @@
    Base: reset, tipografia e multilíngue
    ========================================= */
 @layer base {
-  /* Reset essencial */
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
+  *, *::before, *::after { box-sizing: border-box; }
 
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
 
-  /* Fontes por idioma (multilíngue via atributo lang) */
+  /* Fontes multilíngues */
   html[lang="en"] body {
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   }
-
   html[lang="pt"] body {
     font-family: "Roboto", system-ui, -apple-system, Segoe UI, Inter, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   }
+  html[lang="es"] body {
+    font-family: "Nunito", system-ui, -apple-system, Segoe UI, Inter, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  }
 
   body {
-    @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 antialiased;
+    @apply bg-white text-gray-900 dark:bg-slate-950 dark:text-gray-100 antialiased transition-colors duration-300;
     line-height: 1.6;
   }
 
-  /* Seleção de texto */
-  ::selection {
-    background-color: #6366f1; /* indigo-500 */
-    color: #fff;
-  }
+  ::selection { background-color: #6366f1; color: #fff; }
 
-  /* Títulos responsivos e com dark mode */
-  h1 {
-    @apply text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-gray-100;
-  }
-  h2 {
-    @apply text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900 dark:text-gray-100;
-  }
-  h3 {
-    @apply text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100;
-  }
-  h4 {
-    @apply text-lg sm:text-xl font-medium text-gray-900 dark:text-gray-100;
-  }
-  h5 {
-    @apply text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100;
-  }
-  h6 {
-    @apply text-sm sm:text-base font-medium text-gray-900 dark:text-gray-100;
-  }
+  /* Tipografia fluida */
+  h1 { @apply font-bold tracking-tight text-gray-900 dark:text-gray-100; font-size: clamp(2rem, 5vw, 4rem); }
+  h2 { @apply font-semibold tracking-tight text-gray-900 dark:text-gray-100; font-size: clamp(1.5rem, 4vw, 3rem); }
+  h3 { @apply font-semibold text-gray-900 dark:text-gray-100; font-size: clamp(1.25rem, 3vw, 2rem); }
+  h4 { @apply font-medium text-gray-900 dark:text-gray-100; }
+  h5 { @apply font-medium text-gray-900 dark:text-gray-100; }
+  h6 { @apply font-medium text-gray-900 dark:text-gray-100; }
 
-  p {
-    @apply text-base text-gray-700 dark:text-gray-300;
-  }
+  p { @apply text-base text-gray-700 dark:text-gray-300; }
 
-  a {
-    @apply text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 underline-offset-2 hover:underline;
-  }
+  a { @apply text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 underline-offset-2 hover:underline; }
 
-  ul, ol {
-    @apply pl-6;
-  }
+  ul, ol { @apply pl-6; }
 
-  code, pre {
-    @apply font-mono text-sm bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded;
-  }
-  pre {
-    @apply p-4 overflow-x-auto;
-  }
+  code, pre { @apply font-mono text-sm bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded; }
+  pre { @apply p-4 overflow-x-auto; }
 
-  /* Container responsivo padrão do site */
-  .container {
-    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
-  }
+  .container { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
 }
 
 /* =========================================
-   Componentes: navegação, cards, botões
+   Componentes
    ========================================= */
 @layer components {
-  /* Header e Footer wrappers para consistência visual */
-  .site-header {
-    @apply w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-700;
-  }
-  .site-footer {
-    @apply w-full border-t border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-700;
-  }
+  .site-header { @apply w-full border-b border-gray-200 bg-white dark:bg-slate-950 dark:border-gray-700; }
+  .site-footer { @apply w-full border-t border-gray-200 bg-white dark:bg-slate-950 dark:border-gray-700; }
 
-  /* Barra interna (layout responsivo) */
-  .bar {
-    @apply container flex items-center justify-between py-3;
-  }
+  .bar { @apply container flex items-center justify-between py-3; }
 
-  /* Links de navegação */
-  .nav {
-    @apply hidden md:flex space-x-6;
-  }
-  .nav-link {
-    @apply text-sm font-medium text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400;
-  }
+  .nav { @apply hidden md:flex space-x-6; }
+  .nav-link { @apply text-sm font-medium text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400; }
 
-  /* Navegação mobile */
-  .nav-mobile {
-    @apply md:hidden flex justify-center border-t border-gray-200 dark:border-gray-700 py-2;
-  }
+  .nav-mobile { @apply md:hidden flex justify-center border-t border-gray-200 dark:border-gray-700 py-2; }
 
-  /* Botões base */
-  .btn {
-    @apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500;
-  }
-  .btn-primary {
-    @apply btn bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600;
-  }
-  .btn-secondary {
-    @apply btn bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700;
-  }
+  .btn { @apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500; }
+  .btn-primary { @apply btn bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600; }
+  .btn-secondary { @apply btn bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700; }
+  .btn-outline { @apply btn border border-gray-300 bg-transparent text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700; }
 
-  /* Card padrão (projetos, blocos de conteúdo) */
-  .card {
-    @apply rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm;
-  }
-  .card-body {
-    @apply p-4 sm:p-6;
-  }
-  .card-title {
-    @apply text-lg font-semibold text-gray-900 dark:text-gray-100;
-  }
-  .card-text {
-    @apply text-sm text-gray-700 dark:text-gray-300;
-  }
+  .card { @apply rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-950 shadow-sm; }
+  .card-body { @apply p-4 sm:p-6; }
+  .card-title { @apply text-lg font-semibold text-gray-900 dark:text-gray-100; }
+  .card-text { @apply text-sm text-gray-700 dark:text-gray-300; }
+  .card-article { @apply card prose prose-technical dark:prose-darkTechnical; }
 
-  /* Seletor de idioma (estilo base para integração) */
-  .lang-switcher {
-    @apply relative inline-block text-left;
-  }
-  .lang-button {
-    @apply inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600;
-  }
-  .lang-menu {
-    @apply absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800;
-  }
-  .lang-item {
-    @apply block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700;
-  }
-  .lang-item-active {
-    @apply bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200;
-  }
+  .lang-switcher { @apply relative inline-block text-left; }
+  .lang-button { @apply inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600; }
+  .lang-menu { @apply absolute right-0 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800; }
+  .lang-item { @apply block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700; }
+  .lang-item-active { @apply bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200; }
 
-  /* Seções padrão */
-  .section {
-    @apply container py-6 sm:py-8 lg:py-10;
-  }
-  .section-title {
-    @apply mb-4 sm:mb-6 text-2xl sm:text-3xl font-bold;
-  }
-  .section-subtitle {
-    @apply mb-3 text-gray-600 dark:text-gray-400;
-  }
+  .section { @apply container py-6 sm:py-8 lg:py-10; }
+  .section-title { @apply mb-4 sm:mb-6 text-2xl sm:text-3xl font-bold; }
+  .section-subtitle { @apply mb-3 text-gray-600 dark:text-gray-400; }
 }
 
 /* =========================================
-   Utilities: helpers responsivos e de layout
+   Utilities
    ========================================= */
 @layer utilities {
-  .flex-center {
-    @apply flex items-center justify-center;
+  .flex-center { @apply flex items-center justify-center; }
+  .grid-responsive { @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6; }
+  .text-muted { @apply text-gray-600 dark:text-gray-400; }
+  .divider { @apply border-t border-gray-200 dark:border-gray-700; }
+
+  /* Acessibilidade */
+  .sr-only {
+    @apply absolute w-px h-px p-0 m-0 overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
   }
-  .grid-responsive {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6;
-  }
-  .text-muted {
-    @apply text-gray-600 dark:text-gray-400;
-  }
-  .divider {
-    @apply border-t border-gray-200 dark:border-gray-700;
-  }
+  .truncate-text { @apply overflow-hidden text-ellipsis whitespace-nowrap; }
 }
 
 /* =========================================
    Variantes responsivas adicionais por breakpoint
    ========================================= */
 @screen sm {
-  .bar {
-    @apply py-4;
-  }
+  .bar { @apply py-4; }
 }
 @screen lg {
-  .bar {
-    @apply py-5;
-  }
+  .bar { @apply py-5; }
 }
