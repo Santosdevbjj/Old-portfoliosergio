@@ -1,8 +1,6 @@
 import { MetadataRoute } from "next";
-import { type Lang } from "@/lib/mdx";
 
-const baseUrl = "https://portfoliosergiosantos.vercel.app/"; // ajuste para seu domínio real
-const langs: Lang[] = ["pt", "en", "es"]; // mesmo array usado no sitemap.ts
+const baseUrl = "https://portfoliosergiosantos.vercel.app"; // ajuste para seu domínio real
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -13,7 +11,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/private/", "/admin/"], // ajuste conforme suas rotas internas
       },
     ],
-    // Gera dinamicamente os links de sitemap para cada idioma
-    sitemap: langs.map((lang) => `${baseUrl}/${lang}/sitemap.xml`),
+    // Em vez de listar cada sitemap, apontamos para o index
+    sitemap: [`${baseUrl}/sitemap-index.xml`],
   };
 }
