@@ -2,16 +2,16 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import type { Lang } from "@/lib/i18n/config";
+import type { Locale } from "@/lib/i18n";
 
-const languages: { code: Lang; label: string }[] = [
+const languages: { code: Locale; label: string }[] = [
   { code: "pt", label: "Português" },
   { code: "en", label: "English" },
   { code: "es", label: "Español" }, // ✅ incluído espanhol
 ];
 
 interface LanguageSwitcherProps {
-  lang: Lang;
+  lang: Locale;
   dict: { language: string };
 }
 
@@ -22,13 +22,13 @@ export default function LanguageSwitcher({ lang, dict }: LanguageSwitcherProps) 
 
   const currentLang = languages.find((l) => l.code === lang)?.code || "en";
 
-  const handleChange = (newLang: Lang) => {
+  const handleChange = (newLang: Locale) => {
     setOpen(false);
 
     // Ajusta rota substituindo o idioma atual
     const segments = pathname?.split("/") || [];
-    if (languages.some((l) => l.code === segments[1])) {
-      segments[1] = newLang;
+    if (languages.some((l) => l.code === segments[0])) {
+      segments[0] = newLang;
     } else {
       segments.unshift(newLang);
     }
@@ -37,9 +37,13 @@ export default function LanguageSwitcher({ lang, dict }: LanguageSwitcherProps) 
   };
 
   return (
-    <div className="relative inline-block text-left" aria-label="Language selector">
+    <div
+      className="relative inline-block text-left"
+      aria-labelledby="language-switcher-button"
+    >
       {/* Botão principal */}
       <button
+        id="language-switcher-button"
         type="button"
         className="
           inline-flex w-full justify-center items-center
@@ -49,6 +53,7 @@ export default function LanguageSwitcher({ lang, dict }: LanguageSwitcherProps) 
           dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600
         "
         onClick={() => setOpen(!open)}
+        onBlur={() => setOpen(false)}
         aria-haspopup="true"
         aria-expanded={open}
         aria-label={dict.language}
@@ -73,7 +78,7 @@ export default function LanguageSwitcher({ lang, dict }: LanguageSwitcherProps) 
       {open && (
         <div
           className="
-            absolute right-0 mt-2 w-40 origin-top-right
+            absolute right-0 mt-2 min-w-[8rem] origin-top-right
             rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5
             focus:outline-none dark:bg-gray-800
           "
@@ -90,6 +95,7 @@ export default function LanguageSwitcher({ lang, dict }: LanguageSwitcherProps) 
                     : "text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
                 }`}
                 role="menuitem"
+                aria-selected={currentLang === langOption.code}
               >
                 {langOption.label}
               </button>
