@@ -3,15 +3,15 @@ import PageWrapper from "@/components/PageWrapper";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProjectSection from "@/components/ProjectSection";
-import { translations } from "@/lib/i18n";
+import { getTranslation } from "@/lib/i18n";
 import { getPortfolioRepos, Category, CATEGORIES_ORDER, GitHubRepo } from "@/lib/github";
 
 interface Props {
-  params: { lang: "pt" | "en" | "es" }; // ✅ agora inclui espanhol
+  params: { lang: "pt" | "en" | "es" };
 }
 
 export default async function Page({ params }: Props) {
-  const t = translations[params.lang];
+  const t = getTranslation(params.lang);
   const repos = await getPortfolioRepos();
 
   // Mapa de correspondência entre categorias do GitHub (kebab-case)
@@ -36,21 +36,23 @@ export default async function Page({ params }: Props) {
 
   return (
     <PageWrapper>
-      <Header lang={params.lang} />
+      <Header lang={params.lang} dict={t.navigation} />
       <main className="flex-1 p-4 max-w-7xl mx-auto">
         
         {/* Personal Introduction */}
-        <section className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2">
+        <section className="mb-8" aria-labelledby="about-title">
+          <h1 id="about-title" className="text-3xl sm:text-4xl font-bold mb-2">
             {t.sections.aboutTitle}
           </h1>
           <p className="text-lg sm:text-xl">{t.sections.aboutIntro}</p>
-          <p className="mt-2 text-base sm:text-lg">{t.sections.aboutDetails}</p>
+          <p className="mt-2 text-base sm:text-lg prose dark:prose-invert">
+            {t.sections.aboutDetails}
+          </p>
         </section>
 
         {/* Featured Article */}
-        <section className="mb-8 bg-gray-100 p-6 rounded-lg shadow">
-          <h2 className="text-2xl font-semibold text-blue-600 mb-4">
+        <section className="mb-8 bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow" aria-labelledby="featured-article">
+          <h2 id="featured-article" className="text-2xl font-semibold text-blue-600 mb-4">
             🏆 {t.sections.featuredArticle}
           </h2>
           <h3 className="text-xl font-bold mb-2">{t.featuredArticle.title}</h3>
@@ -108,8 +110,8 @@ export default async function Page({ params }: Props) {
         </section>
 
         {/* Technical Experience */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">{t.sections.experienceTitle}</h2>
+        <section className="mb-8" aria-labelledby="experience-title">
+          <h2 id="experience-title" className="text-2xl font-bold mb-4">{t.sections.experienceTitle}</h2>
           <ul className="list-disc list-inside space-y-2 text-base">
             <li>{t.experience.item1}</li>
             <li>{t.experience.item2}</li>
@@ -124,8 +126,8 @@ export default async function Page({ params }: Props) {
         </section>
 
         {/* Projects by Technology */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-blue-600 mb-4">
+        <section className="mb-8" aria-labelledby="projects-title">
+          <h2 id="projects-title" className="text-2xl font-semibold text-blue-600 mb-4">
             📂 {t.sections.projectsTitle}
           </h2>
           {(Object.entries(repos) as [Category, GitHubRepo[]][])
@@ -139,7 +141,7 @@ export default async function Page({ params }: Props) {
             ))}
         </section>
       </main>
-      <Footer lang={params.lang} dict={t} />
+      <Footer lang={params.lang} dict={{ ...t.navigation, ...t.footer }} />
     </PageWrapper>
   );
 }
