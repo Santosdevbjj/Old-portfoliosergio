@@ -13,15 +13,27 @@
     "url": "https://github.com/seuusuario/portfoliosergiosantos/issues"
   },
   "homepage": "https://seuusuario.github.io/portfoliosergiosantos",
+  "keywords": [
+    "nextjs",
+    "react",
+    "tailwindcss",
+    "portfolio",
+    "multilingual",
+    "responsive",
+    "typescript"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "preview": "next build && next start",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "type-check": "tsc --noEmit",
     "check": "npm run lint && npm run type-check",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "next": "14.1.0",
@@ -45,7 +57,8 @@
     "@types/node": "^20.11.5",
     "eslint": "^8.56.0",
     "eslint-config-next": "14.1.0",
-    "prettier": "^3.1.1"
+    "prettier": "^3.1.1",
+    "husky": "^8.0.3"
   },
   "engines": {
     "node": ">=18.17.0",
