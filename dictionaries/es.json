@@ -1,0 +1,41 @@
+{
+  "portfolio": {
+    "title": "Portafolio de Ingeniería de Analítica",
+    "description": "Transformando datos complejos en información estratégica para el negocio.",
+    "buttonLabel": "Ver proyecto →"
+  },
+  "categories": {
+    "data-science": "Ciencia de Datos",
+    "azure-databricks": "Azure Databricks",
+    "neo4j": "Base de Datos de Grafos (Neo4j)",
+    "power-bi": "Inteligencia de Negocios (Power BI)",
+    "database": "Ingeniería de Datos",
+    "python": "Desarrollo en Python",
+    "dotnet": "Desarrollo en .NET",
+    "java": "Desarrollo en Java",
+    "machine-learning": "Aprendizaje Automático",
+    "aws": "Servicios en la Nube (AWS)",
+    "cybersecurity": "Ciberseguridad",
+    "programming-logic": "Lógica de Programación",
+    "html": "Fundamentos Web (HTML y CSS)",
+    "articles-repo": "Artículos Técnicos"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "contact": "Contacto"
+  },
+  "theme": {
+    "themeLight": "Modo Claro",
+    "themeDark": "Modo Oscuro"
+  },
+  "cta": {
+    "hireMe": "Contrátame",
+    "downloadCV": "Descargar CV"
+  },
+  "sections": {
+    "skills": "Habilidades",
+    "experience": "Experiencia",
+    "featuredProjects": "Proyectos Destacados",
+    "testimonials": "Testimonios"
+  }
+}
