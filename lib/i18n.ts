@@ -44,6 +44,12 @@ export type Translations = {
     featuredArticle: string;
     contactTitle: string;
   };
+  portfolio: {
+    title: string;
+    description: string;
+    buttonLabel: string;
+    projects: string;
+  };
   featuredArticle: {
     title: string;
     description: string;
@@ -122,6 +128,12 @@ export const translations: Record<Locale, Translations> = {
       featuredArticle: "Artigo em destaque",
       contactTitle: "Contato",
     },
+    portfolio: {
+      title: "Portfólio Multilíngue",
+      description: "Projetos técnicos e artigos em várias áreas.",
+      buttonLabel: "Ver projeto →",
+      projects: "Projetos em destaque",
+    },
     featuredArticle: {
       title: "Low-Code na Saúde",
       description: "Como criar apps médicos em semanas...",
@@ -196,6 +208,12 @@ export const translations: Record<Locale, Translations> = {
       featuredArticle: "Featured Article",
       contactTitle: "Direct Contact",
     },
+    portfolio: {
+      title: "Multilingual Portfolio",
+      description: "Technical projects and articles across multiple domains.",
+      buttonLabel: "View project →",
+      projects: "Featured Projects",
+    },
     featuredArticle: {
       title: "Low-Code in Healthcare",
       description: "How to build medical apps in weeks...",
@@ -241,14 +259,79 @@ export const translations: Record<Locale, Translations> = {
       title: "Mi Sitio Multilingüe",
       description: "Un sitio moderno con soporte multilingüe y modo oscuro inteligente.",
     },
-    // ... resto do bloco espanhol já existente ...
-    navigation: { /* ... */ },
-    footer: { /* ... */ },
-    darkMode: { /* ... */ },
-    sections: { /* ... */ },
-    featuredArticle: { /* ... */ },
-    experience: { /* ... */ },
-    projectCategories: { /* ... */ },
+    navigation: {
+      home: "Inicio",
+      about: "Acerca de",
+      projects: "Proyectos",
+      contact: "Contacto",
+      language: "Idioma",
+    },
+    footer: {
+      rights: "Todos los derechos reservados",
+    },
+    darkMode: {
+      lightMode: "Modo Claro",
+      darkMode: "Modo Oscuro",
+    },
+    sections: {
+      aboutTitle: "👨‍💻 Sobre mí",
+      aboutIntro: "Analista de Datos | Python | SQL | Azure Databricks",
+      aboutDetails: "Más de 15 años de experiencia en sistemas críticos...",
+      experienceTitle: "💼 Experiencia Técnica",
+      reskillingTitle: "📚 Recapacitación",
+      differentialTitle: "⭐ Diferencial",
+      objectiveTitle: "🎯 Objetivo",
+      stackConsolidated: "Stack consolidado",
+      stackUpdating: "Stack en actualización",
+      projectsTitle: "🛠 Proyectos",
+      articlesTitle: "📝 Artículos",
+      featuredArticle: "Artículo destacado",
+      contactTitle: "Contacto directo",
+    },
+    portfolio: {
+      title: "Portafolio Multilingüe",
+      description: "Proyectos técnicos y artículos en varias áreas.",
+      buttonLabel: "Ver proyecto →",
+      projects: "Proyectos destacados",
+    },
+    featuredArticle: {
+      title: "Low-Code en Salud",
+      description: "Cómo crear aplicaciones médicas en semanas...",
+      award1: "🏆 Premio DIO",
+      award2: "🏆 Mejor Artículo",
+      readOn: "Leer en:",
+      links: {
+        dio: "https://web.dio.me/articles/...",
+        linkedin: "https://linkedin.com/...",
+        medium: "https://medium.com/...",
+      },
+    },
+    experience: {
+      item1: "Sistema automatizado de IPVA...",
+      item2: "Infraestructura de red corporativa...",
+      item3: "Sistemas jurídicos...",
+      stackConsolidated: "VB, C, SQL Server...",
+      stackUpdating: "Java, .NET, Python...",
+      reskilling: "Bootcamps y certificaciones...",
+      differential: "Experiencia en entornos regulados...",
+      objective: "Proyectos de gobernanza de datos...",
+    },
+    projectCategories: {
+      dataScience: "Ciencia de Datos",
+      azureDatabricks: "Azure Databricks",
+      neo4j: "Neo4J",
+      powerBI: "Power BI",
+      database: "Base de Datos",
+      python: "Python",
+      dotnet: "C#/dotnet .NET",
+      java: "Java",
+      machineLearning: "Aprendizaje Automático",
+      aws: "Amazon AWS",
+      cybersecurity: "Ciberseguridad",
+      logic: "Lógica de Programación",
+      html: "HTML",
+      articlesRepo: "Repositorio de Artículos",
+    },
   },
 };
 
@@ -256,18 +339,22 @@ export const translations: Record<Locale, Translations> = {
  * Helper para obter traduções com fallback seguro
  */
 export function getTranslation(locale: string): Translations {
-  const safeLocale: Locale = SUPPORTED_LOCALES.includes(locale as Locale)
-    ? (locale as Locale)
+  const normalized = locale.toLowerCase() as Locale;
+  const safeLocale: Locale = SUPPORTED_LOCALES.includes(normalized)
+    ? normalized
     : DEFAULT_LOCALE;
 
-  if (!SUPPORTED_LOCALES.includes(locale as Locale)) {
+  if (!SUPPORTED_LOCALES.includes(normalized)) {
     console.warn(
       `[i18n] Locale "${locale}" não suportado. Usando fallback "${DEFAULT_LOCALE}".`
     );
   }
 
   return translations[safeLocale];
-} 
-// Helper seguro para obter dicionário já validado
+}
+
+/**
+ * Helper seguro para obter dicionário já validado
+ */
 export const getDictionary = (lang: Locale): Translations =>
   translations[lang] ?? translations[DEFAULT_LOCALE];
