@@ -43,8 +43,8 @@ export const pt: Translations = {
   featuredArticle: {
     title: "Low-Code na Saúde",
     description: "Como criar apps médicos em semanas...",
-    award1: "🏆 Prêmio DIO - Vencedor da 35° competição de Artigos",
-    award2: "🏆 Melhor Artigo do mês de setembro de 2025",
+    award1: "🏆 Prêmio DIO - Vencedor da 35ª Competição de Artigos",
+    award2: "🏆 Melhor Artigo de setembro de 2025",
     readOn: "Leia em:",
     links: {
       dio: "https://web.dio.me/articles/low-code-na-saude-como-criar-apps-medicos-em-semanas-d77f6760fa5a",
