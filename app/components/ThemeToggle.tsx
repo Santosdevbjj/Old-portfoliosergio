@@ -3,60 +3,73 @@
 import { useEffect, useState } from "react";
 import type { Translations } from "@/lib/i18n";
 
-type ThemeToggleProps = {
+type Theme = "light" | "dark";
+
+interface ThemeToggleProps {
   dictionary: Translations["theme"];
-};
+}
 
 export default function ThemeToggle({ dictionary }: ThemeToggleProps) {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<Theme>("light");
 
-  // Detecta e aplica tema inicial + observa mudanças no sistema
+  // Inicializa o tema no client
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+    const storedTheme = localStorage.getItem("theme") as Theme | null;
 
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.classList.toggle("dark", savedTheme === "dark");
+    if (storedTheme) {
+      setTheme(storedTheme);
     } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-      const initialTheme = prefersDark.matches ? "dark" : "light";
-      setTheme(initialTheme);
-      document.documentElement.classList.toggle("dark", prefersDark.matches);
-
-      // Listener para mudanças no sistema
-      const handleChange = (event: MediaQueryListEvent) => {
-        const newTheme = event.matches ? "dark" : "light";
-        setTheme(newTheme);
-        document.documentElement.classList.toggle("dark", newTheme === "dark");
-        localStorage.setItem("theme", newTheme);
-      };
-
-      prefersDark.addEventListener("change", handleChange);
-      return () => prefersDark.removeEventListener("change", handleChange);
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      setTheme(prefersDark ? "dark" : "light");
     }
   }, []);
 
-  // Alterna tema manualmente
+  // Aplica o tema no DOM e persiste
+  useEffect(() => {
+    const isDark = theme === "dark";
+    document.documentElement.classList.toggle("dark", isDark);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
+
+  const isDark = theme === "dark";
+  const label = isDark
+    ? dictionary.themeLight
+    : dictionary.themeDark;
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
-      className="flex items-center space-x-2 p-2 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition text-sm sm:text-base"
-      aria-label={theme === "light" ? dictionary.themeDark : dictionary.themeLight}
-      aria-pressed={theme === "dark"}
+      aria-label={label}
+      aria-pressed={isDark}
+      aria-live="polite"
+      className="
+        flex items-center gap-2
+        p-2 sm:px-4 sm:py-2
+        rounded-md
+        bg-gray-100 dark:bg-gray-800
+        text-gray-800 dark:text-gray-200
+        hover:bg-gray-200 dark:hover:bg-gray-700
+        transition-colors duration-300
+        text-sm sm:text-base
+        focus:outline-none
+        focus:ring-2 focus:ring-offset-2
+        focus:ring-blue-500
+      "
     >
-      <span>{theme === "light" ? dictionary.themeLight : dictionary.themeDark}</span>
-      {theme === "light" ? (
-        <span role="img" aria-label="Light mode">🌞</span>
-      ) : (
-        <span role="img" aria-label="Dark mode">🌙</span>
-      )}
+      <span className="whitespace-nowrap">
+        {label}
+      </span>
+
+      <span role="img" aria-hidden="true">
+        {isDark ? "☀️" : "🌙"}
+      </span>
     </button>
   );
 }
