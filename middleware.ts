@@ -7,6 +7,7 @@ import Negotiator from "negotiator";
 const locales = ["en", "pt", "es"];
 const defaultLocale = "pt";
 
+// Função para detectar idioma
 function getLocale(request: NextRequest): string {
   const cookieLocale = request.cookies.get("locale")?.value?.toLowerCase();
   if (cookieLocale && locales.includes(cookieLocale)) {
@@ -20,6 +21,7 @@ function getLocale(request: NextRequest): string {
   return matchLocale(languages || [], locales, defaultLocale);
 }
 
+// Função para enviar log externo
 async function sendLog(locale: string, pathname: string, theme: string) {
   if (!process.env.LOGTAIL_TOKEN) return;
 
@@ -42,6 +44,7 @@ async function sendLog(locale: string, pathname: string, theme: string) {
   }
 }
 
+// Função para redirecionar com locale
 function redirectWithLocale(request: NextRequest, locale: string) {
   const pathname = request.nextUrl.pathname;
   return NextResponse.redirect(
@@ -53,6 +56,20 @@ export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const theme = request.cookies.get("theme")?.value || "system";
 
+  // 🔎 Lógica de exclusão movida para dentro do código
+  const excluded =
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/_next/static") ||
+    pathname.startsWith("/_next/image") ||
+    pathname === "/favicon.ico" ||
+    pathname === "/sw.js" ||
+    /\.(svg|png|jpg|jpeg|webp|pdf|ico|gif)$/i.test(pathname);
+
+  if (excluded) {
+    return NextResponse.next();
+  }
+
+  // Verifica se falta locale no path
   const pathnameIsMissingLocale = locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
@@ -75,17 +92,7 @@ export function middleware(request: NextRequest) {
   return res;
 }
 
+// ✅ Matcher simplificado
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - sw.js (service worker)
-     * - public files (svg, png, jpg, jpeg, webp, pdf, ico, gif)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico|sw.js|.*\\.(?:svg|png|jpg|jpeg|webp|pdf|ico|gif)).*)",
-  ],
+  matcher: ["/:path*"],
 };
