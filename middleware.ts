@@ -7,7 +7,6 @@ import Negotiator from "negotiator";
 const locales = ["en", "pt", "es"];
 const defaultLocale = "pt";
 
-// Função para detectar idioma
 function getLocale(request: NextRequest): string {
   const cookieLocale = request.cookies.get("locale")?.value?.toLowerCase();
   if (cookieLocale && locales.includes(cookieLocale)) {
@@ -21,10 +20,8 @@ function getLocale(request: NextRequest): string {
   return matchLocale(languages || [], locales, defaultLocale);
 }
 
-// Função para enviar log externo
 async function sendLog(locale: string, pathname: string, theme: string) {
   if (!process.env.LOGTAIL_TOKEN) return;
-
   try {
     await fetch("https://in.logtail.com/", {
       method: "POST",
@@ -44,7 +41,6 @@ async function sendLog(locale: string, pathname: string, theme: string) {
   }
 }
 
-// Função para redirecionar com locale
 function redirectWithLocale(request: NextRequest, locale: string) {
   const pathname = request.nextUrl.pathname;
   return NextResponse.redirect(
@@ -56,7 +52,6 @@ export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const theme = request.cookies.get("theme")?.value || "system";
 
-  // 🔎 Lógica de exclusão movida para dentro do código
   const excluded =
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next/static") ||
@@ -69,7 +64,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Verifica se falta locale no path
   const pathnameIsMissingLocale = locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
@@ -83,16 +77,14 @@ export function middleware(request: NextRequest) {
   }
 
   const res = NextResponse.next();
-  const currentLocale = locales.includes(pathname.split("/")[1])
-    ? pathname.split("/")[1]
-    : defaultLocale;
+  const segments = pathname.split("/");
+  const currentLocale = locales.includes(segments[1]) ? segments[1] : defaultLocale;
 
   res.headers.set("x-theme", theme);
   res.headers.set("x-locale", currentLocale);
   return res;
 }
 
-// ✅ Matcher simplificado
 export const config = {
   matcher: ["/:path*"],
 };
