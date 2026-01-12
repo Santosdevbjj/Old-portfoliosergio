@@ -1,69 +1,50 @@
 // app/[lang]/layout.tsx
 import type { ReactNode } from "react";
-import { translations } from "@/lib/i18n";
+import { getDictionary, Locale, SUPPORTED_LOCALES } from "@/lib/i18n";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageWrapper from "@/components/PageWrapper";
 
 interface LayoutProps {
   children: ReactNode;
-  params: { lang: "pt" | "en" | "es" };
+  params: { lang: Locale };
 }
 
-// ✅ Metadados dinâmicos por idioma
-export async function generateMetadata({ params }: { params: { lang: "pt" | "en" | "es" } }) {
+export async function generateMetadata({ params }: { params: { lang: Locale } }) {
   const { lang } = params;
-  const dict = translations[lang];
-
-  // Seleciona imagem social correta por idioma
-  const image =
-    lang === "pt"
-      ? "/og-image-pt.png"
-      : lang === "en"
-      ? "/og-image-en.png"
-      : "/og-image-es.png";
+  const dict = getDictionary(lang);
+  const baseUrl = "https://portfoliosergiosantos.vercel.app";
 
   return {
     title: dict.meta.title,
     description: dict.meta.description,
+    metadataBase: new URL(baseUrl),
     openGraph: {
       title: dict.meta.title,
       description: dict.meta.description,
-      url: `https://seusite.com/${lang}`,
+      url: `${baseUrl}/${lang}`,
       siteName: "Sergio Santos Portfolio",
       images: [
         {
-          url: image,
+          url: `/og-image-${lang}.png`, // Simplificado, já que você nomeou os arquivos assim
           width: 1200,
           height: 630,
-          alt:
-            lang === "pt"
-              ? "Sergio Santos - Analista de Dados"
-              : lang === "en"
-              ? "Sergio Santos - Data Science Analyst"
-              : "Sergio Santos - Analista de Ciencia de Datos",
+          alt: dict.meta.title,
         },
       ],
       locale: lang === "pt" ? "pt_BR" : lang === "en" ? "en_US" : "es_ES",
       type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: dict.meta.title,
-      description: dict.meta.description,
-      images: [image],
     },
   };
 }
 
 export default async function Layout({ children, params }: LayoutProps) {
   const { lang } = params;
-  const dict = translations[lang];
+  const dict = getDictionary(lang);
 
   return (
-    <html lang={lang}>
+    <html lang={lang} suppressHydrationWarning>
       <head>
-        {/* ✅ Bootstrap inline minificado para aplicar tema antes da hidratação */}
         <script
           dangerouslySetInnerHTML={{
             __html: `!function(){try{var e=document.cookie.split("; ").find(e=>e.startsWith("theme="))?.split("=")[1]||"system",t=window.matchMedia("(prefers-color-scheme: dark)").matches,n="dark"===e||"system"===e&&t;n?document.documentElement.classList.add("dark"):document.documentElement.classList.remove("dark")}catch(e){}}();`,
@@ -72,19 +53,14 @@ export default async function Layout({ children, params }: LayoutProps) {
       </head>
       <body className="min-h-screen flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300">
         <PageWrapper lang={lang}>
-          {/* Cabeçalho multilíngue e responsivo */}
-          <Header dict={dict} lang={lang} />
+          {/* Ajustado para passar o locale conforme seu Header.tsx original */}
+          <Header locale={lang} />
 
-          {/* Conteúdo principal flexível e centralizado */}
-          <main
-            role="main"
-            className="flex-1 w-full max-w-7xl mx-auto p-4"
-          >
+          <main role="main" className="flex-1 w-full max-w-7xl mx-auto p-4 md:p-8">
             {children}
           </main>
 
-          {/* Rodapé multilíngue e responsivo */}
-          <Footer dict={dict} lang={lang} />
+          <Footer locale={lang} />
         </PageWrapper>
       </body>
     </html>
