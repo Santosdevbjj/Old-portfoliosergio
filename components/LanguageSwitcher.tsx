@@ -1,47 +1,42 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { SUPPORTED_LOCALES, getDictionary, DEFAULT_LOCALE } from "@/lib/i18n";
+import { usePathname } from "next/navigation";
 
 export default function LanguageSwitcher() {
   const pathname = usePathname();
-  if (!pathname) return null;
+  
+  const languages = [
+    { code: "pt", label: "PT", flag: "🇧🇷" },
+    { code: "en", label: "EN", flag: "🇺🇸" },
+    { code: "es", label: "ES", flag: "🇪🇸" },
+  ];
 
-  // Exemplo: /pt/projects/arquivo → ["", "pt", "projects", "arquivo"]
-  const segments = pathname.split("/");
-  const currentLang = SUPPORTED_LOCALES.includes(segments[1] as any)
-    ? (segments[1] as typeof SUPPORTED_LOCALES[number])
-    : DEFAULT_LOCALE;
-  const restPath = segments.slice(2).join("/");
-
-  const dict = getDictionary(currentLang);
+  // Função para calcular a nova rota mantendo a página atual
+  const getTransformedPathname = (newLocale: string) => {
+    if (!pathname) return `/${newLocale}`;
+    const segments = pathname.split("/");
+    segments[1] = newLocale; // Substitui o código do idioma (ex: /pt/ -> /en/)
+    return segments.join("/");
+  };
 
   return (
-    <nav aria-label={dict.navigation.language} className="flex gap-2">
-      {SUPPORTED_LOCALES.map((lang) => {
-        const href = restPath ? `/${lang}/${restPath}` : `/${lang}`;
-        const label =
-          lang === "pt"
-            ? "Português"
-            : lang === "en"
-            ? "English"
-            : "Español";
-
+    <nav className="flex items-center gap-2" aria-label="Seletor de idioma">
+      {languages.map(({ code, label, flag }) => {
+        const isActive = pathname?.startsWith(`/${code}`);
+        
         return (
           <Link
-            key={lang}
-            href={href}
-            aria-label={`Mudar idioma para ${label}`}
-            aria-current={currentLang === lang ? "true" : undefined}
-            className={`px-3 py-1 rounded-md text-sm font-medium transition-colors duration-200
-              ${
-                currentLang === lang
-                  ? "bg-primary text-white"
-                  : "bg-surface-light dark:bg-surface-dark text-gray-700 dark:text-gray-200 hover:bg-primary hover:text-white"
+            key={code}
+            href={getTransformedPathname(code)}
+            className={`flex items-center gap-1 px-2 py-1 rounded-md text-sm font-semibold transition-all
+              ${isActive 
+                ? "bg-primary text-white shadow-sm" 
+                : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
               }`}
           >
-            {label}
+            <span>{flag}</span>
+            <span className="hidden sm:inline">{label}</span>
           </Link>
         );
       })}
