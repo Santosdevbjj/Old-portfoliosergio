@@ -1,31 +1,26 @@
 {
   "version": 2,
-  "routes": [
+
+  "redirects": [
     {
-      "src": "/old-projects/(.*)",
-      "dest": "/pt/projects/$1",
-      "status": 301
+      "source": "/old-projects/:path*",
+      "destination": "/pt/projects/:path*",
+      "permanent": true
     },
     {
-      "src": "/blog",
-      "dest": "/pt/projects/list",
-      "status": 302
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "source": "/blog",
+      "destination": "/pt/projects/list",
+      "permanent": false
     }
   ],
+
   "rewrites": [
     {
       "source": "/sitemap.xml",
       "destination": "/sitemap-index.xml"
-    },
-    {
-      "source": "/robots.txt",
-      "destination": "/robots.txt"
     }
   ],
+
   "headers": [
     {
       "source": "/(.*)",
@@ -33,10 +28,22 @@
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
-        { "key": "Cross-Origin-Resource-Policy", "value": "same-origin" },
-        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" }
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Cross-Origin-Resource-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        }
       ]
     }
   ]
