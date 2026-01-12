@@ -2,54 +2,72 @@
 
 import Link from "next/link";
 import ProjectCard from "./ProjectCard";
-import { getDictionary, DEFAULT_LOCALE, Locale } from "@/lib/i18n";
 import type { GitHubRepo } from "@/lib/github";
+import type { Translations, Locale } from "@/lib/i18n";
 
 interface Props {
-  locale?: Locale;
-  projects: GitHubRepo[]; // lista de projetos recebida (pode vir da API ou mock)
+  locale: Locale;
+  dict: Translations;
+  projects: GitHubRepo[];
 }
 
-export default function ProjectsSection({ locale = DEFAULT_LOCALE, projects }: Props) {
-  const dict = getDictionary(locale);
-
-  // Exibir apenas os 3 primeiros projetos como destaque
+export default function ProjectsSection({ locale, dict, projects }: Props) {
   const featuredProjects = projects.slice(0, 3);
 
   return (
     <section
-      id="projects"
+      id="featured-projects"
       role="region"
       aria-labelledby="projects-title"
-      lang={locale === "en" ? "en-US" : locale === "es" ? "es-ES" : "pt-BR"}
-      className="container mx-auto max-w-6xl px-4 lg:px-8 py-10 sm:py-16 space-y-8"
+      className="
+        max-w-7xl mx-auto
+        px-4 lg:px-8
+        py-12 sm:py-20
+        space-y-10
+      "
     >
-      {/* Título */}
+      {/* TÍTULO */}
       <h2
         id="projects-title"
-        className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 text-center"
+        className="
+          text-3xl sm:text-4xl
+          font-bold
+          text-slate-900 dark:text-slate-100
+          text-center
+        "
       >
         {dict.sections.projectsTitle}
       </h2>
 
-      {/* Grid de projetos */}
+      {/* GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {featuredProjects.map((repo) => (
-          <ProjectCard key={repo.id} repo={repo} dict={dict} lang={locale} />
+          <ProjectCard
+            key={repo.id}
+            repo={repo}
+            dict={dict}
+            lang={locale}
+          />
         ))}
       </div>
 
-      {/* Botão "Ver todos" */}
+      {/* CTA */}
       <div className="text-center">
         <Link
           href={`/${locale}/projects/list`}
-          className="inline-block px-6 py-2 rounded-md bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+          className="
+            inline-flex items-center justify-center
+            px-6 py-3
+            rounded-xl
+            bg-gradient-to-r from-purple-500 to-pink-500
+            text-white font-semibold
+            hover:scale-105
+            transition-transform
+            focus:outline-none
+            focus:ring-2 focus:ring-offset-2 focus:ring-purple-500
+          "
         >
-          {locale === "en"
-            ? "View all projects →"
-            : locale === "es"
-            ? "Ver todos los proyectos →"
-            : "Ver todos os projetos →"}
+          {dict.sections.viewAllProjects} →
         </Link>
       </div>
     </section>
