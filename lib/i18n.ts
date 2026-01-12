@@ -1,9 +1,3 @@
-// lib/i18n.ts
-
-export type Locale = "pt" | "en" | "es";
-export const SUPPORTED_LOCALES: Locale[] = ["pt", "en", "es"];
-export const DEFAULT_LOCALE: Locale = "pt";
-
 export type Translations = {
   meta: {
     title: string;
@@ -15,6 +9,8 @@ export type Translations = {
     projects: string;
     contact: string;
     language: string;
+    openMenu: string;
+    closeMenu: string;
   };
   footer: {
     rights: string;
@@ -37,6 +33,11 @@ export type Translations = {
     articlesTitle: string;
     featuredArticle: string;
     contactTitle: string;
+    searchPlaceholder: string;
+    searchLabel: string;
+    filtersTitle: string;
+    projectsGridTitle: string;
+    noProjectsFound: string;
   };
   portfolio: {
     title: string;
@@ -44,6 +45,11 @@ export type Translations = {
     buttonLabel: string;
     projects: string;
   };
+  cv: {
+    url: string;
+    label: string;
+  };
+  socialImage: string;
   featuredArticle: {
     title: string;
     description: string;
@@ -55,6 +61,13 @@ export type Translations = {
       linkedin: string;
       medium: string;
     };
+  };
+  featuredProject: {
+    title: string;
+    problem: string;
+    baseline: string;
+    solution: string;
+    result: string;
   };
   experience: {
     item1: string;
@@ -81,40 +94,6 @@ export type Translations = {
     logic: string;
     html: string;
     articlesRepo: string;
+    unknown: string;
   };
 };
-
-// Importa os dicionários por idioma
-import { pt } from "./locales/pt";
-import { en } from "./locales/en";
-import { es } from "./locales/es";
-
-export const translations: Record<Locale, Translations> = {
-  pt,
-  en,
-  es,
-};
-
-/**
- * Helper para obter traduções com fallback seguro
- */
-export function getTranslation(locale: string): Translations {
-  const normalized = locale.toLowerCase() as Locale;
-  const safeLocale: Locale = SUPPORTED_LOCALES.includes(normalized)
-    ? normalized
-    : DEFAULT_LOCALE;
-
-  if (!SUPPORTED_LOCALES.includes(normalized)) {
-    console.warn(
-      `[i18n] Locale "${locale}" não suportado. Usando fallback "${DEFAULT_LOCALE}".`
-    );
-  }
-
-  return translations[safeLocale];
-}
-
-/**
- * Helper seguro para obter dicionário já validado
- */
-export const getDictionary = (lang: Locale): Translations =>
-  translations[lang] ?? translations[DEFAULT_LOCALE];
