@@ -26,33 +26,48 @@
     "unused-imports"
   ],
   "extends": [
+    "next/core-web-vitals", // O Next.js recomenda que este venha primeiro
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
-    "next/core-web-vitals",
-    "prettier"
+    "prettier" // Prettier deve ser sempre o ÚLTIMO para sobrescrever regras de conflito
   ],
   "rules": {
+    // React 17+ não precisa de React no escopo
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
 
+    // Gerenciamento de imports e variáveis não utilizadas
     "@typescript-eslint/no-unused-vars": "off",
-    "unused-imports/no-unused-imports": "warn",
+    "unused-imports/no-unused-imports": "error", // Elevado para error para manter o código limpo
     "unused-imports/no-unused-vars": [
       "warn",
       {
+        "vars": "all",
         "varsIgnorePattern": "^_",
+        "args": "after-used",
         "argsIgnorePattern": "^_"
       }
     ],
 
+    // Segurança e Tipagem
     "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/consistent-type-imports": "warn", // Organiza imports de tipos
 
-    "jsx-a11y/alt-text": "warn",
-    "jsx-a11y/anchor-is-valid": "warn",
+    // Acessibilidade (Crítico para SEO e Ranking)
+    "jsx-a11y/alt-text": "error", // Imagem sem alt agora trava o build (importante!)
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["Link"],
+        "specialLink": ["hrefLeft", "hrefRight"],
+        "aspects": ["invalidHref", "preferButton"]
+      }
+    ],
 
+    // Logs e Depuração
     "no-console": ["warn", { "allow": ["warn", "error"] }]
   },
   "overrides": [
