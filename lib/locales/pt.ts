@@ -37,6 +37,10 @@ export const pt: Dictionary = {
     differentialTitle: "⭐ Diferencial Profissional",
     objectiveTitle: "🎯 Objetivo",
 
+    // ✅ Adicionado para compatibilidade com page.tsx
+    stackConsolidated: "Tecnologias Consolidadas",
+    stackUpdating: "Em Atualização / Novos Projetos",
+
     projectsTitle: "🛠 Portfólio de Projetos",
     articlesTitle: "📝 Produção Técnica",
     featuredArticle: "Artigo Premiado",
@@ -47,6 +51,7 @@ export const pt: Dictionary = {
     filtersTitle: "Categorias",
     projectsGridTitle: "Lista de Projetos",
     noProjectsFound: "Nenhum projeto encontrado para esta busca.",
+    projectsEmpty: "Carregando projetos do GitHub ou nenhum projeto encontrado com a tag 'portfolio'...",
   },
 
   portfolio: {
@@ -103,6 +108,10 @@ export const pt: Dictionary = {
       "Capacidade diferenciada de integrar governança de sistemas críticos com inteligência artificial.",
     objective:
       "Atuar em projetos onde eficiência operacional, qualidade de dados e redução de riscos sejam prioridades estratégicas.",
+    
+    // ✅ Adicionado para compatibilidade com o componente de Skills no page.tsx
+    stackConsolidated: "Windows Server, SQL Server, C#, .NET, Governança de TI, Segurança de Dados.",
+    stackUpdating: "Python, Azure Databricks, Apache Spark, Neo4j, Machine Learning, Power BI.",
   },
 
   projectCategories: {
