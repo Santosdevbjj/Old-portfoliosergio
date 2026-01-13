@@ -1,13 +1,14 @@
 "use client";
 
 import React from "react";
-import type { Translations } from "@/lib/i18n";
+import type { Dictionary } from "@/lib/i18n"; // Alterado de Translations para Dictionary
 
 type FeaturedProjectProps = {
-  dict: Translations;
+  dict: Dictionary; // Alterado de Translations para Dictionary
 };
 
 export default function FeaturedProject({ dict }: FeaturedProjectProps) {
+  // Garantindo que estamos pegando as propriedades corretas do dicionário
   const { featuredProject, sections } = dict;
 
   return (
