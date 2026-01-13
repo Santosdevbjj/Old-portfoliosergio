@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { getProjectBySlug, type Lang } from "@/lib/mdx";
 import { i18n } from "@/lib/i18n";
 
-// Definindo o slug fixo para a página "Sobre"
+// Slug fixo para buscar o arquivo MDX correspondente
 const ABOUT_SLUG = "about";
 
 interface PageProps {
@@ -17,7 +17,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const about = await getProjectBySlug(ABOUT_SLUG, lang);
 
   if (!about) {
-    return { title: "Página não encontrada" };
+    return { title: "About | Sérgio Santos" };
   }
 
   const baseUrl = "https://portfoliosergiosantos.vercel.app";
@@ -25,13 +25,13 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 
   return {
     title: `${about.metadata.title} | Sérgio Santos`,
-    description: about.metadata.description || "Biografia profissional e trajetória técnica.",
+    description: about.metadata.description || "Biografia profissional e trajetória técnica de Sérgio Santos.",
     alternates: {
       canonical: `${baseUrl}/${lang}${path}`,
       languages: {
-        "pt-BR": `${baseUrl}/pt${path}`,
-        "en-US": `${baseUrl}/en${path}`,
-        "es-ES": `${baseUrl}/es${path}`,
+        "pt": `${baseUrl}/pt${path}`,
+        "en": `${baseUrl}/en${path}`,
+        "es": `${baseUrl}/es${path}`,
       },
     },
     openGraph: {
@@ -41,32 +41,46 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       siteName: "Portfólio Sérgio Santos",
       locale: lang === "en" ? "en_US" : lang === "es" ? "es_ES" : "pt_BR",
       type: "profile",
+      images: [
+        {
+          url: `/og-image-${lang}.png`,
+          width: 1200,
+          height: 630,
+          alt: about.metadata.title,
+        },
+      ],
     },
   };
 }
 
-/** 🚀 Gera os caminhos estáticos para cada idioma no build */
+/** 🚀 Gera os caminhos estáticos para cada idioma durante o Build (SSG) */
 export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
 }
 
 export default async function AboutPage(props: PageProps) {
   const { lang } = await props.params;
+  
+  // Busca o conteúdo MDX baseado no idioma e slug "about"
   const about = await getProjectBySlug(ABOUT_SLUG, lang);
 
+  // Se o arquivo mdx/[lang]/about.mdx não existir, retorna 404
   if (!about) return notFound();
 
   return (
-    <main className="container mx-auto max-w-4xl px-4 py-12 md:py-20 min-h-screen">
+    <main className="container mx-auto max-w-4xl px-6 py-12 md:py-24 min-h-screen">
       <article 
         className="
           prose prose-slate dark:prose-invert 
-          prose-technical dark:prose-darkTechnical 
           max-w-none 
-          prose-img:rounded-3xl prose-img:shadow-2xl
-          prose-headings:text-slate-900 dark:prose-headings:text-white
+          prose-headings:font-bold
+          prose-img:rounded-3xl prose-img:shadow-xl
+          prose-a:text-blue-600 dark:prose-a:text-blue-400
+          prose-pre:bg-slate-900 dark:prose-pre:bg-slate-800/50
+          prose-pre:rounded-2xl
         "
       >
+        {/* Renderiza o conteúdo MDX de forma segura no servidor */}
         <MDXRemote source={about.content} />
       </article>
     </main>
