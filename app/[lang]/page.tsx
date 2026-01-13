@@ -1,9 +1,8 @@
-// app/[lang]/page.tsx
-
+import { Metadata } from "next";
 import PageWrapper from "@/components/PageWrapper";
 import HeroSection from "@/components/HeroSection";
 import FeaturedProject from "@/components/FeaturedProject";
-import ProjectsSection from "@/components/ProjectsSection"; // CORRIGIDO: Adicionado o 's'
+import ProjectsSection from "@/components/ProjectsSection";
 import FeaturedArticleSection from "@/components/FeaturedArticleSection";
 import { getDictionary } from "@/lib/i18n";
 import {
@@ -13,6 +12,7 @@ import {
   GitHubRepo,
 } from "@/lib/github";
 
+// Otimização de Cache e Static Generation
 export const dynamic = "force-static";
 export const revalidate = 3600;
 
@@ -20,21 +20,34 @@ interface Props {
   params: { lang: "pt" | "en" | "es" };
 }
 
+/** 🔎 SEO Dinâmico: Altera o título da aba conforme o idioma */
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const t = getDictionary(params.params ? params.params.lang : params.lang);
+  return {
+    title: `Sérgio Santos | ${t.sections.projectsTitle}`,
+    description: t.portfolio.description,
+  };
+}
+
 export default async function Page({ params }: Props) {
+  // Garantia de acesso aos params (Next.js 14/15 pattern)
   const lang = params.lang;
-  
   const t = getDictionary(lang);
 
+  // Inicialização segura do estado de repositórios
   let repos: Record<CategoryKey, GitHubRepo[]> = {} as Record<CategoryKey, GitHubRepo[]>;
-  CATEGORIES_ORDER.forEach(key => repos[key] = []);
+  CATEGORIES_ORDER.forEach(key => {
+    repos[key] = [];
+  });
 
   try {
     const fetchedRepos = await getPortfolioRepos();
     if (fetchedRepos && Object.keys(fetchedRepos).length > 0) {
-      repos = fetchedRepos;
+      repos = fetchedRepos as Record<CategoryKey, GitHubRepo[]>;
     }
   } catch (error) {
     console.error("Erro ao carregar repositórios do GitHub:", error);
+    // O site continuará renderizando as outras seções mesmo sem os cards do GitHub
   }
 
   const categoryMap: Record<CategoryKey, string> = {
@@ -69,6 +82,7 @@ export default async function Page({ params }: Props) {
           <FeaturedArticleSection dict={t.sections} article={t.featuredArticle} />
         </section>
 
+        {/* Seção de Experiência e Skills */}
         <section className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12" aria-labelledby="experience-title">
           <div>
             <h2 id="experience-title" className="text-3xl font-bold mb-6 border-b-2 border-blue-600 pb-2 w-fit">
@@ -94,6 +108,7 @@ export default async function Page({ params }: Props) {
           </div>
         </section>
 
+        {/* Seção Dinâmica de Projetos (GitHub) */}
         <section className="max-w-7xl mx-auto px-4" aria-labelledby="projects-title">
           <h2 id="projects-title" className="text-3xl font-bold mb-8 flex items-center gap-2">
             <span>📂</span> {t.sections.projectsTitle}
@@ -110,7 +125,7 @@ export default async function Page({ params }: Props) {
                 if (!projects || projects.length === 0) return null;
 
                 return (
-                  <ProjectsSection // CORRIGIDO: Adicionado o 's'
+                  <ProjectsSection 
                     key={key}
                     title={categoryMap[key] || "Outros"}
                     projects={projects}
