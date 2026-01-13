@@ -21,91 +21,83 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
+  // Inicializamos sem valor para evitar conflito de hidratação (SSR vs Client)
   const [theme, setTheme] = useState<Theme>("system");
   const [isDark, setIsDark] = useState<boolean>(false);
+  const [mounted, setMounted] = useState(false);
 
-  // Função auxiliar para aplicar tema no DOM
-  const applyToDOM = (dark: boolean) => {
-    document.documentElement.classList.toggle("dark", dark);
-  };
-
-  // Inicializa tema com base em cookie ou localStorage
-  useEffect(() => {
-    const storedTheme =
-      (typeof document !== "undefined"
-        ? document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("theme="))
-            ?.split("=")[1]
-        : null) || localStorage.getItem("theme");
-
-    if (storedTheme && storedTheme !== "system") {
-      setTheme(storedTheme as Theme);
-      const dark = storedTheme === "dark";
-      setIsDark(dark);
-      applyToDOM(dark);
-    } else {
-      setTheme("system");
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setIsDark(prefersDark);
-      applyToDOM(prefersDark);
+  const applyToDOM = useCallback((dark: boolean) => {
+    if (typeof window !== "undefined") {
+      document.documentElement.classList.toggle("dark", dark);
+      document.documentElement.style.colorScheme = dark ? "dark" : "light";
     }
   }, []);
 
-  // Escuta mudanças do sistema se o tema estiver em "system"
+  // 1. Carregamento Inicial
   useEffect(() => {
+    setMounted(true);
+    const storedTheme = (
+      document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("theme="))
+        ?.split("=")[1] || localStorage.getItem("theme")
+    ) as Theme | undefined;
+
+    if (storedTheme && ["light", "dark", "system"].includes(storedTheme)) {
+      setTheme(storedTheme);
+    }
+  }, []);
+
+  // 2. Efeito Centralizador: Reage a mudanças no estado 'theme'
+  useEffect(() => {
+    if (!mounted) return;
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    
+    const updateTheme = () => {
+      const shouldBeDark = 
+        theme === "dark" || (theme === "system" && mediaQuery.matches);
+      
+      setIsDark(shouldBeDark);
+      applyToDOM(shouldBeDark);
+    };
+
+    updateTheme();
+
+    // Ouvinte para mudanças no sistema (apenas se estiver em modo system)
     if (theme === "system") {
-      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      const handleChange = (event: MediaQueryListEvent) => {
-        setIsDark(event.matches);
-        applyToDOM(event.matches);
-      };
-      mediaQuery.addEventListener("change", handleChange);
-      return () => mediaQuery.removeEventListener("change", handleChange);
+      mediaQuery.addEventListener("change", updateTheme);
+      return () => mediaQuery.removeEventListener("change", updateTheme);
     }
-  }, [theme]);
+  }, [theme, mounted, applyToDOM]);
 
-  // Alterna manualmente entre claro/escuro
-  const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const newTheme = prev === "dark" ? "light" : "dark";
-      localStorage.setItem("theme", newTheme);
-      document.cookie = `theme=${newTheme}; path=/; max-age=${60 * 60 * 24 * 365}`;
-      const dark = newTheme === "dark";
-      setIsDark(dark);
-      applyToDOM(dark);
-      return newTheme;
-    });
-  }, []);
-
-  // Define diretamente o tema
-  const applyTheme = useCallback((newTheme: Theme) => {
+  const saveThemePreference = useCallback((newTheme: Theme) => {
+    setTheme(newTheme);
     if (newTheme === "system") {
       localStorage.removeItem("theme");
-      document.cookie = `theme=system; path=/; max-age=${60 * 60 * 24 * 365}`;
-      setTheme("system");
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setIsDark(prefersDark);
-      applyToDOM(prefersDark);
     } else {
       localStorage.setItem("theme", newTheme);
-      document.cookie = `theme=${newTheme}; path=/; max-age=${60 * 60 * 24 * 365}`;
-      setTheme(newTheme);
-      const dark = newTheme === "dark";
-      setIsDark(dark);
-      applyToDOM(dark);
     }
+    document.cookie = `theme=${newTheme}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
   }, []);
 
-  // Reseta para seguir o sistema
+  const toggleTheme = useCallback(() => {
+    const nextTheme = isDark ? "light" : "dark";
+    saveThemePreference(nextTheme);
+  }, [isDark, saveThemePreference]);
+
+  const applyTheme = useCallback((newTheme: Theme) => {
+    saveThemePreference(newTheme);
+  }, [saveThemePreference]);
+
   const resetTheme = useCallback(() => {
-    localStorage.removeItem("theme");
-    document.cookie = `theme=system; path=/; max-age=${60 * 60 * 24 * 365}`;
-    setTheme("system");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setIsDark(prefersDark);
-    applyToDOM(prefersDark);
-  }, []);
+    saveThemePreference("system");
+  }, [saveThemePreference]);
+
+  // Evita renderizar conteúdo instável antes da hidratação
+  if (!mounted) {
+    return <>{children}</>;
+  }
 
   return (
     <ThemeContext.Provider
