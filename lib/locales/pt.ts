@@ -2,15 +2,15 @@ import type { Dictionary } from "../i18n";
 
 export const pt: Dictionary = {
   meta: {
-    title: "Sérgio Santos | Especialista em Dados e Sistemas Críticos",
+    title: "Sérgio Santos | Data Science & Sistemas de Missão Crítica",
     description:
-      "Analista de Dados Sênior com mais de 20 anos de experiência em sistemas críticos bancários, governança e engenharia de dados.",
+      "Analista de Ciência de Dados com 15+ anos de experiência no setor bancário (Bradesco). Especialista em transformar dados complexos em inteligência estratégica.",
   },
 
   navigation: {
     home: "Início",
     about: "Sobre",
-    projects: "Projetos",
+    projects: "Portfólio",
     contact: "Contato",
     language: "Idioma",
     openMenu: "Abrir menu",
@@ -18,7 +18,7 @@ export const pt: Dictionary = {
   },
 
   footer: {
-    rights: "© 2026 Sérgio Santos. Todos os direitos reservados.",
+    rights: `© ${new Date().getFullYear()} Sérgio Santos. Engenharia de Dados & Sistemas.`,
   },
 
   darkMode: {
@@ -27,54 +27,54 @@ export const pt: Dictionary = {
   },
 
   sections: {
-    aboutTitle: "👨‍💻 Sobre mim",
+    aboutTitle: "👨‍💻 Perfil Profissional",
     aboutIntro: "Analista de Ciência de Dados | Especialista em Sistemas Críticos",
     aboutDetails:
-      "Profissional com sólida experiência no setor bancário (Bradesco), atuando na transformação de dados em decisões estratégicas e eficiência operacional.",
+      "Expertise em sistemas de missão crítica bancária, dedicando-se agora à Ciência de Dados, IA e Governança para suporte à decisão estratégica.",
 
-    experienceTitle: "💼 Experiência Técnica",
-    reskillingTitle: "📚 Transição & Atualização Profissional",
-    differentialTitle: "⭐ Diferencial Profissional",
-    objectiveTitle: "🎯 Objetivo",
+    experienceTitle: "💼 Experiência & Impacto",
+    reskillingTitle: "📚 Transição e Especialização",
+    differentialTitle: "⭐ Diferencial Competitivo",
+    objectiveTitle: "🎯 Objetivo Estratégico",
 
-    stackConsolidated: "Tecnologias Consolidadas",
-    stackUpdating: "Em Atualização / Novos Projetos",
+    stackConsolidated: "Stack Consolidado (Core)",
+    stackUpdating: "Stack em Evolução (Dados & IA)",
 
-    projectsTitle: "🛠 Portfólio de Projetos",
-    articlesTitle: "📝 Produção Técnica",
+    projectsTitle: "🛠 Ecossistema de Projetos",
+    articlesTitle: "📝 Produção Intelectual",
     featuredArticle: "Artigo Premiado",
-    featuredProjectTitle: "🚀 Projeto em Destaque", // ✅ Adicionado
-    contactTitle: "Contato",
+    featuredProjectTitle: "🚀 Projeto de Maior Impacto",
+    contactTitle: "Vamos Conversar?",
 
-    searchPlaceholder: "Buscar projetos...",
-    searchLabel: "Filtrar projetos por tecnologia",
-    filtersTitle: "Categorias",
-    projectsGridTitle: "Lista de Projetos",
-    noProjectsFound: "Nenhum projeto encontrado para esta busca.",
-    projectsEmpty: "Carregando projetos do GitHub...",
+    searchPlaceholder: "Ex: Databricks, Python, Grafos...",
+    searchLabel: "Filtrar por tecnologia",
+    filtersTitle: "Categorias Técnicas",
+    projectsGridTitle: "Repositório de Engenharia",
+    noProjectsFound: "Nenhum repositório encontrado para este filtro.",
+    projectsEmpty: "Sincronizando dados com a API do GitHub...",
   },
 
   portfolio: {
     title: "Sérgio Santos",
-    description: "Conectando sistemas legados à inteligência de dados moderna.",
-    buttonLabel: "Ver Projetos →",
+    description: "Conectando o rigor de sistemas bancários à agilidade da ciência de dados.",
+    buttonLabel: "Explorar Projetos",
     projects: "Projetos em Destaque",
   },
 
   cv: {
     url: "/cv-sergio-santos-pt.pdf",
-    label: "Baixar Currículo Vitae (PDF)",
+    label: "Download Curriculum Vitae",
   },
 
   socialImage: "/og-image-pt.png",
 
   featuredArticle: {
-    title: "Low-Code na Saúde: Apps Médicos em Semanas",
+    title: "Low-Code na Saúde: Como Criar Apps Médicos em Semanas",
     description:
-      "Como a agilidade do low-code pode transformar a gestão hospitalar com segurança e governança.",
+      "Uma análise sobre a aplicação de plataformas de baixo código no setor de saúde, abordando conformidade, benefícios e desenvolvimento acelerado.",
     award1: "🏆 Vencedor da 35ª Competição de Artigos DIO",
-    award2: "🏆 Melhor Artigo Técnico – Setembro de 2025",
-    readOn: "Disponível em:",
+    award2: "🏆 Melhor Artigo do Mês - Setembro 2025",
+    readOn: "Disponível nas plataformas:",
     links: {
       dio: "https://web.dio.me/articles/low-code-na-saude-como-criar-apps-medicos-em-semanas-d77f6760fa5a",
       linkedin: "https://www.linkedin.com/in/santossergioluiz",
@@ -83,60 +83,60 @@ export const pt: Dictionary = {
   },
 
   featuredProject: {
-    badge: "Case de Sucesso", // ✅ Adicionado
-    title: "Predição de Risco de Atraso em Obras",
-    highlight: "Machine Learning aplicado à redução de custos operacionais.", // ✅ Adicionado
-    stack: ["Python", "Scikit-Learn", "Pandas", "Random Forest"], // ✅ Adicionado
-    challengeTitle: "O Desafio", // ✅ Adicionado
+    badge: "PROJETO FLAGSHIP",
+    title: "Simulador de Riscos Logísticos",
+    highlight: "Ciência de Dados aplicada à Construção Civil e Inteligência de Risco.",
+    stack: ["Python", "Azure Databricks", "Streamlit", "Machine Learning"],
+    challengeTitle: "O Problema",
     problem:
-      "Atrasos em aproximadamente 35% das obras, gerando multas recorrentes e desgaste operacional.",
-    baselineLabel: "Cenário Anterior", // ✅ Adicionado
+      "Gargalos logísticos em obras complexas gerando multas recorrentes e atrasos em 35% do cronograma.",
+    baselineLabel: "Cenário Legado",
     baseline:
-      "Previsões baseadas apenas em média histórica, com erro médio de 18 dias.",
-    solutionTitle: "A Solução Desenvolvida", // ✅ Adicionado
+      "Gestão baseada em planilhas estáticas com erro médio de previsão de 18 dias.",
+    solutionTitle: "Arquitetura da Solução",
     solution:
-      "Modelo de Machine Learning (Random Forest) integrando clima, solo e desempenho de fornecedores.",
-    impactTitle: "Impacto Gerado", // ✅ Adicionado
+      "Pipeline de dados no Databricks com modelo Random Forest, simulador interativo e alertas via bot no Telegram.",
+    impactTitle: "Resultado Mensurável",
     result:
-      "Redução do erro médio para 7 dias e economia estimada de R$ 420 mil por ano.",
-    ctaLabel: "Ver no GitHub", // ✅ Adicionado
-    ctaUrl: "https://github.com/Santosdevbjj", // ✅ Adicionado
+      "Redução do erro de previsão para 7 dias e economia operacional estimada em R$ 420 mil/ano.",
+    ctaLabel: "Acessar Repositório",
+    ctaUrl: "https://github.com/Santosdevbjj/analiseRiscosAtrasoObras",
   },
 
   experience: {
     item1:
-      "Automação de processos críticos, eliminando aproximadamente 2.920 horas anuais de trabalho manual.",
+      "Desenvolvimento de sistemas automatizados que eliminaram 2.920 horas/ano de processamento manual.",
     item2:
-      "Gestão de infraestrutura corporativa para mais de 500 usuários, com 99,5% de disponibilidade.",
+      "Arquitetura de infraestrutura de rede para 500+ usuários com 99,5% de SLA (disponibilidade).",
     item3:
-      "Desenvolvimento e sustentação de sistemas jurídicos críticos com rastreabilidade total e conformidade com LGPD.",
+      "Sustentação de ecossistemas jurídicos com conformidade total à LGPD e auditoria bancária.",
 
     reskilling:
-      "Processo estruturado de reskilling iniciado em 2023, com foco em Engenharia de Dados e Machine Learning.",
+      "Evolução contínua em Ciência de Dados, Machine Learning e análise de grafos (Neo4j), aplicando rigor técnico a novas tecnologias.",
     differential:
-      "Capacidade diferenciada de integrar governança de sistemas críticos com inteligência artificial.",
+      "Visão sistêmica que une conformidade regulatória bancária com inovação em inteligência artificial.",
     objective:
-      "Atuar em projetos onde eficiência operacional, qualidade de dados e redução de riscos sejam prioridades estratégicas.",
+      "Contribuir em projetos de modernização de infraestrutura, governança de dados ou sistemas regulados de alta complexidade.",
     
-    stackConsolidated: "Windows Server, SQL Server, C#, .NET, Governança de TI, Segurança de Dados.",
-    stackUpdating: "Python, Azure Databricks, Apache Spark, Neo4j, Machine Learning, Power BI.",
+    stackConsolidated: "SQL Server, Windows Server, C#, .NET, Governança de TI, Mainframe IBM, Active Directory.",
+    stackUpdating: "Python, Azure Databricks, Apache Spark, Neo4j, Machine Learning, Docker, Power BI.",
   },
 
   projectCategories: {
     dataScience: "Ciência de Dados",
     azureDatabricks: "Azure Databricks",
-    neo4j: "Neo4J",
-    powerBI: "Power BI",
-    database: "Banco de Dados",
+    neo4j: "Grafos (Neo4J)",
+    powerBI: "Power BI & Analytics",
+    database: "Bancos de Dados",
     python: "Python",
-    dotnet: "C# .NET",
+    dotnet: ".NET & C#",
     java: "Java",
     machineLearning: "Machine Learning",
-    aws: "AWS Cloud",
+    aws: "Amazon AWS",
     cybersecurity: "Cibersegurança",
-    logic: "Lógica de Programação",
-    html: "Front-end",
-    articlesRepo: "Artigos",
-    unknown: "Geral",
+    logic: "Lógica & Algoritmos",
+    html: "Web / Frontend",
+    articlesRepo: "Artigos Técnicos",
+    unknown: "Outros",
   },
 };
