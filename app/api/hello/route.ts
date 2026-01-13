@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 
-// Dicionários multilíngues
-const messages: Record<
-  string,
-  { greeting: string; description: string; footer: string }
-> = {
+// Tipagem rigorosa para evitar erros de compilação
+type Locale = "en" | "pt" | "es";
+
+const messages: Record<Locale, { greeting: string; description: string; footer: string }> = {
   en: {
     greeting: "Hello, welcome to Sergio Santos' portfolio!",
     description: "This API endpoint is fully responsive and multilingual.",
@@ -22,40 +21,44 @@ const messages: Record<
   }
 };
 
-// Função para detectar idioma a partir da URL ou cabeçalho
-function detectLang(req: Request): "en" | "pt" | "es" {
-  const url = new URL(req.url);
-  const pathSegments = url.pathname.split("/");
-  const langSegment = pathSegments[1]?.toLowerCase();
-
-  if (["pt", "en", "es"].includes(langSegment)) {
-    return langSegment as "pt" | "en" | "es";
+function detectLang(req: Request): Locale {
+  const { searchParams } = new URL(req.url);
+  
+  // 1. Tenta pegar via query param (?lang=pt)
+  const langParam = searchParams.get("lang")?.toLowerCase();
+  if (langParam === "pt" || langParam === "en" || langParam === "es") {
+    return langParam as Locale;
   }
 
-  // fallback: tenta pelo cabeçalho Accept-Language
+  // 2. Tenta pelo cabeçalho padrão de idioma do navegador
   const acceptLang = req.headers.get("accept-language")?.toLowerCase();
-  if (acceptLang?.startsWith("pt")) return "pt";
-  if (acceptLang?.startsWith("es")) return "es";
+  if (acceptLang?.includes("pt")) return "pt";
+  if (acceptLang?.includes("es")) return "es";
 
   return "en";
 }
 
-// Handler GET
 export async function GET(req: Request) {
-  const url = new URL(req.url);
   const lang = detectLang(req);
 
   const body = {
+    status: "online",
     lang,
     ...messages[lang],
-    responsive: true,
-    timestamp: new Date().toISOString(),
-    version: "1.1.0",
-    path: url.pathname
+    meta: {
+      timestamp: new Date().toISOString(),
+      version: "1.1.0",
+      uptime: process.uptime(), // Útil para monitoramento
+    }
   };
 
   return NextResponse.json(body, {
     status: 200,
-    headers: { "Cache-Control": "no-store" }
+    headers: {
+      // Diferente da greeting, aqui podemos usar cache público 
+      // para carregar instantaneamente em qualquer lugar do mundo
+      "Cache-Control": "public, s-maxage=60, stale-while-revalidate=30",
+      "Content-Type": "application/json",
+    },
   });
 }
