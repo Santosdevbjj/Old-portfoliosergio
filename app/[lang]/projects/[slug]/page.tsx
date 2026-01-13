@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { getProjectBySlug, type Lang } from "@/lib/mdx";
+import { getProjectBySlug, getAllProjects, type Lang } from "@/lib/mdx";
 import CalloutPersistent from "@/components/CalloutPersistent";
 import { Metadata } from "next";
 import { i18n } from "@/lib/i18n";
@@ -12,19 +12,30 @@ interface PageProps {
   }>;
 }
 
-/** 🚀 Gera caminhos estáticos para TODOS os projetos no build */
+/** 🚀 Gera caminhos estáticos no Build Time (Performance Sênior) */
 export async function generateStaticParams() {
-  // Nota: Idealmente aqui você buscaria todos os slugs para cada idioma
-  // para que a Vercel gere as páginas estáticas instantaneamente.
-  return []; 
+  const paths: { lang: string; slug: string }[] = [];
+
+  // Percorre cada idioma e cada projeto para criar a lista de URLs estáticas
+  for (const locale of i18n.locales) {
+    const projects = await getAllProjects(locale as Lang);
+    projects.forEach((project) => {
+      paths.push({
+        lang: locale,
+        slug: project.slug,
+      });
+    });
+  }
+
+  return paths;
 }
 
-/** 🔎 SEO Dinâmico */
+/** 🔎 SEO Dinâmico e Social Media Ready */
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const { lang, slug } = await props.params;
   const project = await getProjectBySlug(slug, lang);
   
-  if (!project) return { title: "Project Not Found" };
+  if (!project) return { title: "Projeto não encontrado | Sérgio Santos" };
 
   return {
     title: `${project.metadata.title} | Sérgio Santos`,
@@ -33,6 +44,8 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
       title: project.metadata.title,
       description: project.metadata.description,
       type: "article",
+      images: [`/og-image-${lang}.png`],
+      locale: lang === "en" ? "en_US" : lang === "es" ? "es_ES" : "pt_BR",
     },
   };
 }
@@ -54,58 +67,62 @@ export default async function ProjectPage(props: PageProps) {
   return (
     <main
       lang={htmlLangMap[lang]}
-      className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 min-h-screen"
+      className="max-w-4xl mx-auto px-6 sm:px-8 py-12 md:py-24 min-h-screen"
     >
       <article className="space-y-12">
-        {/* HEADER TÉCNICO */}
-        <header className="space-y-6 border-b border-slate-200 dark:border-slate-800 pb-10">
-          <h1 className="font-extrabold text-4xl md:text-5xl lg:text-6xl tracking-tight text-slate-900 dark:text-white">
-            {project.metadata.title}
-          </h1>
+        {/* HEADER TÉCNICO: Foco em Legibilidade */}
+        <header className="space-y-8 border-b border-slate-200 dark:border-slate-800 pb-12">
+          <div className="space-y-4">
+            <span className="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest">
+              {lang}
+            </span>
+            <h1 className="font-black text-4xl md:text-5xl lg:text-6xl tracking-tight text-slate-900 dark:text-white leading-tight">
+              {project.metadata.title}
+            </h1>
+          </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm font-medium">
+          <div className="flex flex-wrap items-center gap-4 text-sm font-semibold text-slate-500 dark:text-slate-400">
             {project.metadata.date && (
-              <time className="text-slate-500 dark:text-slate-400">
+              <time dateTime={project.metadata.date}>
                 {new Date(project.metadata.date).toLocaleDateString(htmlLangMap[lang], {
                   year: 'numeric', month: 'long', day: 'numeric'
                 })}
               </time>
             )}
-            <span className="text-slate-300 dark:text-slate-700">|</span>
-            <span className="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-full text-xs uppercase tracking-widest">
-              {lang}
+            <span className="hidden sm:inline text-slate-300 dark:text-slate-700">|</span>
+            <span className="text-blue-600 dark:text-blue-400">
+               Documentação Técnica
             </span>
           </div>
 
           {project.metadata.description && (
-            <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed italic">
+            <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
               {project.metadata.description}
             </p>
           )}
         </header>
 
-        
-
-        {/* CONTEÚDO MDX */}
+        {/* CONTEÚDO MDX: Estilizado para Código e Dados */}
         <section className="
           prose prose-slate dark:prose-invert 
-          prose-technical dark:prose-darkTechnical
           max-w-none 
-          prose-headings:scroll-mt-20
-          prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800
-          prose-img:rounded-2xl prose-img:mx-auto
+          prose-headings:font-bold prose-headings:tracking-tight
+          prose-a:text-blue-600 dark:prose-a:text-blue-400
+          prose-pre:bg-slate-900 dark:prose-pre:bg-slate-900/80
+          prose-pre:border prose-pre:border-slate-800
+          prose-pre:rounded-2xl
+          prose-img:rounded-3xl prose-img:shadow-2xl
         ">
           <MDXRemote 
             source={project.content} 
             components={{
-              // Permite usar Callouts dentro do seu arquivo .mdx
               Callout: CalloutPersistent 
             }}
           />
         </section>
 
-        {/* FOOTER DA PÁGINA */}
-        <footer className="pt-10 border-t border-slate-200 dark:border-slate-800">
+        {/* FOOTER: Dica de Internacionalização */}
+        <footer className="pt-12 border-t border-slate-200 dark:border-slate-800">
           <CalloutPersistent id={`lang-tip-${slug}`} type="info" lang={lang}>
             {languageTip[lang]}
           </CalloutPersistent>
