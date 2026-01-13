@@ -1,12 +1,13 @@
 import "@/app/globals.css";
 import { Inter } from "next/font/google";
-import { Locale, i18n } from "@/lib/i18n";
+import { Locale, i18n, getDictionary } from "@/lib/i18n";
 import { Metadata, Viewport } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { ThemeProvider } from "@/hooks/ThemeContext";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
-/** 📱 Configuração de Viewport (Padrão Next.js 15) */
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -16,12 +17,6 @@ export const viewport: Viewport = {
   ],
 };
 
-interface Props {
-  children: React.ReactNode;
-  params: Promise<{ lang: Locale }>;
-}
-
-/** 🔎 SEO Dinâmico e Internacionalização (Hreflang) */
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
   const { lang } = await params;
   
@@ -51,11 +46,11 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
     description: current.description,
     metadataBase: new URL(baseUrl),
     alternates: {
-      canonical: `/${lang}`,
+      canonical: `${baseUrl}/${lang}`,
       languages: {
-        "pt-BR": "/pt",
-        "en-US": "/en",
-        "es-ES": "/es",
+        "pt-BR": `${baseUrl}/pt`,
+        "en-US": `${baseUrl}/en`,
+        "es-ES": `${baseUrl}/es`,
       },
     },
     openGraph: {
@@ -74,33 +69,36 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
         },
       ],
     },
-    robots: {
-      index: true,
-      follow: true,
-    },
   };
 }
 
-/** 🚀 Geração de Caminhos Estáticos para os Idiomas */
 export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
 }
 
-/** 🏗️ Estrutura Raiz do Layout */
-export default async function RootLayout({ children, params }: Props) {
-  // No Next.js 15, params precisa ser aguardado (await)
+export default async function RootLayout({
+  children,
+  params,
+}: Props) {
   const { lang } = await params;
+  const dict = await getDictionary(lang); // Carrega o dicionário no servidor (SSR)
 
   return (
     <html lang={lang} className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${inter.className} bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 antialiased min-h-screen flex flex-col`}
+        className={`${inter.className} bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 antialiased min-h-screen`}
       >
-        {/* O conteúdo das páginas (Navbar, Main, Footer) é renderizado aqui */}
-        {children}
+        <ThemeProvider>
+          {/* Navbar integrada com dicionário carregado no servidor */}
+          <Navbar lang={lang} dict={dict} />
+          
+          <main className="flex-grow">
+            {children}
+          </main>
+          
+          {/* Aqui você pode inserir seu Footer posteriormente */}
+        </ThemeProvider>
 
-        {/* 📊 Google Analytics 4 (Carregamento Otimizado) 
-            Certifique-se de configurar NEXT_PUBLIC_GA_ID no seu .env ou Vercel */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
         )}
