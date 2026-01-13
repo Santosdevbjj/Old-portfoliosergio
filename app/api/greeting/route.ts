@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+// Centralizando o tipo Locale para manter consistência com lib/i18n.ts
 type Locale = "en" | "pt" | "es";
 
 const messages: Record<
@@ -23,52 +24,61 @@ const messages: Record<
   }
 };
 
+/** 🌐 Detecta o idioma com prioridade em Query > Headers > Fallback */
 function detectLang(req: Request): Locale {
   const { searchParams } = new URL(req.url);
   
-  // 1. Prioridade para Query Parameter (ex: /api/greeting?lang=pt)
   const langParam = searchParams.get("lang")?.toLowerCase();
   if (langParam === "pt" || langParam === "en" || langParam === "es") {
     return langParam as Locale;
   }
 
-  // 2. Fallback para o cabeçalho injetado pelo seu middleware ou Accept-Language
-  const xLocale = req.headers.get("x-locale"); // Se o seu middleware injetar isso
+  // Cabeçalho personalizado 'x-locale' (injetado via Middleware)
+  const xLocale = req.headers.get("x-locale"); 
   if (xLocale === "pt" || xLocale === "en" || xLocale === "es") return xLocale as Locale;
 
+  // Detecção via navegador (Accept-Language)
   const acceptLang = req.headers.get("accept-language")?.toLowerCase();
-  if (acceptLang?.includes("pt")) return "pt";
-  if (acceptLang?.includes("es")) return "es";
+  if (acceptLang?.startsWith("pt")) return "pt";
+  if (acceptLang?.startsWith("es")) return "es";
 
   return "en";
 }
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const name = searchParams.get("name") || "Guest";
-  const lang = detectLang(req);
+  try {
+    const { searchParams } = new URL(req.url);
+    const name = searchParams.get("name") || "Guest";
+    const lang = detectLang(req);
 
-  const body = {
-    status: "success",
-    data: {
-      lang,
-      greeting: messages[lang].greeting(name),
-      description: messages[lang].description,
-      footer: messages[lang].footer,
-      timestamp: new Date().toISOString(),
-    },
-    meta: {
-      version: "1.1.0",
-      responsive: true,
-      server_region: process.env.VERCEL_REGION || "local"
-    }
-  };
+    const body = {
+      status: "success",
+      data: {
+        lang,
+        greeting: messages[lang].greeting(name),
+        description: messages[lang].description,
+        footer: messages[lang].footer,
+        timestamp: new Date().toISOString(),
+      },
+      meta: {
+        version: "1.1.0",
+        server_region: process.env.VERCEL_REGION || "local",
+        environment: process.env.NODE_ENV
+      }
+    };
 
-  return NextResponse.json(body, {
-    status: 200,
-    headers: {
-      "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59",
-      "Content-Type": "application/json",
-    },
-  });
+    return NextResponse.json(body, {
+      status: 200,
+      headers: {
+        // Cache configurado para 10 segundos no CDN da Vercel
+        "Cache-Control": "public, s-maxage=10, stale-while-revalidate=59",
+        "X-Content-Type-Options": "nosniff", // Segurança extra
+      },
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { status: "error", message: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
