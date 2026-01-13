@@ -16,164 +16,97 @@ export type GitHubRepo = {
 const DEFAULT_USER = "Santosdevbjj";
 
 /**
- * Categorias canônicas
- * (100% alinhadas com i18n.projectCategories)
+ * 1. Categorias canônicas (Exatamente na ordem que você pediu)
  */
 export const CATEGORIES_ORDER = [
-  "dataScience",
-  "azureDatabricks",
-  "neo4j",
-  "powerBI",
-  "database",
-  "python",
-  "dotnet",
-  "java",
-  "machineLearning",
-  "aws",
-  "cybersecurity",
-  "logic",
-  "html",
-  "articlesRepo",
+  "dataScience",      // 1) Ciência de Dados
+  "azureDatabricks",  // 2) Azure Databricks
+  "neo4j",            // 3) Neo4J
+  "powerBI",          // 4) Power BI e Análise de dados
+  "database",         // 5) Banco de Dados
+  "python",           // 6) Python
+  "dotnet",           // 7) C#/dotnet
+  "java",             // 8) Java
+  "machineLearning",  // 9) Machine Learning
+  "aws",              // 10) Amazon AWS
+  "cybersecurity",    // 11) Cibersegurança
+  "logic",            // 12) Lógica de Programação
+  "html",             // 13) HTML
+  "articlesRepo",     // 14) Repositório de Artigos Técnicos
 ] as const;
 
 export type CategoryKey = (typeof CATEGORIES_ORDER)[number];
 
 /* ----------------------- Topic Aliases --------------------------- */
-/**
- * Mapeia TODOS os tópicos reais do GitHub
- * para uma categoria canônica
- */
+
 const TOPIC_ALIASES: Record<CategoryKey, string[]> = {
-  dataScience: [
-    "data-science",
-    "ciencia-de-dados",
-    "data-analysis",
-    "analise-de-dados",
-  ],
-  azureDatabricks: [
-    "azure-databricks",
-    "databricks",
-    "azure",
-    "azure-cloud",
-  ],
-  neo4j: [
-    "neo4j",
-    "graph-analysis",
-    "analise-de-grafos",
-  ],
-  powerBI: [
-    "power-bi",
-    "powerbi",
-    "business-intelligence",
-    "data-analysis",
-    "analise-de-dados",
-  ],
-  database: [
-    "database",
-    "banco-de-dados",
-    "sql",
-  ],
-  python: [
-    "python",
-  ],
-  dotnet: [
-    "dotnet",
-    "csharp",
-  ],
-  java: [
-    "java",
-  ],
-  machineLearning: [
-    "machine-learning",
-  ],
-  aws: [
-    "aws",
-    "amazon-aws",
-  ],
-  cybersecurity: [
-    "cybersecurity",
-    "ciberseguranca",
-  ],
-  logic: [
-    "programming-logic",
-    "logica-de-programacao",
-  ],
-  html: [
-    "html",
-    "frontend",
-  ],
-  articlesRepo: [
-    "articles",
-    "artigos-tecnicos",
-  ],
+  dataScience: ["data-science", "ciencia-de-dados", "data-analysis", "analise-de-dados"],
+  azureDatabricks: ["azure-databricks", "databricks", "azure", "azure-cloud"],
+  neo4j: ["neo4j", "graph-analysis", "analise-de-grafos"],
+  powerBI: ["power-bi", "powerbi", "business-intelligence"],
+  database: ["database", "banco-de-dados", "sql"],
+  python: ["python"],
+  dotnet: ["dotnet", "csharp"],
+  java: ["java"],
+  machineLearning: ["machine-learning"],
+  aws: ["aws", "amazon-aws"],
+  cybersecurity: ["cybersecurity", "ciberseguranca"],
+  logic: ["programming-logic", "logica-de-programacao"],
+  html: ["html", "frontend"],
+  articlesRepo: ["articles", "artigos-tecnicos", "articles-repo"],
 };
 
-/* ------------------------ Fetch Repos ----------------------------- */
+/* ------------------------ Fetch & Categorize ----------------------------- */
 
-/**
- * Busca repositórios do GitHub marcados como parte do portfólio
- */
 export async function getPortfolioRepos(
   user: string = DEFAULT_USER,
   mainTopic: string = "portfolio"
-): Promise<GitHubRepo[]> {
+): Promise<Record<CategoryKey, GitHubRepo[]>> {
   try {
+    const token = process.env.GITHUB_ACCESS_TOKEN;
     const res = await fetch(
-      `https://api.github.com/users/${user}/repos?per_page=100`,
+      `https://api.github.com/users/${user}/repos?per_page=100&sort=updated`,
       {
-        headers: { Accept: "application/vnd.github+json" },
+        headers: { 
+          Accept: "application/vnd.github+json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
         next: { revalidate: 3600 },
       }
     );
 
-    if (!res.ok) {
-      console.error("GitHub API error:", res.status, res.statusText);
-      return [];
-    }
+    if (!res.ok) return {} as Record<CategoryKey, GitHubRepo[]>;
 
-    const repos: GitHubRepo[] = await res.json();
+    const allRepos: GitHubRepo[] = await res.json();
 
-    return repos
-      .filter(
-        (repo) =>
-          Array.isArray(repo.topics) &&
-          repo.topics.includes(mainTopic)
-      )
-      .map((repo) => ({
-        ...repo,
-        description: repo.description ?? null,
-        topics: repo.topics ?? [],
-        stargazers_count: repo.stargazers_count ?? 0,
-      }));
+    // Filtra apenas quem tem a tag 'portfolio'
+    const portfolioRepos = allRepos.filter(
+      (repo) => Array.isArray(repo.topics) && repo.topics.includes(mainTopic)
+    );
+
+    // Inicializa o objeto de retorno
+    const categorized = {} as Record<CategoryKey, GitHubRepo[]>;
+    CATEGORIES_ORDER.forEach((cat) => (categorized[cat] = []));
+
+    // Distribui os repositórios nas categorias
+    portfolioRepos.forEach((repo) => {
+      for (const key of CATEGORIES_ORDER) {
+        const aliases = TOPIC_ALIASES[key];
+        if (repo.topics.some((topic) => aliases.includes(topic.toLowerCase()))) {
+          categorized[key].push({
+            ...repo,
+            description: repo.description ?? null,
+            topics: repo.topics ?? [],
+            stargazers_count: repo.stargazers_count ?? 0,
+          });
+          break; // Um repo só aparece na primeira categoria que der match
+        }
+      }
+    });
+
+    return categorized;
   } catch (error) {
     console.error("Failed to fetch GitHub repos:", error);
-    return [];
+    return {} as Record<CategoryKey, GitHubRepo[]>;
   }
-}
-
-/* --------------------- Categorize Repos --------------------------- */
-
-/**
- * Organiza repositórios por categoria canônica
- */
-export function categorizeRepos(
-  repos: GitHubRepo[]
-): Record<CategoryKey, GitHubRepo[]> {
-  const categorized = {} as Record<CategoryKey, GitHubRepo[]>;
-
-  CATEGORIES_ORDER.forEach((category) => {
-    const aliases = TOPIC_ALIASES[category];
-
-    categorized[category] = repos
-      .filter((repo) =>
-        repo.topics.some((topic) => aliases.includes(topic))
-      )
-      .sort((a, b) => {
-        const dateA = a.updated_at ? Date.parse(a.updated_at) : 0;
-        const dateB = b.updated_at ? Date.parse(b.updated_at) : 0;
-        return dateB - dateA;
-      });
-  });
-
-  return categorized;
 }
