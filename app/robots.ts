@@ -9,16 +9,20 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
         disallow: [
-          "/api/",      // Protege suas rotas de API
-          "/_next/",    // Protege arquivos internos do Next.js
-          "/private/", 
-          "/admin/"
+          "/api/",      // Evita indexar rotas de backend/servidor
+          "/_next/",    // Evita indexar arquivos de build do framework
+          "/private/",  // Protege pastas de rascunhos ou testes
+          "/admin/",    // Protege possíveis rotas de gerenciamento
+          "/*.json$",   // Evita que arquivos de configuração apareçam na busca
         ],
       },
+      {
+        // Regra amigável para buscadores de IA (opcional, mas recomendado para devs)
+        userAgent: "GPTBot",
+        allow: "/",
+      }
     ],
-    /** * Se você seguiu a recomendação de simplificar o sitemap, 
-     * use 'sitemap.xml'. Se manteve o index, use 'sitemap-index.xml'.
-     */
-    sitemap: [`${baseUrl}/sitemap.xml`],
+    // Seguindo a recomendação de sitemap unificado que revisamos anteriormente
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
