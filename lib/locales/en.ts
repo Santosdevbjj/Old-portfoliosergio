@@ -2,15 +2,15 @@ import type { Dictionary } from "../i18n";
 
 export const en: Dictionary = {
   meta: {
-    title: "Sérgio Santos | Data Specialist & Critical Systems Expert",
+    title: "Sérgio Santos | Data Science & Mission-Critical Systems",
     description:
-      "Senior Data Analyst with over 20 years of experience in banking critical systems, data governance, and data engineering.",
+      "Data Science Analyst with 15+ years of experience in the banking sector (Bradesco). Specialist in transforming complex data into strategic intelligence.",
   },
 
   navigation: {
     home: "Home",
     about: "About",
-    projects: "Projects",
+    projects: "Portfolio",
     contact: "Contact",
     language: "Language",
     openMenu: "Open menu",
@@ -18,7 +18,7 @@ export const en: Dictionary = {
   },
 
   footer: {
-    rights: "© 2026 Sérgio Santos. All rights reserved.",
+    rights: `© ${new Date().getFullYear()} Sérgio Santos. Data Engineering & Systems.`,
   },
 
   darkMode: {
@@ -27,37 +27,37 @@ export const en: Dictionary = {
   },
 
   sections: {
-    aboutTitle: "👨‍💻 About Me",
+    aboutTitle: "👨‍💻 Professional Profile",
     aboutIntro: "Data Science Analyst | Critical Systems Specialist",
     aboutDetails:
-      "Professional with a solid background in the banking sector (Bradesco), focused on transforming data into strategic decisions and operational efficiency.",
+      "Expertise in banking mission-critical systems, now dedicated to Data Science, AI, and Governance to support strategic decision-making.",
 
-    experienceTitle: "💼 Technical Experience",
-    reskillingTitle: "📚 Transition & Professional Upskilling",
-    differentialTitle: "⭐ Professional Differentiator",
-    objectiveTitle: "🎯 Objective",
+    experienceTitle: "💼 Experience & Impact",
+    reskillingTitle: "📚 Transition & Specialization",
+    differentialTitle: "⭐ Competitive Edge",
+    objectiveTitle: "🎯 Strategic Objective",
 
-    stackConsolidated: "Core Technologies",
-    stackUpdating: "Upskilling / Current Projects",
+    stackConsolidated: "Consolidated Stack (Core)",
+    stackUpdating: "Evolving Stack (Data & AI)",
 
-    projectsTitle: "🛠 Project Portfolio",
+    projectsTitle: "🛠 Project Ecosystem",
     articlesTitle: "📝 Technical Publications",
     featuredArticle: "Award-Winning Article",
-    featuredProjectTitle: "🚀 Featured Project", // ✅ Added
-    contactTitle: "Contact",
+    featuredProjectTitle: "🚀 High-Impact Project",
+    contactTitle: "Get in Touch",
 
-    searchPlaceholder: "Search projects...",
-    searchLabel: "Filter projects by technology",
-    filtersTitle: "Categories",
-    projectsGridTitle: "Project List",
-    noProjectsFound: "No projects found for this search.",
-    projectsEmpty: "Loading projects from GitHub...",
+    searchPlaceholder: "Ex: Databricks, Python, Graphs...",
+    searchLabel: "Filter by technology",
+    filtersTitle: "Technical Categories",
+    projectsGridTitle: "Engineering Repository",
+    noProjectsFound: "No repositories found for this filter.",
+    projectsEmpty: "Syncing data with GitHub API...",
   },
 
   portfolio: {
     title: "Sérgio Santos",
-    description: "Connecting legacy systems to modern data intelligence.",
-    buttonLabel: "View Projects →",
+    description: "Bridging the rigor of banking systems with modern data science agility.",
+    buttonLabel: "Explore Projects",
     projects: "Featured Projects",
   },
 
@@ -69,9 +69,9 @@ export const en: Dictionary = {
   socialImage: "/og-image-en.png",
 
   featuredArticle: {
-    title: "Low-Code in Healthcare: Medical Apps in Weeks",
+    title: "Low-Code in Healthcare: Building Medical Apps in Weeks",
     description:
-      "How low-code agility can transform hospital management with security and strong governance.",
+      "An analysis of how low-code platforms can modernize the healthcare sector, ensuring compliance, security, and accelerated delivery.",
     award1: "🏆 Winner of the 35th DIO Article Competition",
     award2: "🏆 Best Technical Article – September 2025",
     readOn: "Available on:",
@@ -83,60 +83,60 @@ export const en: Dictionary = {
   },
 
   featuredProject: {
-    badge: "Success Case", // ✅ Added
-    title: "Construction Delay Risk Prediction",
-    highlight: "Machine Learning applied to operational cost reduction.", // ✅ Added
-    stack: ["Python", "Scikit-Learn", "Pandas", "Random Forest"], // ✅ Added
-    challengeTitle: "The Challenge", // ✅ Added
+    badge: "FLAGSHIP PROJECT",
+    title: "Logistics Risk Simulator",
+    highlight: "Data Science applied to Construction & Risk Intelligence.",
+    stack: ["Python", "Azure Databricks", "Streamlit", "Machine Learning"],
+    challengeTitle: "The Problem",
     problem:
-      "Delays affecting approximately 35% of projects, resulting in recurring penalties and operational inefficiencies.",
-    baselineLabel: "Previous Scenario", // ✅ Added
+      "Logistical bottlenecks in complex construction projects causing recurring fines and delays in 35% of the schedule.",
+    baselineLabel: "Legacy Scenario",
     baseline:
-      "Forecasts based solely on historical averages, with an average error of 18 days.",
-    solutionTitle: "The Developed Solution", // ✅ Added
+      "Management based on static spreadsheets with an average forecast error of 18 days.",
+    solutionTitle: "Solution Architecture",
     solution:
-      "Machine Learning model (Random Forest) integrating weather conditions, soil data, and supplier performance.",
-    impactTitle: "Impact Generated", // ✅ Added
+      "Data pipeline on Databricks with a Random Forest model, interactive simulator, and automated alerts via Telegram Bot.",
+    impactTitle: "Measurable Results",
     result:
-      "Average error reduced to 7 days, generating an estimated annual savings of approximately $75,000.",
-    ctaLabel: "View on GitHub", // ✅ Added
-    ctaUrl: "https://github.com/Santosdevbjj", // ✅ Added
+      "Reduced forecast error to 7 days and generated an estimated annual savings of approximately $75,000.",
+    ctaLabel: "View Repository",
+    ctaUrl: "https://github.com/Santosdevbjj/analiseRiscosAtrasoObras",
   },
 
   experience: {
     item1:
-      "Process automation initiatives eliminating approximately 2,920 manual work hours per year.",
+      "Developed automated systems eliminating approximately 2,920 manual work hours per year.",
     item2:
-      "Infrastructure management for over 500 users, achieving 99.5% service availability.",
+      "Managed corporate network infrastructure for 500+ users with 99.5% SLA availability.",
     item3:
-      "Development and maintenance of critical legal systems with full traceability and LGPD/GDPR compliance.",
+      "Maintained critical legal systems with full traceability and LGPD/GDPR compliance.",
 
     reskilling:
-      "Structured reskilling program initiated in 2023, focused on Data Engineering and Machine Learning.",
+      "Continuous evolution in Data Science, Machine Learning, and Graph Analysis (Neo4j), applying technical rigor to emerging technologies.",
     differential:
-      "Rare ability to integrate governance of critical systems with artificial intelligence solutions.",
+      "Systemic vision combining banking regulatory compliance with artificial intelligence innovation.",
     objective:
-      "Seeking opportunities in projects where operational efficiency, data quality, and risk reduction are strategic priorities.",
+      "To contribute to projects involving infrastructure modernization, data governance, or high-complexity regulated systems.",
     
-    stackConsolidated: "Windows Server, SQL Server, C#, .NET, IT Governance, Data Security.",
-    stackUpdating: "Python, Azure Databricks, Apache Spark, Neo4j, Machine Learning, Power BI.",
+    stackConsolidated: "SQL Server, Windows Server, C#, .NET, IT Governance, IBM Mainframe, Active Directory.",
+    stackUpdating: "Python, Azure Databricks, Apache Spark, Neo4j, Machine Learning, Docker, Power BI.",
   },
 
   projectCategories: {
     dataScience: "Data Science",
     azureDatabricks: "Azure Databricks",
-    neo4j: "Neo4J",
-    powerBI: "Power BI",
+    neo4j: "Graphs (Neo4J)",
+    powerBI: "Power BI & Analytics",
     database: "Databases",
     python: "Python",
-    dotnet: "C# .NET",
+    dotnet: ".NET & C#",
     java: "Java",
     machineLearning: "Machine Learning",
-    aws: "AWS Cloud",
+    aws: "Amazon AWS",
     cybersecurity: "Cybersecurity",
-    logic: "Programming Logic",
-    html: "Front-end",
-    articlesRepo: "Articles",
-    unknown: "General",
+    logic: "Logic & Algorithms",
+    html: "Web / Frontend",
+    articlesRepo: "Technical Articles",
+    unknown: "Others",
   },
 };
