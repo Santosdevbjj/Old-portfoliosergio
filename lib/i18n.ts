@@ -24,7 +24,8 @@ export type Dictionary = {
     projectsTitle: string; articlesTitle: string; featuredArticle: string;
     contactTitle: string; searchPlaceholder: string; searchLabel: string;
     filtersTitle: string; projectsGridTitle: string; noProjectsFound: string;
-    projectsEmpty?: string; 
+    projectsEmpty?: string;
+    featuredProjectTitle: string; // Adicionado para o título da seção
   };
   portfolio: { title: string; description: string; buttonLabel: string; projects: string };
   cv: { url: string; label: string };
@@ -34,7 +35,20 @@ export type Dictionary = {
     links: { dio: string; linkedin: string; medium: string };
   };
   featuredProject: {
-    title: string; problem: string; baseline: string; solution: string; result: string;
+    badge: string;
+    title: string;
+    highlight: string;
+    stack: string[];
+    challengeTitle: string;
+    problem: string;
+    baselineLabel: string;
+    baseline: string;
+    solutionTitle: string;
+    solution: string;
+    impactTitle: string;
+    result: string;
+    ctaLabel: string;
+    ctaUrl: string;
   };
   experience: {
     item1: string; item2: string; item3: string;
@@ -53,7 +67,6 @@ export type Dictionary = {
 
 /**
  * Mapeamento direto dos objetos de tradução.
- * Isso elimina erros de "file not found" que ocorrem com arquivos JSON.
  */
 const dictionaries: Record<Locale, Dictionary> = {
   pt,
@@ -63,8 +76,6 @@ const dictionaries: Record<Locale, Dictionary> = {
 
 /**
  * Obtém o dicionário de forma síncrona.
- * Nota: Como os arquivos .ts já estão importados no topo, 
- * não há necessidade de 'async/await' ou 'fetch'.
  */
 export const getDictionary = (locale: Locale): Dictionary => {
   return dictionaries[locale] || dictionaries.pt;
