@@ -4,94 +4,77 @@
 
 @layer base {
   :root {
-    /* Altura da sua Navbar + margem de respiro */
-    scroll-padding-top: 6rem;
+    /* Altura da Navbar para âncoras de scroll não ficarem escondidas */
+    scroll-padding-top: 5rem;
     
-    /* Variáveis para facilitar manutenção de cores sem poluir o HTML */
-    --brand-primary: 37 99 235; /* Blue-600 */
-    --brand-secondary: 79 70 229; /* Indigo-600 */
+    /* Variáveis de Marca (Blue/Indigo) */
+    --brand-primary: 37 99 235;
+    --brand-secondary: 79 70 229;
   }
 
   html {
     scroll-behavior: smooth;
-    /* Melhora a renderização da barra de rolagem nativa */
     color-scheme: light dark;
+    /* Melhora o rendering em telas Retina */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    @apply transition-colors duration-300 antialiased;
     @apply bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-50;
-    
-    /* Prevenção de "Layout Shift" e melhor legibilidade */
+    @apply transition-colors duration-300;
     text-rendering: optimizeLegibility;
     line-height: 1.6;
+    overflow-x: hidden;
   }
 
-  /* Tipografia Fluida Avançada */
+  /* Tipografia Fluida - Estilo Sênior */
+  h1, h2, h3 {
+    @apply tracking-tighter text-slate-900 dark:text-white;
+  }
+
   h1 {
-    @apply font-black tracking-tight;
+    @apply font-black;
     font-size: clamp(2.5rem, 8vw, 5rem);
-    line-height: 1;
+    line-height: 0.95;
   }
   
   h2 {
-    @apply font-bold tracking-tight;
+    @apply font-extrabold;
     font-size: clamp(1.8rem, 5vw, 3.2rem);
     line-height: 1.1;
   }
 
   h3 {
     @apply font-bold;
-    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
   }
 
   p {
-    @apply leading-relaxed;
-    font-size: clamp(1rem, 1.2vw, 1.125rem);
+    @apply leading-relaxed text-slate-600 dark:text-slate-400;
+    font-size: clamp(1rem, 1.1vw, 1.125rem);
+  }
+
+  /* Customização da Seleção */
+  ::selection {
+    @apply bg-blue-500/30 text-blue-900 dark:text-blue-100;
   }
 }
 
-/* 🎨 Animações de Marca */
-@layer utilities {
-  .animate-text-gradient {
-    background-size: 200% auto;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    animation: textGradient 4s linear infinite;
-    background-image: linear-gradient(
-      to right,
-      #2563eb,
-      #4f46e5,
-      #7c3aed,
-      #2563eb
-    );
-  }
-
-  .bg-grid-slate {
-    background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-}
-
-@keyframes textGradient {
-  to { background-position: 200% center; }
-}
-
-/* 🛠️ Componentes Utilitários Globais */
 @layer components {
+  /* Container Padrão do Site */
   .main-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full;
+    @apply max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 w-full;
   }
 
-  /* Efeito de Vidro (Glassmorphism) customizado */
+  /* Glassmorphism Refinado */
   .glass-effect {
-    @apply bg-white/70 dark:bg-slate-950/70 backdrop-blur-lg border border-slate-200/50 dark:border-slate-800/50;
+    @apply bg-white/70 dark:bg-slate-950/80 backdrop-blur-xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm;
   }
 
-  /* Estilização customizada da Scrollbar (Webkit) */
+  /* Scrollbar Moderna Estilo Mac/Mobile */
   ::-webkit-scrollbar {
-    @apply w-2;
+    @apply w-1.5;
   }
   
   ::-webkit-scrollbar-track {
@@ -103,7 +86,33 @@
   }
 }
 
-/* Seleção de Texto */
-::selection {
-  @apply bg-blue-500/30 text-blue-900 dark:text-blue-100;
+@layer utilities {
+  /* Gradiente de Texto para Heros e Títulos de Destaque */
+  .animate-text-gradient {
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    @apply text-transparent font-black;
+    animation: textGradient 5s ease infinite;
+    background-image: linear-gradient(
+      to right,
+      #2563eb,
+      #4f46e5,
+      #06b6d4,
+      #2563eb
+    );
+  }
+
+  /* Grid de Fundo (Data Science Style) */
+  .bg-grid-slate {
+    background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+    background-size: 32px 32px;
+    @apply text-slate-200 dark:text-slate-900;
+  }
+}
+
+@keyframes textGradient {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
 }
