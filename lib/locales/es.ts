@@ -23,7 +23,7 @@ export const es: Dictionary = {
 
   darkMode: {
     lightMode: "Modo Claro",
-    darkMode: "Modo Escuro",
+    darkMode: "Modo Oscuro",
   },
 
   sections: {
@@ -37,13 +37,13 @@ export const es: Dictionary = {
     differentialTitle: "⭐ Diferencial Profesional",
     objectiveTitle: "🎯 Objetivo",
 
-    // ✅ Match con las necesidades de page.tsx
     stackConsolidated: "Tecnologías Consolidadas",
     stackUpdating: "En Actualización / Nuevos Proyectos",
 
     projectsTitle: "🛠 Portafolio de Proyectos",
     articlesTitle: "📝 Publicaciones Técnicas",
     featuredArticle: "Artículo Premiado",
+    featuredProjectTitle: "🚀 Proyecto Destacado", // ✅ Añadido
     contactTitle: "Contacto",
 
     searchPlaceholder: "Buscar proyectos...",
@@ -51,7 +51,7 @@ export const es: Dictionary = {
     filtersTitle: "Categorías",
     projectsGridTitle: "Lista de Proyectos",
     noProjectsFound: "No se encontraron proyectos para esta búsqueda.",
-    projectsEmpty: "Cargando proyectos desde GitHub o no se encontraron proyectos con la etiqueta 'portfolio'...",
+    projectsEmpty: "Cargando proyectos desde GitHub...",
   },
 
   portfolio: {
@@ -83,15 +83,24 @@ export const es: Dictionary = {
   },
 
   featuredProject: {
+    badge: "Caso de Éxito", // ✅ Añadido
     title: "Predicción de Riesgo de Retrasos en Obras",
+    highlight: "Machine Learning aplicado a la reducción de costos operativos.", // ✅ Añadido
+    stack: ["Python", "Scikit-Learn", "Pandas", "Random Forest"], // ✅ Añadido
+    challengeTitle: "El Desafío", // ✅ Añadido
     problem:
       "Retrasos que afectan aproximadamente al 35% de las obras, generando multas recurrentes y pérdida de eficiencia.",
+    baselineLabel: "Escenario Anterior", // ✅ Añadido
     baseline:
       "Predicciones basadas en promedios históricos, con un margen de error de 18 días.",
+    solutionTitle: "La Solución Desarrollada", // ✅ Añadido
     solution:
       "Modelo de Machine Learning (Random Forest) integrando clima, características del suelo y desempeño de proveedores.",
+    impactTitle: "Impacto Generado", // ✅ Añadido
     result:
       "Reducción del error promedio a 7 días y ahorro anual estimado de aproximadamente R$ 420.000.",
+    ctaLabel: "Ver en GitHub", // ✅ Añadido
+    ctaUrl: "https://github.com/Santosdevbjj", // ✅ Añadido
   },
 
   experience: {
@@ -109,7 +118,6 @@ export const es: Dictionary = {
     objective:
       "Participar en proyectos donde la eficiencia operativa, la calidad de los datos y la reducción de riesgos sean prioridades estratégicas.",
 
-    // ✅ Match con el componente de Skills en page.tsx
     stackConsolidated: "Windows Server, SQL Server, C#, .NET, Gobernanza de TI, Seguridad de Datos.",
     stackUpdating: "Python, Azure Databricks, Apache Spark, Neo4j, Machine Learning, Power BI.",
   },
@@ -125,7 +133,7 @@ export const es: Dictionary = {
     java: "Java",
     machineLearning: "Machine Learning",
     aws: "AWS Cloud",
-    cybersecurity: "Ciberseguridad",
+    cybersecurity: "Cibersegurança",
     logic: "Lógica de Programación",
     html: "Front-end",
     articlesRepo: "Artículos",
