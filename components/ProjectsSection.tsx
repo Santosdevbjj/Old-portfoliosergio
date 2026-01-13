@@ -1,79 +1,39 @@
 "use client";
 
-import Link from "next/link";
 import ProjectCard from "./ProjectCard";
 import type { GitHubRepo } from "@/lib/github";
-import type { Translations, Locale } from "@/lib/i18n";
+import type { Dictionary, Locale } from "@/lib/i18n";
 
 interface Props {
-  locale: Locale;
-  dict: Translations;
+  title: string;
   projects: GitHubRepo[];
 }
 
-export default function ProjectsSection({ locale, dict, projects }: Props) {
-  // Exibir apenas projetos em destaque
-  const featuredProjects = projects.slice(0, 3);
-
-  const htmlLang =
-    locale === "en" ? "en-US" : locale === "es" ? "es-ES" : "pt-BR";
+export default function ProjectSection({ title, projects }: Props) {
+  // Se não houver projetos, não renderiza a seção
+  if (!projects || projects.length === 0) return null;
 
   return (
     <section
-      id="featured-projects"
-      role="region"
-      aria-labelledby="featured-projects-title"
-      lang={htmlLang}
-      className="
-        max-w-7xl mx-auto
-        px-4 lg:px-8
-        py-12 sm:py-20
-        space-y-10
-      "
+      className="space-y-6"
+      aria-labelledby={`section-${title.toLowerCase().replace(/\s+/g, "-")}`}
     >
-      {/* TÍTULO */}
-      <h2
-        id="featured-projects-title"
-        className="
-          text-3xl sm:text-4xl
-          font-bold
-          text-slate-900 dark:text-slate-100
-          text-center
-        "
+      {/* TÍTULO DA CATEGORIA */}
+      <h3
+        id={`section-${title.toLowerCase().replace(/\s+/g, "-")}`}
+        className="text-2xl font-semibold text-slate-800 dark:text-slate-200 border-l-4 border-blue-600 pl-4"
       >
-        {dict.sections.projectsTitle}
-      </h2>
+        {title}
+      </h3>
 
-      {/* GRID DE PROJETOS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {featuredProjects.map((repo) => (
+      {/* GRID DE PROJETOS DA CATEGORIA */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map((repo) => (
           <ProjectCard
             key={repo.id}
             repo={repo}
-            dict={dict}
-            lang={locale}
           />
         ))}
-      </div>
-
-      {/* CTA – VER TODOS */}
-      <div className="text-center">
-        <Link
-          href={`/${locale}/projects/list`}
-          className="
-            inline-flex items-center justify-center
-            px-6 py-3
-            rounded-xl
-            bg-gradient-to-r from-purple-500 to-pink-500
-            text-white font-semibold
-            hover:scale-105
-            transition-transform
-            focus:outline-none
-            focus:ring-2 focus:ring-offset-2 focus:ring-purple-500
-          "
-        >
-          {dict.sections.viewAllProjects} →
-        </Link>
       </div>
     </section>
   );
