@@ -11,6 +11,7 @@ export interface ProjectFrontmatter {
   description?: string;
   tags?: string[];
   slug?: string;
+  featured?: boolean; // Adicionado para destacar projetos no futuro
 }
 
 export interface ProjectData {
@@ -31,26 +32,23 @@ function getProjectPath(lang: Lang, slug: string) {
 
 /**
  * Normaliza e valida o frontmatter
- * Evita metadata incompleta ou inconsistente
  */
 function normalizeFrontmatter(
   data: Record<string, unknown>,
   slug: string
 ): ProjectFrontmatter {
   return {
-    title: String(data.title ?? slug),
+    title: String(data.title || slug),
     date: typeof data.date === "string" ? data.date : undefined,
-    description:
-      typeof data.description === "string" ? data.description : undefined,
-    tags: Array.isArray(data.tags)
-      ? data.tags.map(String)
-      : undefined,
+    description: typeof data.description === "string" ? data.description : undefined,
+    tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     slug,
+    featured: Boolean(data.featured),
   };
 }
 
 /**
- * Lê e processa um arquivo MDX específico
+ * Lê e processa um arquivo MDX específico com tratamento de erro granular
  */
 async function readMdxFile(
   lang: Lang,
@@ -59,8 +57,15 @@ async function readMdxFile(
   const filePath = getProjectPath(lang, slug);
 
   try {
+    // Verifica se o arquivo existe antes de tentar ler (evita throws desnecessários)
+    const stats = await fs.stat(filePath);
+    if (!stats.isFile()) return null;
+
     const raw = await fs.readFile(filePath, "utf8");
     const { data, content } = matter(raw);
+
+    // Se o conteúdo estiver vazio e não houver frontmatter, ignora
+    if (!content && Object.keys(data).length === 0) return null;
 
     return {
       slug,
@@ -68,32 +73,35 @@ async function readMdxFile(
       content,
       metadata: normalizeFrontmatter(data, slug),
     };
-  } catch {
+  } catch (error) {
+    // Log apenas em desenvolvimento para não poluir o log de produção
+    if (process.env.NODE_ENV === "development") {
+      console.warn(`[MDX] Arquivo não encontrado ou inválido: ${lang}/${slug}`);
+    }
     return null;
   }
 }
 
 /**
  * Lê um projeto por slug e idioma.
- * Se não existir no idioma solicitado, faz fallback para EN.
+ * ⚡ Cacheado no nível da requisição pelo React
  */
-export async function getProjectBySlug(
-  slug: string,
-  lang: Lang
-): Promise<ProjectData | null> {
-  const project = await readMdxFile(lang, slug);
-  if (project) return project;
+export const getProjectBySlug = cache(
+  async (slug: string, lang: Lang): Promise<ProjectData | null> => {
+    const project = await readMdxFile(lang, slug);
+    if (project) return project;
 
-  if (lang !== "en") {
-    return await readMdxFile("en", slug);
+    // Fallback inteligente: Se não achou em PT ou ES, tenta EN
+    if (lang !== "en") {
+      return await readMdxFile("en", slug);
+    }
+
+    return null;
   }
-
-  return null;
-}
+);
 
 /**
  * Lista todos os slugs disponíveis para um idioma.
- * ⚡ Cacheado para evitar múltiplas leituras de disco.
  */
 export const listSlugsByLang = cache(
   async (lang: Lang): Promise<string[]> => {
@@ -112,8 +120,7 @@ export const listSlugsByLang = cache(
 );
 
 /**
- * Retorna todos os projetos de um idioma.
- * Projetos mais recentes aparecem primeiro (quando date existir).
+ * Retorna todos os projetos de um idioma de forma eficiente.
  */
 export async function getAllProjects(lang: Lang): Promise<ProjectData[]> {
   const slugs = await listSlugsByLang(lang);
@@ -125,10 +132,9 @@ export async function getAllProjects(lang: Lang): Promise<ProjectData[]> {
   return projects
     .filter((p): p is ProjectData => p !== null)
     .sort((a, b) => {
-      if (!a.metadata.date || !b.metadata.date) return 0;
-      return (
-        new Date(b.metadata.date).getTime() -
-        new Date(a.metadata.date).getTime()
-      );
+      // Ordenação segura por data (decrescente)
+      const dateA = a.metadata.date ? new Date(a.metadata.date).getTime() : 0;
+      const dateB = b.metadata.date ? new Date(b.metadata.date).getTime() : 0;
+      return dateB - dateA;
     });
 }
