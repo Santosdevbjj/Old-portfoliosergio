@@ -1,10 +1,10 @@
 // components/HeroSection.tsx
 
 import React from "react";
-import { Translations } from "@/lib/i18n";
+import { Dictionary } from "@/lib/i18n";
 
 type HeroSectionProps = {
-  dict: Translations;
+  dict: Dictionary; // Alterado de Translations para Dictionary
 };
 
 const HeroSection: React.FC<HeroSectionProps> = ({ dict }) => {
@@ -14,7 +14,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ dict }) => {
       aria-labelledby="hero-title"
       className="
         flex flex-col items-center justify-center text-center
-        min-h-[85vh]
+        min-h-[70vh]
         px-6
         bg-white dark:bg-slate-950
         text-slate-900 dark:text-white
@@ -22,18 +22,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({ dict }) => {
       "
     >
       <div className="max-w-4xl w-full">
-        {/* TÍTULO PRINCIPAL */}
+        {/* TÍTULO PRINCIPAL - Usando o título do Meta ou Seções */}
         <h1
           id="hero-title"
           className="
             text-4xl sm:text-5xl md:text-6xl lg:text-7xl
             font-extrabold
             mb-6
-            bg-gradient-to-r from-blue-600 to-purple-600
+            bg-gradient-to-r from-blue-600 to-indigo-600
             bg-clip-text text-transparent
           "
         >
-          {dict.sections.aboutIntro}
+          {dict.sections.aboutTitle}
         </h1>
 
         {/* SUBTÍTULO / DESCRIÇÃO */}
@@ -45,22 +45,21 @@ const HeroSection: React.FC<HeroSectionProps> = ({ dict }) => {
             leading-relaxed
           "
         >
-          {dict.sections.aboutDetails}
+          {dict.sections.aboutIntro}
         </p>
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4">
           {/* BOTÃO PROJETOS */}
           <a
-            href="#projects"
-            aria-label={dict.portfolio.buttonLabel}
+            href="#projects-title"
             className="
               inline-flex items-center justify-center
               px-8 py-4
               bg-blue-600 hover:bg-blue-700
               text-white font-bold
               rounded-xl
-              shadow-xl
+              shadow-lg
               hover:scale-105
               transition-all
             "
@@ -73,16 +72,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({ dict }) => {
             href={dict.cv.url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={dict.cv.label}
             className="
               inline-flex items-center justify-center
               px-8 py-4
               bg-transparent
-              border-2 border-blue-600
-              text-blue-600 dark:text-blue-400
+              border-2 border-slate-200 dark:border-slate-800
+              text-slate-900 dark:text-white
               font-bold
               rounded-xl
-              hover:bg-blue-50 dark:hover:bg-blue-900/20
+              hover:bg-slate-50 dark:hover:bg-slate-900/40
               transition-all
             "
           >
