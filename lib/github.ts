@@ -16,29 +16,30 @@ export type GitHubRepo = {
 const DEFAULT_USER = "Santosdevbjj";
 
 /**
- * 1. Categorias canônicas (Exatamente na ordem que você pediu)
+ * 1. Categorias canônicas (Exatamente na ordem definida)
  */
 export const CATEGORIES_ORDER = [
-  "dataScience",      // 1) Ciência de Dados
-  "azureDatabricks",  // 2) Azure Databricks
-  "neo4j",            // 3) Neo4J
-  "powerBI",          // 4) Power BI e Análise de dados
-  "database",         // 5) Banco de Dados
-  "python",           // 6) Python
-  "dotnet",           // 7) C#/dotnet
-  "java",             // 8) Java
-  "machineLearning",  // 9) Machine Learning
-  "aws",              // 10) Amazon AWS
-  "cybersecurity",    // 11) Cibersegurança
-  "logic",            // 12) Lógica de Programação
-  "html",             // 13) HTML
-  "articlesRepo",     // 14) Repositório de Artigos Técnicos
+  "dataScience",
+  "azureDatabricks",
+  "neo4j",
+  "powerBI",
+  "database",
+  "python",
+  "dotnet",
+  "java",
+  "machineLearning",
+  "aws",
+  "cybersecurity",
+  "logic",
+  "html",
+  "articlesRepo",
 ] as const;
 
 export type CategoryKey = (typeof CATEGORIES_ORDER)[number];
 
 /* ----------------------- Topic Aliases --------------------------- */
 
+// Mapeamento dos tópicos do GitHub para as categorias do site
 const TOPIC_ALIASES: Record<CategoryKey, string[]> = {
   dataScience: ["data-science", "ciencia-de-dados", "data-analysis", "analise-de-dados"],
   azureDatabricks: ["azure-databricks", "databricks", "azure", "azure-cloud"],
@@ -58,55 +59,72 @@ const TOPIC_ALIASES: Record<CategoryKey, string[]> = {
 
 /* ------------------------ Fetch & Categorize ----------------------------- */
 
+/**
+ * Busca e categoriza repositórios do GitHub com base em tópicos.
+ * Implementa cache de 1 hora para otimização de performance.
+ */
 export async function getPortfolioRepos(
   user: string = DEFAULT_USER,
   mainTopic: string = "portfolio"
 ): Promise<Record<CategoryKey, GitHubRepo[]>> {
+  // Inicializa o objeto com arrays vazios para evitar erros de undefined no frontend
+  const categorized: Record<CategoryKey, GitHubRepo[]> = CATEGORIES_ORDER.reduce(
+    (acc, key) => ({ ...acc, [key]: [] }),
+    {} as Record<CategoryKey, GitHubRepo[]>
+  );
+
   try {
     const token = process.env.GITHUB_ACCESS_TOKEN;
+    
+    // Configuração do fetch com cache e headers oficiais
     const res = await fetch(
       `https://api.github.com/users/${user}/repos?per_page=100&sort=updated`,
       {
-        headers: { 
+        headers: {
           Accept: "application/vnd.github+json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {})
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          "User-Agent": "Portfolio-Sergio-Santos" // Requisito da API do GitHub
         },
-        next: { revalidate: 3600 },
+        next: { revalidate: 3600 }, // Cache de 1 hora no Next.js
       }
     );
 
-    if (!res.ok) return {} as Record<CategoryKey, GitHubRepo[]>;
+    if (!res.ok) {
+      console.warn(`GitHub API responded with ${res.status}: ${res.statusText}`);
+      return categorized;
+    }
 
     const allRepos: GitHubRepo[] = await res.json();
 
-    // Filtra apenas quem tem a tag 'portfolio'
+    // 1. Filtra repositórios marcados com 'portfolio'
     const portfolioRepos = allRepos.filter(
       (repo) => Array.isArray(repo.topics) && repo.topics.includes(mainTopic)
     );
 
-    // Inicializa o objeto de retorno
-    const categorized = {} as Record<CategoryKey, GitHubRepo[]>;
-    CATEGORIES_ORDER.forEach((cat) => (categorized[cat] = []));
-
-    // Distribui os repositórios nas categorias
+    // 2. Distribui os repositórios nas categorias conforme a prioridade da CATEGORIES_ORDER
     portfolioRepos.forEach((repo) => {
+      const repoTopics = repo.topics.map(t => t.toLowerCase());
+      
       for (const key of CATEGORIES_ORDER) {
         const aliases = TOPIC_ALIASES[key];
-        if (repo.topics.some((topic) => aliases.includes(topic.toLowerCase()))) {
+        
+        // Verifica se algum tópico do repo bate com os aliases da categoria
+        if (repoTopics.some((topic) => aliases.includes(topic))) {
           categorized[key].push({
             ...repo,
             description: repo.description ?? null,
             topics: repo.topics ?? [],
             stargazers_count: repo.stargazers_count ?? 0,
           });
-          break; // Um repo só aparece na primeira categoria que der match
+          // Break garante que o projeto apareça apenas na categoria de maior prioridade
+          break; 
         }
       }
     });
 
     return categorized;
   } catch (error) {
-    console.error("Failed to fetch GitHub repos:", error);
-    return {} as Record<CategoryKey, GitHubRepo[]>;
+    console.error("Critical error fetching GitHub repos:", error);
+    return categorized;
   }
 }
