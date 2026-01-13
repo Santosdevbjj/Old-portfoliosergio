@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-export default function GlobalError({
+export default function Error({
   error,
   reset,
 }: {
@@ -10,6 +10,9 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
+    // Log do erro para o console do desenvolvedor (visível no log da Vercel se for SSR)
+    console.error("Critical Rendering Error:", error);
+
     const reportError = async () => {
       try {
         await fetch("/api/log", {
@@ -20,11 +23,12 @@ export default function GlobalError({
             message: error.message || "Erro de renderização no cliente",
             stack: error.stack,
             digest: error.digest,
-            url: window.location.href,
+            url: typeof window !== "undefined" ? window.location.href : "unknown",
+            timestamp: new Date().toISOString(),
           }),
         });
       } catch (e) {
-        // Falha silenciosa para o usuário
+        // Falha silenciosa para não gerar um loop de erros
       }
     };
 
@@ -32,17 +36,40 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
-      <h2 className="mb-4 text-2xl font-bold dark:text-white">Algo não saiu como esperado</h2>
-      <p className="mb-6 text-slate-600 dark:text-slate-400">
-        O erro foi registrado e nossa equipe técnica já foi notificada.
+    <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center">
+      <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
+        <span className="text-4xl">⚠️</span>
+      </div>
+      
+      <h2 className="mb-4 text-3xl font-black tracking-tight text-slate-900 dark:text-white">
+        Ops! Algo deu errado.
+      </h2>
+      
+      <p className="mb-8 max-w-md text-lg text-slate-600 dark:text-slate-400">
+        Ocorreu um erro inesperado na renderização desta página. Nossa equipe técnica foi notificada automaticamente.
       </p>
-      <button
-        onClick={() => reset()}
-        className="rounded-full bg-slate-900 px-8 py-3 font-medium text-white transition-all hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
-      >
-        Tentar novamente
-      </button>
+
+      <div className="flex flex-col gap-4 sm:flex-row">
+        <button
+          onClick={() => reset()}
+          className="rounded-2xl bg-blue-600 px-8 py-3 font-bold text-white transition-all hover:bg-blue-700 hover:shadow-lg active:scale-95 shadow-blue-500/20"
+        >
+          Tentar novamente
+        </button>
+        
+        <button
+          onClick={() => window.location.href = "/"}
+          className="rounded-2xl bg-slate-200 px-8 py-3 font-bold text-slate-900 transition-all hover:bg-slate-300 active:scale-95 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
+        >
+          Voltar para Home
+        </button>
+      </div>
+
+      {error.digest && (
+        <p className="mt-10 text-xs font-mono text-slate-400 dark:text-slate-500">
+          ID do erro: {error.digest}
+        </p>
+      )}
     </div>
   );
 }
