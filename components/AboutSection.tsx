@@ -1,78 +1,89 @@
-"use client";
-
-import { getDictionary, DEFAULT_LOCALE, Locale } from "@/lib/i18n";
+import { getDictionary, Locale } from "@/lib/i18n";
 
 interface Props {
-  locale?: Locale;
+  locale: Locale;
 }
 
-export default function AboutSection({ locale = DEFAULT_LOCALE }: Props) {
+// Removido o "use client" para torná-lo um Server Component
+export default function AboutSection({ locale }: Props) {
   const dict = getDictionary(locale);
+
+  // Mapeamento de idioma para o atributo 'lang'
+  const htmlLangMap = {
+    en: "en-US",
+    es: "es-ES",
+    pt: "pt-BR",
+  };
 
   return (
     <section
       id="about"
       role="region"
       aria-labelledby="about-title"
-      lang={locale === "en" ? "en-US" : locale === "es" ? "es-ES" : "pt-BR"}
-      className="container mx-auto max-w-5xl px-4 lg:px-8 py-10 sm:py-16 space-y-6 sm:space-y-8 bg-surface-light dark:bg-surface-dark transition-colors duration-300"
+      lang={htmlLangMap[locale]}
+      className="container mx-auto max-w-5xl px-4 lg:px-8 py-16 sm:py-24 space-y-12 transition-colors duration-300"
     >
-      {/* Título multilíngue */}
-      <h2
-        id="about-title"
-        className="font-bold text-[clamp(1.75rem,3vw+1rem,2.5rem)] text-gray-900 dark:text-gray-100"
-      >
-        {dict.sections.aboutTitle}
-      </h2>
+      <div className="space-y-6">
+        {/* Título com detalhe visual (border-left ou underline) */}
+        <h2
+          id="about-title"
+          className="font-bold text-[clamp(2rem,4vw,3rem)] text-slate-900 dark:text-white border-l-4 border-blue-600 pl-4"
+        >
+          {dict.sections.aboutTitle}
+        </h2>
 
-      {/* Introdução */}
-      <p className="text-[clamp(1rem,2.5vw,1.25rem)] text-gray-700 dark:text-gray-300 leading-relaxed">
-        {dict.sections.aboutIntro}
-      </p>
+        {/* Introdução com destaque (Lead text) */}
+        <p className="text-xl md:text-2xl text-slate-700 dark:text-slate-200 leading-relaxed font-medium">
+          {dict.sections.aboutIntro}
+        </p>
 
-      {/* Detalhes */}
-      <p className="text-[clamp(0.875rem,2vw,1rem)] text-gray-600 dark:text-gray-400 max-w-3xl leading-relaxed">
-        {dict.sections.aboutDetails}
-      </p>
+        {/* Detalhes com melhor legibilidade */}
+        <p className="text-lg text-slate-600 dark:text-slate-400 max-w-4xl leading-relaxed">
+          {dict.sections.aboutDetails}
+        </p>
+      </div>
 
-      {/* Sub-seções */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-        <div>
-          <h3 className="font-semibold text-lg text-gray-800 dark:text-gray-200 mb-2">
+      
+
+      {/* Grids de Informação Técnica */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 border-t border-slate-200 dark:border-slate-800 pt-10">
+        <div className="space-y-3">
+          <h3 className="font-bold text-lg uppercase tracking-wider text-blue-600 dark:text-blue-400">
             {dict.sections.experienceTitle}
           </h3>
-          <ul className="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
-            <li>{dict.experience.item1}</li>
-            <li>{dict.experience.item2}</li>
-            <li>{dict.experience.item3}</li>
+          <ul className="space-y-3 text-slate-600 dark:text-slate-400">
+            {[dict.experience.item1, dict.experience.item2, dict.experience.item3].map((item, idx) => (
+              <li key={idx} className="flex items-start">
+                <span className="text-blue-500 mr-2">▹</span>
+                {item}
+              </li>
+            ))}
           </ul>
         </div>
 
-        <div>
-          <h3 className="font-semibold text-lg text-gray-800 dark:text-gray-200 mb-2">
+        <div className="space-y-3">
+          <h3 className="font-bold text-lg uppercase tracking-wider text-blue-600 dark:text-blue-400">
             {dict.sections.reskillingTitle}
           </h3>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
             {dict.experience.reskilling}
           </p>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-        <div>
-          <h3 className="font-semibold text-lg text-gray-800 dark:text-gray-200 mb-2">
+        <div className="space-y-3">
+          <h3 className="font-bold text-lg uppercase tracking-wider text-blue-600 dark:text-blue-400">
             {dict.sections.differentialTitle}
           </h3>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
             {dict.experience.differential}
           </p>
         </div>
 
-        <div>
-          <h3 className="font-semibold text-lg text-gray-800 dark:text-gray-200 mb-2">
+        <div className="space-y-3">
+          <h3 className="font-bold text-lg uppercase tracking-wider text-blue-600 dark:text-blue-400">
             {dict.sections.objectiveTitle}
           </h3>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-semibold">
             {dict.experience.objective}
           </p>
         </div>
