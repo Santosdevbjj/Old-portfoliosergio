@@ -1,28 +1,34 @@
 import { MetadataRoute } from "next";
 
-const baseUrl = "https://portfoliosergiosantos.vercel.app";
-
+/**
+ * Configuração dinâmica do Robots.txt para Next.js 15.
+ * Este arquivo ajuda no SEO internacional, garantindo que o Google 
+ * e outros bots saibam exatamente o que indexar.
+ */
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://portfoliosergiosantos.vercel.app";
+
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
         disallow: [
-          "/api/",      // Evita indexar rotas de backend/servidor
-          "/_next/",    // Evita indexar arquivos de build do framework
-          "/private/",  // Protege pastas de rascunhos ou testes
-          "/admin/",    // Protege possíveis rotas de gerenciamento
-          "/*.json$",   // Evita que arquivos de configuração apareçam na busca
+          "/api/",      // Protege endpoints de servidor
+          "/_next/",    // Evita indexar arquivos internos do framework
+          "/private/",  // Protege ambientes de teste
+          "/admin/",    // Garante segurança em rotas de gestão
+          "/*.json$",   // Evita exposição de arquivos de metadados/config
         ],
       },
       {
-        // Regra amigável para buscadores de IA (opcional, mas recomendado para devs)
-        userAgent: "GPTBot",
+        // Permite que bots de IA (como o da OpenAI) processem seu portfólio.
+        // Isso é excelente para que você seja "encontrado" em buscas de IA.
+        userAgent: ["GPTBot", "ChatGPT-User"],
         allow: "/",
       }
     ],
-    // Seguindo a recomendação de sitemap unificado que revisamos anteriormente
+    // Aponta para o sitemap que gera as URLs localizadas ([lang])
     sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
