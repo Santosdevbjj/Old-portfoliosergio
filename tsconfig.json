@@ -3,10 +3,14 @@
     "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     
-    /* Strict mode é essencial para manter a qualidade que revisamos nos componentes */
+    /* 🛡️ Qualidade de Código (Engenharia de Software) */
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
     
     "skipLibCheck": true,
     "noEmit": true,
@@ -16,15 +20,14 @@
     "esModuleInterop": true,
     "module": "esnext",
     
-    /* Recomendado para Next.js 14+ para melhor compatibilidade com pacotes */
+    /* ⚡ Performance e Next.js Pattern */
     "moduleResolution": "bundler",
-    
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve", // Deixa o Next.js controlar a transformação JSX
+    "jsx": "preserve",
     "incremental": true,
 
-    /* Imports absolutos (seu alias @/ já está correto) */
+    /* 🗺️ Caminhos Absolutos */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
@@ -40,7 +43,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "mdx/**/*.mdx" 
   ],
   "exclude": ["node_modules"]
 }
