@@ -1,67 +1,115 @@
 // app/[lang]/layout.tsx
 import type { ReactNode } from "react";
-import { getDictionary, Locale, SUPPORTED_LOCALES } from "@/lib/i18n";
+import { getDictionary, type Locale } from "@/lib/i18n";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import PageWrapper from "@/components/PageWrapper";
 
 interface LayoutProps {
   children: ReactNode;
   params: { lang: Locale };
 }
 
-export async function generateMetadata({ params }: { params: { lang: Locale } }) {
+/* ========= SEO / METADATA ========= */
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang: Locale };
+}) {
   const { lang } = params;
-  const dict = getDictionary(lang);
+  const dict = await getDictionary(lang);
   const baseUrl = "https://portfoliosergiosantos.vercel.app";
 
   return {
     title: dict.meta.title,
     description: dict.meta.description,
     metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: `/${lang}`,
+      languages: {
+        pt: "/pt",
+        en: "/en",
+        es: "/es",
+      },
+    },
     openGraph: {
       title: dict.meta.title,
       description: dict.meta.description,
       url: `${baseUrl}/${lang}`,
-      siteName: "Sergio Santos Portfolio",
+      siteName: "Sérgio Santos Portfolio",
+      locale:
+        lang === "pt" ? "pt_BR" : lang === "en" ? "en_US" : "es_ES",
+      type: "website",
       images: [
         {
-          url: `/og-image-${lang}.png`, // Simplificado, já que você nomeou os arquivos assim
+          url: `/og-image-${lang}.png`,
           width: 1200,
           height: 630,
           alt: dict.meta.title,
         },
       ],
-      locale: lang === "pt" ? "pt_BR" : lang === "en" ? "en_US" : "es_ES",
-      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: dict.meta.title,
+      description: dict.meta.description,
     },
   };
 }
 
-export default async function Layout({ children, params }: LayoutProps) {
+/* ========= LAYOUT ========= */
+export default async function LangLayout({
+  children,
+  params,
+}: LayoutProps) {
   const { lang } = params;
-  const dict = getDictionary(lang);
+  const dict = await getDictionary(lang);
 
   return (
     <html lang={lang} suppressHydrationWarning>
       <head>
+        {/* Dark mode early hydration fix */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `!function(){try{var e=document.cookie.split("; ").find(e=>e.startsWith("theme="))?.split("=")[1]||"system",t=window.matchMedia("(prefers-color-scheme: dark)").matches,n="dark"===e||"system"===e&&t;n?document.documentElement.classList.add("dark"):document.documentElement.classList.remove("dark")}catch(e){}}();`,
+            __html: `
+(function () {
+  try {
+    const storedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const shouldUseDark =
+      storedTheme === "dark" || (!storedTheme && prefersDark);
+
+    if (shouldUseDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  } catch (_) {}
+})();
+            `,
           }}
         />
       </head>
+
       <body className="min-h-screen flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300">
-        <PageWrapper lang={lang}>
-          {/* Ajustado para passar o locale conforme seu Header.tsx original */}
-          <Header locale={lang} />
+        {/* Header */}
+        <Header lang={lang} dict={dict.navigation} />
 
-          <main role="main" className="flex-1 w-full max-w-7xl mx-auto p-4 md:p-8">
-            {children}
-          </main>
+        {/* Conteúdo */}
+        <main
+          role="main"
+          className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"
+        >
+          {children}
+        </main>
 
-          <Footer locale={lang} />
-        </PageWrapper>
+        {/* Footer */}
+        <Footer
+          lang={lang}
+          dict={{
+            ...dict.navigation,
+            ...dict.footer,
+          }}
+        />
       </body>
     </html>
   );
