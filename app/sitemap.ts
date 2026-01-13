@@ -1,4 +1,4 @@
-import { MetadataRoute } from "next";
+import { MetadataRoute } from "next"; 
 import { getAllProjects, type Lang } from "@/lib/mdx";
 import { i18n } from "@/lib/i18n";
 
