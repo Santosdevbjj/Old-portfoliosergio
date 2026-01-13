@@ -23,7 +23,7 @@ export const es: Dictionary = {
 
   darkMode: {
     lightMode: "Modo Claro",
-    darkMode: "Modo Oscuro",
+    darkMode: "Modo Escuro",
   },
 
   sections: {
@@ -37,6 +37,10 @@ export const es: Dictionary = {
     differentialTitle: "⭐ Diferencial Profesional",
     objectiveTitle: "🎯 Objetivo",
 
+    // ✅ Match con las necesidades de page.tsx
+    stackConsolidated: "Tecnologías Consolidadas",
+    stackUpdating: "En Actualización / Nuevos Proyectos",
+
     projectsTitle: "🛠 Portafolio de Proyectos",
     articlesTitle: "📝 Publicaciones Técnicas",
     featuredArticle: "Artículo Premiado",
@@ -47,6 +51,7 @@ export const es: Dictionary = {
     filtersTitle: "Categorías",
     projectsGridTitle: "Lista de Proyectos",
     noProjectsFound: "No se encontraron proyectos para esta búsqueda.",
+    projectsEmpty: "Cargando proyectos desde GitHub o no se encontraron proyectos con la etiqueta 'portfolio'...",
   },
 
   portfolio: {
@@ -66,7 +71,7 @@ export const es: Dictionary = {
   featuredArticle: {
     title: "Low-Code en Salud: Aplicaciones Médicas en Semanas",
     description:
-      "Cómo la agilidad del low-code puede transformar la gestión hospitalaria con seguridad y gobernanza.",
+      "Cómo la agilidad del low-code puede transformar la gestión hospitalar con seguridad y gobernanza.",
     award1: "🏆 Ganador de la 35ª Competencia de Artículos DIO",
     award2: "🏆 Mejor Artículo Técnico – Septiembre de 2025",
     readOn: "Disponible en:",
@@ -103,6 +108,10 @@ export const es: Dictionary = {
       "Capacidad poco común para integrar la gobernanza de sistemas críticos con soluciones de inteligencia artificial.",
     objective:
       "Participar en proyectos donde la eficiencia operativa, la calidad de los datos y la reducción de riesgos sean prioridades estratégicas.",
+
+    // ✅ Match con el componente de Skills en page.tsx
+    stackConsolidated: "Windows Server, SQL Server, C#, .NET, Gobernanza de TI, Seguridad de Datos.",
+    stackUpdating: "Python, Azure Databricks, Apache Spark, Neo4j, Machine Learning, Power BI.",
   },
 
   projectCategories: {
