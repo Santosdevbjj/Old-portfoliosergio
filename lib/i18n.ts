@@ -1,134 +1,64 @@
+// lib/i18n.ts
+
 /* ================== LOCALES ================== */
-
 export const SUPPORTED_LOCALES = ["pt", "en", "es"] as const;
-
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 
-/* ================= DICTIONARY ================= */
-
+/* ================= DICTIONARY TYPE ================= */
+// Definimos a estrutura baseada no que você já criou
 export type Dictionary = {
-  /* ---------- SEO / META ---------- */
-  meta: {
-    title: string;
-    description: string;
+  meta: { title: string; description: string };
+  navigation: { 
+    home: string; about: string; projects: string; 
+    contact: string; language: string; openMenu: string; closeMenu: string; 
   };
-
-  /* ---------- NAVIGATION ---------- */
-  navigation: {
-    home: string;
-    about: string;
-    projects: string;
-    contact: string;
-    language: string;
-    openMenu: string;
-    closeMenu: string;
-  };
-
-  /* ---------- FOOTER ---------- */
-  footer: {
-    rights: string;
-  };
-
-  /* ---------- THEME ---------- */
-  darkMode: {
-    lightMode: string;
-    darkMode: string;
-  };
-
-  /* ---------- SECTIONS ---------- */
+  footer: { rights: string };
+  darkMode: { lightMode: string; darkMode: string };
   sections: {
-    aboutTitle: string;
-    aboutIntro: string;
-    aboutDetails: string;
-
-    experienceTitle: string;
-    reskillingTitle: string;
-    differentialTitle: string;
-    objectiveTitle: string;
-
-    /* Stack labels */
-    stackConsolidated: string;
-    stackUpdating: string;
-
-    projectsTitle: string;
-    articlesTitle: string;
-    featuredArticle: string;
-    contactTitle: string;
-
-    /* Portfolio / Grid */
-    searchPlaceholder: string;
-    searchLabel: string;
-    filtersTitle: string;
-    projectsGridTitle: string;
-    noProjectsFound: string;
+    aboutTitle: string; aboutIntro: string; aboutDetails: string;
+    experienceTitle: string; reskillingTitle: string; differentialTitle: string;
+    objectiveTitle: string; stackConsolidated: string; stackUpdating: string;
+    projectsTitle: string; articlesTitle: string; featuredArticle: string;
+    contactTitle: string; searchPlaceholder: string; searchLabel: string;
+    filtersTitle: string; projectsGridTitle: string; noProjectsFound: string;
+    projectsEmpty?: string; // Adicionado para evitar erro no page.tsx
   };
-
-  /* ---------- HERO / PORTFOLIO ---------- */
-  portfolio: {
-    title: string;
-    description: string;
-    buttonLabel: string;
-    projects: string;
-  };
-
-  /* ---------- CV ---------- */
-  cv: {
-    url: string;
-    label: string;
-  };
-
-  /* ---------- SOCIAL ---------- */
+  portfolio: { title: string; description: string; buttonLabel: string; projects: string };
+  cv: { url: string; label: string };
   socialImage: string;
-
-  /* ---------- FEATURED ARTICLE ---------- */
   featuredArticle: {
-    title: string;
-    description: string;
-    award1: string;
-    award2: string;
-    readOn: string;
-    links: {
-      dio: string;
-      linkedin: string;
-      medium: string;
-    };
+    title: string; description: string; award1: string; award2: string; readOn: string;
+    links: { dio: string; linkedin: string; medium: string };
   };
-
-  /* ---------- FEATURED PROJECT ---------- */
   featuredProject: {
-    title: string;
-    problem: string;
-    baseline: string;
-    solution: string;
-    result: string;
+    title: string; problem: string; baseline: string; solution: string; result: string;
   };
-
-  /* ---------- EXPERIENCE ---------- */
   experience: {
-    item1: string;
-    item2: string;
-    item3: string;
-    reskilling: string;
-    differential: string;
-    objective: string;
+    item1: string; item2: string; item3: string;
+    reskilling: string; differential: string; objective: string;
+    stackConsolidated: string; stackUpdating: string;
   };
-
-  /* ---------- PROJECT CATEGORIES ---------- */
   projectCategories: {
-    dataScience: string;
-    azureDatabricks: string;
-    neo4j: string;
-    powerBI: string;
-    database: string;
-    python: string;
-    dotnet: string;
-    java: string;
-    machineLearning: string;
-    aws: string;
-    cybersecurity: string;
-    logic: string;
-    html: string;
-    articlesRepo: string;
-    unknown: string;
+    dataScience: string; azureDatabricks: string; neo4j: string; powerBI: string;
+    database: string; python: string; dotnet: string; java: string;
+    machineLearning: string; aws: string; cybersecurity: string;
+    logic: string; html: string; articlesRepo: string; unknown: string;
   };
+};
+
+/* ================= LOADER LOGIC ================= */
+
+// Importação dinâmica dos dicionários para performance
+const dictionaries = {
+  pt: () => import("@/dictionaries/pt.json").then((module) => module.default),
+  en: () => import("@/dictionaries/en.json").then((module) => module.default),
+  es: () => import("@/dictionaries/es.json").then((module) => module.default),
+};
+
+/**
+ * Função principal para obter as traduções.
+ * Usada em Server Components como Page.tsx
+ */
+export const getDictionary = async (locale: Locale): Promise<Dictionary> => {
+  return dictionaries[locale] ? dictionaries[locale]() : dictionaries.pt();
 };
