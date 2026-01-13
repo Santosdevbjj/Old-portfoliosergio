@@ -37,13 +37,13 @@ export const en: Dictionary = {
     differentialTitle: "⭐ Professional Differentiator",
     objectiveTitle: "🎯 Objective",
 
-    // ✅ Match with page.tsx requirements
     stackConsolidated: "Core Technologies",
     stackUpdating: "Upskilling / Current Projects",
 
     projectsTitle: "🛠 Project Portfolio",
     articlesTitle: "📝 Technical Publications",
     featuredArticle: "Award-Winning Article",
+    featuredProjectTitle: "🚀 Featured Project", // ✅ Added
     contactTitle: "Contact",
 
     searchPlaceholder: "Search projects...",
@@ -51,7 +51,7 @@ export const en: Dictionary = {
     filtersTitle: "Categories",
     projectsGridTitle: "Project List",
     noProjectsFound: "No projects found for this search.",
-    projectsEmpty: "Loading projects from GitHub or no projects found with the 'portfolio' tag...",
+    projectsEmpty: "Loading projects from GitHub...",
   },
 
   portfolio: {
@@ -83,15 +83,24 @@ export const en: Dictionary = {
   },
 
   featuredProject: {
+    badge: "Success Case", // ✅ Added
     title: "Construction Delay Risk Prediction",
+    highlight: "Machine Learning applied to operational cost reduction.", // ✅ Added
+    stack: ["Python", "Scikit-Learn", "Pandas", "Random Forest"], // ✅ Added
+    challengeTitle: "The Challenge", // ✅ Added
     problem:
       "Delays affecting approximately 35% of projects, resulting in recurring penalties and operational inefficiencies.",
+    baselineLabel: "Previous Scenario", // ✅ Added
     baseline:
       "Forecasts based solely on historical averages, with an average error of 18 days.",
+    solutionTitle: "The Developed Solution", // ✅ Added
     solution:
       "Machine Learning model (Random Forest) integrating weather conditions, soil data, and supplier performance.",
+    impactTitle: "Impact Generated", // ✅ Added
     result:
       "Average error reduced to 7 days, generating an estimated annual savings of approximately $75,000.",
+    ctaLabel: "View on GitHub", // ✅ Added
+    ctaUrl: "https://github.com/Santosdevbjj", // ✅ Added
   },
 
   experience: {
@@ -109,7 +118,6 @@ export const en: Dictionary = {
     objective:
       "Seeking opportunities in projects where operational efficiency, data quality, and risk reduction are strategic priorities.",
     
-    // ✅ Match with Skills component in page.tsx
     stackConsolidated: "Windows Server, SQL Server, C#, .NET, IT Governance, Data Security.",
     stackUpdating: "Python, Azure Databricks, Apache Spark, Neo4j, Machine Learning, Power BI.",
   },
