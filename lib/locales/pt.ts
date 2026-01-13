@@ -37,13 +37,13 @@ export const pt: Dictionary = {
     differentialTitle: "⭐ Diferencial Profissional",
     objectiveTitle: "🎯 Objetivo",
 
-    // ✅ Adicionado para compatibilidade com page.tsx
     stackConsolidated: "Tecnologias Consolidadas",
     stackUpdating: "Em Atualização / Novos Projetos",
 
     projectsTitle: "🛠 Portfólio de Projetos",
     articlesTitle: "📝 Produção Técnica",
     featuredArticle: "Artigo Premiado",
+    featuredProjectTitle: "🚀 Projeto em Destaque", // ✅ Adicionado
     contactTitle: "Contato",
 
     searchPlaceholder: "Buscar projetos...",
@@ -51,7 +51,7 @@ export const pt: Dictionary = {
     filtersTitle: "Categorias",
     projectsGridTitle: "Lista de Projetos",
     noProjectsFound: "Nenhum projeto encontrado para esta busca.",
-    projectsEmpty: "Carregando projetos do GitHub ou nenhum projeto encontrado com a tag 'portfolio'...",
+    projectsEmpty: "Carregando projetos do GitHub...",
   },
 
   portfolio: {
@@ -83,15 +83,24 @@ export const pt: Dictionary = {
   },
 
   featuredProject: {
+    badge: "Case de Sucesso", // ✅ Adicionado
     title: "Predição de Risco de Atraso em Obras",
+    highlight: "Machine Learning aplicado à redução de custos operacionais.", // ✅ Adicionado
+    stack: ["Python", "Scikit-Learn", "Pandas", "Random Forest"], // ✅ Adicionado
+    challengeTitle: "O Desafio", // ✅ Adicionado
     problem:
       "Atrasos em aproximadamente 35% das obras, gerando multas recorrentes e desgaste operacional.",
+    baselineLabel: "Cenário Anterior", // ✅ Adicionado
     baseline:
       "Previsões baseadas apenas em média histórica, com erro médio de 18 dias.",
+    solutionTitle: "A Solução Desenvolvida", // ✅ Adicionado
     solution:
       "Modelo de Machine Learning (Random Forest) integrando clima, solo e desempenho de fornecedores.",
+    impactTitle: "Impacto Gerado", // ✅ Adicionado
     result:
       "Redução do erro médio para 7 dias e economia estimada de R$ 420 mil por ano.",
+    ctaLabel: "Ver no GitHub", // ✅ Adicionado
+    ctaUrl: "https://github.com/Santosdevbjj", // ✅ Adicionado
   },
 
   experience: {
@@ -109,7 +118,6 @@ export const pt: Dictionary = {
     objective:
       "Atuar em projetos onde eficiência operacional, qualidade de dados e redução de riscos sejam prioridades estratégicas.",
     
-    // ✅ Adicionado para compatibilidade com o componente de Skills no page.tsx
     stackConsolidated: "Windows Server, SQL Server, C#, .NET, Governança de TI, Segurança de Dados.",
     stackUpdating: "Python, Azure Databricks, Apache Spark, Neo4j, Machine Learning, Power BI.",
   },
