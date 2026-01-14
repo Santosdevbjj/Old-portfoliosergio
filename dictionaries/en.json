@@ -1,31 +1,54 @@
 {
   "portfolio": {
-    "title": "Analytics Engineering Portfolio",
-    "description": "Transforming complex data into strategic business insights.",
-    "buttonLabel": "View project →"
+    "title": "Data & Analytics Engineering Portfolio",
+    "description": "Data Engineer specializing in scalable architectures, ETL/ELT pipelines, and transforming data into strategic assets.",
+    "viewRepository": "View Repository",
+    "githubProjects": "Other GitHub Projects",
+    "noDescription": "Data engineering and analytics project focused on efficiency and scalability."
   },
   "categories": {
     "data-science": "Data Science",
     "azure-databricks": "Azure Databricks",
-    "neo4j": "Graph Database (Neo4j)",
-    "power-bi": "Business Intelligence (Power BI)",
+    "neo4j": "Graph Databases",
+    "power-bi": "Business Intelligence",
     "database": "Data Engineering",
-    "python": "Python Development",
+    "python": "Python Ecosystem",
     "dotnet": ".NET Development",
     "java": "Java Development",
     "machine-learning": "Machine Learning",
-    "aws": "Cloud Services (AWS)",
+    "aws": "Cloud Solutions (AWS)",
     "cybersecurity": "Cybersecurity",
     "programming-logic": "Programming Logic",
-    "html": "Web Fundamentals (HTML & CSS)",
+    "html": "Web Technologies",
     "articles-repo": "Technical Articles"
   },
   "footer": {
     "rights": "All rights reserved.",
-    "contact": "Contact"
+    "contact": "Get in touch",
+    "builtWith": "Built with Next.js and Tailwind CSS"
   },
   "theme": {
-    "themeLight": "Light Mode",
-    "themeDark": "Dark Mode"
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
+  },
+  "cta": {
+    "hireMe": "Work With Me",
+    "downloadCV": "Download CV",
+    "browseProjects": "Explore Projects"
+  },
+  "sections": {
+    "skills": "Hard Skills",
+    "experience": "Professional Experience",
+    "featuredProjects": "Featured Projects",
+    "testimonials": "Recommendations",
+    "about": "About Me",
+    "contact": "Contact"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred while loading data.",
+    "back": "Back",
+    "readMore": "Read Full Article"
   }
 }
