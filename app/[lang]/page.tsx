@@ -12,29 +12,24 @@ import {
   type GitHubRepo,
 } from "@/lib/github";
 
-/**
- * CONFIGURAÇÕES DE PERFORMANCE - NEXT.JS 15
- * revalidate: 3600 -> ISR (Incremental Static Regeneration)
- * O site é estático, mas o Next.js tenta atualizar os dados do GitHub em background 1x por hora.
- */
+// Next.js 15 ISR: Revalida o cache a cada 1 hora
 export const revalidate = 3600;
 
 interface Props {
   params: Promise<{ lang: "pt" | "en" | "es" }>;
 }
 
-/** * 🔎 SEO DINÂMICO
- */
+/** 🔎 SEO DINÂMICO Sincronizado com o novo Dictionary */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
-  const t = getDictionary(lang);
+  const t = await getDictionary(lang); // Note o 'await' se for async
   
   return {
-    title: `Sérgio Santos | ${t.navigation.home}`,
-    description: t.meta.description, // Usando a descrição centralizada no i18n
+    title: `${t.portfolio.title} | Data Engineer`,
+    description: t.portfolio.description,
     openGraph: {
-      title: `Sérgio Santos | ${t.navigation.home}`,
-      description: t.meta.description,
+      title: `${t.portfolio.title} | Data Engineer`,
+      description: t.portfolio.description,
       images: [`/og-image-${lang}.png`],
       type: "website",
       locale: lang === "en" ? "en_US" : lang === "es" ? "es_ES" : "pt_BR",
@@ -44,81 +39,86 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { lang } = await params;
-  const t = getDictionary(lang);
+  const t = await getDictionary(lang);
 
-  // Busca segura dos repositórios categorizados
+  // Busca de repositórios
   let repos: Record<string, GitHubRepo[]> = {};
-  
   try {
-    // getPortfolioRepos já retorna o objeto Record<CategoryKey, GitHubRepo[]>
     repos = await getPortfolioRepos();
   } catch (error) {
-    console.error("Falha ao carregar repositórios do GitHub:", error);
+    console.error("GitHub API Error:", error);
   }
 
-  // Verifica se há pelo menos um projeto em qualquer categoria
   const hasProjects = Object.values(repos).some(
     (categoryList) => categoryList && categoryList.length > 0
   );
 
   return (
     <PageWrapper lang={lang}>
-      {/* Hero Section: Primeira dobra do site */}
+      {/* Hero: Identidade Visual e Call to Action principal */}
       <HeroSection dict={t} lang={lang} />
 
       <main role="main" className="space-y-24 md:space-y-32 pb-20">
         
-        {/* Perfil Profissional (Integrando o About do Bradesco/Experiência) */}
-        <AboutSection locale={lang} />
+        {/* Seção About: Experiência Bancária e Visão Técnica */}
+        <section id="about" className="scroll-mt-24">
+           <AboutSection locale={lang} />
+        </section>
 
-        {/* Case de Sucesso: Projeto de Predição de Risco (Destaque manual) */}
-        <section className="bg-slate-50 dark:bg-slate-900/30 py-16 md:py-24">
+        {/* Case de Sucesso: Renderizado apenas se houver dados no dict */}
+        <section id="featured-case" className="bg-slate-50 dark:bg-slate-900/30 py-16 md:py-24">
           <FeaturedProject dict={t} />
         </section>
 
-        {/* Autoridade Técnica: Artigo Premiado na DIO */}
+        {/* Autoridade: O Artigo Premiado (DIO Winner) */}
         <section 
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" 
-          aria-labelledby="featured-article-title"
+          id="awards"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24" 
+          aria-labelledby="awards-title"
         >
-          <FeaturedArticleSection dict={t.sections} article={t.featuredArticle} />
+          <div className="text-center mb-12">
+            <h2 id="awards-title" className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+              {t.sections.awards}
+            </h2>
+          </div>
+          <FeaturedArticleSection 
+             dict={t.sections} 
+             article={t.portfolio.featured_article} 
+          />
         </section>
 
-        {/* Portfólio de Engenharia: Dados dinâmicos do GitHub */}
+        {/* Portfólio Dinâmico do GitHub */}
         <section 
-          id="projects"
+          id="featuredProjects"
           className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24" 
           aria-labelledby="projects-title"
         >
-          <div className="text-center md:text-left mb-16">
+          <div className="text-center md:text-left mb-16 border-l-8 border-blue-600 pl-6">
              <h2 id="projects-title" className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-                {t.sections.projectsTitle}
+                {t.sections.featuredProjects}
              </h2>
-             <div className="h-1.5 w-20 bg-blue-600 mt-4 mx-auto md:mx-0 rounded-full" />
-             <p className="mt-6 text-slate-600 dark:text-slate-400 max-w-2xl text-lg">
+             <p className="mt-4 text-slate-600 dark:text-slate-400 max-w-2xl text-lg font-medium">
                 {t.portfolio.description}
              </p>
           </div>
 
           {!hasProjects ? (
-            /* Fallback visual se a API falhar ou não houver tags 'portfolio' */
-            <div className="py-24 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-[2rem] bg-slate-50/50 dark:bg-slate-900/10">
-              <p className="text-slate-400 text-lg font-medium">
-                {t.sections.projectsEmpty || "Conectando ao GitHub..."}
+            <div className="py-24 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-[2rem] bg-slate-50/50 dark:bg-slate-900/10 transition-all">
+              <p className="text-slate-400 text-lg font-medium animate-pulse">
+                {t.common.loading}
               </p>
             </div>
           ) : (
-            /* Renderiza as categorias conforme a CATEGORIES_ORDER */
             <div className="space-y-32">
               {CATEGORIES_ORDER.map((key) => {
                 const projects = repos[key];
-                const categoryTitle = t.projectCategories[key];
+                // Ajuste para bater com as chaves kebab-case do seu dicionário revisado
+                const categoryTitle = t.categories[key as keyof typeof t.categories];
 
-                // Só renderiza a seção se houver projetos para aquela categoria
                 if (!projects || projects.length === 0) return null;
 
                 return (
-                  <div key={key} className="animate-in fade-in slide-in-from-bottom-10 duration-1000">
+                  <div key={key} className="animate-reveal">
                     <ProjectsSection 
                       title={categoryTitle || key}
                       projects={projects}
