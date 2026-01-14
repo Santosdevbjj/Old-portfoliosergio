@@ -1,6 +1,7 @@
 import Link from "next/link";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { getDictionary, Locale } from "@/lib/i18n";
+import { Github, Linkedin, ArrowUp } from "lucide-react";
 
 interface FooterProps {
   lang: Locale;
@@ -9,78 +10,99 @@ interface FooterProps {
 export default function Footer({ lang }: FooterProps) {
   const dict = getDictionary(lang);
 
+  const connectLabel = {
+    en: "Connect",
+    es: "Conectar",
+    pt: "Conectar",
+  };
+
+  const backToTopLabel = {
+    en: "Back to top",
+    es: "Volver arriba",
+    pt: "Voltar ao topo",
+  };
+
   return (
     <footer
       className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 mt-20"
       role="contentinfo"
     >
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-10">
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-12">
           
-          {/* IDENTIDADE & COPYRIGHT */}
-          <div className="flex flex-col items-center md:items-start space-y-2">
+          {/* 1. IDENTIDADE & COPYRIGHT */}
+          <div className="flex flex-col items-center md:items-start space-y-3">
             <Link 
               href={`/${lang}`} 
-              className="text-lg font-bold tracking-tighter text-slate-900 dark:text-white"
+              className="text-xl font-black tracking-tighter text-slate-900 dark:text-white hover:text-blue-600 transition-colors"
             >
               SÉRGIO SANTOS
             </Link>
-            <div className="text-center md:text-left">
-              <p className="text-sm text-slate-500 dark:text-slate-400">
-                © {new Date().getFullYear()} — {dict.footer.rights}
-              </p>
-            </div>
+            <p className="text-sm font-medium text-slate-500 dark:text-slate-400 text-center md:text-left">
+              © {new Date().getFullYear()} — {dict.footer.rights}
+            </p>
           </div>
 
-          {/* SOCIAL LINKS */}
-          <div className="flex flex-col items-center gap-4">
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
-              {lang === "en" ? "Connect" : lang === "es" ? "Conectar" : "Conectar"}
+          {/* 2. SOCIAL LINKS */}
+          <div className="flex flex-col items-center space-y-6">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-slate-600">
+              {connectLabel[lang]}
             </span>
-            <div className="flex gap-8 items-center">
+            <div className="flex gap-10 items-center">
               <a
                 href="https://github.com/Santosdevbjj"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all transform hover:scale-110"
+                className="group flex flex-col items-center gap-2 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all"
                 aria-label="GitHub"
               >
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1 1.6-.7 1.8-1 .1-.7.4-1.1.7-1.4-2.6-.3-5.3-1.3-5.3-5.9 0-1.3.5-2.4 1.2-3.3-.1-.3-.5-1.6.1-3.3 0 0 1-.3 3.4 1.2a11.7 11.7 0 0 1 6.2 0c2.4-1.5 3.4-1.2 3.4-1.2.6 1.7.2 3 .1 3.3.8.9 1.2 2 1.2 3.3 0 4.6-2.7 5.6-5.3 5.9.4.3.8 1 .8 2.1v3.1c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.65 18.35.5 12 .5z" />
-                </svg>
+                <Github size={24} className="group-hover:scale-110 transition-transform" />
+                <span className="text-[8px] font-bold opacity-0 group-hover:opacity-100 uppercase tracking-widest">GitHub</span>
               </a>
 
               <a
                 href="https://www.linkedin.com/in/santossergioluiz"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all transform hover:scale-110"
+                className="group flex flex-col items-center gap-2 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all"
                 aria-label="LinkedIn"
               >
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M4.98 3.5C4.98 4.9 3.9 6 2.5 6S0 4.9 0 3.5 1.1 1 2.5 1s2.48 1.1 2.48 2.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.1c.5-1 1.8-2.2 3.7-2.2 4 0 4.7 2.6 4.7 6V24h-4v-7.9c0-1.9-.1-4.3-2.6-4.3-2.6 0-3 2-3 4.1V24h-4V8z" />
-                </svg>
+                <Linkedin size={24} className="group-hover:scale-110 transition-transform" />
+                <span className="text-[8px] font-bold opacity-0 group-hover:opacity-100 uppercase tracking-widest">LinkedIn</span>
               </a>
             </div>
           </div>
 
-          {/* LANGUAGE & TOP NAV */}
-          <div className="flex flex-col items-center md:items-end gap-4">
+          {/* 3. LANGUAGE & NAVIGATION */}
+          <div className="flex flex-col items-center md:items-end gap-6">
             <LanguageSwitcher lang={lang} dict={dict.navigation} />
-            <button 
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-blue-600 transition-colors hidden md:block"
+            
+            {/* Link de âncora nativo (funciona sem JS e é mais leve) */}
+            <a 
+              href="#top"
+              className="group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 transition-colors"
             >
-              ↑ {lang === "en" ? "Back to top" : lang === "es" ? "Volver arriba" : "Volver ao topo"}
-            </button>
+              <ArrowUp size={14} className="group-hover:-translate-y-1 transition-transform" />
+              {backToTopLabel[lang]}
+            </a>
           </div>
         </div>
 
-        {/* MENSAGEM FINAL SUTIL */}
-        <div className="mt-12 pt-8 border-t border-slate-100 dark:border-slate-900 text-center">
-          <p className="text-[10px] text-slate-400 dark:text-slate-600 uppercase tracking-[0.3em]">
-            Built with Next.js & TypeScript
-          </p>
+        {/* MENSAGEM FINAL TÉCNICA */}
+        <div className="mt-16 pt-8 border-t border-slate-100 dark:border-slate-900/50">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-[0.4em]">
+              Data Engineering Portfolio
+            </p>
+            <div className="flex gap-4">
+               <span className="h-1 w-1 rounded-full bg-blue-600" />
+               <span className="h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-700" />
+               <span className="h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-700" />
+            </div>
+            <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-[0.4em]">
+              Next.js 15 • TypeScript • Tailwind
+            </p>
+          </div>
         </div>
       </div>
     </footer>
