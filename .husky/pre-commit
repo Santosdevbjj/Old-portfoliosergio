@@ -1,11 +1,23 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# 1. Formata o código primeiro
+# Interrompe o commit se algum comando falhar
+set -e
+
+echo "🔍 Iniciando verificações de pré-commit..."
+
+# 1. Formata e organiza as classes do Tailwind apenas nos arquivos alterados
+# Nota: Recomenda-se usar 'npx lint-staged' aqui se quiser performance máxima
 npm run format
 
-# 2. Verifica erros de Lint
+# 2. Executa o Linter do Next.js
+# O --fix ajuda a resolver problemas simples automaticamente antes do commit
+echo "💅 Verificando Lint..."
 npm run lint
 
-# 3. Verifica erros de Tipagem (TypeScript) - Opcional mas recomendado
+# 3. Verifica erros de Tipagem (TypeScript)
+# Essencial para Engenharia de Dados: garante que os contratos de dados e i18n estão íntegros
+echo "🟦 Verificando tipos (TypeScript)..."
 npm run type-check
+
+echo "✅ Tudo limpo! Realizando commit..."
