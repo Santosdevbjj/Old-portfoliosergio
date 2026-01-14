@@ -4,7 +4,12 @@
     "description": "Engenheiro de Dados especializado em arquiteturas escaláveis, pipelines de ETL/ELT e transformação de dados em ativos estratégicos.",
     "viewRepository": "Ver Repositório",
     "githubProjects": "Outros Projetos no GitHub",
-    "noDescription": "Projeto de engenharia e análise de dados focado em eficiência e escalabilidade."
+    "noDescription": "Projeto de engenharia e análise de dados focado em eficiência e escalabilidade.",
+    "featured_article": {
+      "title": "Low-Code na Saúde: Como Criar Apps Médicos em Semanas",
+      "award": "Vencedor da 35ª Competição de Artigos DIO & Melhor Artigo do Mês (Set/2025)",
+      "link": "https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
+    }
   },
   "categories": {
     "data-science": "Ciência de Dados",
@@ -21,6 +26,12 @@
     "programming-logic": "Lógica de Programação",
     "html": "Tecnologias Web",
     "articles-repo": "Artigos Técnicos"
+  },
+  "awards": {
+    "title": "Reconhecimento e Prêmios",
+    "dio_winner": "Vencedor da Competição DIO - 35ª Edição",
+    "best_article_month": "Melhor Artigo do Mês (Setembro 2025)",
+    "global_reach": "Publicação Multilíngue (PT/EN/ES)"
   },
   "footer": {
     "rights": "Todos os direitos reservados.",
@@ -41,6 +52,7 @@
     "skills": "Hard Skills",
     "experience": "Trajetória Profissional",
     "featuredProjects": "Projetos em Destaque",
+    "awards": "Prêmios e Publicações",
     "testimonials": "Recomendações",
     "about": "Sobre Mim",
     "contact": "Contato"
