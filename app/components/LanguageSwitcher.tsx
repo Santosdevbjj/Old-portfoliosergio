@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, Suspense } from "react";
 import type { Locale } from "@/lib/i18n";
+import { ChevronDown, Check } from "lucide-react";
 
 const languages: { code: Locale; label: string; flag: string }[] = [
   { code: "pt", label: "Português", flag: "🇧🇷" },
@@ -15,7 +16,6 @@ interface LanguageSwitcherProps {
   dict: { language: string };
 }
 
-// Componente interno para isolar o useSearchParams
 function LanguageSwitcherContent({ lang, dict }: LanguageSwitcherProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -24,16 +24,21 @@ function LanguageSwitcherContent({ lang, dict }: LanguageSwitcherProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (newLang: Locale) => {
+    if (newLang === lang) {
+      setOpen(false);
+      return;
+    }
+
     setOpen(false);
     if (!pathname) return;
 
-    // Persistência para o Middleware
-    document.cookie = `locale=${newLang};path=/;max-age=31536000;SameSite=Lax`;
+    // 🍪 Persistência com atributos de segurança para o Middleware
+    document.cookie = `locale=${newLang};path=/;max-age=31536000;SameSite=Lax;priority=high`;
 
     const segments = pathname.split("/").filter(Boolean);
 
-    // Substitui ou adiciona o idioma no path
-    if (languages.some((l) => l.code === segments[0])) {
+    // Substitui ou adiciona o idioma no path de forma resiliente
+    if (segments.length > 0 && languages.some((l) => l.code === segments[0])) {
       segments[0] = newLang;
     } else {
       segments.unshift(newLang);
@@ -42,9 +47,11 @@ function LanguageSwitcherContent({ lang, dict }: LanguageSwitcherProps) {
     const queryString = searchParams.toString();
     const newPath = `/${segments.join("/")}${queryString ? `?${queryString}` : ""}`;
 
+    // Transição suave
     router.push(newPath);
   };
 
+  // Close on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -55,6 +62,15 @@ function LanguageSwitcherContent({ lang, dict }: LanguageSwitcherProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Close on Escape key
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
+
   const currentLanguage = languages.find((l) => l.code === lang) || languages[0];
 
   return (
@@ -62,52 +78,62 @@ function LanguageSwitcherContent({ lang, dict }: LanguageSwitcherProps) {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="
-          flex items-center gap-2 px-3 py-2 
-          rounded-xl border border-slate-200 dark:border-slate-800
-          bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm
-          text-sm font-bold text-slate-700 dark:text-slate-200
-          hover:border-blue-500 hover:ring-2 hover:ring-blue-500/10
-          transition-all duration-300 shadow-sm
-        "
+        className={`
+          flex items-center gap-2 px-4 py-2 
+          rounded-2xl border transition-all duration-300 shadow-sm
+          text-sm font-black uppercase tracking-widest
+          ${open 
+            ? "border-blue-500 ring-4 ring-blue-500/10 bg-white dark:bg-slate-900 text-blue-600" 
+            : "border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-700"
+          }
+          backdrop-blur-md
+        `}
         aria-haspopup="true"
         aria-expanded={open}
+        aria-label={dict.language}
       >
-        <span className="text-base">{currentLanguage.flag}</span>
-        <span className="hidden sm:inline">{currentLanguage.label}</span>
-        <svg 
-          className={`h-4 w-4 text-slate-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} 
-          viewBox="0 0 20 20" fill="currentColor"
-        >
-          <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.08z" clipRule="evenodd" />
-        </svg>
+        <span className="text-base grayscale-[0.2] group-hover:grayscale-0 transition-all">
+          {currentLanguage.flag}
+        </span>
+        <span className="hidden md:inline">{currentLanguage.code}</span>
+        <ChevronDown 
+          size={14} 
+          className={`transition-transform duration-500 ${open ? 'rotate-180' : ''}`} 
+        />
       </button>
 
       {open && (
         <div className="
-          absolute right-0 z-[110] mt-2 w-48
-          rounded-2xl border border-slate-200 dark:border-slate-800
-          bg-white dark:bg-slate-950 shadow-2xl shadow-blue-500/10
-          animate-in fade-in zoom-in-95 duration-200
-          overflow-hidden
+          absolute right-0 z-[120] mt-3 w-56
+          rounded-[2rem] border border-slate-200 dark:border-slate-800
+          bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl
+          shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)]
+          animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-300
+          p-2
         ">
-          <ul className="p-2" role="menu">
+          <div className="px-3 py-2 mb-1">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+              {dict.language}
+            </span>
+          </div>
+          <ul role="menu" className="space-y-1">
             {languages.map((option) => (
               <li key={option.code} role="none">
                 <button
                   role="menuitem"
                   onClick={() => handleChange(option.code)}
                   className={`
-                    flex w-full items-center gap-3 px-3 py-3 text-sm rounded-xl font-bold
-                    transition-all duration-200
+                    flex w-full items-center gap-3 px-4 py-3 text-xs rounded-2xl font-black uppercase tracking-widest
+                    transition-all duration-200 group
                     ${lang === option.code 
-                      ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30" 
-                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20" 
+                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                     }
                   `}
                 >
-                  <span className="text-base">{option.flag}</span>
+                  <span className="text-lg">{option.flag}</span>
                   <span className="flex-1 text-left">{option.label}</span>
+                  {lang === option.code && <Check size={14} className="text-white" />}
                 </button>
               </li>
             ))}
@@ -118,10 +144,9 @@ function LanguageSwitcherContent({ lang, dict }: LanguageSwitcherProps) {
   );
 }
 
-// Exportação principal com Suspense para evitar erros de Build no Next.js 15
 export default function LanguageSwitcher(props: LanguageSwitcherProps) {
   return (
-    <Suspense fallback={<div className="h-10 w-10 sm:w-32 animate-pulse bg-slate-100 dark:bg-slate-800 rounded-xl" />}>
+    <Suspense fallback={<div className="h-10 w-12 bg-slate-100 dark:bg-slate-800 animate-pulse rounded-2xl" />}>
       <LanguageSwitcherContent {...props} />
     </Suspense>
   );
