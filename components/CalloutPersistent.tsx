@@ -1,12 +1,13 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
+import { Info, AlertTriangle, CheckCircle, X } from "lucide-react";
 
 interface CalloutProps {
   children: ReactNode;
   type?: "info" | "warning" | "success";
   lang?: "pt" | "en" | "es";
-  id: string; // identificador único para persistência
+  id: string; // Identificador único para o localStorage
 }
 
 export default function CalloutPersistent({
@@ -15,59 +16,75 @@ export default function CalloutPersistent({
   lang = "pt",
   id,
 }: CalloutProps) {
-  const [visible, setVisible] = useState(true);
+  // Inicializamos como false para evitar Hydration Mismatch
+  const [visible, setVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Checa no localStorage se o Callout já foi fechado
   useEffect(() => {
-    const closed = localStorage.getItem(`callout-${id}`);
-    if (closed === "true") {
-      setVisible(false);
+    setIsMounted(true);
+    const closed = localStorage.getItem(`callout-p-${id}`);
+    if (closed !== "true") {
+      setVisible(true);
     }
   }, [id]);
 
-  if (!visible) return null;
+  // Se ainda não montou no cliente, não renderizamos nada para evitar erro de hidratação
+  if (!isMounted || !visible) return null;
 
   const styles = {
-    info: "border-blue-400 bg-blue-50 text-blue-800 dark:border-blue-500 dark:bg-blue-900/30 dark:text-blue-200",
-    warning:
-      "border-yellow-400 bg-yellow-50 text-yellow-800 dark:border-yellow-500 dark:bg-yellow-900/30 dark:text-yellow-200",
-    success:
-      "border-green-400 bg-green-50 text-green-800 dark:border-green-500 dark:bg-green-900/30 dark:text-green-200",
+    info: "border-blue-500 bg-blue-50/50 text-blue-900 dark:bg-blue-900/10 dark:text-blue-200",
+    warning: "border-amber-500 bg-amber-50/50 text-amber-900 dark:bg-amber-900/10 dark:text-amber-200",
+    success: "border-emerald-500 bg-emerald-50/50 text-emerald-900 dark:bg-emerald-900/10 dark:text-emerald-200",
   };
 
   const icons = {
-    info: "ℹ️",
-    warning: "⚠️",
-    success: "✅",
+    info: <Info size={20} className="text-blue-600 dark:text-blue-400" />,
+    warning: <AlertTriangle size={20} className="text-amber-600 dark:text-amber-400" />,
+    success: <CheckCircle size={20} className="text-emerald-600 dark:text-emerald-400" />,
   };
 
   const labels = {
-    pt: { info: "Informação", warning: "Atenção", success: "Sucesso", close: "Fechar" },
-    en: { info: "Info", warning: "Warning", success: "Success", close: "Close" },
-    es: { info: "Información", warning: "Atención", success: "Éxito", close: "Cerrar" },
+    pt: { info: "Nota", warning: "Atenção", success: "Sucesso", close: "Dispensar" },
+    en: { info: "Note", warning: "Warning", success: "Success", close: "Dismiss" },
+    es: { info: "Nota", warning: "Atención", success: "Éxito", close: "Descartar" },
   };
 
   const handleClose = () => {
     setVisible(false);
-    localStorage.setItem(`callout-${id}`, "true");
+    localStorage.setItem(`callout-p-${id}`, "true");
   };
 
   return (
     <div
-      className={`rounded-md border-l-4 p-4 my-4 flex items-start gap-3 ${styles[type]} prose-sm`}
-      role="note"
+      className={`
+        relative my-6 flex items-start gap-4 rounded-3xl border-l-4 p-6 
+        shadow-sm backdrop-blur-sm transition-all duration-500 
+        animate-in fade-in slide-in-from-top-2
+        ${styles[type]}
+      `}
+      role="status"
     >
-      <span className="text-xl">{icons[type]}</span>
-      <div className="flex-1">
-        <p className="font-semibold mb-1">{labels[lang][type]}</p>
-        <div>{children}</div>
+      <div className="mt-0.5 shrink-0">{icons[type]}</div>
+      
+      <div className="flex-1 text-sm md:text-base leading-relaxed">
+        <span className="block font-black uppercase tracking-[0.2em] text-[10px] mb-2 opacity-60">
+          {labels[lang][type]}
+        </span>
+        <div className="font-medium">
+          {children}
+        </div>
       </div>
+
       <button
         onClick={handleClose}
-        className="ml-2 text-sm px-2 py-1 rounded-md bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        className="
+          shrink-0 rounded-full p-2 
+          hover:bg-black/5 dark:hover:bg-white/10 
+          transition-colors duration-200
+        "
         aria-label={labels[lang].close}
       >
-        ✖
+        <X size={18} className="opacity-40 hover:opacity-100 text-current" />
       </button>
     </div>
   );
