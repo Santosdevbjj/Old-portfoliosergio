@@ -2,11 +2,17 @@ import { redirect } from "next/navigation";
 import { i18n } from "@/lib/i18n";
 
 /**
- * Ponto de entrada da raiz (/).
- * Redireciona para o idioma padrão definido nas configurações de i18n.
- * Isso garante que o SEO não indexe uma página vazia na raiz.
+ * ROOT REDIRECTOR
+ * * Este arquivo lida com acessos à URL raiz (ex: portfoliosergiosantos.vercel.app/).
+ * Ele redireciona imediatamente para o idioma padrão para evitar conteúdo duplicado
+ * ou telas em branco antes do middleware atuar.
  */
 export default function RootPage() {
-  // Em vez de "hardcoded" /pt, usamos a configuração oficial do seu projeto
   redirect(`/${i18n.defaultLocale}`);
 }
+
+/** * Configuração de Runtime:
+ * Forçamos como estático para que o redirecionamento aconteça no nível da Edge da Vercel,
+ * tornando o processo instantâneo para o usuário.
+ */
+export const dynamic = "force-static";
