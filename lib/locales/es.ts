@@ -1,142 +1,75 @@
 import type { Dictionary } from "../i18n";
 
 export const es: Dictionary = {
-  meta: {
-    title: "Sérgio Santos | Data Science y Sistemas de Misión Crítica",
-    description:
-      "Analista de Ciencia de Datos con más de 15 años de experiencia en el sector bancario (Bradesco). Especialista en transformar datos complejos en inteligencia estratégica.",
+  portfolio: {
+    title: "Sérgio Santos",
+    description: "Analista de Ciencia de Datos con más de 15 años de experiencia en el sector bancario. Especialista en transformar datos complejos en inteligencia estratégica y sistemas de misión crítica.",
+    viewRepository: "Ver Repositorio",
+    githubProjects: "Explorar Ecosistema GitHub",
+    noDescription: "Proyecto de ingeniería y análisis de datos enfocado en la eficiencia y escalabilidad.",
+    featured_article: {
+      title: "Low-Code en la Salud: Cómo Crear Apps Médicas en Semanas",
+      award: "🏆 Ganador de la 35ª Competición DIO y Mejor Artículo del Mes (Sep/2025)",
+      link: "https://medium.com/@sergiosantosluiz/low-code-en-la-salud-c%C3%B3mo-crear-apps-m%C3%A9dicos-em-semanas-5474e7dddfad"
+    }
   },
 
-  navigation: {
-    home: "Inicio",
-    about: "Sobre mí",
-    projects: "Portafolio",
-    contact: "Contacto",
-    language: "Idioma",
-    openMenu: "Abrir menú",
-    closeMenu: "Cerrar menú",
+  categories: {
+    "data-science": "Ciencia de Datos",
+    "azure-databricks": "Azure Databricks",
+    "neo4j": "Grafos (Neo4j)",
+    "power-bi": "Power BI y Analytics",
+    "database": "Ingeniería de Datos",
+    "python": "Python",
+    "dotnet": ".NET y C#",
+    "java": "Java",
+    "machine-learning": "Machine Learning",
+    "aws": "Amazon AWS",
+    "cybersecurity": "Ciberseguridad",
+    "programming-logic": "Lógica y Algoritmos",
+    "html": "Tecnologías Web",
+    "articles-repo": "Producción Intelectual"
+  },
+
+  awards: {
+    title: "Premios y Publicaciones",
+    dio_winner: "Ganador de la 35ª Competición DIO",
+    best_article_month: "Mejor Artículo del Mes (Septiembre 2025)",
+    global_reach: "Publicación Internacional (PT/EN/ES)"
   },
 
   footer: {
-    rights: `© ${new Date().getFullYear()} Sérgio Santos. Ingeniería de Datos y Sistemas.`,
+    rights: `© ${new Date().getFullYear()} Sérgio Santos. Todos los derechos reservados.`,
+    contact: "¿Hablamos?",
+    builtWith: "Ingeniería con Next.js 15 y Tailwind CSS"
   },
 
-  darkMode: {
-    lightMode: "Modo Claro",
-    darkMode: "Modo Oscuro",
+  theme: {
+    themeLight: "Modo Claro",
+    themeDark: "Modo Oscuro",
+    themeSystem: "Sistema"
+  },
+
+  cta: {
+    hireMe: "Trabaja Conmigo",
+    downloadCV: "Descargar CV",
+    browseProjects: "Ver Proyectos Flagship"
   },
 
   sections: {
-    aboutTitle: "👨‍💻 Perfil Profesional",
-    aboutIntro: "Analista de Ciencia de Datos | Especialista en Sistemas Críticos",
-    aboutDetails:
-      "Trayectoria sólida en sistemas de misión crítica bancaria, enfocado actualmente en Ciencia de Datos, IA y Gobernanza para el soporte de decisiones estratégicas.",
-
-    experienceTitle: "💼 Experiencia e Impacto",
-    reskillingTitle: "📚 Transición y Especialización",
-    differentialTitle: "⭐ Diferencial Competitivo",
-    objectiveTitle: "🎯 Objetivo Estratégico",
-
-    stackConsolidated: "Stack Consolidado (Core)",
-    stackUpdating: "Stack en Evolución (Datos e IA)",
-
-    projectsTitle: "🛠 Ecosistema de Proyectos",
-    articlesTitle: "📝 Producción Intelectual",
-    featuredArticle: "Artículo Premiado",
-    featuredProjectTitle: "🚀 Proyecto de Alto Impacto",
-    contactTitle: "¿Hablamos?",
-
-    searchPlaceholder: "Ej: Databricks, Python, Grafos...",
-    searchLabel: "Filtrar por tecnología",
-    filtersTitle: "Categorías Técnicas",
-    projectsGridTitle: "Repositorio de Ingeniería",
-    noProjectsFound: "No se encontraron repositorios para este filtro.",
-    projectsEmpty: "Sincronizando datos con la API de GitHub...",
+    skills: "Hard Skills y Stack",
+    experience: "Trayectoria Profesional",
+    featuredProjects: "Proyectos de Alto Impacto",
+    awards: "Premios y Artículos",
+    testimonials: "Recomendaciones",
+    about: "Perfil",
+    contact: "Contacto"
   },
 
-  portfolio: {
-    title: "Sérgio Santos",
-    description: "Conectando el rigor de los sistemas bancarios con la agilidad de la ciencia de datos moderna.",
-    buttonLabel: "Explorar Proyectos",
-    projects: "Projetos Destacados",
-  },
-
-  cv: {
-    url: "/cv-sergio-santos-es.pdf",
-    label: "Descargar Currículum (PDF)",
-  },
-
-  socialImage: "/og-image-es.png",
-
-  featuredArticle: {
-    title: "Low-Code en Salud: Cómo Crear Apps Médicas en Semanas",
-    description:
-      "Un análisis sobre cómo la agilidade del low-code puede modernizar el sector salud, garantizando cumplimiento, seguridad y velocidad.",
-    award1: "🏆 Ganador de la 35ª Competencia de Artículos DIO",
-    award2: "🏆 Mejor Artículo Técnico – Septiembre de 2025",
-    readOn: "Disponible en:",
-    links: {
-      dio: "https://web.dio.me/articles/low-code-na-saude-como-criar-apps-medicos-em-semanas-d77f6760fa5a",
-      linkedin: "https://www.linkedin.com/in/santossergioluiz",
-      medium: "https://medium.com/@sergioluiz.santos",
-    },
-  },
-
-  featuredProject: {
-    badge: "PROYECTO FLAGSHIP",
-    title: "Simulador de Riesgos Logísticos",
-    highlight: "Ciencia de Datos aplicada a la Construcción e Inteligencia de Riesgo.",
-    stack: ["Python", "Azure Databricks", "Streamlit", "Machine Learning"],
-    challengeTitle: "El Problema",
-    problem:
-      "Cuellos de botella logísticos en obras complejas que generaban multas recurrentes y retrasos en el 35% del cronograma.",
-    baselineLabel: "Escenario Heredado",
-    baseline:
-      "Gestión basada en hojas de cálculo estáticas con un error promedio de predicción de 18 días.",
-    solutionTitle: "Arquitectura de la Solución",
-    solution:
-      "Pipeline de datos en Databricks con modelo Random Forest, simulador interactivo y alertas automatizadas vía Bot de Telegram.",
-    impactTitle: "Resultado Medible",
-    result:
-      "Reducción del error de predicción a 7 días y ahorro operativo estimado en R$ 420.000 anuales.",
-    ctaLabel: "Ver Repositorio",
-    ctaUrl: "https://github.com/Santosdevbjj/analiseRiscosAtrasoObras",
-  },
-
-  experience: {
-    item1:
-      "Desarrollo de sistemas automatizados que eliminaron 2.920 horas/año de procesamiento manual.",
-    item2:
-      "Arquitectura de infraestructura de red para más de 500 usuarios con 99,5% de disponibilidad (SLA).",
-    item3:
-      "Sustentación de ecosistemas jurídicos críticos con cumplimiento total de LGPD y normativas bancarias.",
-
-    reskilling:
-      "Evolución continua en Ciencia de Datos, Machine Learning y análisis de grafos (Neo4j), aplicando rigor técnico a nuevas tecnologías.",
-    differential:
-      "Visión sistémica que une el cumplimiento regulatorio bancario con la innovación en inteligencia artificial.",
-    objective:
-      "Contribuir en proyectos de modernización de infraestructura, gobernanza de datos o sistemas regulados de alta complejidad.",
-    
-    stackConsolidated: "SQL Server, Windows Server, C#, .NET, Gobernanza de TI, Mainframe IBM, Active Directory.",
-    stackUpdating: "Python, Azure Databricks, Apache Spark, Neo4j, Machine Learning, Docker, Power BI.",
-  },
-
-  projectCategories: {
-    dataScience: "Ciencia de Datos",
-    azureDatabricks: "Azure Databricks",
-    neo4j: "Grafos (Neo4J)",
-    powerBI: "Power BI y Analytics",
-    database: "Bases de Datos",
-    python: "Python",
-    dotnet: ".NET y C#",
-    java: "Java",
-    machineLearning: "Machine Learning",
-    aws: "Amazon AWS",
-    cybersecurity: "Ciberseguridad",
-    logic: "Lógica y Algoritmos",
-    html: "Web / Frontend",
-    articlesRepo: "Artículos Técnicos",
-    unknown: "Otros",
-  },
+  common: {
+    loading: "Sincronizando datos...",
+    error: "Error en la conexión con el repositorio.",
+    back: "Volver",
+    readMore: "Leer Artículo Completo"
+  }
 };
