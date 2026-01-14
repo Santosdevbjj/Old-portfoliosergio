@@ -6,17 +6,12 @@ import { match as matchLocale } from "@formatjs/intl-localematcher";
 const locales = ["pt", "en", "es"] as const;
 const defaultLocale = "pt";
 
-/**
- * 🕵️ Detecta o melhor idioma baseado em Cookies ou Headers do Navegador
- */
 function getLocale(request: NextRequest): string {
-  // 1. Prioridade Máxima: Cookie (Decisão explícita do usuário)
   const cookieLocale = request.cookies.get("locale")?.value?.toLowerCase();
   if (cookieLocale && (locales as readonly string[]).includes(cookieLocale as any)) {
     return cookieLocale;
   }
 
-  // 2. Fallback: Negociação de Idioma do Navegador
   const headers: Record<string, string> = {};
   request.headers.forEach((value, key) => {
     headers[key] = value;
@@ -24,7 +19,6 @@ function getLocale(request: NextRequest): string {
 
   try {
     const languages = new Negotiator({ headers }).languages();
-    // Matcher de localidade com fallback para o padrão
     return matchLocale(languages, [...locales], defaultLocale);
   } catch (e) {
     return defaultLocale;
@@ -32,29 +26,40 @@ function getLocale(request: NextRequest): string {
 }
 
 /**
- * 📊 Envio de logs para monitoramento (Fire-and-forget)
+ * 📊 Envio de logs para monitoramento
  */
-async function sendLog(locale: string, pathname: string, theme: string) {
-  if (!process.env.LOGTAIL_TOKEN) return;
+async function sendLog(locale: string, pathname: string, theme: string, request: NextRequest) {
+  const token = process.env.LOGTAIL_TOKEN;
+  if (!token) return;
   
+  // Captura IP e User-Agent para enriquecer seus dados de Analytics
+  const ua = request.headers.get("user-agent") || "unknown";
+  const ip = request.ip || request.headers.get("x-forwarded-for") || "127.0.0.1";
+
   try {
-    await fetch("https://in.logtail.com/", {
+    // Usamos fetch padrão do Next.js Runtime
+    await fetch("https://in.logs.betterstack.com", { // URL atualizada do Better Stack
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.LOGTAIL_TOKEN}`,
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify({
-        service: "portfolio-middleware",
+        dt: new Date().toISOString(),
+        message: `Page view: ${pathname}`,
+        service: "portfolio-nextjs",
         level: "info",
-        locale,
-        theme,
-        path: pathname,
-        timestamp: new Date().toISOString(),
+        context: {
+          locale,
+          theme,
+          path: pathname,
+          user_agent: ua,
+          client_ip: ip,
+        }
       }),
     });
   } catch (error) {
-    // Fail silent
+    // Fail silent para não quebrar a navegação do usuário
   }
 }
 
@@ -62,47 +67,42 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const theme = request.cookies.get("theme")?.value ?? "system";
 
-  // 🛡️ Filtro de Exclusão: Ignora arquivos internos e assets estáticos
+  // 1. Ignora arquivos estáticos e internos IMEDIATAMENTE
   if (
-    pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
-    pathname === "/favicon.ico" ||
-    pathname === "/robots.txt" ||
-    pathname === "/sitemap.xml" ||
-    pathname.match(/\.(png|jpg|jpeg|svg|webp|gif|ico|pdf|txt|xml|json)$/)
+    pathname.includes("/api/") ||
+    pathname.match(/\.(png|jpg|jpeg|svg|webp|gif|ico|pdf|txt|xml|json|webmanifest)$/)
   ) {
     return NextResponse.next();
   }
 
-  // Verifica se o pathname já possui um locale válido
+  // 2. Verifica se o pathname já possui um locale
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
+  // 3. Se NÃO tem locale, decide o idioma, loga e redireciona
   if (!pathnameHasLocale) {
     const locale = getLocale(request);
     
-    if (process.env.LOGTAIL_TOKEN) {
-      sendLog(locale, pathname, theme).catch(() => {});
-    }
+    // Dispara o log sem 'await' para não atrasar o carregamento (Fire-and-forget)
+    sendLog(locale, pathname, theme, request).catch(() => {});
 
-    // URL de redirecionamento mantendo query parameters (ex: ?source=linkedin)
-    const redirectUrl = new URL(
-      `/${locale}${pathname === "/" ? "" : pathname}${request.nextUrl.search}`,
-      request.url
+    return NextResponse.redirect(
+      new URL(
+        `/${locale}${pathname === "/" ? "" : pathname}${request.nextUrl.search}`,
+        request.url
+      )
     );
-    
-    return NextResponse.redirect(redirectUrl);
   }
 
-  // 🔄 Injeção de Headers úteis para Server Components
+  // 4. Se JÁ TEM locale, apenas injeta os headers para os componentes
   const currentLocale = pathname.split("/")[1] || defaultLocale;
   const requestHeaders = new Headers(request.headers);
   
   requestHeaders.set("x-theme", theme);
   requestHeaders.set("x-locale", currentLocale);
   requestHeaders.set("x-pathname", pathname);
-  requestHeaders.set("x-url", request.url);
 
   return NextResponse.next({
     request: {
@@ -112,8 +112,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Otimização do matcher para evitar execuções desnecessárias
-  matcher: [
-    "/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|.*\\..*).*)",
-  ],
+  // Matcher refinado para excluir tudo que não for página
+  matcher: ["/((?!_next/static|_next/image|assets|favicon.ico|sw.js).*)"],
 };
