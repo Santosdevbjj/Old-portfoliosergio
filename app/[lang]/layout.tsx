@@ -1,10 +1,10 @@
+// app/[lang]/layout.tsx
 import { Inter } from "next/font/google";
 import { Locale, i18n } from "@/lib/i18n";
 import { Metadata, Viewport } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ThemeProvider } from "@/hooks/ThemeContext";
 import Navbar from "@/components/Navbar";
-import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,18 +17,18 @@ export const viewport: Viewport = {
   ],
 };
 
+// Removido o Promise para compatibilidade estável com Next 14
 interface Props {
   children: React.ReactNode;
-  params: Promise<{ lang: Locale }>;
+  params: { lang: Locale };
 }
 
 /**
  * SEO DINÂMICO INTERNACIONAL
  */
-export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
-  const { lang } = await params;
+export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+  const lang = params.lang;
   
-  // Usando os títulos que definimos nos seus dicionários para manter consistência
   const content = {
     pt: {
       title: "Sérgio Santos | Ciência de Dados e Sistemas Críticos",
@@ -88,21 +88,20 @@ export async function generateStaticParams() {
 
 /**
  * LAYOUT DE IDIOMA
- * Note: Removidas as tags <html> e <body> para não duplicar com app/layout.tsx
  */
-export default async function LanguageLayout({ children, params }: Props) {
-  const { lang } = await params;
+export default function LanguageLayout({ children, params }: Props) {
+  const lang = params.lang;
 
   return (
     <div className={`${inter.className} min-h-screen flex flex-col`}>
       <ThemeProvider>
+        {/* Passamos o lang para a Navbar que deve ser um Client Component */}
         <Navbar lang={lang} />
         
         <main className="flex-grow animate-in fade-in duration-700">
           {children}
         </main>
         
-        {/* Google Analytics carregado apenas em produção */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
         )}
