@@ -22,19 +22,30 @@ indent_style = space
 indent_size = 4
 
 # Web Development (Frontend e Configurações)
-[*.{js,jsx,ts,tsx,json,css,scss,html,yml,yaml}]
+# Adicionado .mts, .cts e .mjs para total compatibilidade com Next.js 15
+[*.{js,jsx,ts,tsx,cjs,mjs,cts,mts,json,css,scss,html,yml,yaml,toml}]
 indent_style = space
 indent_size = 2
+
+# Variáveis de ambiente (Segurança e Integridade)
+[*.env]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = false
 
 # Scripts de terminal e Automação
 [*.{sh,bash}]
 indent_style = space
 indent_size = 2
 
-# Configuração de Makefile e arquivos que exigem TABS
+# Configuração de Makefile e arquivos que exigem TABS (Padrão Unix)
 [Makefile]
 indent_style = tab
 indent_size = 4
+
+# Dados e Logs (Preservação de integridade de caracteres)
+[*.{csv,log,lock}]
+trim_trailing_whitespace = false
 
 # Ignorar arquivos binários e gerados
 [*.{png,jpg,jpeg,gif,webp,ico,pdf,woff,woff2}]
