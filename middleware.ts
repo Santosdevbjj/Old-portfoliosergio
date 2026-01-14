@@ -10,9 +10,9 @@ const defaultLocale = "pt";
  * 🕵️ Detecta o melhor idioma baseado em Cookies ou Headers do Navegador
  */
 function getLocale(request: NextRequest): string {
-  // 1. Prioridade Máxima: Cookie (Decisão explícita do usuário via LanguageSwitcher)
+  // 1. Prioridade Máxima: Cookie (Decisão explícita do usuário)
   const cookieLocale = request.cookies.get("locale")?.value?.toLowerCase();
-  if (cookieLocale && (locales as readonly string[]).includes(cookieLocale)) {
+  if (cookieLocale && (locales as readonly string[]).includes(cookieLocale as any)) {
     return cookieLocale;
   }
 
@@ -24,7 +24,7 @@ function getLocale(request: NextRequest): string {
 
   try {
     const languages = new Negotiator({ headers }).languages();
-    // Garante que passamos uma cópia mutável do array para o matcher
+    // Matcher de localidade com fallback para o padrão
     return matchLocale(languages, [...locales], defaultLocale);
   } catch (e) {
     return defaultLocale;
@@ -32,7 +32,7 @@ function getLocale(request: NextRequest): string {
 }
 
 /**
- * 📊 Envio de logs para monitoramento de tráfego e preferências
+ * 📊 Envio de logs para monitoramento (Fire-and-forget)
  */
 async function sendLog(locale: string, pathname: string, theme: string) {
   if (!process.env.LOGTAIL_TOKEN) return;
@@ -54,7 +54,7 @@ async function sendLog(locale: string, pathname: string, theme: string) {
       }),
     });
   } catch (error) {
-    // Fail silent para não afetar a experiência do usuário
+    // Fail silent
   }
 }
 
@@ -62,19 +62,19 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const theme = request.cookies.get("theme")?.value ?? "system";
 
-  // 🛡️ Filtro de Exclusão: Ignora arquivos internos, imagens e metadados de sistema
+  // 🛡️ Filtro de Exclusão: Ignora arquivos internos e assets estáticos
   if (
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
     pathname === "/favicon.ico" ||
     pathname === "/robots.txt" ||
     pathname === "/sitemap.xml" ||
-    pathname.match(/\.(png|jpg|jpeg|svg|webp|gif|ico|pdf|txt)$/)
+    pathname.match(/\.(png|jpg|jpeg|svg|webp|gif|ico|pdf|txt|xml|json)$/)
   ) {
     return NextResponse.next();
   }
 
-  // Verifica se o pathname já possui um locale válido no início
+  // Verifica se o pathname já possui um locale válido
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
@@ -82,34 +82,38 @@ export function middleware(request: NextRequest) {
   if (!pathnameHasLocale) {
     const locale = getLocale(request);
     
-    // Dispara log sem travar a requisição principal (fire and forget)
     if (process.env.LOGTAIL_TOKEN) {
       sendLog(locale, pathname, theme).catch(() => {});
     }
 
-    // Redirecionamento limpo para o idioma detectado
+    // URL de redirecionamento mantendo query parameters (ex: ?source=linkedin)
     const redirectUrl = new URL(
-      `/${locale}${pathname === "/" ? "" : pathname}`,
+      `/${locale}${pathname === "/" ? "" : pathname}${request.nextUrl.search}`,
       request.url
     );
     
     return NextResponse.redirect(redirectUrl);
   }
 
-  // 🔄 Injeção de Headers para facilitar leitura nos Server Components/Layouts
-  const response = NextResponse.next();
+  // 🔄 Injeção de Headers úteis para Server Components
   const currentLocale = pathname.split("/")[1] || defaultLocale;
+  const requestHeaders = new Headers(request.headers);
+  
+  requestHeaders.set("x-theme", theme);
+  requestHeaders.set("x-locale", currentLocale);
+  requestHeaders.set("x-pathname", pathname);
+  requestHeaders.set("x-url", request.url);
 
-  response.headers.set("x-theme", theme);
-  response.headers.set("x-locale", currentLocale);
-  response.headers.set("x-pathname", pathname);
-
-  return response;
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
 
 export const config = {
-  // Otimização do matcher para cobrir todas as páginas exceto pastas de assets
+  // Otimização do matcher para evitar execuções desnecessárias
   matcher: [
-    "/((?!api|_next/static|_next/image|assets|favicon.ico|robots.txt|sitemap.xml|sw.js).*)",
+    "/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|.*\\..*).*)",
   ],
 };
