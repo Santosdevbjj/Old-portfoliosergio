@@ -15,9 +15,8 @@ export type GitHubRepo = {
 
 const DEFAULT_USER = "Santosdevbjj";
 
-/**
- * 1. Categorias canônicas (Exatamente na ordem definida)
- */
+/* ----------------------------- Categorias ----------------------------- */
+
 export const CATEGORIES_ORDER = [
   "dataScience",
   "azureDatabricks",
@@ -41,9 +40,9 @@ export type CategoryKey = (typeof CATEGORIES_ORDER)[number];
 
 const TOPIC_ALIASES: Record<CategoryKey, string[]> = {
   dataScience: ["data-science", "ciencia-de-dados", "data-analysis", "analise-de-dados"],
-  azureDatabricks: ["azure-databricks", "databricks", "azure", "azure-cloud"],
+  azureDatabricks: ["azure", "azure-cloud", "databricks", "azure-databricks"],
   neo4j: ["neo4j", "graph-analysis", "analise-de-grafos"],
-  powerBI: ["power-bi", "powerbi", "business-intelligence"],
+  powerBI: ["power-bi", "powerbi", "business-intelligence", "data-analysis", "analise-de-dados"],
   database: ["database", "banco-de-dados", "sql"],
   python: ["python"],
   dotnet: ["dotnet", "csharp"],
@@ -62,65 +61,73 @@ export async function getPortfolioRepos(
   user: string = DEFAULT_USER,
   mainTopic: string = "portfolio"
 ): Promise<Record<CategoryKey, GitHubRepo[]>> {
-  
-  // Melhoria 1: Redução mais limpa para inicializar o objeto
+
+  // Inicializa objeto categorizado
   const categorized = {} as Record<CategoryKey, GitHubRepo[]>;
   CATEGORIES_ORDER.forEach(key => categorized[key] = []);
 
   try {
-    // Melhoria 2: Validação do Token (O nome bate exatamente com a sua Vercel)
     const token = process.env.GITHUB_ACCESS_TOKEN;
-    
+
     const res = await fetch(
       `https://api.github.com/users/${user}/repos?per_page=100&sort=updated`,
       {
         headers: {
           "Accept": "application/vnd.github+json",
-          ...(token ? { "Authorization": `token ${token}` } : {}), // Padrão 'token' para PATs
+          ...(token ? { "Authorization": `token ${token}` } : {}),
           "User-Agent": "Portfolio-Sergio-Santos"
         },
-        // Melhoria 3: Tags para permitir revalidação sob demanda se necessário
-        next: { revalidate: 3600, tags: ['github-repos'] }, 
+        ...(typeof window === "undefined" ? { next: { revalidate: 3600, tags: ['github-repos'] } } : {})
       }
     );
 
     if (!res.ok) {
-      // Se o erro for 401 ou 403, é problema no token
       console.warn(`[GitHub API] Status: ${res.status}. Verifique o GITHUB_ACCESS_TOKEN na Vercel.`);
       return categorized;
     }
 
-    const allRepos: GitHubRepo[] = await res.json();
-
+    const allRepos: any[] = await res.json();
     if (!Array.isArray(allRepos)) return categorized;
 
+    // Filtra apenas projetos com o tópico principal "portfolio"
     const portfolioRepos = allRepos.filter(
       (repo) => Array.isArray(repo.topics) && repo.topics.includes(mainTopic)
     );
 
     portfolioRepos.forEach((repo) => {
-      const repoTopics = repo.topics.map(t => t.toLowerCase());
-      
+      const repoTopics: string[] = Array.isArray(repo.topics)
+        ? repo.topics.map((t: any) => String(t).toLowerCase())
+        : [];
+
       for (const key of CATEGORIES_ORDER) {
         const aliases = TOPIC_ALIASES[key];
-        
-        if (repoTopics.some((topic) => aliases.includes(topic))) {
+        if (repoTopics.some(topic => aliases.includes(topic))) {
           categorized[key].push({
-            id: repo.id,
-            name: repo.name,
+            id: Number(repo.id),
+            name: String(repo.name),
             description: repo.description ?? null,
-            html_url: repo.html_url,
-            topics: repo.topics ?? [],
-            language: repo.language,
-            stargazers_count: repo.stargazers_count ?? 0,
-            updated_at: repo.updated_at
+            html_url: String(repo.html_url),
+            topics: repoTopics,
+            language: repo.language ? String(repo.language) : undefined,
+            stargazers_count: Number(repo.stargazers_count ?? 0),
+            updated_at: repo.updated_at ? String(repo.updated_at) : undefined,
           });
-          break; 
+          break; // Evita múltiplas categorias
         }
       }
     });
 
+    // Ordena cada categoria pelo mais recente (updated_at)
+    for (const key of CATEGORIES_ORDER) {
+      categorized[key].sort((a, b) => {
+        const dateA = a.updated_at ? new Date(a.updated_at).getTime() : 0;
+        const dateB = b.updated_at ? new Date(b.updated_at).getTime() : 0;
+        return dateB - dateA; // do mais recente para o mais antigo
+      });
+    }
+
     return categorized;
+
   } catch (error) {
     console.error("Critical error fetching GitHub repos:", error);
     return categorized;
