@@ -1,22 +1,19 @@
 {
   "compilerOptions": {
-    /* 🚀 Alinhado com Node 24 e APIs Modernas */
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
-    
-    /* 🛡️ Rigor de Engenharia (Mantido seu excelente padrão) */
+
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
     "strictPropertyInitialization": true,
-    "noUnusedLocals": true, 
+    "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
-    
-    /* ⚙️ Compatibilidade e Build */
+
     "skipLibCheck": true,
     "noEmit": true,
     "allowJs": true,
@@ -24,25 +21,19 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "module": "esnext",
-    
-    /* ⚡ Next.js 15 & React 19 Performance */
+
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
 
-    /* 🗺️ Caminhos Absolutos (Essencial para manter imports limpos) */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
     },
 
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "plugins": [{ "name": "next" }]
   },
   "include": [
     "next-env.d.ts",
@@ -50,8 +41,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "mdx-components.tsx",
-    "next.config.js",
-    "next.config.mjs",
     "next.config.ts"
   ],
   "exclude": ["node_modules"]
