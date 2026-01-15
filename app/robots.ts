@@ -1,37 +1,61 @@
 import { MetadataRoute } from "next";
 
 /**
- * 🤖 Configuração Dinâmica do Robots.txt
- * Gerencia a visibilidade do portfólio para mecanismos de busca e IAs.
+ * 🤖 Configuração do robots.txt
+ * Controla indexação por mecanismos de busca e crawlers de IA.
  */
 export default function robots(): MetadataRoute.Robots {
-  // Prioriza a variável de ambiente para evitar URLs de preview da Vercel no robots oficial
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://portfoliosergiosantos.vercel.app";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    "https://portfoliosergiosantos.vercel.app";
+
+  const isPreview =
+    process.env.VERCEL_ENV === "preview" ||
+    process.env.NODE_ENV !== "production";
+
+  // 🔒 Em ambientes de preview/dev: bloquear tudo
+  if (isPreview) {
+    return {
+      rules: [
+        {
+          userAgent: "*",
+          disallow: "/",
+        },
+      ],
+    };
+  }
 
   return {
     rules: [
+      /**
+       * 🌍 Crawlers gerais (Google, Bing, etc.)
+       */
       {
         userAgent: "*",
         allow: "/",
         disallow: [
-          "/api/",      // Protege lógica de backend
-          "/_next/",    // Ignora artefatos de build do framework
-          "/admin/",    // Área restrita
-          "/private/",  // Pasta privada de rascunhos ou testes
-          "/*?*",       // Evita indexar URLs com parâmetros de busca (previne conteúdo duplicado)
+          "/api/",
+          "/_next/",
+          "/admin/",
+          "/private/",
         ],
       },
+
+      /**
+       * 🤖 Crawlers de IA
+       * Permite leitura do portfólio técnico para contextualização e citações.
+       * Obs: nomes de user-agent podem mudar conforme política dos providers.
+       */
       {
-        /**
-         * 🤖 AI Bots: Permite que modelos de linguagem indexem seu portfólio técnico.
-         * Útil para ser citado em recomendações de talentos por IAs.
-         */
-        userAgent: ["GPTBot", "ChatGPT-User", "Google-Extended", "Claude-Web"],
-        allow: ["/"],
-      }
+        userAgent: [
+          "GPTBot",
+          "Google-Extended",
+        ],
+        allow: "/",
+      },
     ],
-    // Caminho absoluto para o sitemap
+
+    // 🗺️ Sitemap absoluto (boa prática de SEO)
     sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
   };
 }
