@@ -46,7 +46,6 @@ Thumbs.db
 *.swo
 
 # 🤖 TypeScript & Tools
-next-env.d.ts
 .husky/_
 
 # 📊 Data/MDX Cache
