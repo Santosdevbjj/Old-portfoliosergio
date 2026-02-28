@@ -1,0 +1,682 @@
+o meu novo portfólio no vercel, foi feito com typescript 6.0 e next.js 16, e react 19 e node 24 e tailwindcss 4.2
+Como faço para implementar o tema claro e escuro.
+para o portfólio de acordo com o gosto o usuário 
+escolher o tema claro ou escuro.
+
+
+o meu portfólio antigo no GitHub pages fazia isso.
+analise o meu portfólio antigo.
+
+
+<!DOCTYPE html> 
+<html lang="pt-BR">
+<head> 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfólio Sergio Santos</title>
+  <style>
+    :root {
+      /* Tema claro */
+      --bg: #f9f9f9;
+      --text: #1f2937;
+      --muted: #4b5563;
+      --primary: #007acc;
+      --panel: #ffffff;
+      --border: #e5e7eb;
+
+      /* Tema escuro neon */
+      --bg-dark: #0b1220;
+      --text-dark: #e5e7eb;
+      --muted-dark: #cbd5e1;
+      --primary-dark: #00d9ff;
+      --panel-dark: #111827;
+      --border-dark: #1f2937;
+      --glow: 0 0 12px rgba(0, 217, 255, 0.6);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.25s ease, color 0.25s ease;
+      line-height: 1.6; /* Melhorar leitura */
+    }
+
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand { font-weight: 700; }
+    nav a {
+      color: #fff;
+      margin: 0 0.5rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s ease;
+    }
+    nav a:hover { opacity: 0.8; }
+
+    .actions { display: flex; gap: 0.75rem; align-items: center; }
+    .theme-toggle {
+      background: #fff;
+      color: var(--primary);
+      border: none;
+      padding: 0.5rem 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.1s ease;
+    }
+    .theme-toggle:hover { transform: translateY(-1px); }
+
+    .hero {
+      padding: 2.5rem 1.25rem;
+      text-align: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .hero h1 { color: var(--primary); margin: 0 0 0.5rem; font-size: 2.2rem; }
+    .hero p { color: var(--muted); margin: 0; }
+
+    .section-title { text-align: center; margin: 0.5rem 0 1.5rem; font-size: 1.8rem; }
+    .section-title-left { text-align: left; margin: 0.5rem 0 1.5rem; font-size: 1.8rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; max-width: 1200px; margin-left: auto; margin-right: auto; }
+
+    .content-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1rem 1.25rem;
+      text-align: left;
+    }
+    .content-container h2 {
+      color: var(--primary);
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .content-container strong { color: var(--primary); }
+    .content-container hr { border-color: var(--border); margin: 2rem 0; }
+    .content-container .stack-list { margin-top: 0.5rem; color: var(--muted); }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .projects-list {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.25rem; /* Ajustado para 1.25rem como o content-container */
+    }
+    .projects-list h3 {
+      color: var(--primary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.3rem;
+      margin-top: 2rem;
+      font-size: 1.35rem;
+    }
+    .projects-list ul {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 0.5rem;
+    }
+    .projects-list li {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: flex-start;
+    }
+    .projects-list li:before {
+      content: '▶';
+      color: var(--primary);
+      margin-right: 0.5rem;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+    .projects-list a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      flex: 1; /* Para ocupar o espaço restante */
+    }
+    .projects-list a:hover { color: var(--primary); }
+    .projects-list span {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-left: 0.75rem;
+      min-width: 100px; /* Para alinhar as stacks */
+      text-align: right;
+    }
+    
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      transition: box-shadow 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
+      text-align: left;
+    }
+    .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
+    .card h3 { color: var(--primary); margin-top: 0; font-size: 1.25rem; }
+    .card p { color: var(--muted); margin-top: 0.5rem; }
+    .card ul { margin: 0.5rem 0 0; padding-left: 1.1rem; }
+    .card li { margin: 0.3rem 0; }
+    .card a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    .card .stack { color: var(--muted); font-size: 0.9rem; display: block; margin-top: 0.25rem; }
+    .card .stack strong { color: var(--primary); font-weight: 700; }
+    .card .trophy { color: gold; margin-right: 0.5rem; }
+    .card-article { border-left: 4px solid var(--primary); }
+    
+    .contact-badges {
+        text-align: center;
+        margin-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    .contact-badges img {
+        margin: 0 0.5rem;
+    }
+
+    footer {
+      background: var(--primary);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+    }
+    footer a { color: #fff; margin: 0 0.5rem; text-decoration: none; font-weight: 600; }
+
+    /* Tema escuro */
+    body.dark {
+      background: linear-gradient(135deg, var(--bg-dark) 0%, #0e1a2b 50%, var(--bg-dark) 100%);
+      color: var(--text-dark);
+    }
+    body.dark header { background: var(--panel-dark); border-bottom: 1px solid var(--border-dark); }
+    body.dark .brand, body.dark nav a { color: var(--text-dark); }
+    body.dark .theme-toggle { background: var(--primary-dark); color: #001018; box-shadow: var(--glow); }
+
+    body.dark .hero h1 { color: var(--primary-dark); text-shadow: var(--glow); }
+    body.dark .hero p { color: var(--muted-dark); }
+    body.dark .content-container h2 { color: var(--primary-dark); text-shadow: 0 0 3px rgba(0, 217, 255, 0.3); }
+    body.dark .content-container strong { color: var(--primary-dark); }
+    body.dark .content-container hr { border-color: var(--border-dark); }
+    body.dark .section-title-left { border-bottom-color: var(--border-dark); }
+
+    body.dark .projects-list h3 { color: var(--primary-dark); border-bottom-color: var(--border-dark); }
+    body.dark .projects-list li:before { color: var(--primary-dark); }
+    body.dark .projects-list a { color: var(--text-dark); }
+    body.dark .projects-list a:hover { color: var(--primary-dark); }
+    body.dark .projects-list span { color: var(--muted-dark); }
+
+    body.dark .card {
+      background: var(--panel-dark);
+      border: 1px solid var(--border-dark);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    body.dark .card h3 { color: var(--primary-dark); text-shadow: 0 0 3px rgba(0, 217, 255, 0.2); }
+    body.dark .card p { color: var(--muted-dark); }
+    body.dark .card a { color: var(--primary-dark); text-shadow: 0 0 1px rgba(0, 217, 255, 0.1); }
+    body.dark .card .stack strong { color: var(--primary-dark); }
+    body.dark .card-article { border-left-color: var(--primary-dark); }
+
+    body.dark footer { background: #0b1526; border-top: 1px solid var(--border-dark); }
+    body.dark footer a { color: var(--primary-dark); text-shadow: 0 0 1px rgba(0, 217, 255, 0.2); }
+    
+    /* ======================================================= */
+    /* REGRAS DE RESPONSIVIDADE (OTIMIZAÇÃO MOBILE) */
+    /* ======================================================= */
+    
+    @media (max-width: 768px) {
+        /* 1. Ajuste do Header/Navegação: Transforma de linha para coluna */
+        
+        header {
+            flex-direction: column; /* Coloca os filhos em coluna */
+            flex-wrap: wrap;
+            padding: 0.8rem 1rem;
+            height: auto; /* Permite que o header cresça */
+            align-items: flex-start; /* Alinha tudo à esquerda */
+        }
+        
+        .brand {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .actions {
+            flex-direction: column; /* Links em coluna */
+            gap: 0.5rem;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        nav {
+            width: 100%;
+            display: flex; 
+            flex-wrap: wrap;
+            justify-content: center;
+            order: 2; /* Coloca a navegação abaixo do botão de tema */
+        }
+        
+        nav a {
+            flex-grow: 1;
+            text-align: center;
+            margin: 0.2rem 0.1rem;
+            padding: 0.4rem 0;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-toggle {
+            width: 100%;
+            margin-bottom: 0.5rem;
+            order: 1; /* Coloca o botão acima da navegação */
+        }
+
+        /* 2. Ajustes de Leitura */
+        .hero {
+            padding-top: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 600px) {
+        /* Redução de Padding e Fonte em Telas Muito Pequenas */
+        .content-container, .hero, .projects-grid, .projects-list {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        
+        /* Força a grade de projetos para 1 coluna */
+        .projects-grid {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .hero h1 {
+            font-size: 1.6rem;
+        }
+        
+        .card {
+            padding: 0.8rem;
+        }
+        
+        /* Ajuste do Título da Lista de Projetos para caber melhor */
+        .projects-list span {
+            min-width: 70px;
+            font-size: 0.8rem;
+        }
+    }
+
+    /* ======================================================= */
+    /* FIM DAS REGRAS DE RESPONSIVIDADE */
+    /* ======================================================= */
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">Sergio Santos - Portfólio</div>
+    <div class="actions">
+      <nav>
+        <a href="#sobre">Sobre</a>
+        <a href="#destaques">Destaques</a>
+        <a href="#projetos">Repositório</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <button class="theme-toggle" id="themeBtn" aria-label="Alternar tema">Modo escuro</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Analista de Ciência de Dados | Python | SQL | Azure Databricks | Eficiência Operacional e Governança de Dados</h1>
+    <p>Seja bem-vindo(a). Sou um profissional com mais de 15 anos de experiência em sistemas de missão crítica no setor bancário, agora dedicando minha atuação a transformar dados em inteligência estratégica e suporte à tomada de decisão.</p>
+    <p>Utilizo um stack moderno baseado em Python, Azure Databricks, SQL e Neo4J para desenvolver soluções de dados com rigor técnico, conformidade e foco em impacto direto no negócio.</p>
+  </section>
+
+  <section id="sobre" class="content-container">
+    <h2 class="section-title-left">👨‍💻 Sobre mim</h2>
+    <p>Analista de Ciência de Dados com base sólida em sistemas críticos bancários e foco em transformar dados em decisões, redução de custos e eficiência operacional.
+    <p>Atuei por mais de 15 anos no Banco Bradesco em ambientes regulados de missão crítica, onde segurança, governança e continuidade do negócio eram requisitos essenciais. Essa experiência me deu visão sistêmica, capacidade de análise de risco e disciplina operacional — competências que hoje aplico diretamente em projetos de dados.</p>
+    <p>Atualmente direciono minha atuação para Ciência de Dados e Inteligência Artificial, aplicando o rigor de sistemas críticos à criação de modelos preditivos, análises avançadas e automação de processos.</p>
+    <p><strong>Utilizo Python, SQL, Azure Databricks e Neo4J</strong> para desenvolver pipelines governados, construir modelos e gerar insights acionáveis com impacto no negócio — conectando dados técnicos à tomada de decisão corporativa.</p>
+   <p>Meu foco é transformar dados em inteligência estratégica, garantindo soluções escaláveis, seguras e alinhadas aos desafios de negócios modernos.</p>
+ 
+
+    <hr>
+
+    <h2>Experiência Técnica</h2>
+    <p><strong>Sistemas críticos desenvolvidos:</strong></p>
+    <ul>
+      <li>Sistema automatizado de IPVA que eliminou <strong>2.920 horas anuais</strong> de processamento manual</li>
+      <li>Infraestrutura de rede corporativa para 500+ usuários com <strong>99,5% de disponibilidade</strong></li>
+      <li>Sistemas jurídicos interdepartamentais com rastreabilidade completa e conformidade LGPD</li>
+    </ul>
+
+    <p class="stack-list"><strong>Stack consolidado:</strong> Visual Basic, C, SQL Server, Windows Server, Emulação Mainframe IBM, Active Directory</p>
+    <p class="stack-list"><strong>Stack em atualização:</strong> Java, C#/.NET, Python, Azure Databricks, Azure AI, Power BI, Machine Learning, Docker, Neo4J (bancos de dados de grafos)</p>
+
+    <hr>
+
+    <h2>Transição e Reskilling</h2>
+    <p>Desde 2008 atuo como consultor independente enquanto invisto em atualização contínua através de bootcamps e certificações especializadas. <strong>Recentemente concluí</strong> formação em <strong>Ciência de Dados com Python</strong> e <strong>Neo4J para análise de dados com grafos</strong> — habilidade aplicável a cenários de detecção de fraudes, análise de relacionamentos e compliance em ambientes corporativos.</p>
+
+    <p class="stack-list"><strong>Formações concluídas:</strong> Santander Coders, Microsoft AI Agents, IBM AI Fundamentals, Azure Databricks, Azure Cloud, Java, C#/.NET, Cibersegurança, Power BI, Ciência de Dados</p>
+
+    <p>Os projetos deste portfólio refletem essa transição de sistemas legados para tecnologias modernas, com foco em análise de dados e governança.</p>
+
+    <hr>
+
+    <h2>Diferencial</h2>
+    <p>Combino profundo conhecimento de ambientes regulados (compliance bancário, segurança de dados, auditoria) com capacidade técnica para modernizar infraestrutura legada e aplicar análise avançada de dados. Experiência prática em avaliar não apenas viabilidade técnica, mas também riscos, conformidade e impacto organizacional de cada solução.</p>
+
+    <hr>
+
+    <h2>Objetivo</h2>
+    <p>Busco oportunidades em projetos que envolvam <strong>governança de dados</strong>, <strong>modernização de infraestrutura</strong> ou <strong>sistemas corporativos regulados</strong> — preferencialmente em formato remoto ou híbrido — onde minha experiência bancária e stack técnico diversificado possam gerar impacto mensurável.</p>
+    
+    <p class="section-title">🔗 <strong>Projetos completos abaixo</strong></p>
+
+  </section>
+  
+  <section id="destaques">
+    <h2 class="section-title">🎯 Projetos em Destaque</h2>
+    <div class="projects-grid">
+      <div class="card">
+        <a href="https://github.com/Santosdevbjj/sistemaRHnuvemAzure" target="_blank">
+          <h3>Sistema RH em Nuvem Azure</h3>
+        </a>
+        <p>Sistema corporativo de recursos humanos com arquitetura em nuvem, demonstrando aplicação prática de governança e infraestrutura escalável.</p>
+        <span class="stack"><strong>Stack:</strong> C#/.NET, Azure Cloud</span>
+      </div>
+
+      <div class="card">
+        <a href="https://github.com/Santosdevbjj/desafioAvanadeMicroservico" target="_blank">
+          <h3>Microsserviço - Desafio Avanade</h3>
+        </a>
+        <p>Implementação de arquitetura de microsserviços seguindo padrões enterprise e boas práticas de desenvolvimento.</p>
+        <span class="stack"><strong>Stack:</strong> C#/.NET, Microserviços</span>
+      </div>
+
+      <div class="card">
+        <a href="https://github.com/Santosdevbjj/NTTDataDesafio" target="_blank">
+          <h3>Desafio NTT Data</h3>
+        </a>
+        <p>Solução técnica para desafio corporativo com foco em qualidade de código e padrões de projeto.</p>
+        <span class="stack"><strong>Stack:</strong> Java</span>
+      </div>
+
+      <div class="card">
+        <a href="https://github.com/Santosdevbjj/apiBancaria" target="_blank">
+          <h3>API Bancária</h3>
+        </a>
+        <p>API REST para operações bancárias com ênfase em segurança e validação de transações.</p>
+        <span class="stack"><strong>Stack:</strong> Python</span>
+      </div>
+      
+      <div class="card">
+        <a href="https://github.com/Santosdevbjj/modelaDadosEmGrafos" target="_blank">
+          <h3>Modelagem de Dados em Grafos</h3>
+        </a>
+        <p>Análise de relacionamentos complexos usando banco de dados de grafos — aplicável a cenários de detecção de fraudes e compliance.</p>
+        <span class="stack"><strong>Stack:</strong> Neo4J</span>
+      </div>
+
+      <div class="card">
+        <a href="https://github.com/Santosdevbjj/genAIpipeETLPython" target="_blank">
+          <h3>Pipeline ETL com IA Generativa</h3>
+        </a>
+        <p>Pipeline de extração, transformação e carga de dados integrado com inteligência artificial generativa.</p>
+        <span class="stack"><strong>Stack:</strong> Python, IA Generativa</span>
+      </div>
+      
+      <div class="card">
+        <a href="https://github.com/Santosdevbjj/BdOSoficinaMecanica" target="_blank">
+          <h3>Sistema de Oficina Mecânica</h3>
+        </a>
+        <p>Modelagem completa de banco de dados para gestão de oficina mecânica com relacionamentos complexos.</p>
+        <span class="stack"><strong>Stack:</strong> Banco de Dados</span>
+      </div>
+
+      <div class="card">
+        <a href="https://github.com/Santosdevbjj/razorPagesProjeto" target="_blank">
+          <h3>Projeto Razor Pages</h3>
+        </a>
+        <p>Aplicação web usando Razor Pages com arquitetura MVC e boas práticas de desenvolvimento.</p>
+        <span class="stack"><strong>Stack:</strong> C#/.NET, Razor Pages</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="artigo-destaque">
+    <h2 class="section-title">📝 Artigo em Destaque</h2>
+    <div class="projects-grid">
+      <div class="card card-article">
+        <a href="https://github.com/Santosdevbjj/myArticles/blob/main/artigos/low_code/low_code_saude.md" target="_blank">
+          <h3><span class="trophy">🏆</span> Low-Code na Saúde: Como Criar Apps Médicos em Semanas</h3>
+        </a>
+        <p>Análise sobre aplicação de plataformas low-code no setor de saúde, abordando benefícios, desafios e casos de uso práticos para desenvolvimento acelerado de aplicações médicas.</p>
+        <span class="stack">🏆 <strong>Vencedor da 35ª Competição de Artigos DIO</strong></span>
+        <span class="stack">🏆 <strong>Melhor Artigo do Mês - Setembro 2025</strong></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="projetos">
+    <h2 class="section-title-left">💻 Repositório de Projetos por Tecnologia</h2>
+    <div class="projects-list">
+      
+      
+      <h3>Ciência de Dados</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/analiseRiscosAtrasoObras" target="_blank">Simulador de Riscos Logísticos - CCbjj Engenharia & Inteligência de Risco</a></li>
+        <li><a href="https://github.com/Santosdevbjj/analiseDadosNaPratica" target="_blank">Diagnóstico de Eficiência Operacional</a></li>
+        <li><a href="https://github.com/Santosdevbjj/awsFarmaciasReduzCustos" target="_blank">Redução Custos Farmácias AWS</a></li>
+        <li><a href="https://github.com/Santosdevbjj/vendasXboxExcelDash" target="_blank">Vendas Xbox - Dashboard Excel</a></li>
+        <li><a href="https://github.com/Santosdevbjj/genAIpipeETLPython" target="_blank">Pipeline ETL com IA Generativa</a></li>
+        <li><a href="https://github.com/Santosdevbjj/prevencaoFraudesPix" target="_blank">Prevenção de Fraudes PIX</a></li>
+      </ul>
+      
+
+      <h3>Azure Databricks - Engenharia de Dados em Cloud</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/versaCodigoNotebookAzure" target="_blank">Versionamento Código Notebook</a></li>
+        <li><a href="https://github.com/Santosdevbjj/AzureDevOpsVersiBackup" target="_blank">Azure DevOps - Versionamento</a></li>
+        <li><a href="https://github.com/Santosdevbjj/processoRedundanciaArqAzure" target="_blank">Redundância Arquitetura Azure</a></li>
+        <li><a href="https://github.com/Santosdevbjj/monitoraCustosDataFactory" target="_blank">Monitoramento Custos Data Factory</a></li>
+      </ul>
+
+
+
+      <h3>Neo4J - Análise de Dados com Grafos</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/modelaDadosEmGrafos" target="_blank">Modelagem de Dados em Grafos</a></li>
+        <li><a href="https://github.com/Santosdevbjj/recomendMusicasGrafos" target="_blank">Recomendação de Músicas em Grafos</a></li>
+      </ul>
+
+      <h3>Power BI & Análise de Dados</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/relatoVendasLucros" target="_blank">Relatório Vendas e Lucros</a></li>
+        <li><a href="https://github.com/Santosdevbjj/dashboardGerencial" target="_blank">Dashboard Gerencial</a></li>
+        <li><a href="https://github.com/Santosdevbjj/relatoDinamicoPowerBi" target="_blank">Relatório Dinâmico Power BI</a></li>
+        <li><a href="https://github.com/Santosdevbjj/dashboardStarShema" target="_blank">Dashboard Star Schema</a></li>
+        <li><a href="https://github.com/Santosdevbjj/dashboardCorporativo" target="_blank">Dashboard Corporativo</a></li>
+        <li><a href="https://github.com/Santosdevbjj/dashboardEcommerceDax" target="_blank">Dashboard E-commerce DAX</a></li>
+        <li><a href="https://github.com/Santosdevbjj/relatoDashVendas" target="_blank">Relatório Dashboard Vendas</a></li>
+        <li><a href="https://github.com/Santosdevbjj/relatoGereVendas" target="_blank">Relatório Gerencial Vendas</a></li>
+      </ul>
+
+
+
+      <h3>Banco de Dados</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/firstLogicoBD" target="_blank">Primeiro Lógico BD</a></li>
+        <li><a href="https://github.com/Santosdevbjj/projetoLogicoDoZeroBD" target="_blank">Projeto Lógico do Zero</a></li>
+        <li><a href="https://github.com/Santosdevbjj/BdOSoficinaMecanica" target="_blank">BD Oficina Mecânica</a></li>
+        <li><a href="https://github.com/Santosdevbjj/bancoDadosEcommerceDio" target="_blank">BD E-commerce</a></li>
+      </ul> 
+
+      <h3>Python</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/apiWorkoutPython" target="_blank">API Workout</a></li>
+        <li><a href="https://github.com/Santosdevbjj/apiBancaria" target="_blank">API Bancária</a></li>
+        <li><a href="https://github.com/Santosdevbjj/genAIpipeETLPython" target="_blank">Pipeline ETL com IA</a></li>
+        <li><a href="https://github.com/Santosdevbjj/utilizaFerramentasGitHub" target="_blank">Ferramentas GitHub</a></li>
+        <li><a href="https://github.com/Santosdevbjj/generosLiterarios" target="_blank">Gêneros Literários</a></li>
+        <li><a href="https://github.com/Santosdevbjj/pacoteProcessImagem" target="_blank">Pacote Processamento de Imagem</a></li>
+        <li><a href="https://github.com/Santosdevbjj/primeiroCopiloto" target="_blank">Primeiro Copiloto</a></li>
+        <li><a href="https://github.com/Santosdevbjj/modelaSistemaBancPOO" target="_blank">Sistema Bancário POO</a></li>
+        <li><a href="https://github.com/Santosdevbjj/sistemaBancario" target="_blank">Sistema Bancário</a></li>
+        <li><a href="https://github.com/Santosdevbjj/copilotoFluxoConversa" target="_blank">Copiloto - Fluxo de Conversa</a></li>
+        <li><a href="https://github.com/Santosdevbjj/otimizaSistemaBancario" target="_blank">Otimização Sistema Bancário</a></li>
+      </ul> 
+      
+      
+      <h3>C#/.NET</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/sistemaRHnuvemAzure" target="_blank">Sistema RH Azure</a> <span>Aplicação corporativa em nuvem</span></li>
+        <li><a href="https://github.com/Santosdevbjj/desafioAvanadeMicroservico" target="_blank">Microsserviço Avanade</a> <span>Arquitetura de microsserviços</span></li>
+        <li><a href="https://github.com/Santosdevbjj/ecommerceLivrosAngular" target="_blank">E-commerce de Livros</a> <span>Integração Angular + .NET</span></li>
+        <li><a href="https://github.com/Santosdevbjj/stackTestesUnidIntegra" target="_blank">Stack Testes Unitários e Integração</a> <span>Stack completo de testes</span></li>
+        <li><a href="https://github.com/Santosdevbjj/MinimalsAPIs" target="_blank">Minimal APIs</a> <span>APIs minimalistas</span></li>
+        <li><a href="https://github.com/Santosdevbjj/projApiMongoDB" target="_blank">API com MongoDB</a> <span>NoSQL integration</span></li>
+        <li><a href="https://github.com/Santosdevbjj/razorPagesProjeto" target="_blank">Razor Pages</a> <span>MVC web app</span></li>
+        <li><a href="https://github.com/Santosdevbjj/agendaTarefasEntFram" target="_blank">Agenda com Entity Framework</a> <span>ORM patterns</span></li>
+        <li><a href="https://github.com/Santosdevbjj/diaDiaQA" target="_blank">Práticas de QA</a> <span>Quality assurance</span></li>
+        <li><a href="https://github.box.com/Santosdevbjj/validaTesteUnitario" target="_blank">Validação com Testes Unitários</a></li>
+        <li><a href="https://github.com/Santosdevbjj/dockerContainerWeb" target="_blank">Docker Container Web</a> <span>Containerização</span></li>
+        <li><a href="https://github.com/Santosdevbjj/calculadoraTDDTestes" target="_blank">Calculadora TDD</a> <span>Test-driven development</span></li>
+        <li><a href="https://github.com/Santosdevbjj/sistemaDeHospedagem" target="_blank">Sistema de Hospedagem</a></li>
+        <li><a href="https://github.com/Santosdevbjj/sistemaEstacionamento" target="_blank">Sistema de Estacionamento</a></li>
+        <li><a href="https://github.com/Santosdevbjj/sistemaPOOcelular" target="_blank">POO - Sistema Celular</a></li>
+        <li><a href="https://github.com/Santosdevbjj/projetoSQLServer" target="_blank">Projeto SQL Server</a></li>
+        <li><a href="https://github.com/Santosdevbjj/reduzirCustosAWS" target="_blank">Redução de Custos AWS</a></li>
+      </ul>
+
+      <h3>Java</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/NTTDataDesafio" target="_blank">Desafio NTT Data</a></li>
+        <li><a href="https://github.com/Santosdevbjj/javaNaPraticaPOO" target="_blank">POO na Prática</a></li>
+        <li><a href="https://github.com/Santosdevbjj/boardTarefasJava" target="_blank">Board de Tarefas</a></li>
+        <li><a href="https://github.com/Santosdevbjj/deployAppTonnie" target="_blank">Deploy App Tonnie</a></li>
+        <li><a href="https://github.com/Santosdevbjj/PadraoProjetoJava" target="_blank">Padrões de Projeto</a></li>
+        <li><a href="https://github.com/Santosdevbjj/SudokuJogoJava" target="_blank">Jogo Sudoku</a></li>
+        <li><a href="https://github.com/Santosdevbjj/testUnitValidarApiRest" target="_blank">Testes Unitários API REST</a></li>
+        <li><a href="https://github.com/Santosdevbjj/transacaoFinanceira" target="_blank">Transação Financeira</a></li>
+        <li><a href="https://github.com/Santosdevbjj/jogoDaForca" target="_blank">Jogo da Forca</a></li>
+        <li><a href="https://github.com/Santosdevbjj/pooDesafioJava" target="_blank">Desafio POO</a></li>
+        <li><a href="https://github.com/Santosdevbjj/criarEbook" target="_blank">Criar E-book</a></li>
+      </ul>
+
+      
+
+      <h3>Machine Learning & IA</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/sistemRecomendaImag" target="_blank">Sistema de Recomendação de Imagens</a></li>
+        <li><a href="https://github.com/Santosdevbjj/Transfer-Learning-Project" target="_blank">Transfer Learning</a></li>
+        <li><a href="https://github.com/Santosdevbjj/reconheceFaceZero" target="_blank">Reconhecimento Facial Zero-Shot</a></li>
+        <li><a href="https://github.com/Santosdevbjj/calculoMetricasML" target="_blank">Cálculo de Métricas ML</a></li>
+        <li><a href="https://github.com/Santosdevbjj/treinaRedeYolo" target="_blank">Treinamento Rede YOLO</a></li>
+        <li><a href="https://github.com/Santosdevbjj/agenteDetector" target="_blank">Agente Detector</a></li>
+        <li><a href="https://github.com/Santosdevbjj/reduzImagensRedeNeural" target="_blank">Redução de Imagens - Rede Neural</a></li>
+        <li><a href="https://github.com/Santosdevbjj/testUnitLcAzGpt" target="_blank">Testes Unitários Azure GPT</a></li>
+        <li><a href="https://github.com/Santosdevbjj/assistVirtualPLN" target="_blank">Assistente Virtual PLN</a></li>
+        <li><a href="https://github.com/Santosdevbjj/redesNeuraisTranfer" target="_blank">Redes Neurais Transfer Learning</a></li>
+        <li><a href="https://github.com/Santosdevbjj/transfer-learning-cats-vs-dogs" target="_blank">Transfer Learning: Cats vs Dogs</a></li>
+        <li><a href="https://github.com/Santosdevbjj/analiseSentimet_LanStuAz.md" target="_blank">Análise de Sentimentos Azure</a></li>
+        <li><a href="https://github.icom/Santosdevbjj/Sales_Insights_AI_DIO" target="_blank">Sales Insights AI</a></li>
+        <li><a href="https://github.com/Santosdevbjj/azureCognitive_dio.md" target="_blank">Azure Cognitive Services</a></li>
+        <li><a href="https://github.com/Santosdevbjj/podCastIA" target="_blank">Podcast com IA</a></li>
+        <li><a href="https://github.com/Santosdevbjj/dashboardVendasXbox" target="_blank">Dashboard Vendas Xbox</a></li>
+        <li><a href="https://github.com/Santosdevbjj/IntegraChatgptNodReac" target="_blank">Integração ChatGPT + Node + React</a></li>
+        <li><a href="https://github.com/Santosdevbjj/recursoIAgeneratOpenAi_Dio" target="_blank">OpenAI Generativa</a></li>
+        <li><a href="https://github.com/Santosdevbjj/artigoTecnico" target="_blank">Artigo Técnico com IA</a></li>
+        <li><a href="https://github.com/Santosdevbjj/validar_BandeiraCartaoCredito" target="_blank">Validação Bandeira Cartão</a></li>
+        <li><a href="https://github.com/Santosdevbjj/nattyOrNot" target="_blank">Natty or Not</a></li>
+      </ul>
+
+      
+
+      <h3>Amazon AWS</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/gerenciaInstanciaEC2" target="_blank">Gerenciamento Instância EC2</a></li>
+        <li><a href="https://github.com/Santosdevbjj/estoqAWSsagemakerCanvas" target="_blank"> Previsão de Estoque com Sagemaker Canvas</a></li>
+      </ul>
+
+      <h3>Cibersegurança</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/DesafioDioPhishing" target="_blank">Desafio Phishing</a></li>
+        <li><a href="https://github.com/Santosdevbjj/desafioDioRansomware" target="_blank">Desafio Ransomware</a></li>
+      </ul>
+
+      <h3>Lógica de Programação</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/nivelDeHeroi" target="_blank">Nível de Herói</a></li>
+        <li><a href="https://github.com/Santosdevbjj/partidasRankeadas" target="_blank">Partidas Rankeadas</a></li>
+        <li><a href="https://github.com/Santosdevbjj/jogoClassesObjeto" target="_blank">Jogo - Classes e Objetos</a></li>
+      </ul>
+
+      <h3>HTML/Frontend</h3>
+      <ul>
+        <li><a href="https://github.com/Santosdevbjj/criaPageWeb" target="_blank">Criação de Página Web</a></li>
+      </ul>
+      
+    </div>
+  </section>
+  
+  <section id="artigos" class="content-container">
+    <h2 class="section-title-left">📚 Repositório de Artigos Técnicos</h2>
+    <p>Acesse o <a href="https://github.com/Santosdevbjj/myArticles" target="_blank">repositório completo de artigos</a> com conteúdos sobre tecnologia, boas práticas e análises técnicas.</p>
+  </section>
+
+  <section id="contato" class="hero">
+    <h2 class="section-title">📬 Contato</h2>
+    <div class="contact-badges">
+        <a href="https://santosdevbjj.github.io/portfolio/" target="_blank">
+            <img src="https://img.shields.io/badge/Portfólio-Sérgio_Santos-111827?style=for-the-badge&logo=githubpages&logoColor=00eaff" alt="Portfólio Sérgio Santos">
+        </a>
+        <a href="https://linkedin.com/in/santossergioluiz" target="_blank">
+            <img src="https://img.shields.io/badge/LinkedIn-Sérgio_Santos-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Sérgio Santos">
+        </a>
+        <a href="mailto:santossergiorealbjj@outlook.com">
+            <img src="https://img.shields.io/badge/Email-santossergiorealbjj@outlook.com-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email">
+        </a>
+    </div>
+  </section>
+
+  <footer>
+    Desenvolvido por Sergio Santos
+  </footer>
+
+  <script>
+    // Inicializa tema pelo localStorage
+    (function initTheme() {
+      const saved = localStorage.getItem('theme') || 'light';
+      const isDark = saved === 'dark';
+      document.body.classList.toggle('dark', isDark);
+      updateButton(isDark);
+    })();
+
+    function updateButton(isDark) {
+      const btn = document.getElementById('themeBtn');
+      btn.textContent = isDark ? 'Modo claro' : 'Modo escuro';
+      btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+    }
+
+    document.getElementById('themeBtn').addEventListener('click', function () {
+      const isDark = document.body.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateButton(isDark);
+    });
+  </script>
+</body>
+</html>
