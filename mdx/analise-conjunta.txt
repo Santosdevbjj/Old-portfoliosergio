@@ -1,0 +1,2683 @@
+Deploy do Vercel sem erros:
+
+08:07:22.558 Running build in Washington, D.C., USA (East) – iad1
+08:07:22.559 Build machine configuration: 2 cores, 8 GB
+08:07:22.681 Cloning github.com/Santosdevbjj/portfoliosantossergio (Branch: main, Commit: 0155906)
+08:07:23.382 Cloning completed: 700.000ms
+08:07:24.665 Restored build cache from previous deployment (3pk19DwiH8YngJJ2phWVJDEpmcah)
+08:07:27.197 Running "vercel build"
+08:07:27.842 Vercel CLI 50.28.0
+08:07:28.155 Installing dependencies...
+08:07:35.626 
+08:07:35.627 up to date in 7s
+08:07:35.627 
+08:07:35.627 281 packages are looking for funding
+08:07:35.627   run `npm fund` for details
+08:07:35.704 Detected Next.js version: 16.1.6
+08:07:35.711 Running "npm run build"
+08:07:35.881 
+08:07:35.883 > portfolio-sergio-santos@13.0.1 build
+08:07:35.883 > next build
+08:07:35.883 
+08:07:36.691 ▲ Next.js 16.1.6 (Turbopack)
+08:07:36.692 
+08:07:36.725   Creating an optimized production build ...
+08:07:47.506 ✓ Compiled successfully in 10.4s
+08:07:47.509   Running TypeScript ...
+08:07:52.960   Collecting page data using 1 worker ...
+08:07:53.368 ⚠ Using edge runtime on a page currently disables static generation for that page
+08:07:53.661   Generating static pages using 1 worker (0/20) ...
+08:07:53.937   Generating static pages using 1 worker (5/20) 
+08:07:54.192   Generating static pages using 1 worker (10/20) 
+08:07:55.732   Generating static pages using 1 worker (15/20) 
+08:07:55.799 ✓ Generating static pages using 1 worker (20/20) in 2.1s
+08:07:55.816   Finalizing page optimization ...
+08:07:55.824 
+08:07:55.826 Route (app)                              Revalidate  Expire
+08:07:55.826 ┌ ○ /_not-found
+08:07:55.826 ├ ● /[lang]                                      1m      1y
+08:07:55.826 │ ├ /pt-BR                                       1m      1y
+08:07:55.826 │ ├ /en-US                                       1m      1y
+08:07:55.826 │ ├ /es-ES                                       1m      1y
+08:07:55.826 │ └ [+2 more paths]
+08:07:55.826 ├ ● /[lang]/artigos                              1h      1y
+08:07:55.827 │ ├ /pt-BR/artigos                               1h      1y
+08:07:55.827 │ ├ /en-US/artigos                               1h      1y
+08:07:55.827 │ ├ /es-ES/artigos                               1h      1y
+08:07:55.827 │ └ [+2 more paths]
+08:07:55.827 ├ ƒ /[lang]/artigos/[...slug]
+08:07:55.827 ├ ● /[lang]/artigos/meu-primeiro-artigo
+08:07:55.827 │ ├ /pt-BR/artigos/meu-primeiro-artigo
+08:07:55.827 │ ├ /en-US/artigos/meu-primeiro-artigo
+08:07:55.827 │ ├ /es-ES/artigos/meu-primeiro-artigo
+08:07:55.827 │ └ [+2 more paths]
+08:07:55.827 ├ ƒ /api/post-og
+08:07:55.827 ├ ƒ /api/users
+08:07:55.827 ├ ○ /robots.txt
+08:07:55.828 └ ○ /sitemap.xml
+08:07:55.828 
+08:07:55.828 
+08:07:55.828 ƒ Proxy (Middleware)
+08:07:55.828 
+08:07:55.828 ○  (Static)   prerendered as static content
+08:07:55.828 ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+08:07:55.828 ƒ  (Dynamic)  server-rendered on demand
+08:07:55.828 
+08:07:56.511 Traced Next.js server files in: 39.318ms
+08:07:57.204 Created all serverless functions in: 691.993ms
+08:07:57.544 Collected static files (public/, static/, .next/static): 34.207ms
+08:07:57.777 Build Completed in /vercel/output [30s]
+08:07:58.128 Deploying outputs...
+08:08:11.286 Deployment completed
+08:08:12.360 Creating build cache...
+08:08:27.966 Created build cache: 16s
+08:08:27.967 Uploading build cache [120.04 MB]
+08:08:31.102 Build cache uploaded: 3.141s 
+
+
+ESTA MOSTRANDO CORRETAMENTE O MEU ARTIGO VENCEDOR DA COMPETIÇÃO DA DIO.
+
+ESTÁ MOSTRANDO CORRETAMENTE O REPOSITÓRIO DE ARTIGOS.
+
+
+MAS TEM UM PROBLEMA:
+NAO MOSTRA TODOS OS PROJETO IGUAL A VERSÃO ANTIGA DO src/app/[lang]/page.tsx
+
+DETALHE IMPORTANTE TANTO A VERSÃO ATUAL DO ARQUIVO src/app/[lang]/page.tsx
+QUANTO A VERSÃO ANTIGA DO src/app/[lang]/page.tsx
+ESTAO CORRETAS. VOCE TEM QUE JUNTAR AS DUAS.
+
+E MOSTRAR TAMBÉM 
+
+
+NAO MOSTRA OS TRES ARQUIVOS DE DESTAQUE.
+
+FALTA UM MELHOR TRATAMENTO PARA MOSTRAR O CURRÍCULO VITAE, POIS ATUALMENTE ELE É MOSTRADO CORRETAMENTE, SO QUE NAO TEM UM BOTAO PARA O DOWNLOAD E AO CLICAR EM
+CV  É ABERTA EM OUTRA PAGINA NO NAVEGADOR.
+
+
+
+
+
+Revise o arquivo src/app/[lang]/page.tsx
+
+ATUAL e compare com o arquivo src/app/[lang]/page.tsx ANTIGO.
+
+
+ATUALMENTE O ARQUIVO 
+src/app/[lang]/page.tsx
+
+ESTÁ COM ESSE CONTEÚDO 
+
+
+import type { Metadata, Viewport } from "next";
+import { notFound } from "next/navigation";
+
+// Types
+import type { Locale, Dictionary } from "@/types/dictionary";
+import type { ProcessedProject } from "@/types/github";
+
+// Services & Helpers
+import { getServerDictionary } from "@/lib/getServerDictionary";
+import { getGitHubProjects } from "@/services/githubService";
+import { SUPPORTED_LOCALES, isValidLocale } from "@/dictionaries/locales";
+
+// Components
+import ProxyPage from "@/components/ProxyPage";
+import HeroSection from "@/components/HeroSection";
+import AboutSection from "@/components/AboutSection";
+import FeaturedProjectsSection from "@/components/featured/FeaturedProjectsSection";
+import FeaturedArticleSection from "@/components/FeaturedArticleSection";
+
+interface PageProps {
+  params: Promise<{ lang: string }>;
+}
+
+export const dynamic = "force-static";
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  return SUPPORTED_LOCALES.map((lang) => ({ lang }));
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#020617",
+};
+
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const { lang: rawLang } = await props.params;
+  if (!rawLang || !isValidLocale(rawLang)) return {};
+
+  try {
+    const dict: Dictionary = await getServerDictionary(rawLang as Locale);
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://portfoliosantossergio.vercel.app";
+
+    return {
+      title: dict?.seo?.pages?.home?.title ?? "Sérgio Santos",
+      description: dict?.seo?.pages?.home?.description ?? "Portfolio",
+      alternates: {
+        canonical: `${siteUrl}/${rawLang}`,
+        languages: {
+          "pt-BR": `${siteUrl}/pt-BR`,
+          "en-US": `${siteUrl}/en-US`,
+          "es-ES": `${siteUrl}/es-ES`,
+          "es-AR": `${siteUrl}/es-AR`,
+          "es-MX": `${siteUrl}/es-MX`,
+        },
+      },
+    };
+  } catch {
+    return { title: "Sérgio Santos" };
+  }
+}
+
+export default async function HomePage(props: PageProps) {
+  const { lang: rawLang } = await props.params;
+
+  if (!rawLang || !isValidLocale(rawLang)) {
+    notFound();
+  }
+
+  const lang = rawLang as Locale;
+  
+  // Executa as buscas em paralelo (GitHub + Dicionário)
+  const [dictData, githubProjects] = await Promise.all([
+    getServerDictionary(lang).catch(() => null),
+    getGitHubProjects("Santosdevbjj").catch(() => [] as ProcessedProject[])
+  ]);
+
+  if (!dictData) {
+    notFound();
+  }
+
+  // Filtra os projetos do GitHub (Lógica do arquivo antigo)
+  const filteredGitHubProjects = githubProjects.filter(
+    p => !p.name.toLowerCase().includes("articles") && !p.name.toLowerCase().includes("artigos")
+  );
+
+  // Unindo os dados: Injetamos os projetos do GitHub no dicionário 
+  // para que o componente FeaturedProjectsSection possa lê-los sem erro de tipo
+  const dict = {
+    ...dictData,
+    projects: {
+      ...dictData.projects,
+      // Se o JSON de tradução estiver vazio ou curto, usamos os dados do GitHub
+      featuredProjects: filteredGitHubProjects.length > 0 ? filteredGitHubProjects : dictData.projects?.featuredProjects
+    }
+  };
+
+  return (
+    <ProxyPage lang={lang}>
+      <main className="flex flex-col min-h-screen bg-white dark:bg-[#020617]">
+        
+        {/* HERO */}
+        <HeroSection dictionary={dict} />
+
+        {/* ABOUT */}
+        <AboutSection dict={dict.about} />
+
+        {/* PROJETOS - Agora o 'dict' já contém os projetos do GitHub injetados acima */}
+        <FeaturedProjectsSection lang={lang} dict={dict as any} />
+
+        {/* ARTIGO VENCEDOR */}
+        <FeaturedArticleSection 
+          articles={dict.articles} 
+          common={dict.common} 
+        />
+
+        {/* SEÇÃO KNOWLEDGE BASE (Recuperada do Antigo) */}
+        <section className="container mx-auto px-6 py-24 max-w-7xl border-t border-slate-100 dark:border-slate-900" id="knowledge-base">
+          <header className="mb-12">
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase italic dark:text-white">
+               Journal & Artigos
+            </h2>
+            <p className="text-slate-500 mt-2 uppercase tracking-widest text-xs font-bold">
+              Documentação técnica e Engenharia de Dados
+            </p>
+          </header>
+
+          <div className="grid grid-cols-1 gap-8">
+            <article className="group flex flex-col justify-between p-10 rounded-[2.5rem] border-2 border-blue-600 bg-blue-50/5 dark:bg-blue-900/5 relative overflow-hidden">
+              <div className="relative z-10">
+                <div className="flex justify-between items-start mb-6">
+                  <h3 className="text-3xl font-black italic tracking-tighter text-blue-600 dark:text-blue-400">
+                    myArticles
+                  </h3>
+                  <span className="text-[10px] px-4 py-1.5 rounded-full bg-blue-600 text-white font-black uppercase tracking-widest">
+                    Knowledge Base
+                  </span>
+                </div>
+                <div className="space-y-4 max-w-2xl">
+                  <p className="text-xl font-bold text-slate-800 dark:text-slate-200">
+                    Central de Conhecimento: Ciência de Dados, Python e Modern Data Stack.
+                  </p>
+                  <p className="text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Artigos renderizados dinamicamente via MDX diretamente do GitHub. Explore a documentação completa dos meus estudos e arquiteturas.
+                  </p>
+                </div>
+              </div> 
+
+              <div className="mt-10 flex flex-col sm:flex-row gap-4 relative z-10">
+                <a 
+                   href={`/${lang}/artigos`} 
+                   className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-blue-700 transition-all active:scale-95"
+                >
+                    Explorar Biblioteca →
+                </a>
+                <a 
+                  href={`/${lang}/artigos/README`} 
+                  className="inline-flex items-center justify-center border-2 border-slate-200 dark:border-slate-800 px-8 py-4 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-slate-100 dark:hover:bg-slate-800 transition-all dark:text-white"
+                >
+                  Documentação (README)
+                </a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+        <section className="py-28 px-6 text-center bg-slate-950">
+          <div className="max-w-3xl mx-auto space-y-8">
+            <h2 className="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter">
+              {dict.contact?.ctaTitle || "Vamos Conversar?"}
+            </h2>
+            <p className="text-slate-400 max-w-xl mx-auto">
+              {dict.contact?.subtitle}
+            </p>
+            <a
+              href={`mailto:${dict.common.email}`}
+              className="inline-flex items-center justify-center bg-white text-slate-950 px-10 py-5 rounded-xl font-black uppercase tracking-widest text-[11px] hover:bg-slate-100 transition-transform active:scale-95 shadow-xl"
+            >
+              {dict.contact?.buttonText || "Entrar em Contato"}
+            </a>
+          </div>
+        </section>
+      </main>
+    </ProxyPage>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/[lang]/page.tsx ANTIGO 
+
+ESTAVA COM ESSE CONTEÚDO 
+
+
+// src/app/[lang]/page.tsx
+import type { Metadata, Viewport } from "next";
+import { notFound } from "next/navigation";
+
+// Types
+import type { Locale } from "@/types/dictionary";
+import type { ProcessedProject } from "@/types/github";
+
+// Services & Helpers
+import { getGitHubProjects } from "@/services/githubService";
+import { getServerDictionary } from "@/lib/getServerDictionary";
+import { SUPPORTED_LOCALES, isValidLocale } from "@/dictionaries/locales";
+
+// Components
+import ProxyPage from "@/components/ProxyPage";
+import HeroSection from "@/components/HeroSection";
+import AboutSection from "@/components/AboutSection";
+
+interface PageProps {
+  params: Promise<{ lang: string }>;
+}
+
+export async function generateStaticParams() {
+  return SUPPORTED_LOCALES.map((lang) => ({ lang }));
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#020617",
+};
+
+export const dynamic = "force-static";
+export const revalidate = 60; 
+
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const resolvedParams = await props.params;
+  const lang = resolvedParams?.lang;
+  
+  if (!lang || !isValidLocale(lang)) return {};
+
+  const dict = await getServerDictionary(lang as Locale);
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://portfoliosantossergio.vercel.app";
+
+  return {
+    title: dict.seo.pages.home.title,
+    description: dict.seo.pages.home.description,
+    alternates: {
+      canonical: `${siteUrl}/${lang}`,
+      languages: {
+        "pt-BR": `${siteUrl}/pt-BR`,
+        "en-US": `${siteUrl}/en-US`,
+        "es-ES": `${siteUrl}/es-ES`,
+      },
+    },
+  };
+}
+
+export default async function HomePage(props: PageProps) {
+  const resolvedParams = await props.params;
+  const rawLang = resolvedParams?.lang;
+
+  if (!rawLang || !isValidLocale(rawLang)) {
+    notFound();
+  }
+
+  const lang = rawLang as Locale;
+  let projects: ProcessedProject[] = [];
+  let dict: any; // Tipagem dinâmica para o dicionário
+
+  try {
+    const [dictionaryData, projectsData] = await Promise.all([
+      getServerDictionary(lang),
+      getGitHubProjects("Santosdevbjj")
+    ]);
+    
+    dict = dictionaryData;
+    // Filtro robusto para remover o repositório de artigos da grade principal de projetos
+    projects = projectsData.filter(p => !p.name.toLowerCase().includes("articles") && !p.name.toLowerCase().includes("artigos")); 
+    
+  } catch (error) {
+    console.error("Erro ao carregar dados da Home:", error);
+    if (!dict) notFound();
+  }
+
+  return (
+    <ProxyPage lang={lang}>
+      <main className="min-h-screen bg-white dark:bg-[#020617] text-slate-900 dark:text-slate-100 selection:bg-blue-500 selection:text-white">
+        
+        <HeroSection dictionary={dict} />
+        <AboutSection dict={dict.about} />
+
+        {/* --- SEÇÃO DE PROJETOS (Portfólio de Engenharia) --- */}
+        <section className="container mx-auto px-4 md:px-8 lg:px-16 py-16 max-w-7xl" id="projects">
+          <header className="mb-12">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic">
+              {dict.projects.title}
+            </h2>
+            <div className="h-2 w-20 bg-blue-600 mt-4" />
+          </header>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {projects.map((project) => (
+              <article
+                key={project.id}
+                className="group flex flex-col justify-between p-8 rounded-[2rem] border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-500 bg-slate-50/30 dark:bg-slate-900/30 backdrop-blur-sm"
+              >
+                <div>
+                  <div className="flex justify-between items-start mb-6">
+                    <h3 className="text-2xl font-bold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {project.name}
+                    </h3>
+                    <span className="text-[10px] px-3 py-1 rounded-full bg-slate-200 dark:bg-slate-800 font-black uppercase tracking-widest">
+                      {project.category}
+                    </span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <p className="text-sm font-bold leading-relaxed text-blue-600/80 dark:text-blue-400/80 uppercase tracking-tight">
+                      {project.problem}
+                    </p>
+                    {project.solution && (
+                      <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 leading-relaxed">
+                        {project.solution}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 mt-10">
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/btn inline-flex items-center text-xs font-black uppercase tracking-[0.2em] text-slate-900 dark:text-white"
+                  >
+                    <span className="border-b-2 border-blue-600 pb-1 group-hover/btn:pr-4 transition-all duration-300">
+                      {dict.projects.viewProject}
+                    </span>
+                    <span className="opacity-0 group-hover/btn:opacity-100 transition-opacity ml-2">→</span>
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* --- SEÇÃO 17: KNOWLEDGE BASE (Artigos Técnicos) --- */}
+        <section className="container mx-auto px-4 md:px-8 lg:px-16 py-24 max-w-7xl border-t border-slate-200 dark:border-slate-800" id="articles">
+          <header className="mb-16">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic">
+               Journal & Artigos
+            </h2>
+            <p className="text-slate-500 dark:text-slate-400 mt-4 font-medium uppercase tracking-widest text-xs">Documentação técnica e Engenharia de Dados</p>
+          </header>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <article className="group flex flex-col justify-between p-10 rounded-[2.5rem] border-2 border-blue-600 bg-blue-50/5 dark:bg-blue-900/5 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                <svg className="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M13 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V9l-7-7zm0 1.5L18.5 9H13V3.5zM6 20V4h6v6h6v10H6z"/></svg>
+              </div>
+              
+              <div className="relative z-10">
+                <div className="flex justify-between items-start mb-6">
+                  <h3 className="text-3xl font-black italic tracking-tighter text-blue-600 dark:text-blue-400">
+                    myArticles
+                  </h3>
+                  <span className="text-[10px] px-4 py-1.5 rounded-full bg-blue-600 text-white font-black uppercase tracking-widest">
+                    Knowledge Base
+                  </span>
+                </div>
+
+                <div className="space-y-4 max-w-md">
+                  <p className="text-lg font-bold text-slate-800 dark:text-slate-200 leading-tight">
+                    Central de Conhecimento: Ciência de Dados, Python e Modern Data Stack.
+                  </p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Artigos renderizados dinamicamente via MDX diretamente do GitHub.
+                  </p>
+                </div>
+              </div> 
+
+              <div className="mt-12 flex flex-col sm:flex-row gap-6 relative z-10">
+                <a 
+                   href={`/${lang}/artigos`} 
+                   className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 active:scale-95"
+                >
+                    Explorar Biblioteca →
+                </a>
+
+                <a 
+                  href={`/${lang}/artigos/README`} 
+                  className="inline-flex items-center justify-center border-2 border-slate-200 dark:border-slate-800 px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-95"
+                >
+                  Documentação (README)
+                </a>
+              </div>
+            </article>
+          </div>
+
+          {/* Banner de CTA Final */}
+          <div className="mt-24 p-12 rounded-[3rem] bg-slate-900 dark:bg-blue-600 text-white relative overflow-hidden group">
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="text-center md:text-left">
+                <h3 className="text-3xl md:text-4xl font-black tracking-tighter italic uppercase mb-2">Vamos construir algo juntos?</h3>
+                <p className="opacity-70 font-medium uppercase tracking-widest text-[10px]">Especialista em Modernização de Dados e Governança</p>
+              </div>
+              <a 
+                href="mailto:santossergiorealbjj@outlook.com" 
+                className="bg-white text-slate-900 px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-transform active:scale-95 shadow-2xl"
+              >
+                Entrar em Contato →
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+    </ProxyPage>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+AGORA MUITA ATENÇÃO ESTA PASTA E ARQUIVOS É PARA MOSTRAR OS TRES PROJETOS DE DESTAQUE:
+
+
+
+O arquivo src/components/featured/projects.data.ts
+
+
+Está com esse conteúdo 
+
+'use client';
+
+// src/components/featured/projects.data.ts
+
+import type { SupportedLocale } from "@/dictionaries/locales";
+
+/**
+ * Modelo de projeto destacado (Featured).
+ * Atualizado para as novas categorias do portfólio.
+ */
+export interface FeaturedProject {
+  readonly id: string;
+  readonly name: string;
+  readonly repoUrl: string;
+  readonly priority: 1 | 2 | 3;
+  readonly categories: readonly string[]; // Agora aceita as novas categorias (1 a 17)
+  readonly description: Record<SupportedLocale, string>;
+}
+
+/**
+ * Lista oficial dos 3 projetos destacados.
+ * Categorias atualizadas para o novo padrão de 17 itens.
+ */
+export const featuredProjects = [
+  {
+    id: "analise-riscos-atraso-obras",
+    name: "Análise de Riscos de Atraso em Obras",
+    repoUrl:
+      "https://github.com/Santosdevbjj/analiseRiscosAtrasoObras",
+    priority: 1,
+    categories: ["Ciência de Dados", "Banco de Dados"],
+    description: {
+      "pt-BR":
+        "Projeto de ciência de dados para análise preditiva de riscos de atraso em obras.",
+      "en-US":
+        "Data science project focused on predictive risk analysis for construction delays.",
+      "es-ES":
+        "Proyecto de ciencia de datos para el análisis predictivo de riesgos de retraso en obras.",
+      "es-AR":
+        "Proyecto de ciencia de datos para el análisis predictivo de riesgos de retraso en obras.",
+      "es-MX":
+        "Proyecto de ciencia de datos para el análisis predictivo de riesgos de retraso en obras.",
+    },
+  },
+  {
+    id: "analise-dados-na-pratica",
+    name: "Análise de Dados na Prática",
+    repoUrl:
+      "https://github.com/Santosdevbjj/analiseDadosNaPratica",
+    priority: 2,
+    categories: ["Ciência de Dados", "Neo4J"],
+    description: {
+      "pt-BR":
+        "Projeto prático focado em análise exploratória de dados e geração de insights.",
+      "en-US":
+        "Hands-on project focused on exploratory data analysis and insight generation.",
+      "es-ES":
+        "Proyecto práctico centrado en análisis exploratorio de datos y generación de insights.",
+      "es-AR":
+        "Proyecto práctico centrado en análisis exploratorio de datos y generación de insights.",
+      "es-MX":
+        "Proyecto práctico centrado en análisis exploratorio de datos y generación de insights.",
+    },
+  },
+  {
+    id: "genai-pipeline-etl-python",
+    name: "GenAI Pipeline ETL em Python",
+    repoUrl:
+      "https://github.com/Santosdevbjj/genAIpipeETLPython",
+    priority: 3,
+    categories: ["Python", "Azure Databricks"],
+    description: {
+      "pt-BR":
+        "Pipeline ETL moderno em Python com integração de IA generativa.",
+      "en-US":
+        "Modern Python ETL pipeline with generative AI integration.",
+      "es-ES":
+        "Pipeline ETL moderno en Python con integración de IA generativa.",
+      "es-AR":
+        "Pipeline ETL moderno en Python con integración de IA generativa.",
+      "es-MX":
+        "Pipeline ETL moderno en Python con integración de IA generativa.",
+    },
+  },
+] as const satisfies readonly FeaturedProject[];
+
+/**
+ * Tipo derivado automaticamente.
+ */
+export type FeaturedProjectId =
+  (typeof featuredProjects)[number]["id"]; 
+
+
+
+
+
+
+
+
+
+O arquivo src/components/featured/ProjectCard.tsx
+
+
+
+Está com esse conteúdo 
+
+
+'use client';
+
+import type { FeaturedProject } from './projects.data';
+import type { Dictionary, Locale } from '@/types/dictionary';
+
+interface ProjectCardProps {
+  readonly project: FeaturedProject;
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+  readonly featured?: boolean;
+}
+
+/**
+ * Card de projeto em destaque otimizado.
+ *
+ * ✔ Arquitetura: Client Component (compatível com Next.js 16)
+ * ✔ Estilo: Tailwind CSS 4.2 (uso de backdrop-blur e transições suaves)
+ * ✔ Tipagem: TypeScript 6.0 (Readonly props e Records)
+ * ✔ I18n: Suporte multilíngue completo via dicionário e lang
+ */
+export default function ProjectCard({
+  project,
+  lang,
+  dict,
+  featured = false,
+}: ProjectCardProps) {
+  return (
+    <article
+      id={project.id}
+      className={`
+        relative flex h-full flex-col justify-between
+        rounded-3xl border transition-all duration-500 ease-out
+        p-6 sm:p-8 backdrop-blur-sm
+        
+        /* Cores e Bordas - Modo Claro */
+        bg-white/70 border-slate-200 shadow-sm
+        hover:border-blue-500/50 hover:shadow-2xl hover:-translate-y-2
+        
+        /* Cores e Bordas - Modo Escuro */
+        dark:bg-slate-900/50 dark:border-slate-800 dark:hover:border-blue-400/50
+        
+        /* Layout Bento-style para o item em destaque */
+        ${featured ? 'lg:col-span-2' : ''}
+      `}
+    >
+      {/* Área de Conteúdo Texto */}
+      <div className="space-y-4">
+        <header>
+          <h3
+            className={`
+              font-black tracking-tight text-slate-900 dark:text-white transition-colors
+              ${featured ? 'text-2xl sm:text-4xl italic' : 'text-xl sm:text-2xl'}
+            `}
+          >
+            {project.name}
+          </h3>
+        </header>
+
+        <p className="text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
+          {project.description[lang]}
+        </p>
+
+        {/* Categorias / Badges (Opcional - usando os dados do project) */}
+        {project.categories && (
+          <div className="flex flex-wrap gap-2 pt-2">
+            {project.categories.map((cat) => (
+              <span 
+                key={cat}
+                className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400"
+              >
+                {cat}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Rodapé do Card: Ação Principal */}
+      <footer className="mt-8 flex items-center">
+        <a
+          href={project.repoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="
+            group/link inline-flex items-center gap-2
+            text-xs font-black uppercase tracking-[0.2em]
+            text-blue-600 dark:text-blue-400
+            focus:outline-none focus-visible:ring-2
+            focus-visible:ring-blue-500 focus-visible:ring-offset-2
+            dark:focus-visible:ring-offset-slate-900
+          "
+          aria-label={`${dict.projects.viewProject}: ${project.name}`}
+        >
+          <span className="border-b-2 border-transparent group-hover/link:border-blue-600 transition-all">
+            {dict.projects.viewProject}
+          </span>
+          <span className="transform group-hover/link:translate-x-1 transition-transform" aria-hidden="true">
+            →
+          </span>
+        </a>
+      </footer>
+
+      {/* Efeito Decorativo sutil de luz (Tailwind 4.2) */}
+      <div className="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-blue-500/10 transition-colors" />
+    </article>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+O arquivo src/components/featured/FeaturedProjectsSection.tsx 
+
+Está com esse conteúdo 
+
+
+// src/components/featured/FeaturedProjectsSection.tsx
+import FeaturedGrid from './FeaturedGrid';
+import type { Locale, Dictionary } from '@/types/dictionary';
+import { NavSection, getSectionId } from '@/domain/navigation';
+
+interface FeaturedProjectsSectionProps {
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+}
+
+export default function FeaturedProjectsSection({ lang, dict }: FeaturedProjectsSectionProps) {
+  
+  // 1. Extração segura dos dados brutos do JSON
+  const rawProjects = Array.isArray(dict.projects?.featuredProjects) 
+    ? dict.projects.featuredProjects 
+    : [];
+
+  // 2. Mapeamento para o formato que o FeaturedGrid espera (name, repoUrl, etc)
+  const projects = rawProjects.slice(0, 3).map((proj: any) => ({
+    id: proj.id || String(Math.random()),
+    name: proj.title || "Projeto",
+    description: proj.description || "",
+    repoUrl: proj.github || proj.repoUrl || "#",
+    liveUrl: proj.demo || proj.liveUrl || "",
+    image: proj.image || "/images/projects/placeholder.jpg",
+    categories: proj.categories || (proj.category ? [proj.category] : ["Tech"]),
+    priority: proj.priority || 1
+  }));
+
+  // Se não houver nada, não renderiza a seção
+  if (projects.length === 0) return null;
+
+  const sectionId = getSectionId(NavSection.PROJECTS);
+  const headingId = `${sectionId}-heading`;
+
+  return (
+    <section 
+      id={sectionId} 
+      className="relative border-y border-slate-100 bg-white py-24 dark:border-slate-900 dark:bg-[#020617]/50 sm:py-32"
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <header className="mb-16 max-w-3xl">
+          <span className="mb-4 inline-block rounded-full bg-blue-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+            {dict.projects?.featuredLabel || "Destaques"}
+          </span>
+          <h2 
+            id={headingId} 
+            className="mb-6 text-4xl font-black tracking-tight dark:text-white sm:text-5xl uppercase italic"
+          >
+            {dict.projects?.title || "Projetos"}
+          </h2>
+        </header>
+
+        {/* Enviando os projetos mapeados para o Grid */}
+        <FeaturedGrid
+          projects={projects as any}
+          lang={lang}
+          dict={dict}
+        />
+      </div>
+    </section>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+O arquivo src/components/featured/FeaturedGrid.tsx 
+
+
+Está com esse conteúdo 
+
+
+'use client';
+
+import ProjectCard from './ProjectCard';
+import type { FeaturedProject } from './projects.data';
+import type { Locale, Dictionary } from '@/types/dictionary';
+
+interface FeaturedGridProps {
+  readonly projects: readonly FeaturedProject[];
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+}
+
+/**
+ * Grid de projetos em destaque.
+ *
+ * ✔ Layout responsivo (Mobile → Desktop)
+ * ✔ Destaque visual para o primeiro projeto (Bento-style)
+ * ✔ Multilíngue por delegação (dict + lang)
+ * ✔ Alinhado com TS 6 e Next.js 16
+ */
+export default function FeaturedGrid({
+  projects,
+  lang,
+  dict,
+}: FeaturedGridProps) {
+  if (!projects.length) {
+    return (
+      <div
+        role="status"
+        aria-live="polite"
+        className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400"
+      >
+        <p className="text-sm">
+          {dict.states.emptyProjects.title}
+        </p>
+        <p className="mt-2 text-xs">
+          {dict.states.emptyProjects.description}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      role="list"
+      aria-label={dict.projects.featuredLabel}
+      className="
+        grid grid-cols-1 gap-8
+        sm:grid-cols-2
+        lg:grid-cols-3 lg:auto-rows-fr
+      "
+    >
+      {projects.map((project, index) => (
+        <div key={project.id} role="listitem">
+          <ProjectCard
+            project={project}
+            lang={lang}
+            dict={dict}
+            featured={index === 0}
+          />
+        </div>
+      ))}
+    </div>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+O arquivo src/components/projects/ProjectCategoryBadge.tsx
+
+Está com esse conteúdo 
+
+
+// src/components/projects/ProjectCategoryBadge.tsx
+
+interface ProjectCategoryBadgeProps {
+  /**
+   * Nome da categoria vindo do github-service ou featuredProjects.
+   * Ex: "Ciência de Dados", "Neo4J", "C# / .NET"
+   */
+  readonly label: string;
+  /**
+   * Opcional: destaque visual
+   */
+  readonly highlight?: boolean;
+}
+
+/**
+ * Badge de categoria de projeto unificado.
+ * * ✔ Aceita as 17 novas categorias dinâmicas
+ * ✔ TS 6 compliant & Next.js 16 (RSC-safe)
+ * ✔ Estilo consistente com o portfólio
+ */
+export function ProjectCategoryBadge({
+  label,
+  highlight = false,
+}: ProjectCategoryBadgeProps) {
+  // Proteção contra valores nulos ou vazios
+  if (!label || typeof label !== 'string' || !label.trim()) return null;
+
+  return (
+    <span
+      className={[
+        'inline-flex items-center',
+        'rounded-full px-2.5 py-0.5',
+        'text-[11px] font-semibold tracking-wide',
+        'transition-colors duration-200',
+        'whitespace-nowrap uppercase',
+        highlight
+          ? 'bg-blue-600 text-white dark:bg-blue-500'
+          : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-200 dark:border-blue-800',
+      ].join(' ')}
+    >
+      {label}
+    </span>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+O arquivo 
+src/components/projects/ProjectsGrid.tsx
+
+
+Está com esse conteúdo 
+
+
+'use client'
+
+// src/components/projects/ProjectsGrid.tsx
+
+import type { Locale } from '@/types/dictionary'
+import type { Dictionary } from '@/types/dictionary'
+import { ProjectCategoryBadge } from './ProjectCategoryBadge'
+import type { Project } from '@/types/project'
+
+interface ProjectsGridProps {
+  readonly projects: readonly Project[]
+  readonly lang: Locale
+  readonly dict: Dictionary
+}
+
+/**
+ * Grid de projetos unificado.
+ * ✔ 100% Tipado (Type-Safe) após atualização do dicionário
+ * ✔ Suporta os projetos processados do GitHub (Pipes |)
+ * ✔ TS 6 compliant & Next.js 16
+ */
+export function ProjectsGrid({
+  projects,
+  lang,
+  dict,
+}: ProjectsGridProps) {
+  if (!projects.length) {
+    return (
+      <div className="py-12 text-center">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+          {dict.states.emptyProjects.title}
+        </h3>
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+          {dict.states.emptyProjects.description}
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div
+      className="
+        grid grid-cols-1 gap-6
+        sm:grid-cols-2
+        lg:grid-cols-3
+        auto-rows-fr
+      "
+    >
+      {projects.map((project) => (
+        <article
+          key={project.id}
+          className="
+            flex flex-col justify-between
+            rounded-2xl border border-neutral-200
+            p-6 shadow-sm transition-all
+            hover:shadow-md
+            dark:border-neutral-800
+            dark:bg-neutral-900
+          "
+        >
+          <div className="space-y-4">
+            <header className="flex items-start justify-between gap-2">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                {project.name}
+              </h3>
+              {(project.isHead || project.isFeatured) && (
+                <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                  {project.isHead ? 'TOP' : 'FEATURED'}
+                </span>
+              )}
+            </header>
+
+            {/* Renderização da Categoria Principal */}
+            <div className="flex flex-wrap gap-2">
+              <ProjectCategoryBadge
+                label={project.category} 
+              />
+            </div>
+
+            {/* Seção de Conteúdo (Pipes |) - Agora com tipagem nativa do dict */}
+            <div className="space-y-2 text-sm">
+              <p className="text-slate-600 dark:text-slate-400 line-clamp-3">
+                <span className="font-semibold text-slate-800 dark:text-slate-200">
+                  {dict.projects.problem}:
+                </span>{" "}
+                {project.problem}
+              </p>
+              
+              {project.solution && (
+                <p className="text-slate-600 dark:text-slate-400 line-clamp-3">
+                  <span className="font-semibold text-slate-800 dark:text-slate-200">
+                    {dict.projects.solution}:
+                  </span>{" "}
+                  {project.solution}
+                </p>
+              )}
+            </div>
+
+            {/* Lista de Tecnologias */}
+            <div className="flex flex-wrap gap-1 mt-auto pt-2">
+              {project.technologies.slice(0, 5).map((tech) => (
+                <span 
+                  key={tech}
+                  className="text-[10px] text-neutral-500 bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-400 px-2 py-0.5 rounded border border-neutral-200 dark:border-neutral-700"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <footer className="mt-6 flex items-center gap-4 border-t border-neutral-100 dark:border-neutral-800 pt-4">
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-blue-600 hover:underline dark:text-blue-400"
+            >
+              GitHub
+            </a>
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-bold text-emerald-600 hover:underline dark:text-emerald-400"
+              >
+                Live Demo
+              </a>
+            )}
+          </footer>
+        </article>
+      ))}
+    </div>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+Análise o arquivo
+
+src/components/ProjectCard.tsx
+
+Que tem esse conteúdo 
+
+
+'use client'
+
+import {
+  Github,
+  ExternalLink,
+  Folder,
+  Star,
+  Target,
+  Lightbulb,
+  TrendingUp,
+} from 'lucide-react'
+
+import type { Dictionary } from '@/types/dictionary'
+import type { ProjectDomain } from '@/domain/projects'
+
+interface ProjectCardProps {
+  readonly project: ProjectDomain
+  readonly dict: Dictionary
+}
+
+export function ProjectCard({ project, dict }: ProjectCardProps) {
+  const { projects: labels } = dict
+
+  const descParts =
+    project.description?.split('|').map(p => p.trim()) ?? []
+
+  const problemText = descParts[0] ?? ''
+  const solutionText = descParts[1] ?? ''
+  const impactText = descParts[2] ?? ''
+
+  const formatTechTag = (topic: string): string => {
+    const uppercaseTechs = [
+      'aws',
+      'ml',
+      'ai',
+      'sql',
+      'etl',
+      'genai',
+      'api',
+      'bi',
+      'neo4j',
+    ]
+
+    if (uppercaseTechs.includes(topic.toLowerCase())) {
+      return topic.toUpperCase()
+    }
+
+    return topic
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, l => l.toUpperCase())
+  }
+
+  return (
+    <article className="group relative flex h-full w-full flex-col rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl dark:border-slate-800/60 dark:bg-slate-950/40 md:p-8">
+      
+      {project.isFeatured && (
+        <div className="absolute -top-3 right-6 z-10">
+          <span className="flex items-center gap-1.5 rounded-full bg-blue-600 px-4 py-1.5 text-[10px] font-black uppercase tracking-wider text-white">
+            <Star size={10} />
+            {labels.featuredLabel}
+          </span>
+        </div>
+      )}
+
+      <header className="mb-6 flex items-start justify-between">
+        <div className="rounded-xl bg-slate-100 p-3 text-blue-600 dark:bg-slate-800 dark:text-blue-400">
+          <Folder size={24} strokeWidth={2.5} />
+        </div>
+
+        <div className="flex gap-1">
+          {project.htmlUrl && (
+            <a
+              href={project.htmlUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={labels.viewProject}
+              aria-label={labels.viewProject}
+              className="rounded-lg p-2.5 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              <Github size={20} />
+            </a>
+          )}
+
+          {project.homepage && (
+            <a
+              href={project.homepage}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={labels.viewDemo}
+              aria-label={labels.viewDemo}
+              className="rounded-lg p-2.5 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              <ExternalLink size={20} />
+            </a>
+          )}
+        </div>
+      </header>
+
+      <div className="flex flex-grow flex-col">
+        <h3 className="mb-4 text-xl font-black md:text-2xl">
+          {project.name}
+        </h3>
+
+        <div className="space-y-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+          {problemText && (
+            <CaseSection
+              icon={<Target size={14} />}
+              label={labels.firstLabel}
+              text={problemText}
+            />
+          )}
+
+          {solutionText && (
+            <CaseSection
+              icon={<Lightbulb size={14} />}
+              label={labels.viewAll}
+              text={solutionText}
+            />
+          )}
+
+          {impactText && (
+            <CaseSection
+              icon={<TrendingUp size={14} />}
+              label={labels.impactLabel}
+              text={impactText}
+            />
+          )}
+        </div>
+      </div>
+
+      <footer className="mt-8 flex flex-wrap gap-2 border-t pt-5">
+        <span className="rounded-full bg-slate-100 px-3 py-1 text-[9px] font-black uppercase tracking-wide dark:bg-slate-800">
+          {labels.categories[project.technology.labelKey]}
+        </span>
+
+        {project.topics.slice(0, 3).map(tech => (
+          <span
+            key={tech}
+            className="rounded-full border border-slate-200 px-3 py-1 text-[9px] font-bold uppercase dark:border-slate-700"
+          >
+            {formatTechTag(tech)}
+          </span>
+        ))}
+      </footer>
+    </article>
+  )
+}
+
+interface CaseSectionProps {
+  icon: React.ReactNode
+  label: string
+  text: string
+}
+
+function CaseSection({ icon, label, text }: CaseSectionProps) {
+  return (
+    <div>
+      <div className="mb-1 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+        {icon}
+        {label}
+      </div>
+      <p>{text}</p>
+    </div>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Análise o arquivo 
+src/components/ProjectSection.tsx
+
+
+Que tem esse conteúdo 
+
+
+'use client'
+
+import { useMemo, useState } from 'react'
+import { Database, Filter, FolderSearch } from 'lucide-react'
+
+import { ProjectCard } from '@/components/ProjectCard'
+import type { Locale, Dictionary, ProjectCategories } from '@/types/dictionary'
+import type { ProjectDomain } from '@/domain/projects'
+
+type CategoryKey = keyof ProjectCategories
+type ActiveCategory = 'all' | CategoryKey
+
+interface ProjectSectionProps {
+  readonly projects: ReadonlyArray<ProjectDomain>
+  readonly lang: Locale
+  readonly dict: Dictionary
+}
+
+export default function ProjectSection({
+  projects,
+  lang,
+  dict,
+}: ProjectSectionProps) {
+  const [activeCategory, setActiveCategory] =
+    useState<ActiveCategory>('all')
+
+  const projectDict = dict.projects
+  const statesDict = dict.states
+
+  const categoryEntries = Object.entries(
+    projectDict.categories,
+  ) as Array<[CategoryKey, string]>
+
+  const filteredProjects = useMemo(() => {
+    const base =
+      activeCategory === 'all'
+        ? projects
+        : projects.filter(
+            p => p.technology.labelKey === activeCategory,
+          )
+
+    return [...base].sort((a, b) => {
+      if (a.isFirst !== b.isFirst) return a.isFirst ? -1 : 1
+      if (a.isFeatured !== b.isFeatured)
+        return a.isFeatured ? -1 : 1
+      return 0
+    })
+  }, [projects, activeCategory])
+
+  return (
+    <section
+      id="projects"
+      aria-labelledby="projects-title"
+      className="py-16 bg-white dark:bg-[#020617]"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <header className="flex flex-col lg:flex-row justify-between gap-10 mb-16">
+          <div>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 rounded-xl bg-blue-600 text-white">
+                <Database className="w-6 h-6" />
+              </div>
+              <h2
+                id="projects-title"
+                className="text-4xl md:text-5xl font-black"
+              >
+                {projectDict.title}
+              </h2>
+            </div>
+
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
+              {filteredProjects.length}{' '}
+              {statesDict.emptyProjects.cta}
+            </p>
+          </div>
+
+          <nav aria-label={dict.common.navigation}>
+            <div className="flex items-center gap-2 mb-3 text-[9px] font-black uppercase tracking-widest">
+              <Filter className="w-3 h-3" />
+              {dict.common.navigation}
+            </div>
+
+            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+              <FilterButton
+                active={activeCategory === 'all'}
+                onClick={() => setActiveCategory('all')}
+                label={projectDict.viewAll}
+              />
+
+              {categoryEntries.map(([key, label]) => (
+                <FilterButton
+                  key={key}
+                  active={activeCategory === key}
+                  onClick={() => setActiveCategory(key)}
+                  label={label}
+                />
+              ))}
+            </div>
+          </nav>
+        </header>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[300px]">
+          {filteredProjects.length > 0 ? (
+            filteredProjects.map(project => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                dict={dict}
+              />
+            ))
+          ) : (
+            <EmptyState
+              title={statesDict.emptyProjects.title}
+              message={statesDict.emptyProjects.description}
+            />
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function FilterButton({
+  active,
+  label,
+  onClick,
+}: {
+  active: boolean
+  label: string
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`px-6 py-2 rounded-xl border-2 text-[9px] font-black uppercase tracking-widest ${
+        active
+          ? 'bg-blue-600 text-white border-blue-600'
+          : 'border-slate-300 text-slate-500'
+      }`}
+    >
+      {label}
+    </button>
+  )
+}
+
+function EmptyState({
+  title,
+  message,
+}: {
+  title: string
+  message: string
+}) {
+  return (
+    <div className="col-span-full flex flex-col items-center py-20">
+      <FolderSearch className="w-12 h-12 mb-4 text-slate-300" />
+      <h3 className="font-bold mb-2">{title}</h3>
+      <p className="text-xs uppercase tracking-widest text-slate-400">
+        {message}
+      </p>
+    </div>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Análise o arquivo src/components/PortfolioGrid.tsx 
+
+
+
+Que tem esse conteúdo 
+
+'use client';
+
+import { useState, useMemo } from 'react';
+import type { ReactElement } from 'react';
+import { Filter, Database, FolderSearch, Sparkles } from 'lucide-react';
+
+import { ProjectCard } from './ProjectCard';
+
+import type { Locale, Dictionary, ProjectCategories } from '@/types/dictionary';
+import type { ProjectDomain } from '@/domain/projects';
+import { NavSection, getSectionId } from '@/domain/navigation';
+
+interface PortfolioGridProps {
+  readonly projects: readonly ProjectDomain[];
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+}
+
+type CategoryFilter = 'all' | keyof ProjectCategories;
+
+export const PortfolioGrid = ({
+  projects,
+  dict,
+  lang,
+}: PortfolioGridProps): ReactElement => {
+  const [activeCategory, setActiveCategory] =
+    useState<CategoryFilter>('all');
+
+  const { projects: projectsDict, states, common, seo } = dict;
+
+  /* -------------------------------------------------------------------------- */
+  /*                              FILTERED PROJECTS                             */
+  /* -------------------------------------------------------------------------- */
+
+  const filteredProjects = useMemo(() => {
+    let base = projects.filter(p => p.isPortfolio);
+
+    if (activeCategory !== 'all') {
+      base = base.filter(
+        p => p.technology.labelKey === activeCategory,
+      );
+    }
+
+    return [...base].sort((a, b) => {
+      if (a.isFeatured && !b.isFeatured) return -1;
+      if (!a.isFeatured && b.isFeatured) return 1;
+      return 0;
+    });
+  }, [projects, activeCategory]);
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   RENDER                                   */
+  /* -------------------------------------------------------------------------- */
+
+  return (
+    <section
+      id={getSectionId(NavSection.PROJECTS)}
+      aria-labelledby="portfolio-title"
+      className="py-20 lg:py-32 bg-white dark:bg-[#020617] transition-colors duration-500"
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* HEADER */}
+        <header className="mb-16 md:mb-24 flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+          <div className="w-full flex-1">
+            <div className="mb-6 flex items-center gap-3">
+              <div className="rounded-lg bg-blue-100 p-2 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+                <Sparkles size={16} />
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-700 dark:text-blue-300">
+                {projectsDict.featuredLabel}
+              </span>
+            </div>
+
+            <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-center">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-2xl shadow-blue-500/30 md:h-16 md:w-16">
+                <Database className="h-7 w-7 md:h-8 md:w-8" />
+              </div>
+
+              <h2
+                id="portfolio-title"
+                className="text-4xl font-black leading-none tracking-tighter text-slate-900 dark:text-white md:text-7xl"
+              >
+                {seo.pages.projects?.title ?? projectsDict.title}
+              </h2>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="h-1 w-10 rounded-full bg-blue-600" />
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 md:text-xs">
+                {filteredProjects.length}{' '}
+                {states.emptyProjects.cta}
+              </p>
+            </div>
+          </div>
+
+          {/* FILTERS */}
+          <nav
+            aria-label={common.navigation}
+            className="w-full lg:w-auto"
+          >
+            <div className="mb-4 flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
+              <Filter
+                className="h-3.5 w-3.5 text-blue-600"
+                strokeWidth={3}
+              />
+              <span>{common.navigation}</span>
+            </div>
+
+            <div className="no-scrollbar flex snap-x gap-3 overflow-x-auto pb-4">
+              <button
+                type="button"
+                onClick={() => setActiveCategory('all')}
+                className={`whitespace-nowrap rounded-xl border-2 px-6 py-3 text-[10px] font-black uppercase tracking-widest transition ${
+                  activeCategory === 'all'
+                    ? 'bg-slate-900 text-white'
+                    : 'border-slate-200 text-slate-500 dark:border-slate-700'
+                }`}
+              >
+                {projectsDict.viewAll}
+              </button>
+
+              {(
+                Object.entries(
+                  projectsDict.categories,
+                ) as [keyof ProjectCategories, string][]
+              ).map(([key, label]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setActiveCategory(key)}
+                  className={`whitespace-nowrap rounded-xl border-2 px-6 py-3 text-[10px] font-black uppercase tracking-widest transition ${
+                    activeCategory === key
+                      ? 'bg-slate-900 text-white'
+                      : 'border-slate-200 text-slate-500 dark:border-slate-700'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </nav>
+        </header>
+
+        {/* GRID */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-10">
+          {filteredProjects.length > 0 ? (
+            filteredProjects.map(project => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                dict={dict}
+              />
+            ))
+          ) : (
+            <div className="col-span-full flex flex-col items-center justify-center rounded-3xl border-2 border-dashed py-24 text-center">
+              <FolderSearch className="mb-4 h-12 w-12 text-slate-400" />
+              <h3 className="mb-2 text-lg font-black">
+                {states.emptyProjects.title}
+              </h3>
+              <p className="text-slate-500">
+                {states.emptyProjects.description}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Análise o arquivo 
+src/components/FeaturedProject.tsx
+
+
+Que tem esse conteúdo 
+
+
+'use client'
+
+/**
+ * FEATURED PROJECT
+ * -----------------------------------------------------------------------------
+ * ✔ Alinhado com ProjectDomain
+ * ✔ Multilíngue (PT / EN / ES)
+ * ✔ 100% Responsivo
+ * ✔ Compatível com TypeScript 6
+ * ✔ Compatível com Next.js 16
+ */
+
+import Script from 'next/script'
+import {
+  Github,
+  Star,
+  ArrowRight,
+  ExternalLink,
+  Database,
+  Cpu,
+  Zap,
+} from 'lucide-react'
+
+import type { Dictionary } from '@/types/dictionary'
+import type { ProjectDomain } from '@/domain/projects'
+
+interface FeaturedProjectProps {
+  readonly project: ProjectDomain
+  readonly dict: Dictionary
+}
+
+export const FeaturedProject = ({
+  project,
+  dict,
+}: FeaturedProjectProps) => {
+  const { projects, states, meta } = dict
+
+  /**
+   * Parsing seguro da descrição:
+   * "Problema | Solução | Impacto"
+   */
+  const descriptionParts = project.description
+    ?.split('|')
+    .map((p) => p.trim())
+    .filter(Boolean) ?? []
+
+  const mainDescription =
+    descriptionParts[0] ||
+    project.description ||
+    states.empty
+
+  const impactText =
+    descriptionParts.length >= 3
+      ? descriptionParts[2]
+      : descriptionParts[1] ?? null
+
+  /**
+   * Remove tags estruturais internas
+   */
+  const displayTopics = project.topics.filter(
+    (t) =>
+      ![
+        'portfolio',
+        'featured',
+        'highlight',
+        'main',
+        'destaque',
+        'primeiro',
+      ].includes(t.toLowerCase())
+  )
+
+  /**
+   * Categoria traduzida via labelKey
+   */
+  const categoryLabel =
+    projects.categories[project.technology.labelKey]
+
+  /**
+   * Structured Data (SEO)
+   */
+  const softwareSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: project.name,
+    description: mainDescription,
+    applicationCategory: categoryLabel,
+    operatingSystem: 'Web',
+    author: {
+      '@type': 'Person',
+      name: meta.author,
+    },
+    url: project.homepage ?? project.htmlUrl,
+    keywords: displayTopics.join(', '),
+  }
+
+  return (
+    <>
+      <Script
+        id={`featured-project-${project.id}`}
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(softwareSchema),
+        }}
+      />
+
+      <section className="relative bg-white dark:bg-[#020617] rounded-[2.5rem] lg:rounded-[4rem] border border-slate-200 dark:border-blue-500/10 overflow-hidden group shadow-2xl transition-all duration-700">
+        <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/5 via-transparent to-indigo-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[580px]">
+
+          {/* COLUNA VISUAL */}
+          <div className="relative h-72 sm:h-80 lg:h-auto bg-slate-50 dark:bg-slate-950/40 flex items-center justify-center overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-100 dark:border-slate-800/50">
+
+            <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-20">
+              <div className="bg-blue-600 text-white px-4 py-2 sm:px-5 sm:py-2.5 rounded-2xl text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] flex items-center gap-3 shadow-2xl shadow-blue-500/40 transform -rotate-2">
+                <Star size={14} className="fill-amber-300 text-amber-300" />
+                {projects.featuredLabel}
+              </div>
+            </div>
+
+            <div className="relative flex items-center justify-center w-full h-full">
+              <div className="absolute animate-pulse">
+                <Cpu className="w-40 h-40 sm:w-64 sm:h-64 lg:w-[280px] lg:h-[280px] text-blue-500/5 dark:text-blue-400/5" />
+              </div>
+              <div className="relative transform transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3">
+                <Database className="w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 text-blue-600 dark:text-blue-500 opacity-20 dark:opacity-40" />
+                <Zap className="absolute -top-2 -right-2 w-6 h-6 sm:w-8 sm:h-8 text-amber-500 animate-bounce" />
+              </div>
+            </div>
+          </div>
+
+          {/* COLUNA DE CONTEÚDO */}
+          <div className="p-6 sm:p-10 lg:p-16 xl:p-20 flex flex-col justify-center relative z-10">
+
+            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 lg:mb-10 tracking-tighter text-slate-900 dark:text-white leading-tight capitalize">
+              {project.name.replace(/[_-]/g, ' ')}
+            </h3>
+
+            {/* Categoria Traduzida */}
+            <p className="text-xs uppercase tracking-widest text-blue-500 font-bold mb-6">
+              {categoryLabel}
+            </p>
+
+            <div className="space-y-8 lg:space-y-10 mb-10 lg:mb-12">
+              <div className="pl-6 border-l-4 border-blue-500">
+                <p className="text-[10px] uppercase font-black tracking-widest text-blue-600 dark:text-blue-400 mb-3">
+                  {projects.firstLabel}
+                </p>
+                <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg md:text-xl font-medium leading-relaxed">
+                  {mainDescription}
+                </p>
+              </div>
+
+              {impactText && (
+                <div className="flex items-center gap-4 p-4 sm:p-5 bg-emerald-50 dark:bg-emerald-500/5 text-emerald-700 dark:text-emerald-400 rounded-[1.5rem] border border-emerald-100 dark:border-emerald-500/10">
+                  <div className="p-2 bg-emerald-500 rounded-lg text-white flex-shrink-0">
+                    <ArrowRight size={18} />
+                  </div>
+                  <div>
+                    <p className="text-[9px] uppercase font-black tracking-tighter opacity-70 mb-0.5">
+                      {projects.impactLabel}
+                    </p>
+                    <p className="font-bold text-xs sm:text-sm md:text-base">
+                      {impactText}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* STACK */}
+            <div className="flex flex-wrap gap-2 mb-10 lg:mb-14">
+              {displayTopics.slice(0, 8).map((topic) => (
+                <span
+                  key={topic}
+                  className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 text-[9px] sm:text-[10px] uppercase tracking-wider font-black border border-slate-200/50 dark:border-slate-700/50"
+                >
+                  {topic.replace(/-/g, ' ')}
+                </span>
+              ))}
+            </div>
+
+            {/* BOTÕES */}
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
+
+              <a
+                href={project.htmlUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/btn flex-1 bg-slate-900 dark:bg-blue-600 text-white py-5 sm:py-6 px-8 rounded-2xl font-black uppercase text-[10px] sm:text-xs tracking-[0.25em] flex items-center justify-center gap-4 shadow-xl hover:shadow-blue-500/20 active:scale-95 transition-all"
+              >
+                <Github size={20} className="group-hover/btn:rotate-12 transition-transform" />
+                {projects.viewProject}
+              </a>
+
+              {project.homepage && (
+                <a
+                  href={project.homepage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 border-2 border-slate-200 dark:border-slate-700 hover:border-blue-500/50 dark:hover:border-blue-500/50 py-5 sm:py-6 px-8 rounded-2xl font-black uppercase text-[10px] sm:text-xs tracking-[0.25em] flex items-center justify-center gap-4 transition-all hover:bg-slate-50 dark:hover:bg-slate-900/50"
+                >
+                  <ExternalLink size={20} />
+                  {projects.viewDemo}
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Análise o arquivo 
+src/components/ArticlesSection.tsx
+
+
+Que tem esse conteúdo 
+
+
+
+'use client';
+
+/**
+ * ARTICLES SECTION
+ * -----------------------------------------------------------------------------
+ * ✔ TS 6 strict-safe
+ * ✔ Next.js 16 compatible
+ * ✔ Responsivo
+ * ✔ Multilíngue (PT / EN / ES)
+ * ✔ Alinhado com dicionários e domínio de navegação
+ */
+
+import { useEffect, useRef, useState } from 'react';
+import {
+  BookOpen,
+  Award,
+  Calendar,
+  ArrowRight,
+  ExternalLink,
+} from 'lucide-react';
+
+import type {
+  ArticlesSectionDictionary,
+  CommonDictionary,
+  StateDictionary,
+  ArticleItem,
+} from '@/types/dictionary';
+
+import { NavSection, getSectionId } from '@/domain/navigation';
+
+interface ArticlesSectionProps {
+  readonly articles: ArticlesSectionDictionary;
+  readonly common: CommonDictionary;
+  readonly states: StateDictionary;
+}
+
+export default function ArticlesSection({
+  articles,
+  common,
+  states,
+}: ArticlesSectionProps) {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const current = sectionRef.current;
+    if (!current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      id={getSectionId(NavSection.ARTICLES)}
+      className="relative scroll-mt-28 py-20 sm:py-32
+                 overflow-hidden bg-slate-50/50 dark:bg-transparent"
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* HEADER */}
+        <header className="flex flex-col md:flex-row md:items-end
+                           justify-between gap-6 mb-16">
+          <div className="max-w-2xl">
+            <h2 className="text-4xl sm:text-5xl font-black tracking-tighter
+                           text-slate-900 dark:text-white uppercase">
+              {articles.title}
+            </h2>
+            <div className="h-1.5 w-24 bg-blue-600 mt-4 rounded-full" />
+          </div>
+
+          <a
+            href={common.externalLinks.medium}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm
+                       font-black uppercase tracking-widest
+                       text-blue-600 hover:text-blue-500
+                       transition-colors group"
+          >
+            {articles.mediumProfile}
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </a>
+        </header>
+
+        {/* GRID */}
+        {articles.items.length > 0 ? (
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 gap-8
+                        transition-all duration-1000 ${
+                          isVisible
+                            ? 'opacity-100 translate-y-0'
+                            : 'opacity-0 translate-y-10'
+                        }`}
+          >
+            {articles.items.map((article: ArticleItem, index) => (
+              <ArticleCard
+                key={`${article.title}-${index}`}
+                article={article}
+                awardLabel={articles.awardWinner}
+                readMoreLabel={articles.readMore}
+                publishedAtLabel={articles.publishedAt}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20">
+            <p className="text-slate-500 italic text-lg">
+              {states.errorArticles}
+            </p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+interface ArticleCardProps {
+  readonly article: ArticleItem;
+  readonly awardLabel: string;
+  readonly readMoreLabel: string;
+  readonly publishedAtLabel: string;
+}
+
+function ArticleCard({
+  article,
+  awardLabel,
+  readMoreLabel,
+  publishedAtLabel,
+}: ArticleCardProps) {
+  return (
+    <article
+      className="group relative flex flex-col bg-white
+                 dark:bg-slate-900/40 border border-slate-200
+                 dark:border-slate-800 rounded-[2rem]
+                 p-6 sm:p-8 transition-all
+                 hover:border-blue-500/50
+                 hover:shadow-2xl hover:shadow-blue-500/5"
+    >
+      <div className="flex justify-between items-start mb-6">
+        <div
+          className="p-4 bg-blue-50 dark:bg-blue-900/20
+                     rounded-2xl text-blue-600
+                     transition-colors
+                     group-hover:bg-blue-600
+                     group-hover:text-white"
+        >
+          <BookOpen className="w-6 h-6" aria-hidden />
+        </div>
+
+        {article.isAward && (
+          <span
+            className="flex items-center gap-1.5 px-4 py-1.5
+                       bg-amber-50 dark:bg-amber-900/20
+                       text-amber-600 text-[10px]
+                       font-black uppercase tracking-widest
+                       rounded-full border border-amber-200
+                       dark:border-amber-800/50 shadow-sm"
+          >
+            <Award className="w-3.5 h-3.5" aria-hidden />
+            {awardLabel}
+          </span>
+        )}
+      </div>
+
+      <div
+        className="flex flex-wrap items-center gap-3
+                   text-[10px] font-bold text-slate-400
+                   uppercase tracking-widest mb-4"
+      >
+        <span className="flex items-center gap-1">
+          <Calendar className="w-3 h-3 text-blue-500" aria-hidden />
+          {publishedAtLabel} {article.date}
+        </span>
+
+        <span className="hidden sm:block w-1 h-1
+                         bg-slate-300 dark:bg-slate-700 rounded-full" />
+
+        <span className="text-blue-600 dark:text-blue-400">
+          {article.category}
+        </span>
+      </div>
+
+      <h3
+        className="text-xl sm:text-2xl font-bold
+                   text-slate-900 dark:text-white
+                   mb-4 leading-tight
+                   group-hover:text-blue-600
+                   transition-colors"
+      >
+        {article.title}
+      </h3>
+
+      <p
+        className="text-slate-600 dark:text-slate-400
+                   text-sm leading-relaxed mb-8
+                   flex-grow line-clamp-3"
+      >
+        {article.description}
+      </p>
+
+      <div className="pt-6 border-t border-slate-100 dark:border-slate-800">
+        <a
+          href={article.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2
+                     text-xs font-black uppercase
+                     tracking-widest
+                     text-slate-900 dark:text-white
+                     group-hover:text-blue-600
+                     transition-all"
+        >
+          {readMoreLabel}
+          <ExternalLink
+            className="w-4 h-4 transition-transform
+                       group-hover:-translate-y-0.5
+                       group-hover:translate-x-0.5"
+            aria-hidden
+          />
+        </a>
+      </div>
+    </article>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+Revise o arquivo 
+src/components/FeaturedArticle.tsx
+
+
+Que tem esse conteúdo 
+
+
+'use client';
+
+/**
+ * FEATURED ARTICLE — Card de Autoridade Técnica
+ * -----------------------------------------------------------------------------
+ * ✔ Totalmente i18n (Dictionary-driven)
+ * ✔ Responsivo (mobile-first)
+ * ✔ Acessível (ARIA + semântica)
+ * ✔ Compatível com Next.js 16
+ * ✔ Compatível com TypeScript 6.0 (strict)
+ */
+
+import { useEffect, useRef } from 'react';
+import Script from 'next/script';
+import { ExternalLink, BookOpen, Award } from 'lucide-react';
+
+import type { Locale, Dictionary } from '@/types/dictionary';
+
+interface FeaturedArticleProps {
+  readonly dict: Dictionary;
+  readonly lang: Locale;
+}
+
+export function FeaturedArticle({ dict, lang }: FeaturedArticleProps) {
+  const ref = useRef<HTMLElement | null>(null);
+  const { articles, states, meta } = dict;
+
+  const featuredArticle = articles.items?.[0];
+
+  /* -------------------------------------------------------------------------- */
+  /*                            Intersection Animation                           */
+  /* -------------------------------------------------------------------------- */
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          node.classList.add('opacity-100', 'translate-y-0');
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  /* -------------------------------------------------------------------------- */
+  /*                                 Guardrails                                  */
+  /* -------------------------------------------------------------------------- */
+  if (!featuredArticle) {
+    return (
+      <section
+        aria-live="polite"
+        className="rounded-2xl border border-slate-200/60 dark:border-slate-800/60
+                   bg-slate-50 dark:bg-slate-900/40 p-6 sm:p-10 text-center"
+      >
+        <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+          {states.errorArticles}
+        </p>
+      </section>
+    );
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   SEO JSON                                  */
+  /* -------------------------------------------------------------------------- */
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: featuredArticle.title,
+    description: featuredArticle.description,
+    inLanguage: lang,
+    author: {
+      '@type': 'Person',
+      name: meta.author,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: meta.author,
+    },
+  };
+
+  return (
+    <>
+      <Script
+        id="schema-featured-article"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema),
+        }}
+      />
+
+      <article
+        ref={ref}
+        aria-labelledby="featured-article-title"
+        className="group relative flex flex-col h-full
+                   bg-white dark:bg-slate-900/40 backdrop-blur-md
+                   rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem]
+                   border border-slate-200/60 dark:border-slate-800/60
+                   p-6 sm:p-10 md:p-14
+                   overflow-hidden transition-all duration-700
+                   hover:-translate-y-3
+                   hover:shadow-[0_40px_80px_-15px_rgba(37,99,235,0.15)]
+                   opacity-0 translate-y-8"
+      >
+        {/* Glow decorativo */}
+        <div
+          aria-hidden="true"
+          className="absolute -top-24 -right-24 w-80 h-80 sm:w-96 sm:h-96
+                     bg-blue-600/5 dark:bg-blue-500/10
+                     rounded-full blur-[100px]
+                     transition-all duration-1000
+                     group-hover:bg-blue-600/20"
+        />
+
+        {/* Header */}
+        <header className="flex items-start justify-between gap-4 mb-8 z-10">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full
+                          bg-amber-50 dark:bg-amber-900/20
+                          border border-amber-200/50 dark:border-amber-800/40">
+            <Award className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <span className="text-[10px] font-black uppercase tracking-[0.15em]
+                             text-amber-900 dark:text-amber-300">
+              {articles.awardWinner}
+            </span>
+          </div>
+
+          <div
+            aria-hidden="true"
+            className="p-3 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-800
+                       text-slate-400 transition-all
+                       group-hover:scale-110 group-hover:text-blue-600
+                       dark:group-hover:text-blue-400"
+          >
+            <BookOpen className="w-6 h-6 sm:w-8 sm:h-8" />
+          </div>
+        </header>
+
+        {/* Conteúdo */}
+        <div className="flex-grow z-10">
+          <h3
+            id="featured-article-title"
+            className="mb-6 font-black tracking-tighter leading-tight
+                       text-slate-900 dark:text-white
+                       transition-colors
+                       group-hover:text-blue-600 dark:group-hover:text-blue-400
+                       text-[clamp(1.4rem,5vw,2.6rem)]"
+          >
+            {featuredArticle.title}
+          </h3>
+
+          <p className="text-base sm:text-lg md:text-xl
+                        text-slate-600 dark:text-slate-400
+                        leading-relaxed font-medium italic
+                        border-l-4 border-slate-100 dark:border-slate-800
+                        pl-5 transition-colors
+                        group-hover:border-blue-500/30">
+            “{featuredArticle.description}”
+          </p>
+        </div>
+
+        {/* CTA */}
+        <footer className="mt-10 z-10">
+          <a
+            href={featuredArticle.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={articles.readMore}
+            className="group/btn relative flex items-center justify-center gap-4
+                       w-full py-5 sm:py-6
+                       bg-slate-900 dark:bg-blue-600
+                       hover:bg-slate-800 dark:hover:bg-blue-500
+                       text-white rounded-2xl
+                       font-black text-[10px] sm:text-xs
+                       uppercase tracking-[0.2em]
+                       transition-all shadow-xl active:scale-[0.97]
+                       overflow-hidden"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-r
+                         from-transparent via-white/10 to-transparent
+                         -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]"
+            />
+
+            <span className="relative z-10">{articles.readMore}</span>
+            <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 relative z-10
+                                     transition-transform
+                                     group-hover/btn:translate-x-1
+                                     group-hover/btn:-translate-y-1" />
+          </a>
+        </footer>
+      </article>
+
+      <style jsx>{`
+        @keyframes shimmer {
+          100% {
+            transform: translateX(100%);
+          }
+        }
+      `}</style>
+    </>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Revise o arquivo
+ src/components/FeaturedArticleSection.tsx
+
+
+Que tem esse conteúdo 
+
+
+
+'use client';
+
+import { useEffect, useRef } from 'react';
+import Image from 'next/image';
+import Script from 'next/script';
+import { Trophy, ArrowUpRight, Calendar } from 'lucide-react';
+
+import type {
+  ArticlesSectionDictionary,
+  CommonDictionary,
+} from '@/types/dictionary';
+
+import { NavSection, getSectionId } from '@/domain/navigation';
+
+/**
+ * FEATURED ARTICLE SECTION - REVISADA
+ * ------------------------------------------------------------------
+ * ✔ TS 6.0 strict-safe
+ * ✔ Next.js 16 (Turbopack optimized)
+ * ✔ React 19 (Ref handling e hydration safe)
+ * ✔ Tailwind 4.2 (Modern gradients e utilities)
+ */
+
+interface FeaturedArticleSectionProps {
+  // Ajustado para receber o objeto de artigos e o common separadamente ou via dict
+  readonly articles: ArticlesSectionDictionary;
+  readonly common: CommonDictionary;
+}
+
+export default function FeaturedArticleSection({
+  articles,
+  common,
+}: FeaturedArticleSectionProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Garantia de dados via TS 6 (Optional chaining + null check)
+  const featuredArticle = articles?.items?.[0] ?? null;
+
+  /**
+   * Fail-safe para o Build do Next.js 16
+   */
+  if (!featuredArticle) {
+    return (
+      <section
+        id={getSectionId(NavSection.ARTICLES)}
+        className="py-20 text-center text-slate-500 dark:text-slate-400 font-medium"
+      >
+        {common?.error || "Content unavailable"}
+      </section>
+    );
+  }
+
+  /**
+   * ScrollSpy observer (React 19 safe)
+   */
+  useEffect(() => {
+    const current = sectionRef.current;
+    if (!current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          window.dispatchEvent(
+            new CustomEvent('scrollspy:change', {
+              detail: { id: NavSection.ARTICLES },
+            }),
+          );
+        }
+      },
+      { threshold: 0.2, rootMargin: '-10% 0px -70% 0px' },
+    );
+
+    observer.observe(current);
+    return () => observer.disconnect();
+  }, []);
+
+  /**
+   * Structured Data (SEO / JSON-LD)
+   */
+  const schemaPerson = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Sérgio Santos',
+    jobTitle: common?.role,
+    sameAs: [
+      common?.externalLinks?.linkedin,
+      common?.externalLinks?.github,
+      common?.externalLinks?.medium,
+    ].filter(Boolean),
+  };
+
+  return (
+    <section
+      ref={sectionRef}
+      id={getSectionId(NavSection.ARTICLES)}
+      aria-labelledby="featured-article-title"
+      className="relative scroll-mt-24 py-16 md:py-32 px-4 sm:px-6 lg:px-8
+                 bg-slate-50/30 dark:bg-transparent overflow-hidden"
+    >
+      <Script
+        id="schema-person"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaPerson) }}
+      />
+
+      {/* Background gradients - Tailwind 4.2 Optimized */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 opacity-[0.05] dark:opacity-[0.12] pointer-events-none"
+      >
+        <div className="absolute top-1/4 left-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px]
+                        bg-blue-600 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-soft-light" />
+        <div className="absolute bottom-0 right-0 w-[250px] md:w-[500px] h-[250px] md:h-[500px]
+                        bg-indigo-600 rounded-full blur-[100px] mix-blend-multiply dark:mix-blend-soft-light" />
+      </div>
+
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header */}
+        <header className="flex items-center gap-4 md:gap-6 mb-12 md:mb-16">
+          <div className="p-3 md:p-4 bg-amber-100 dark:bg-amber-900/40
+                          rounded-2xl text-amber-600 dark:text-amber-400
+                          shadow-lg -rotate-2">
+            <Trophy className="w-7 h-7 md:w-10 md:h-10" aria-hidden="true" />
+          </div>
+
+          <h2
+            id="featured-article-title"
+            className="text-3xl md:text-6xl font-black uppercase tracking-tighter italic
+                       text-slate-900 dark:text-white"
+          >
+            {articles.title}
+          </h2>
+        </header>
+
+        {/* Article Card - Bento Style */}
+        <article
+          className="group bg-white dark:bg-slate-900/40 rounded-[2.5rem]
+                     p-6 md:p-12 lg:p-16 border border-slate-200
+                     dark:border-slate-800 shadow-2xl transition-all duration-500
+                     hover:border-blue-500/30 hover:shadow-blue-500/10"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            {/* Image Wrapper */}
+            <div className="relative overflow-hidden rounded-[2rem] shadow-xl
+                            aspect-[4/3] md:aspect-video lg:aspect-square
+                            bg-slate-200 dark:bg-slate-800">
+              <Image
+                src="/images/trofeu-35-edicao.png"
+                alt={featuredArticle.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                priority
+              />
+            </div>
+
+            {/* Content Area */}
+            <div className="flex flex-col">
+              <div className="flex flex-wrap items-center gap-3
+                              text-blue-600 dark:text-blue-400
+                              font-black text-[10px] md:text-xs
+                              uppercase tracking-widest mb-6">
+                <div className="flex items-center gap-1.5
+                                bg-blue-50 dark:bg-blue-900/30
+                                px-3 py-1.5 rounded-full">
+                  <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>
+                    {articles.publishedAt} {featuredArticle.date}
+                  </span>
+                </div>
+
+                {featuredArticle.isAward && (
+                  <span className="bg-amber-100 dark:bg-amber-900/40
+                                   text-amber-700 dark:text-amber-400
+                                   px-3 py-1.5 rounded-full">
+                    {articles.awardWinner}
+                  </span>
+                )}
+              </div>
+
+              <h3 className="text-2xl md:text-5xl font-black mb-6 leading-tight
+                             text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                {featuredArticle.title}
+              </h3>
+
+              <p className="text-base md:text-xl text-slate-600
+                            dark:text-slate-400 mb-10 leading-relaxed font-medium">
+                {featuredArticle.description}
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href={featuredArticle.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-blue-600 hover:bg-blue-700 text-white
+                             px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-xs
+                             inline-flex items-center justify-center
+                             gap-3 transition-all active:scale-95 shadow-lg shadow-blue-500/20"
+                >
+                  {articles.readMore}
+                  <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
+                </a>
+
+                {common?.externalLinks?.medium && (
+                  <a
+                    href={common.externalLinks.medium}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-xs
+                               border border-slate-200 text-slate-600
+                               dark:border-slate-800 dark:text-slate-400
+                               hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors
+                               inline-flex items-center justify-center"
+                  >
+                    {articles.mediumProfile}
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  );
+} 
+
+
+
+
+
+
+
+
+Será que agora você consegue entender mostrar tudo corretamente?
+
