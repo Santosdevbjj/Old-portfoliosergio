@@ -40,12 +40,56 @@ PARA ELE SER EXIBIDO
 
 
 
+4) TENHO O REPOSITÓRIO DE ARTIGOS TÉCNICOS 
+https://github.com/Santosdevbjj/myArticles
+
+dividido em varias pastas:
+artigos/autoconhecimento/aprend-continuo.md
+
+artigos/autoconhecimento/home-office.md
+
+artigos/autoconhecimento/inteli-emocional.md
+
+artigos/aws-artigos/microsservicos-aws-step-functions.md
+
+artigos/low_code/low-code-saude.md
+
+artigos/python-artigos/pycharm-spyder-vscode-ides.md
+
+artigos/data-artigos/dados-para-reduzir-custos.md
+
+artigos/data-artigos/privacidade-de-dados.md
+
+artigos/ia-artigos/ia-generativa-com-sete-guardrails.md
+
+artigos/ia-artigos/implementar-ia-generativa-com-eficiencia.md
+
+artigos/typescript-artigos/typescript-strict-padrao.md
+
+artigos/java-artigos/java-pensar-como-engenheiro-software.md
+
+artigos/dotnet-artigos/visual-studio-vscode-guia-das-ides.md
+
+artigos/dio_Campus_Expert_14/conclusao-dio-Campus-Expert14.md
+
+artigos/dio_Campus_Expert_14/neo4J-dados-conectados.md
+
+artigos/dio_Campus_Expert_14/resultados-concretos-jornada.md
+
+
+
+
+
+
+
+
+
 
 
 
 Vamos entender as minhas Tags do Github 
 
-para facilitar na seção About do Github 
+para facilitar na seção ABOUT do Github 
 
 Em todos os meus projetos, no item
 
