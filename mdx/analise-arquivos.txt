@@ -236,6 +236,7 @@ Quero os projetos separados por tecnologia e nessa ordem:
   
 
 1) ciencia de dados
+  EXEMPLO: TAGs - portfolio + ciencia-dados + UM DOS PROJETOS PODE VIR COM A TAG primeiro PARA APARECER ANTES DOS DEMAIS PROJETOS. OS OUTROS PROJETOS PODEM VIR EM ORDEM ALFABETICA. CONSEGUIU ENTENDER?
 
 2) Azure Databricks
 
@@ -282,11 +283,23 @@ Quero os projetos separados por tecnologia e nessa ordem:
 
 
 
+Atenção aos Pipes (|): No meu GitHub, escrevi a descrição dos repositórios seguindo o padrão: O Problema aqui | A Solução ali | O Impacto final. O componente ProjectCard depende desse separador para montar o layout.
+ISSO FOI FEITA NO ITEM DESCRIÇÃO TAMBÉM NA SEÇÃO ABOUT.
 
 
 
 
+VAMOS ENTENDER UM DETALHE IMPORTANTE,
+OS REPOSITÓRIOS ESTAVAM APARECENDO.
+QUANDO FOI QUE DEIXARAM DE APARECER?
+QUANDO COLOQUEI O COMPONENTE src/components/PortfolioGrid.tsx
 
+NA src/app/[lang]/page.tsx
+
+FOI A PARTIR DESSE ACRÉSCIMO QUE COMEÇARAM OS PROBLEMAS.
+POR ISSO ABAIXO ENVIO O src/components/PortfolioGrid.tsx
+
+TAMBÉM PARA ANALISE CONJUNTA.
 
 
 
@@ -734,6 +747,424 @@ export function PortfolioGrid({ projects = [], dict }: PortfolioGridProps) {
 
 
 
+O ARQUIVO E SEU CONTEÚDO 
+src/components/ProjectCard.tsx
+
+'use client';
+
+/**
+ * PROJECT CARD COMPONENT - REVISADO & INTEGRADO (FINAL)
+ * -----------------------------------------------------------------------------
+ * ✔ Stack: React 19, TS 6.0, Tailwind 4.2, Next.js 16, Node 24
+ * ✔ I18n: Suporte PT-BR / EN-US / ES-ES / ES-MX / ES-AR
+ * ✔ Pipes (|): Extração automática de Problema | Solução | Impacto
+ * ✔ Fix: Proteção contra undefined no mapeamento de categorias (TypeError Fix)
+ */
+
+import {
+  Github,
+  ExternalLink,
+  Folder,
+  Star,
+  Target,
+  Lightbulb,
+  TrendingUp,
+} from 'lucide-react';
+
+import type { Dictionary } from '@/types/dictionary';
+import type { ProjectDomain } from '@/domain/projects';
+
+interface ProjectCardProps {
+  readonly project: ProjectDomain;
+  readonly dict: Dictionary;
+}
+
+export function ProjectCard({ project, dict }: ProjectCardProps) {
+  // Acesso seguro ao dicionário de projetos
+  const labels = dict?.projects;
+
+  // 1. Lógica de extração segura para descrições estruturadas com Pipes (|)
+  // O GitHub About segue: "Problema | Solução | Impacto"
+  const descParts = project.description?.includes('|')
+    ? project.description.split('|').map(p => p.trim())
+    : [project.description];
+
+  const problemText = descParts[0] || '';
+  const solutionText = descParts[1] || '';
+  const impactText = descParts[2] || '';
+
+  // 2. Formata as tags técnicas (ex: aws -> AWS) - O(1) Search
+  const formatTechTag = (topic: string): string => {
+    const uppercaseTechs = new Set([
+      'aws', 'ml', 'ai', 'sql', 'etl', 'genai', 'api', 'bi', 'neo4j', 'ia'
+    ]);
+
+    const lower = topic.toLowerCase();
+    if (uppercaseTechs.has(lower)) return lower.toUpperCase();
+
+    return topic
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, l => l.toUpperCase());
+  };
+
+  /**
+   * 3. RESOLUÇÃO DO ERRO DE BUILD (TypeError: labelKey of undefined)
+   * Garantimos que se a chave não existir no dicionário, usamos um fallback seguro.
+   */
+  const getCategoryLabel = () => {
+    const techKey = project.technology.labelKey;
+    // Tenta pegar do dicionário, senão tenta o fallback 'dev', senão usa texto puro.
+    const categoryObj = labels?.categories[techKey] || labels?.categories?.dev;
+    return categoryObj?.labelKey || "Project";
+  };
+
+  return (
+    <article className="group relative flex h-full w-full flex-col rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl dark:border-slate-800/60 dark:bg-slate-950/40 md:p-8">
+      
+      {/* Badge de Destaque Técnico */}
+      {project.isFeatured && (
+        <div className="absolute -top-3 right-6 z-10">
+          <span className="flex items-center gap-1.5 rounded-full bg-blue-600 px-4 py-1.5 text-[10px] font-black uppercase tracking-wider text-white shadow-lg shadow-blue-500/20">
+            <Star size={10} fill="currentColor" />
+            {labels?.featuredLabel || "Featured"}
+          </span>
+        </div>
+      )}
+
+      <header className="mb-6 flex items-start justify-between">
+        <div className="rounded-xl bg-slate-100 p-3 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white dark:bg-slate-800 dark:text-blue-400">
+          <Folder size={24} strokeWidth={2.5} />
+        </div>
+
+        <div className="flex gap-1">
+          {project.htmlUrl && (
+            <a
+              href={project.htmlUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={labels?.viewProject}
+              className="rounded-lg p-2.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white"
+            >
+              <Github size={20} />
+            </a>
+          )}
+
+          {project.homepage && (
+            <a
+              href={project.homepage}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={labels?.viewDemo}
+              className="rounded-lg p-2.5 text-slate-400 transition hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-800 dark:hover:text-blue-400"
+            >
+              <ExternalLink size={20} />
+            </a>
+          )}
+        </div>
+      </header>
+
+      {/* Área de Conteúdo principal */}
+      <div className="flex flex-grow flex-col">
+        <h3 className="mb-5 text-xl font-black tracking-tight text-slate-900 dark:text-white md:text-2xl">
+          {project.name}
+        </h3>
+
+        <div className="space-y-5 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+          {problemText && (
+            <CaseSection
+              icon={<Target size={14} className="text-red-500" />}
+              label={labels?.problem || "Problem"}
+              text={problemText}
+            />
+          )}
+
+          {solutionText && (
+            <CaseSection
+              icon={<Lightbulb size={14} className="text-amber-500" />}
+              label={labels?.solution || "Solution"}
+              text={solutionText}
+            />
+          )}
+
+          {impactText && (
+            <CaseSection
+              icon={<TrendingUp size={14} className="text-emerald-500" />}
+              label={labels?.impactLabel || "Impact"}
+              text={impactText}
+            />
+          )}
+        </div>
+      </div>
+
+      <footer className="mt-8 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-5 dark:border-slate-800/50">
+        {/* Categoria Principal - Fix: Acesso Seguro ao labelKey */}
+        <span className="rounded-full bg-blue-50 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-blue-700 dark:bg-blue-900/20 dark:text-blue-300">
+          {getCategoryLabel()}
+        </span>
+
+        {/* Tags Técnicas filtradas (máximo 3) */}
+        {project.topics
+          .filter(t => !['portfolio', 'featured', 'destaque', 'primeiro'].includes(t.toLowerCase()))
+          .slice(0, 3)
+          .map(tech => (
+            <span
+              key={tech}
+              className="rounded-full border border-slate-200 px-3 py-1 text-[9px] font-bold uppercase tracking-tight text-slate-500 dark:border-slate-700 dark:text-slate-400"
+            >
+              {formatTechTag(tech)}
+            </span>
+          ))}
+      </footer>
+    </article>
+  );
+}
+
+/**
+ * Sub-componente CaseSection
+ */
+interface CaseSectionProps {
+  readonly icon: React.ReactNode;
+  readonly label: string;
+  readonly text: string;
+}
+
+function CaseSection({ icon, label, text }: CaseSectionProps) {
+  return (
+    <div className="group/item">
+      <div className="mb-1.5 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-slate-500">
+        {icon}
+        {label}
+      </div>
+      <p className="font-medium text-slate-700 dark:text-slate-200">
+        {text}
+      </p>
+    </div>
+  );
+}
+
+
+
+
+
+O ARQUIVO 
+src/lib/github-service.ts
+
+// src/lib/github-service.ts
+import { CATEGORY_ORDER, TOPIC_TO_CATEGORY } from "@/config/categories";
+import type { GitHubRepo, ProcessedProject } from "@/types/github";
+
+/**
+ * LÓGICA DE PROCESSAMENTO DE DADOS (Next.js 16 + TS 6.0)
+ * -----------------------------------------------------------------------------
+ * ✔ Filtra: Apenas repositórios com a tag 'portfolio' e que não são forks.
+ * ✔ Pipes (|): Divide a descrição em 'Problema', 'Solução' e 'Impacto'.
+ * ✔ Categorização: Mapeia tópicos do GitHub para categorias de negócio.
+ * ✔ Ordenação: Prioriza tags 'primeiro', 'featured' e ordem de categorias.
+ */
+
+export function processRepositories(
+  repos: readonly GitHubRepo[], 
+  username: string
+): ProcessedProject[] {
+  if (!repos || !Array.isArray(repos)) return [];
+
+  const normalizedUsername = username.toLowerCase();
+
+  return repos
+    .filter((repo): repo is GitHubRepo => {
+      // TS 6.0: Verificações rigorosas de nulidade
+      const topics = repo.topics ?? [];
+      const hasTag = topics.includes("portfolio");
+      const isNotFork = !repo.fork;
+      const isMine = repo.owner?.login.toLowerCase() === normalizedUsername;
+      
+      return hasTag && isNotFork && isMine;
+    })
+    .map((repo): ProcessedProject => {
+      // 1. Processamento Resiliente dos Pipes (|)
+      // Padrão: "Problema | Solução | Impacto"
+      const descriptionParts = repo.description?.split("|") ?? [];
+      const problem = descriptionParts[0]?.trim() || "Detalhamento técnico em desenvolvimento.";
+      const solution = descriptionParts[1]?.trim() || "";
+      const impact = descriptionParts[2]?.trim() || "";
+
+      // 2. Determinação Inteligente da Categoria
+      const repoTopics = repo.topics ?? [];
+      let category = "Outros";
+
+      // Mapeia tópicos para categorias conhecidas e filtra nulos
+      const matchedCategories = repoTopics
+        .map(topic => TOPIC_TO_CATEGORY[topic])
+        .filter((cat): cat is string => typeof cat === 'string');
+
+      if (matchedCategories.length > 0) {
+        // Ordena com base no peso definido no CATEGORY_ORDER config
+        matchedCategories.sort((a, b) => 
+          (CATEGORY_ORDER[a] ?? 99) - (CATEGORY_ORDER[b] ?? 99)
+        );
+        category = matchedCategories[0] ?? "Outros";
+      }
+
+      // 3. Extração de Tags de Controle (Removidas da lista de tecnologias)
+      const controlTags = ["portfolio", "destaque", "featured", "primeiro"];
+      const isFeatured = repoTopics.some(t => t === "featured" || t === "destaque");
+      const isHead = repoTopics.includes("primeiro");
+
+      return {
+        id: repo.id,
+        name: repo.name.replace(/-/g, ' '), // Formata nome para exibição (UI)
+        url: repo.html_url,
+        liveUrl: repo.homepage ?? null,
+        problem,
+        solution,
+        impact,
+        isFeatured,
+        isHead,
+        category,
+        // Tecnologias são todos os tópicos que não são de controle/categoria
+        technologies: repoTopics.filter(t => 
+          !controlTags.includes(t) && !TOPIC_TO_CATEGORY[t]
+        ),
+      };
+    })
+    .sort((a, b) => {
+      // 1. Prioridade Máxima: Tag "primeiro"
+      if (a.isHead && !b.isHead) return -1;
+      if (!a.isHead && b.isHead) return 1;
+
+      // 2. Destaques: Tag "featured"
+      if (a.isFeatured && !b.isFeatured) return -1;
+      if (!a.isFeatured && b.isFeatured) return 1;
+
+      // 3. Ordem de Categoria (Data Engineering > Analytics > etc)
+      const orderA = CATEGORY_ORDER[a.category] ?? 99;
+      const orderB = CATEGORY_ORDER[b.category] ?? 99;
+      if (orderA !== orderB) return orderA - orderB;
+
+      // 4. Fallback: Ordem Alfabética
+      return a.name.localeCompare(b.name);
+    });
+} 
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/services/githubService.ts
+
+
+// src/services/githubService.ts
+import { Octokit } from 'octokit';
+import { RequestError } from 'octokit';
+import { processRepositories } from "@/lib/github-service";
+import type { ProcessedProject, GitHubRepo } from "@/types/github";
+
+/**
+ * SERVIÇO UNIFICADO GITHUB (Next.js 16 + Octokit 5.0.5)
+ * -----------------------------------------------------------------------------
+ * ✔ Stack: TypeScript 6.0, Node 24, Next.js 16 (App Router)
+ * ✔ Usuário Padrão: Santosdevbjj
+ * ✔ Performance: Paginação automática via Octokit Iterator
+ * ✔ Resiliência: Timeout de 7s e tratamento de erro 'RequestError'
+ */
+
+// Configuração do cliente utilizando o fetch nativo do Node 24
+const octokit = new Octokit({ 
+  auth: process.env.GITHUB_TOKEN,
+  request: {
+    timeout: 7000, 
+  }
+});
+
+// Nome de usuário centralizado para evitar hardcoding espalhado
+const DEFAULT_USERNAME = "Santosdevbjj";
+
+/**
+ * Busca e processa projetos do GitHub.
+ * Se nenhum username for passado, utiliza 'Santosdevbjj' por padrão.
+ */
+export async function getGitHubProjects(username: string = DEFAULT_USERNAME): Promise<ProcessedProject[]> {
+  if (!username) {
+    console.warn('⚠️ GitHub Service: Username não disponível.');
+    return [];
+  }
+
+  try {
+    const reposList: GitHubRepo[] = [];
+    
+    // O Iterator é a melhor prática para garantir que todos os repositórios 
+    // sejam capturados, mesmo que ultrapassem 100 itens no futuro.
+    const iterator = octokit.paginate.iterator(octokit.rest.repos.listForUser, {
+      username,
+      per_page: 100,
+      sort: 'updated',
+      type: 'owner', // Filtra apenas repositórios próprios (evita forks)
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    });
+
+    for await (const { data: repos } of iterator) {
+      // Cast seguro conforme padrões do TS 6.0
+      reposList.push(...(repos as unknown as GitHubRepo[]));
+    }
+
+    // Processamento com sua lógica de negócio (Filtros por tópico 'portfolio', categorias, etc)
+    return processRepositories(reposList, username);
+
+  } catch (error: unknown) {
+    // Tratamento de erro especializado do Octokit
+    if (error instanceof RequestError) {
+      console.error(`❌ GitHub API Error [${error.status}]: ${error.message}`);
+      
+      if (error.status === 403) {
+        console.error('🛑 Rate limit atingido. Verifique o seu GITHUB_TOKEN nas variáveis de ambiente da Vercel.');
+      }
+    } else {
+      console.error('❌ Erro inesperado ao buscar repositórios:', error);
+    }
+    
+    // Retorna array vazio para manter a estabilidade do componente React (PortfolioGrid)
+    return []; 
+  }
+}
+
+/**
+ * ALIAS DE COMPATIBILIDADE
+ * Facilitam a exportação para diferentes padrões de consumo no Next.js 16.
+ */
+export { getGitHubProjects as getProjects, getGitHubProjects as fetchUserRepos }; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -741,6 +1172,62 @@ export function PortfolioGrid({ projects = [], dict }: PortfolioGridProps) {
 
 
 OS DICIONÁRIOS PARA ANALISE CONJUNTA 
+
+
+src/lib/getServerDictionary.ts
+
+// src/lib/getServerDictionary.ts
+
+"use server";
+
+import { cache } from "react";
+
+import { getDictionary } from "@/dictionaries";
+import {
+  normalizeLocale,
+  DEFAULT_LOCALE,
+} from "@/dictionaries/locales";
+
+import type {
+  SupportedLocale,
+} from "@/dictionaries/locales";
+import type { Dictionary } from "@/types/dictionary";
+
+/**
+ * Carrega e cacheia o dicionário por locale.
+ *
+ * ✔ Server-only
+ * ✔ Compatível com Next.js 16
+ * ✔ Seguro contra runtime 500
+ * ✔ Nunca retorna undefined
+ */
+export const getServerDictionary = cache(
+  async (locale: string): Promise<Dictionary> => {
+    const safeLocale: SupportedLocale =
+      normalizeLocale(locale);
+
+    try {
+      return await getDictionary(safeLocale);
+    } catch (error) {
+      console.error(
+        "[getServerDictionary] Failed for locale:",
+        safeLocale,
+        error,
+      );
+
+      // Fallback seguro para evitar erro 500
+      if (safeLocale !== DEFAULT_LOCALE) {
+        return await getDictionary(DEFAULT_LOCALE);
+      }
+
+      throw error;
+    }
+  },
+);
+
+
+
+
 
 
 
@@ -3005,6 +3492,1091 @@ export async function getGitHubProjects(username: string = DEFAULT_USERNAME): Pr
 export { getGitHubProjects as getProjects, getGitHubProjects as fetchUserRepos };  
 
 
+
+
+
+
+
+
+
+
+
+APROFUNDANDO NOS 3 PROJETOS DE MAIOR DESTAQUE 
+
+
+OS REPOSITÓRIOS ESPECIAIS
+
+https://github.com/Santosdevbjj/analiseRiscosAtrasoObras
+
+
+https://github.com/Santosdevbjj/analiseDadosNaPratica
+
+https://github.com/Santosdevbjj/genAIpipeETLPython
+
+ESSES SAO OS TRES PROJETOS DE DESTAQUE DO MEU PORTFÓLIO.
+USAM A TAG: portfolio + TAG DE TECNOLOGIA + featured - A IDEIA É MOSTRAR COM UMA FORMATAÇÃO DIFERENCIADA PARA DESTACAR.
+
+O PROJETO https://github.com/Santosdevbjj/analiseRiscosAtrasoObras
+É SUPER ESPECIAL ELE TEM UM COMPONENTE SO 
+PARA ELE SER EXIBIDO
+
+ ONDE ESTA A LOGICA DELES:
+
+src/components/featured/FeaturedGrid.tsx
+
+'use client';
+
+import ProjectCard from './ProjectCard';
+import type { FeaturedProject } from './projects.data';
+import type { Locale, Dictionary } from '@/types/dictionary';
+
+interface FeaturedGridProps {
+  readonly projects: readonly FeaturedProject[];
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+}
+
+/**
+ * Grid de projetos em destaque.
+ *
+ * ✔ Layout responsivo (Mobile → Desktop)
+ * ✔ Destaque visual para o primeiro projeto (Bento-style)
+ * ✔ Multilíngue por delegação (dict + lang)
+ * ✔ Alinhado com TS 6 e Next.js 16
+ */
+export default function FeaturedGrid({
+  projects,
+  lang,
+  dict,
+}: FeaturedGridProps) {
+  if (!projects.length) {
+    return (
+      <div
+        role="status"
+        aria-live="polite"
+        className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400"
+      >
+        <p className="text-sm">
+          {dict.states.emptyProjects.title}
+        </p>
+        <p className="mt-2 text-xs">
+          {dict.states.emptyProjects.description}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      role="list"
+      aria-label={dict.projects.featuredLabel}
+      className="
+        grid grid-cols-1 gap-8
+        sm:grid-cols-2
+        lg:grid-cols-3 lg:auto-rows-fr
+      "
+    >
+      {projects.map((project, index) => (
+        <div key={project.id} role="listitem">
+          <ProjectCard
+            project={project}
+            lang={lang}
+            dict={dict}
+            featured={index === 0}
+          />
+        </div>
+      ))}
+    </div>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+src/components/featured/FeaturedProjectsSection.tsx
+
+// src/components/featured/FeaturedProjectsSection.tsx
+import FeaturedGrid from './FeaturedGrid';
+import type { Locale, Dictionary } from '@/types/dictionary';
+import { NavSection, getSectionId } from '@/domain/navigation';
+
+interface FeaturedProjectsSectionProps {
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+}
+
+export default function FeaturedProjectsSection({ lang, dict }: FeaturedProjectsSectionProps) {
+  
+  // 1. Extração segura dos dados brutos do JSON
+  const rawProjects = Array.isArray(dict.projects?.featuredProjects) 
+    ? dict.projects.featuredProjects 
+    : [];
+
+  // 2. Mapeamento para o formato que o FeaturedGrid espera (name, repoUrl, etc)
+  const projects = rawProjects.slice(0, 3).map((proj: any) => ({
+    id: proj.id || String(Math.random()),
+    name: proj.title || "Projeto",
+    description: proj.description || "",
+    repoUrl: proj.github || proj.repoUrl || "#",
+    liveUrl: proj.demo || proj.liveUrl || "",
+    image: proj.image || "/images/projects/placeholder.jpg",
+    categories: proj.categories || (proj.category ? [proj.category] : ["Tech"]),
+    priority: proj.priority || 1
+  }));
+
+  // Se não houver nada, não renderiza a seção
+  if (projects.length === 0) return null;
+
+  const sectionId = getSectionId(NavSection.PROJECTS);
+  const headingId = `${sectionId}-heading`;
+
+  return (
+    <section 
+      id={sectionId} 
+      className="relative border-y border-slate-100 bg-white py-24 dark:border-slate-900 dark:bg-[#020617]/50 sm:py-32"
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <header className="mb-16 max-w-3xl">
+          <span className="mb-4 inline-block rounded-full bg-blue-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+            {dict.projects?.featuredLabel || "Destaques"}
+          </span>
+          <h2 
+            id={headingId} 
+            className="mb-6 text-4xl font-black tracking-tight dark:text-white sm:text-5xl uppercase italic"
+          >
+            {dict.projects?.title || "Projetos"}
+          </h2>
+        </header>
+
+        {/* Enviando os projetos mapeados para o Grid */}
+        <FeaturedGrid
+          projects={projects as any}
+          lang={lang}
+          dict={dict}
+        />
+      </div>
+    </section>
+  );
+} 
+
+
+
+
+
+
+
+
+
+src/components/featured/ProjectCard.tsx
+
+'use client';
+
+import type { FeaturedProject } from './projects.data';
+import type { Dictionary, Locale } from '@/types/dictionary';
+
+interface ProjectCardProps {
+  readonly project: FeaturedProject;
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+  readonly featured?: boolean;
+}
+
+/**
+ * Card de projeto em destaque otimizado.
+ *
+ * ✔ Arquitetura: Client Component (compatível com Next.js 16)
+ * ✔ Estilo: Tailwind CSS 4.2 (uso de backdrop-blur e transições suaves)
+ * ✔ Tipagem: TypeScript 6.0 (Readonly props e Records)
+ * ✔ I18n: Suporte multilíngue completo via dicionário e lang
+ */
+export default function ProjectCard({
+  project,
+  lang,
+  dict,
+  featured = false,
+}: ProjectCardProps) {
+  return (
+    <article
+      id={project.id}
+      className={`
+        relative flex h-full flex-col justify-between
+        rounded-3xl border transition-all duration-500 ease-out
+        p-6 sm:p-8 backdrop-blur-sm
+        
+        /* Cores e Bordas - Modo Claro */
+        bg-white/70 border-slate-200 shadow-sm
+        hover:border-blue-500/50 hover:shadow-2xl hover:-translate-y-2
+        
+        /* Cores e Bordas - Modo Escuro */
+        dark:bg-slate-900/50 dark:border-slate-800 dark:hover:border-blue-400/50
+        
+        /* Layout Bento-style para o item em destaque */
+        ${featured ? 'lg:col-span-2' : ''}
+      `}
+    >
+      {/* Área de Conteúdo Texto */}
+      <div className="space-y-4">
+        <header>
+          <h3
+            className={`
+              font-black tracking-tight text-slate-900 dark:text-white transition-colors
+              ${featured ? 'text-2xl sm:text-4xl italic' : 'text-xl sm:text-2xl'}
+            `}
+          >
+            {project.name}
+          </h3>
+        </header>
+
+        <p className="text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
+          {project.description[lang]}
+        </p>
+
+        {/* Categorias / Badges (Opcional - usando os dados do project) */}
+        {project.categories && (
+          <div className="flex flex-wrap gap-2 pt-2">
+            {project.categories.map((cat) => (
+              <span 
+                key={cat}
+                className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400"
+              >
+                {cat}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Rodapé do Card: Ação Principal */}
+      <footer className="mt-8 flex items-center">
+        <a
+          href={project.repoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="
+            group/link inline-flex items-center gap-2
+            text-xs font-black uppercase tracking-[0.2em]
+            text-blue-600 dark:text-blue-400
+            focus:outline-none focus-visible:ring-2
+            focus-visible:ring-blue-500 focus-visible:ring-offset-2
+            dark:focus-visible:ring-offset-slate-900
+          "
+          aria-label={`${dict.projects.viewProject}: ${project.name}`}
+        >
+          <span className="border-b-2 border-transparent group-hover/link:border-blue-600 transition-all">
+            {dict.projects.viewProject}
+          </span>
+          <span className="transform group-hover/link:translate-x-1 transition-transform" aria-hidden="true">
+            →
+          </span>
+        </a>
+      </footer>
+
+      {/* Efeito Decorativo sutil de luz (Tailwind 4.2) */}
+      <div className="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-blue-500/10 transition-colors" />
+    </article>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+src/components/featured/projects.data.ts
+
+
+'use client';
+
+// src/components/featured/projects.data.ts
+
+import type { SupportedLocale } from "@/dictionaries/locales";
+
+/**
+ * Modelo de projeto destacado (Featured).
+ * Atualizado para as novas categorias do portfólio.
+ */
+export interface FeaturedProject {
+  readonly id: string;
+  readonly name: string;
+  readonly repoUrl: string;
+  readonly priority: 1 | 2 | 3;
+  readonly categories: readonly string[]; // Agora aceita as novas categorias (1 a 17)
+  readonly description: Record<SupportedLocale, string>;
+}
+
+/**
+ * Lista oficial dos 3 projetos destacados.
+ * Categorias atualizadas para o novo padrão de 17 itens.
+ */
+export const featuredProjects = [
+  {
+    id: "analise-riscos-atraso-obras",
+    name: "Análise de Riscos de Atraso em Obras",
+    repoUrl:
+      "https://github.com/Santosdevbjj/analiseRiscosAtrasoObras",
+    priority: 1,
+    categories: ["Ciência de Dados", "Banco de Dados"],
+    description: {
+      "pt-BR":
+        "Projeto de ciência de dados para análise preditiva de riscos de atraso em obras.",
+      "en-US":
+        "Data science project focused on predictive risk analysis for construction delays.",
+      "es-ES":
+        "Proyecto de ciencia de datos para el análisis predictivo de riesgos de retraso en obras.",
+      "es-AR":
+        "Proyecto de ciencia de datos para el análisis predictivo de riesgos de retraso en obras.",
+      "es-MX":
+        "Proyecto de ciencia de datos para el análisis predictivo de riesgos de retraso en obras.",
+    },
+  },
+  {
+    id: "analise-dados-na-pratica",
+    name: "Análise de Dados na Prática",
+    repoUrl:
+      "https://github.com/Santosdevbjj/analiseDadosNaPratica",
+    priority: 2,
+    categories: ["Ciência de Dados", "Neo4J"],
+    description: {
+      "pt-BR":
+        "Projeto prático focado em análise exploratória de dados e geração de insights.",
+      "en-US":
+        "Hands-on project focused on exploratory data analysis and insight generation.",
+      "es-ES":
+        "Proyecto práctico centrado en análisis exploratorio de datos y generación de insights.",
+      "es-AR":
+        "Proyecto práctico centrado en análisis exploratorio de datos y generación de insights.",
+      "es-MX":
+        "Proyecto práctico centrado en análisis exploratorio de datos y generación de insights.",
+    },
+  },
+  {
+    id: "genai-pipeline-etl-python",
+    name: "GenAI Pipeline ETL em Python",
+    repoUrl:
+      "https://github.com/Santosdevbjj/genAIpipeETLPython",
+    priority: 3,
+    categories: ["Python", "Azure Databricks"],
+    description: {
+      "pt-BR":
+        "Pipeline ETL moderno em Python com integração de IA generativa.",
+      "en-US":
+        "Modern Python ETL pipeline with generative AI integration.",
+      "es-ES":
+        "Pipeline ETL moderno en Python con integración de IA generativa.",
+      "es-AR":
+        "Pipeline ETL moderno en Python con integración de IA generativa.",
+      "es-MX":
+        "Pipeline ETL moderno en Python con integración de IA generativa.",
+    },
+  },
+] as const satisfies readonly FeaturedProject[];
+
+/**
+ * Tipo derivado automaticamente.
+ */
+export type FeaturedProjectId =
+  (typeof featuredProjects)[number]["id"];
+
+
+
+
+
+
+
+
+
+
+
+
+
+src/components/projects/ProjectCategoryBadge.tsx
+
+
+// src/components/projects/ProjectCategoryBadge.tsx
+
+interface ProjectCategoryBadgeProps {
+  /**
+   * Nome da categoria vindo do github-service ou featuredProjects.
+   * Ex: "Ciência de Dados", "Neo4J", "C# / .NET"
+   */
+  readonly label: string;
+  /**
+   * Opcional: destaque visual
+   */
+  readonly highlight?: boolean;
+}
+
+/**
+ * Badge de categoria de projeto unificado.
+ * * ✔ Aceita as 17 novas categorias dinâmicas
+ * ✔ TS 6 compliant & Next.js 16 (RSC-safe)
+ * ✔ Estilo consistente com o portfólio
+ */
+export function ProjectCategoryBadge({
+  label,
+  highlight = false,
+}: ProjectCategoryBadgeProps) {
+  // Proteção contra valores nulos ou vazios
+  if (!label || typeof label !== 'string' || !label.trim()) return null;
+
+  return (
+    <span
+      className={[
+        'inline-flex items-center',
+        'rounded-full px-2.5 py-0.5',
+        'text-[11px] font-semibold tracking-wide',
+        'transition-colors duration-200',
+        'whitespace-nowrap uppercase',
+        highlight
+          ? 'bg-blue-600 text-white dark:bg-blue-500'
+          : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-200 dark:border-blue-800',
+      ].join(' ')}
+    >
+      {label}
+    </span>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+src/components/projects/ProjectsGrid.tsx
+
+
+'use client'
+
+// src/components/projects/ProjectsGrid.tsx
+
+import type { Locale } from '@/types/dictionary'
+import type { Dictionary } from '@/types/dictionary'
+import { ProjectCategoryBadge } from './ProjectCategoryBadge'
+import type { Project } from '@/types/project'
+
+interface ProjectsGridProps {
+  readonly projects: readonly Project[]
+  readonly lang: Locale
+  readonly dict: Dictionary
+}
+
+/**
+ * Grid de projetos unificado.
+ * ✔ 100% Tipado (Type-Safe) após atualização do dicionário
+ * ✔ Suporta os projetos processados do GitHub (Pipes |)
+ * ✔ TS 6 compliant & Next.js 16
+ */
+export function ProjectsGrid({
+  projects,
+  lang,
+  dict,
+}: ProjectsGridProps) {
+  if (!projects.length) {
+    return (
+      <div className="py-12 text-center">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+          {dict.states.emptyProjects.title}
+        </h3>
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+          {dict.states.emptyProjects.description}
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div
+      className="
+        grid grid-cols-1 gap-6
+        sm:grid-cols-2
+        lg:grid-cols-3
+        auto-rows-fr
+      "
+    >
+      {projects.map((project) => (
+        <article
+          key={project.id}
+          className="
+            flex flex-col justify-between
+            rounded-2xl border border-neutral-200
+            p-6 shadow-sm transition-all
+            hover:shadow-md
+            dark:border-neutral-800
+            dark:bg-neutral-900
+          "
+        >
+          <div className="space-y-4">
+            <header className="flex items-start justify-between gap-2">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                {project.name}
+              </h3>
+              {(project.isHead || project.isFeatured) && (
+                <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                  {project.isHead ? 'TOP' : 'FEATURED'}
+                </span>
+              )}
+            </header>
+
+            {/* Renderização da Categoria Principal */}
+            <div className="flex flex-wrap gap-2">
+              <ProjectCategoryBadge
+                label={project.category} 
+              />
+            </div>
+
+            {/* Seção de Conteúdo (Pipes |) - Agora com tipagem nativa do dict */}
+            <div className="space-y-2 text-sm">
+              <p className="text-slate-600 dark:text-slate-400 line-clamp-3">
+                <span className="font-semibold text-slate-800 dark:text-slate-200">
+                  {dict.projects.problem}:
+                </span>{" "}
+                {project.problem}
+              </p>
+              
+              {project.solution && (
+                <p className="text-slate-600 dark:text-slate-400 line-clamp-3">
+                  <span className="font-semibold text-slate-800 dark:text-slate-200">
+                    {dict.projects.solution}:
+                  </span>{" "}
+                  {project.solution}
+                </p>
+              )}
+            </div>
+
+            {/* Lista de Tecnologias */}
+            <div className="flex flex-wrap gap-1 mt-auto pt-2">
+              {project.technologies.slice(0, 5).map((tech) => (
+                <span 
+                  key={tech}
+                  className="text-[10px] text-neutral-500 bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-400 px-2 py-0.5 rounded border border-neutral-200 dark:border-neutral-700"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <footer className="mt-6 flex items-center gap-4 border-t border-neutral-100 dark:border-neutral-800 pt-4">
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-blue-600 hover:underline dark:text-blue-400"
+            >
+              GitHub
+            </a>
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-bold text-emerald-600 hover:underline dark:text-emerald-400"
+              >
+                Live Demo
+              </a>
+            )}
+          </footer>
+        </article>
+      ))}
+    </div>
+  )
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+O PROJETO 
+https://github.com/Santosdevbjj/analiseRiscosAtrasoObras
+
+O README.MD DESSE PROJETO É ESSE:
+
+# 🏗️ Predição de Risco de Atraso em Obras
+
+Plataforma analítica que antecipa riscos operacionais em obras civis, convertendo dados históricos em alertas preventivos e reduzindo exposição a multas contratuais.
+
+> Projeto desenvolvido com dados sintéticos gerados a partir de hipóteses realistas do setor de construção civil, aplicando metodologia e stack equivalentes a ambientes produtivos reais.
+
+---
+
+## 1. Problema de Negócio
+
+Empresas de construção civil perdem receita operacional em obras entregues fora do prazo — entre multas contratuais, replanejamento forçado e desgaste com clientes.
+
+O problema não era falta de dados. Era falta de uso analítico dos dados existentes.
+
+**Pergunta central:**
+> Quais obras apresentam maior risco de atraso e onde devemos agir antes que o impacto financeiro ocorra?
+
+---
+
+## 2. Contexto
+
+A operação envolve variáveis que impactam diretamente o prazo de entrega:
+
+- Condições climáticas da região da obra
+- Tipo e qualidade do solo
+- Rating histórico de fornecedores
+- Cronograma e complexidade das etapas da obra
+
+Os dados existiam, mas as decisões eram tomadas de forma reativa — apenas após o atraso já ter ocorrido.
+
+---
+
+## 3. Premissas da Análise
+
+- Dados sintéticos gerados com distribuições realistas do setor de construção civil
+- A variável-alvo é o número de dias de atraso (problema de regressão)
+- Fornecedores com rating abaixo de 3.0 foram classificados como alto risco
+- Período simulado: 24 meses de histórico operacional
+- A análise foca em identificação de padrões operacionais, não em causalidade estatística
+
+---
+
+## 4. Estratégia da Solução
+
+### Pipeline Analítico
+
+| Etapa | Descrição |
+|---|---|
+| 1. Problema de negócio | Entendimento do custo real de cada dia de atraso |
+| 2. Arquitetura de dados | Organização em camadas: raw → analytics → products |
+| 3. Limpeza e tratamento | Inconsistências em clima, solo e fornecedores |
+| 4. EDA | Validação de hipóteses sobre causas de atraso |
+| 5. Engenharia de atributos | Criação de índice de risco composto |
+| 6. Treinamento do modelo | RandomForestRegressor com validação cruzada |
+| 7. Avaliação | Técnica (MAE, R²) + impacto financeiro em R$ |
+| 8. Deploy | Bot no Telegram + Simulador Streamlit em produção |
+
+### Decisões Técnicas
+
+| Decisão | Escolha | Alternativa Avaliada | Motivo |
+|---|---|---|---|
+| Algoritmo | Random Forest | XGBoost | Melhor interpretabilidade para stakeholders não técnicos |
+| Banco de dados | Supabase | PostgreSQL local | Deploy gratuito com API REST nativa |
+| Entrega ao usuário | Telegram Bot + Streamlit | Dashboard BI | Acessibilidade sem login para gestores de obra |
+| Cloud | Render | AWS Lambda | Custo zero para o escopo do projeto |
+
+---
+
+## 5. Limpeza e Preparação dos Dados
+
+- Imputação pela mediana em variáveis climáticas com valores ausentes
+- Remoção de outliers extremos em dias de atraso (> 3 desvios padrão)
+- One-Hot Encoding para variáveis categóricas (tipo de solo, condição climática)
+- StandardScaler aplicado às variáveis numéricas contínuas
+- Criação de feature composta: índice de risco por fornecedor × condição climática
+
+---
+
+## 6. Análise Exploratória — Principais Insights
+
+A EDA foi orientada à validação de hipóteses de negócio, não apenas à visualização de dados.
+
+| Hipótese | Resultado |
+|---|---|
+| Clima é a principal causa de atraso? | ❌ Falsa. Rating do fornecedor tem impacto ~3x maior em etapas de acabamento |
+| Fornecedores com baixo rating atrasam mesmo em bom clima? | ✅ Confirmada |
+| Obras de maior orçamento têm mais risco? | ✅ Obras acima de R$2M apresentam maior sensibilidade a atrasos acumulados |
+| Clima é causa raiz isolada? | ❌ Atua como fator agravante, raramente como causa principal |
+
+**Ação recomendada pelo modelo:**
+Priorizar renegociação ou substituição de fornecedores com rating abaixo de 3.0 antes de qualquer intervenção relacionada a clima.
+
+---
+
+## 7. Performance do Modelo
+
+**Algoritmo:** `RandomForestRegressor` — scikit-learn
+
+| Métrica | Baseline (média histórica) | Modelo | Variação |
+|---|---|---|---|
+| MAE | 12 dias | 4,97 dias | -59% |
+| RMSE | — | 6,3 dias | — |
+| R² | — | 0,41 | — |
+
+**Sobre o R² = 0,41:**
+Em cenários de engenharia civil, variáveis externas não controladas — clima, cadeia de fornecedores, decisões humanas — são inerentes ao problema. R² acima de 0,4 é resultado consistente nesse contexto. A métrica de negócio relevante é o MAE inferior a 5 dias.
+
+---
+
+## 8. Impacto Financeiro (Business Performance)
+
+> Cada dia de atraso representa aproximadamente R$ 1.380 em multas contratuais (custo médio estimado para o porte simulado).
+
+| Indicador | Resultado |
+|---|---|
+| Redução de incerteza na previsão | ~60% |
+| Risco financeiro residual por obra (MAE × custo/dia) | ≈ R$ 6.860 |
+| Economia potencial estimada | ≈ R$ 248.400/ano |
+| Tipo de decisão gerada | Preventiva — antes do impacto ocorrer |
+
+O foco do projeto não é apenas prever atrasos. É permitir que a empresa aja antes que o custo se materialize.
+
+---
+
+## 9. Arquitetura em Produção
+
+```
+Supabase (banco de dados em camadas)
+├── raw
+│   ├── atividades_obra
+│   ├── fornecedores
+│   └── clima
+├── analytics
+│   └── dashboard_obras       # tabela fato consolidada
+└── products
+    └── base_consulta_bot     # camada de consumo desacoplada
+
+Bot Telegram (hospedado no Render)
+    └── Consulta por ID da obra
+    └── Retorna: status de risco + gráfico + relatório PDF corporativo
+
+Streamlit (simulador executivo)
+    └── Interface para análise rápida de risco
+    └── Apoio à decisão gerencial sem necessidade de perfil técnico
+```
+
+**Benefícios da arquitetura em camadas:**
+- Governança e rastreabilidade dos dados
+- Consumo desacoplado da origem
+- Escalabilidade para novos produtos de dados
+
+---
+
+## 10. Tecnologias Utilizadas
+
+**Dados e Machine Learning**
+`Python` | `Pandas` | `NumPy` | `Scikit-learn` | `SciPy` | `Matplotlib` | `Seaborn`
+
+**Infraestrutura e Deploy**
+`Supabase` | `Render` | `Streamlit` | `Docker`
+
+**Entrega ao Usuário**
+`Telegram Bot API` | `FPDF` (relatório PDF)
+
+---
+
+## 11. Como Executar o Projeto
+
+**Pré-requisitos**
+- Python 3.10+
+- Conta no Telegram (para o bot)
+- Supabase configurado (opcional — o projeto também roda com CSV local)
+
+**Instalação**
+```bash
+git clone https://github.com/Santosdevbjj/analiseRiscosAtrasoObras
+cd analiseRiscosAtrasoObras
+pip install -r requirements.txt
+```
+
+**Execução do Bot**
+```bash
+python scripts/telegram_bot.py
+```
+
+**Execução do Simulador**
+```bash
+streamlit run app.py
+```
+
+**Exemplo de uso no Bot**
+1. Inicie com `/start`
+2. Selecione idioma e fonte de dados (CSV ou Supabase)
+3. Digite o ID da obra (ex: `CCBJJ-100`)
+4. Receba: status de risco, gráfico explicativo e relatório PDF
+
+---
+
+## 12. Aprendizados
+
+**O que foi mais difícil:**
+Traduzir o MAE técnico em impacto financeiro real. Não é trivial conectar "erro médio de 5 dias" com "economia de R$ 248k/ano" de forma defensável para uma diretoria.
+
+**O que faria diferente:**
+Estruturaria o problema de negócio antes de abrir qualquer notebook. Comecei pelo dado e precisei voltar ao problema — o que custou tempo e retrabalho.
+
+**Principal aprendizado:**
+A entrega mais valorizada não foi o modelo. Foi o bot e o simulador — porque tornaram o resultado acessível para quem toma a decisão, sem depender de perfil técnico.
+
+---
+
+## 13. Próximos Passos
+
+- [ ] Integração com API climática real (OpenWeather)
+- [ ] Monitoramento de data drift com Evidently AI
+- [ ] Logging de predições para retreinamento contínuo
+- [ ] Modelo de classificação de risco (alto / médio / baixo) para alertas mais simples
+- [ ] Expansão do cálculo de impacto financeiro por tipo de contrato
+
+---
+
+## Autor
+
+**Sergio Santos**
+Cientista de Dados | Ambientes Críticos e Governança de Dados
+
+📧 santossergiorealbjj@outlook.com
+🔗 [LinkedIn](https://www.linkedin.com/in/santossergioluiz)
+🌐 [Portfólio](https://portfoliosantossergio.vercel.app)
+
+
+
+
+É SUPER ESPECIAL 
+POIS ALEM DE ESTAR ENTRE OS TRES PROJETOS DE MAIOR DESTAQUE.
+PLANEJEI UMA EXIBIÇÃO ESPECIAL PARA ELE,
+QUE PRECISA SER MELHORARADA:
+
+A EXIBIÇÃO É ESTA:
+
+
+import { useState } from "react";
+
+const metrics = [
+  { label: "MAE", value: "4,97 dias", sub: "erro médio do modelo" },
+  { label: "Melhoria", value: "-59%", sub: "vs baseline histórico" },
+  { label: "Economia estimada", value: "R$ 248k/ano", sub: "em multas contratuais" },
+  { label: "Decisão gerada", value: "Preventiva", sub: "antes do impacto ocorrer" },
+];
+
+const stack = [
+  "Python", "Pandas", "NumPy", "Scikit-learn",
+  "Supabase", "Render", "Streamlit", "Docker", "Telegram Bot API",
+];
+
+const hypotheses = [
+  { h: "Clima é a principal causa de atraso?", result: false, detail: "Rating do fornecedor tem impacto ~3x maior em etapas de acabamento" },
+  { h: "Fornecedores com baixo rating atrasam mesmo em bom clima?", result: true, detail: "Confirmada — padrão consistente no histórico simulado" },
+  { h: "Obras de maior orçamento têm mais risco?", result: true, detail: "Obras acima de R$ 2M apresentam maior sensibilidade a atrasos acumulados" },
+];
+
+const pipeline = [
+  { step: "01", title: "Problema de Negócio", desc: "Entendimento do custo real de cada dia de atraso — antes de abrir qualquer notebook." },
+  { step: "02", title: "Arquitetura de Dados", desc: "Organização em camadas: raw → analytics → products. Governança desde o início." },
+  { step: "03", title: "EDA", desc: "Validação de hipóteses de negócio. Não apenas visualizar dados — questionar causas." },
+  { step: "04", title: "Engenharia de Atributos", desc: "Índice de risco composto por fornecedor e condição climática." },
+  { step: "05", title: "Treinamento e Avaliação", desc: "RandomForestRegressor. MAE técnico convertido em impacto financeiro real." },
+  { step: "06", title: "Deploy como Produto", desc: "Bot no Telegram + Simulador Streamlit — acessível a gestores sem perfil técnico." },
+];
+
+const decisions = [
+  { decision: "Algoritmo", choice: "Random Forest", alt: "XGBoost", reason: "Melhor interpretabilidade para stakeholders não técnicos" },
+  { decision: "Banco de dados", choice: "Supabase", alt: "PostgreSQL local", reason: "Deploy gratuito com API REST nativa" },
+  { decision: "Entrega", choice: "Telegram Bot + Streamlit", alt: "Dashboard BI", reason: "Acessível sem login para gestores de obra" },
+];
+
+export default function ProjectPage() {
+  const [activeTab, setActiveTab] = useState("pipeline");
+  const tabs = [
+    { id: "pipeline", label: "Pipeline" },
+    { id: "insights", label: "Insights" },
+    { id: "decisions", label: "Decisões Técnicas" },
+  ];
+
+  return (
+    <div style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", background: "#0f0f0f", color: "#e5e5e5", minHeight: "100vh", padding: "0" }}>
+
+      {/* Hero */}
+      <div style={{ borderBottom: "1px solid #222", padding: "48px 32px 40px" }}>
+        <div style={{ maxWidth: 820, margin: "0 auto" }}>
+          <span style={{ fontSize: 12, color: "#888", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+            Ciência de Dados · Construção Civil · ML em Produção
+          </span>
+          <h1 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 700, margin: "12px 0 16px", lineHeight: 1.25, color: "#f5f5f5" }}>
+            Predição de Risco de Atraso em Obras
+          </h1>
+          <p style={{ fontSize: 16, color: "#aaa", lineHeight: 1.7, maxWidth: 620, margin: "0 0 28px" }}>
+            Plataforma analítica que antecipa riscos operacionais em obras civis, convertendo dados históricos em alertas preventivos antes que o custo se materialize.
+          </p>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <a href="https://github.com/Santosdevbjj/analiseRiscosAtrasoObras" target="_blank" rel="noopener noreferrer"
+              style={{ padding: "10px 20px", background: "#1a1a1a", border: "1px solid #333", borderRadius: 8, color: "#e5e5e5", textDecoration: "none", fontSize: 14, fontWeight: 500 }}>
+              ↗ Ver no GitHub
+            </a>
+            <span style={{ padding: "10px 20px", background: "#1a1a2e", border: "1px solid #2a2a5a", borderRadius: 8, color: "#8888ff", fontSize: 14, fontWeight: 500 }}>
+              🟢 Em produção — Render + Supabase
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Metrics */}
+      <div style={{ borderBottom: "1px solid #222", padding: "32px" }}>
+        <div style={{ maxWidth: 820, margin: "0 auto" }}>
+          <p style={{ fontSize: 12, color: "#666", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 20 }}>Resultados</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 16 }}>
+            {metrics.map((m, i) => (
+              <div key={i} style={{ background: "#141414", border: "1px solid #222", borderRadius: 10, padding: "20px 16px" }}>
+                <div style={{ fontSize: 22, fontWeight: 700, color: "#f5f5f5", marginBottom: 4 }}>{m.value}</div>
+                <div style={{ fontSize: 11, color: "#666", textTransform: "uppercase", letterSpacing: "0.06em" }}>{m.label}</div>
+                <div style={{ fontSize: 12, color: "#888", marginTop: 6 }}>{m.sub}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div style={{ borderBottom: "1px solid #222", padding: "0 32px" }}>
+        <div style={{ maxWidth: 820, margin: "0 auto", display: "flex", gap: 0 }}>
+          {tabs.map(t => (
+            <button key={t.id} onClick={() => setActiveTab(t.id)}
+              style={{
+                background: "none", border: "none", padding: "16px 20px", fontSize: 14, cursor: "pointer",
+                color: activeTab === t.id ? "#f5f5f5" : "#666",
+                borderBottom: activeTab === t.id ? "2px solid #f5f5f5" : "2px solid transparent",
+                fontWeight: activeTab === t.id ? 600 : 400, transition: "all 0.15s"
+              }}>
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      <div style={{ padding: "32px", maxWidth: 820, margin: "0 auto" }}>
+        {activeTab === "pipeline" && (
+          <div>
+            <p style={{ color: "#888", fontSize: 14, marginBottom: 24 }}>
+              O projeto segue um pipeline orientado ao problema de negócio — não à ferramenta.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {pipeline.map((p, i) => (
+                <div key={i} style={{ display: "flex", gap: 20, background: "#141414", border: "1px solid #222", borderRadius: 10, padding: "20px" }}>
+                  <div style={{ fontSize: 11, color: "#555", fontWeight: 700, minWidth: 28, paddingTop: 2 }}>{p.step}</div>
+                  <div>
+                    <div style={{ fontSize: 15, fontWeight: 600, color: "#e5e5e5", marginBottom: 6 }}>{p.title}</div>
+                    <div style={{ fontSize: 14, color: "#888", lineHeight: 1.6 }}>{p.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab === "insights" && (
+          <div>
+            <p style={{ color: "#888", fontSize: 14, marginBottom: 24 }}>
+              A EDA foi orientada à validação de hipóteses de negócio — não apenas à visualização de dados.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
+              {hypotheses.map((h, i) => (
+                <div key={i} style={{ background: "#141414", border: "1px solid #222", borderRadius: 10, padding: "20px" }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                    <span style={{ fontSize: 16, minWidth: 22 }}>{h.result ? "✅" : "❌"}</span>
+                    <div>
+                      <div style={{ fontSize: 14, color: "#ccc", fontWeight: 500, marginBottom: 6 }}>{h.h}</div>
+                      <div style={{ fontSize: 13, color: "#777", lineHeight: 1.5 }}>{h.detail}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div style={{ background: "#0f1a0f", border: "1px solid #1a3a1a", borderRadius: 10, padding: "20px" }}>
+              <div style={{ fontSize: 13, color: "#6a6", fontWeight: 600, marginBottom: 8 }}>Ação recomendada</div>
+              <div style={{ fontSize: 14, color: "#9c9", lineHeight: 1.6 }}>
+                Priorizar renegociação ou substituição de fornecedores com rating abaixo de 3.0 antes de qualquer intervenção relacionada a clima. O rating do fornecedor é o fator de maior peso no modelo.
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "decisions" && (
+          <div>
+            <p style={{ color: "#888", fontSize: 14, marginBottom: 24 }}>
+              Cada escolha técnica teve uma alternativa avaliada e um motivo concreto.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {decisions.map((d, i) => (
+                <div key={i} style={{ background: "#141414", border: "1px solid #222", borderRadius: 10, padding: "20px" }}>
+                  <div style={{ fontSize: 11, color: "#666", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 }}>{d.decision}</div>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", marginBottom: 10 }}>
+                    <span style={{ background: "#1a1a2e", border: "1px solid #2a2a5a", borderRadius: 6, padding: "4px 10px", fontSize: 13, color: "#8888ff", fontWeight: 600 }}>{d.choice}</span>
+                    <span style={{ color: "#555", fontSize: 13 }}>vs</span>
+                    <span style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 6, padding: "4px 10px", fontSize: 13, color: "#666" }}>{d.alt}</span>
+                  </div>
+                  <div style={{ fontSize: 13, color: "#888", lineHeight: 1.5 }}>{d.reason}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Stack */}
+      <div style={{ borderTop: "1px solid #222", padding: "32px" }}>
+        <div style={{ maxWidth: 820, margin: "0 auto" }}>
+          <p style={{ fontSize: 12, color: "#666", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>Stack utilizada</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {stack.map((s, i) => (
+              <span key={i} style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 6, padding: "6px 12px", fontSize: 13, color: "#aaa" }}>
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Learning */}
+      <div style={{ borderTop: "1px solid #222", padding: "32px" }}>
+        <div style={{ maxWidth: 820, margin: "0 auto" }}>
+          <p style={{ fontSize: 12, color: "#666", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 20 }}>Aprendizados</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
+            <div style={{ background: "#141414", border: "1px solid #222", borderRadius: 10, padding: "20px" }}>
+              <div style={{ fontSize: 13, color: "#888", fontWeight: 600, marginBottom: 8 }}>O que foi mais difícil</div>
+              <div style={{ fontSize: 14, color: "#777", lineHeight: 1.6 }}>Traduzir o MAE técnico em impacto financeiro real de forma defensável para uma diretoria.</div>
+            </div>
+            <div style={{ background: "#141414", border: "1px solid #222", borderRadius: 10, padding: "20px" }}>
+              <div style={{ fontSize: 13, color: "#888", fontWeight: 600, marginBottom: 8 }}>O que faria diferente</div>
+              <div style={{ fontSize: 14, color: "#777", lineHeight: 1.6 }}>Estruturaria o problema de negócio antes de abrir qualquer notebook.</div>
+            </div>
+            <div style={{ background: "#141414", border: "1px solid #222", borderRadius: 10, padding: "20px" }}>
+              <div style={{ fontSize: 13, color: "#888", fontWeight: 600, marginBottom: 8 }}>Entrega mais valorizada</div>
+              <div style={{ fontSize: 14, color: "#777", lineHeight: 1.6 }}>O bot e o simulador — tornaram o resultado acessível a quem toma a decisão, sem depender de perfil técnico.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer nav */}
+      <div style={{ borderTop: "1px solid #222", padding: "24px 32px" }}>
+        <div style={{ maxWidth: 820, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+          <span style={{ fontSize: 13, color: "#666" }}>Sérgio Santos · Cientista de Dados</span>
+          <a href="https://portfoliosantossergio.vercel.app" style={{ fontSize: 13, color: "#888", textDecoration: "none" }}>
+            ← Voltar ao portfólio
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 
 
