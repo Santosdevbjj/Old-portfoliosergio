@@ -1,0 +1,4437 @@
+
+Por favor, reescreva o readme.md do repositório do meu projeto no Github:
+
+https://github.com/Santosdevbjj/analiseRiscosAtrasoObras
+ 
+
+
+
+Seguindo as regras de Meigarom Lopes e Luiz Café.
+
+O readme.md está com esse conteúdo:
+
+
+# 🏗️ Predição de Risco de Atraso em Obras
+
+> Plataforma de Análise de Inteligência Operacional — CCbjj Engenharia & Inteligência de Riscos
+
+> Disciplina, estratégia e dados aplicados à engenharia civil.
+
+
+Um projeto de Engenharia de Ciência de Dados & Analytics aplicado à indústria da construção, focado na antecipação de riscos, redução de atrasos e suporte à tomada de decisão executiva, entregue como um produto de dados, não apenas como um modelo.
+
+
+Plataforma analítica que antecipa riscos operacionais em obras civis, convertendo dados históricos em alertas preventivos e reduzindo exposição a multas contratuais.
+
+> Projeto desenvolvido com dados sintéticos gerados a partir de hipóteses realistas do setor de construção civil, aplicando metodologia e stack equivalentes a ambientes produtivos reais.
+
+---
+
+## 1. Problema de Negócio
+
+Empresas de construção civil perdem receita operacional em obras entregues fora do prazo — entre multas contratuais, replanejamento forçado e desgaste com clientes.
+
+O problema não era falta de dados. Era falta de uso analítico dos dados existentes.
+
+**Pergunta central:**
+> Quais obras apresentam maior risco de atraso e onde devemos agir antes que o impacto financeiro ocorra?
+
+---
+
+Produto Final (Em Produção)
+
+🖥️ Bot do Telegram
+
+Seleção de idioma (EN/PT)
+
+Seleção da fonte de dados (CSV local ou Supabase)
+
+Consulta por ID de construção
+
+Saída:
+
+Situação de risco
+
+Gráfico explicativo
+
+Relatório corporativo em PDF
+
+
+
+📊 Simulador Streamlit
+
+Interface amigável para executivos
+
+Avaliação rápida de riscos
+
+Ferramenta de apoio à decisão
+
+- Coloque um link para executar o Telegram
+
+- Coloque um link para executar o Streamlit
+
+
+
+
+
+## 2. Contexto
+
+A operação envolve variáveis que impactam diretamente o prazo de entrega:
+
+- Condições climáticas da região da obra
+- Tipo e qualidade do solo
+- Rating histórico de fornecedores
+- Cronograma e complexidade das etapas da obra
+
+Os dados existiam, mas as decisões eram tomadas de forma reativa — apenas após o atraso já ter ocorrido.
+
+---
+
+## 3. Premissas da Análise
+
+- Dados sintéticos gerados com distribuições realistas do setor de construção civil
+- A variável-alvo é o número de dias de atraso (problema de regressão)
+- Fornecedores com rating abaixo de 3.0 foram classificados como alto risco
+- Período simulado: 24 meses de histórico operacional
+- A análise foca em identificação de padrões operacionais, não em causalidade estatística
+
+---
+
+## 4. Estratégia da Solução
+
+### Pipeline Analítico
+
+| Etapa | Descrição |
+|---|---|
+| 1. Problema de negócio | Entendimento do custo real de cada dia de atraso |
+| 2. Arquitetura de dados | Organização em camadas: raw → analytics → products |
+| 3. Limpeza e tratamento | Inconsistências em clima, solo e fornecedores |
+| 4. EDA | Validação de hipóteses sobre causas de atraso |
+| 5. Engenharia de atributos | Criação de índice de risco composto |
+| 6. Treinamento do modelo | RandomForestRegressor com validação cruzada |
+| 7. Avaliação | Técnica (MAE, R²) + impacto financeiro em R$ |
+| 8. Deploy | Bot no Telegram + Simulador Streamlit em produção |
+
+### Decisões Técnicas
+
+| Decisão | Escolha | Alternativa Avaliada | Motivo |
+|---|---|---|---|
+| Algoritmo | Random Forest | XGBoost | Melhor interpretabilidade para stakeholders não técnicos |
+| Banco de dados | Supabase | PostgreSQL local | Deploy gratuito com API REST nativa |
+| Entrega ao usuário | Telegram Bot + Streamlit | Dashboard BI | Acessibilidade sem login para gestores de obra |
+| Cloud | Render | AWS Lambda | Custo zero para o escopo do projeto |
+
+---
+
+## 5. Limpeza e Preparação dos Dados
+
+- Imputação pela mediana em variáveis climáticas com valores ausentes
+- Remoção de outliers extremos em dias de atraso (> 3 desvios padrão)
+- One-Hot Encoding para variáveis categóricas (tipo de solo, condição climática)
+- StandardScaler aplicado às variáveis numéricas contínuas
+- Criação de feature composta: índice de risco por fornecedor × condição climática
+
+---
+
+## 6. Análise Exploratória — Principais Insights
+
+A EDA foi orientada à validação de hipóteses de negócio, não apenas à visualização de dados.
+
+| Hipótese | Resultado |
+|---|---|
+| Clima é a principal causa de atraso? | ❌ Falsa. Rating do fornecedor tem impacto ~3x maior em etapas de acabamento |
+| Fornecedores com baixo rating atrasam mesmo em bom clima? | ✅ Confirmada |
+| Obras de maior orçamento têm mais risco? | ✅ Obras acima de R$2M apresentam maior sensibilidade a atrasos acumulados |
+| Clima é causa raiz isolada? | ❌ Atua como fator agravante, raramente como causa principal |
+
+**Ação recomendada pelo modelo:**
+Priorizar renegociação ou substituição de fornecedores com rating abaixo de 3.0 antes de qualquer intervenção relacionada a clima.
+
+---
+
+## 7. Performance do Modelo
+
+**Algoritmo:** `RandomForestRegressor` — scikit-learn
+
+| Métrica | Baseline (média histórica) | Modelo | Variação |
+|---|---|---|---|
+| MAE | 12 dias | 4,97 dias | -59% |
+| RMSE | — | 6,3 dias | — |
+| R² | — | 0,41 | — |
+
+**Sobre o R² = 0,41:**
+Em cenários de engenharia civil, variáveis externas não controladas — clima, cadeia de fornecedores, decisões humanas — são inerentes ao problema. R² acima de 0,4 é resultado consistente nesse contexto. A métrica de negócio relevante é o MAE inferior a 5 dias.
+
+---
+
+## 8. Impacto Financeiro (Business Performance)
+
+> Cada dia de atraso representa aproximadamente R$ 1.380 em multas contratuais (custo médio estimado para o porte simulado).
+
+| Indicador | Resultado |
+|---|---|
+| Redução de incerteza na previsão | ~60% |
+| Risco financeiro residual por obra (MAE × custo/dia) | ≈ R$ 6.860 |
+| Economia potencial estimada | ≈ R$ 248.400/ano |
+| Tipo de decisão gerada | Preventiva — antes do impacto ocorrer |
+
+O foco do projeto não é apenas prever atrasos. É permitir que a empresa aja antes que o custo se materialize.
+
+---
+
+## 9. Arquitetura em Produção
+
+```
+Supabase (banco de dados em camadas)
+├── raw
+│   ├── atividades_obra
+│   ├── fornecedores
+│   └── clima
+├── analytics
+│   └── dashboard_obras       # tabela fato consolidada
+└── products
+    └── base_consulta_bot     # camada de consumo desacoplada
+
+Bot Telegram (hospedado no Render)
+    └── Consulta por ID da obra
+    └── Retorna: status de risco + gráfico + relatório PDF corporativo
+
+Streamlit (simulador executivo)
+    └── Interface para análise rápida de risco
+    └── Apoio à decisão gerencial sem necessidade de perfil técnico
+```
+
+**Benefícios da arquitetura em camadas:**
+- Governança e rastreabilidade dos dados
+- Consumo desacoplado da origem
+- Escalabilidade para novos produtos de dados
+
+---
+
+## 10. Tecnologias Utilizadas
+
+**Dados e Machine Learning**
+`Python` | `Pandas` | `NumPy` | `Scikit-learn` | `SciPy` | `Matplotlib` | `Seaborn`
+
+**Infraestrutura e Deploy**
+`Supabase` | `Render` | `Streamlit` | `Docker`
+
+**Entrega ao Usuário**
+`Telegram Bot API` | `FPDF` (relatório PDF)
+
+---
+
+## 11. Como Executar o Projeto
+
+**Pré-requisitos**
+- Python 3.10+
+- Conta no Telegram (para o bot)
+- Supabase configurado (opcional — o projeto também roda com CSV local)
+
+**Instalação**
+```bash
+git clone https://github.com/Santosdevbjj/analiseRiscosAtrasoObras
+cd analiseRiscosAtrasoObras
+pip install -r requirements.txt
+```
+
+**Execução do Bot**
+```bash
+python scripts/telegram_bot.py
+```
+
+**Execução do Simulador**
+```bash
+streamlit run app.py
+```
+
+**Exemplo de uso no Bot**
+1. Inicie com `/start`
+2. Selecione idioma e fonte de dados (CSV ou Supabase)
+3. Digite o ID da obra (ex: `CCBJJ-100`)
+4. Receba: status de risco, gráfico explicativo e relatório PDF
+
+---
+
+## 12. Aprendizados
+
+**O que foi mais difícil:**
+Traduzir o MAE técnico em impacto financeiro real. Não é trivial conectar "erro médio de 5 dias" com "economia de R$ 248k/ano" de forma defensável para uma diretoria.
+
+**O que faria diferente:**
+Estruturaria o problema de negócio antes de abrir qualquer notebook. Comecei pelo dado e precisei voltar ao problema — o que custou tempo e retrabalho.
+
+**Principal aprendizado:**
+A entrega mais valorizada não foi o modelo. Foi o bot e o simulador — porque tornaram o resultado acessível para quem toma a decisão, sem depender de perfil técnico.
+
+---
+
+## 13. Próximos Passos
+
+- [ ] Integração com API climática real (OpenWeather)
+- [ ] Monitoramento de data drift com Evidently AI
+- [ ] Logging de predições para retreinamento contínuo
+- [ ] Modelo de classificação de risco (alto / médio / baixo) para alertas mais simples
+- [ ] Expansão do cálculo de impacto financeiro por tipo de contrato
+
+---
+
+## Autor
+
+**Sergio Santos**
+Cientista de Dados | Ambientes Críticos e Governança de Dados
+
+---
+**Contato:**
+
+[![Portfólio Sérgio Santos](https://img.shields.io/badge/Portfólio-Sérgio_Santos-111827?style=for-the-badge&logo=githubpages&logoColor=00eaff)](https://portfoliosantossergio.vercel.app)
+
+[![LinkedIn Sérgio Santos](https://img.shields.io/badge/LinkedIn-Sérgio_Santos-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/santossergioluiz)
+
+--- 
+
+
+
+
+
+
+Arquivos que compõem o repositório do projeto, e devem ser utilizados para montar
+O readme.md
+
+requirements.txt
+
+TEM ESSE CONTEÚDO:
+
+streamlit==1.31.0
+pandas==2.2.0
+numpy==1.26.4
+scikit-learn==1.5.2
+joblib==1.3.2
+plotly==5.18.0
+matplotlib==3.8.3
+seaborn==0.13.2
+sqlalchemy
+psycopg2-binary
+python-dotenv 
+
+
+
+
+
+
+
+requirements_api.txt
+
+TEM ESSE CONTEÚDO:
+
+# --- Build Tools ---
+wheel==0.45.1
+setuptools==75.6.0
+
+# --- FastAPI ---
+fastapi==0.115.0
+uvicorn==0.30.0
+python-multipart==0.0.9
+
+# Telegram Bot
+python-telegram-bot==21.0
+
+# --- Banco de dados e ORM ---
+sqlalchemy>=2.0.29   # corrigido para suportar Python 3.13
+pg8000==1.30.2
+alembic==1.13.1
+psycopg2-binary==2.9.9   # opcional, útil em migrações
+
+# --- Ciência de Dados / ML ---
+pandas==2.2.3
+numpy==1.26.4
+scikit-learn==1.6.0
+joblib==1.4.2
+
+# --- Visualização ---
+matplotlib>=3.9.0
+seaborn>=0.13.0
+plotly>=5.24.0
+
+# Geração de PDFs
+reportlab==4.0.7
+
+# Utilitários
+pytz==2023.3.post1
+python-dotenv==1.0.0 
+
+
+
+
+
+
+
+requirements_streamlit.txt
+
+TEM ESSE CONTEÚDO:
+
+streamlit>=1.35.0
+pandas>=2.1.0
+numpy<2.0.0
+scikit-learn==1.5.1
+joblib>=1.3.0
+plotly>=5.20.0 
+
+
+
+
+
+
+runtime.txt
+
+TEM ESSE CONTEÚDO:
+
+python-3.13.4
+
+
+
+
+
+
+Procfile
+
+TEM ESSE CONTEÚDO:
+web: python scripts/telegram_bot.py
+
+
+
+
+
+
+
+
+.env
+
+TEM ESSE CONTEÚDO:
+
+postgresql://postgres:WhiskeyG7!pX9@zQ4#tLm2$YankeeZ!q7T@x9L#b2M$4pCharlie,@db.fuduifneevutjguxnijo.supabase.co:5432/postgres 
+
+
+
+
+
+
+
+
+scripts/app.py
+
+TEM ESSE CONTEÚDO 
+
+import streamlit as st
+import pandas as pd
+import joblib
+import plotly.express as px
+import numpy as np
+import os
+
+# 1. CONFIGURAÇÃO DA PÁGINA (Padrão Executivo)
+st.set_page_config(
+    page_title="CCbjj - Engenharia", 
+    page_icon="🏗️", 
+    layout="wide"
+)
+
+# Estilização CSS para um visual profissional
+st.markdown("""
+    <style>
+    .main { background-color: #f8f9fa; }
+    div[data-testid="metric-container"] {
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .stMetric label { font-weight: bold; color: #1B5E20; }
+    </style>
+    """, unsafe_allow_html=True)
+
+# 2. CARREGAMENTO DE ASSETS (Otimizado com caminhos absolutos)
+@st.cache_resource
+def load_assets():
+    # Define a base do projeto para evitar erros de caminho no Streamlit Cloud
+    base_path = os.getcwd()
+    m_path = os.path.join(base_path, "models", "pipeline_random_forest.pkl")
+    f_path = os.path.join(base_path, "models", "features_metadata.joblib")
+    d_path = os.path.join(base_path, "data", "processed", "df_mestre_consolidado.csv.gz")
+    
+    pipeline = joblib.load(m_path) if os.path.exists(m_path) else None
+    features = joblib.load(f_path) if os.path.exists(f_path) else None
+    
+    if os.path.exists(d_path):
+        df = pd.read_csv(d_path, compression='gzip')
+    else:
+        # Fallback para CSV comum se o GZ não existir
+        alt_path = d_path.replace(".gz", "")
+        df = pd.read_csv(alt_path) if os.path.exists(alt_path) else pd.DataFrame()
+        
+    return pipeline, features, df
+
+pipeline, features_order, df_base = load_assets()
+
+# --- INTERFACE LATERAL (PAINEL DE CONTROLE) ---
+with st.sidebar:
+    st.image("https://img.icons8.com/fluency/96/construction.png", width=80)
+    st.title("🕹️ Parâmetros da Obra")
+    st.markdown("Ajuste as variáveis para simulação em tempo real.")
+    
+    def get_options(col, default_list):
+        if not df_base.empty and col in df_base.columns:
+            opts = [str(x).title() for x in df_base[col].unique() if pd.notna(x)]
+            return sorted(opts)
+        return default_list
+
+    cidade_ui = st.selectbox("Localização", get_options('cidade', ['Recife', 'São Paulo']))
+    etapa_ui = st.selectbox("Etapa Construtiva", get_options('etapa', ['Fundação', 'Estrutura', 'Acabamento']))
+    solo_ui = st.selectbox("Geologia do Terreno", get_options('tipo_solo', ['Argiloso', 'Arenoso', 'Rochoso']))
+    material_ui = st.selectbox("Insumo Crítico", get_options('material', ['Cimento', 'Aço', 'Brita']))
+    
+    st.markdown("---")
+    val_chuva = st.slider("Previsão Pluviométrica (mm)", 0, 800, 150)
+    val_rating = st.select_slider("Rating de Confiança do Fornecedor", options=[1, 2, 3, 4, 5], value=3)
+
+# --- CORPO DO DASHBOARD ---
+st.title("🛡️ CCBJJ Engenharia & Inteligência de Risco 2.0")
+st.caption("Sistema Preditivo de Atrasos para Decisão de Diretoria e Logística")
+st.markdown("---")
+
+if pipeline is None or features_order is None:
+    st.error("🚨 **Atenção:** Ativos da IA não encontrados na pasta `/models`. Verifique o deploy no GitHub.")
+else:
+    try:
+        # Extração de Médias de Contexto do Banco de Dados
+        if not df_base.empty:
+            contexto = df_base[(df_base['cidade'] == cidade_ui.lower()) & (df_base['etapa'] == etapa_ui.lower())]
+            if not contexto.empty:
+                orcamento = contexto['orcamento_estimado'].mean()
+                complexidade = contexto['complexidade_obra'].mean()
+                risco_etapa = contexto['risco_etapa'].mean()
+                taxa_forn = contexto['taxa_insucesso_fornecedor'].mean()
+            else:
+                orcamento, complexidade, risco_etapa, taxa_forn = 12000000.0, 15.0, 5.0, 0.12
+        else:
+            orcamento, complexidade, risco_etapa, taxa_forn = 10000000.0, 10.0, 4.0, 0.10
+
+        # Montagem do DataFrame de Predição (Contrato com o Modelo)
+        input_dict = {
+            'orcamento_estimado': float(orcamento),
+            'rating_confiabilidade': float(val_rating),
+            'taxa_insucesso_fornecedor': float(taxa_forn),
+            'complexidade_obra': float(complexidade),
+            'risco_etapa': float(risco_etapa),
+            'nivel_chuva': float(val_chuva),
+            'tipo_solo': solo_ui.lower(),
+            'material': material_ui.lower(),
+            'cidade': cidade_ui.lower(),
+            'etapa': etapa_ui.lower()
+        }
+        
+        input_df = pd.DataFrame([input_dict])
+        # Alinha colunas e preenche faltantes (dummy variables do modelo)
+        for col in features_order:
+            if col not in input_df.columns:
+                input_df[col] = 0
+        input_df = input_df[features_order]
+
+        # Execução da Predição
+        pred_dias = float(pipeline.predict(input_df)[0])
+        pred_dias = max(0, pred_dias)
+
+        # MÉTRICAS PRINCIPAIS
+        m1, m2, m3 = st.columns(3)
+        with m1:
+            st.metric("Atraso Estimado", f"{pred_dias:.1f} Dias")
+        with m2:
+            status = "🔴 Crítico" if pred_dias > 10 else "🟡 Alerta" if pred_dias > 6 else "🟢 Estável"
+            st.metric("Status do Risco", status)
+        with m3:
+            # Estimativa de custo de atraso: R$ 5.000,00 por dia (exemplo)
+            st.metric("Custo de Oportunidade", f"R$ {pred_dias * 5000:,.2f}")
+
+        st.markdown("### 📈 Análises de Sensibilidade")
+        col_a, col_b = st.columns(2)
+
+        with col_a:
+            st.subheader("Simulação de Chuva vs. Atraso")
+            faixa_chuva = np.linspace(0, 800, 20)
+            # Simulação rápida criando cópias do dataframe
+            sim_chuva = pd.concat([input_df.assign(nivel_chuva=c) for c in faixa_chuva])
+            preds_chuva = pipeline.predict(sim_chuva)
+            
+            fig_chuva = px.line(x=faixa_chuva, y=preds_chuva, 
+                               labels={'x': 'Nível de Chuva (mm)', 'y': 'Dias de Atraso'},
+                               markers=True, template="plotly_white")
+            fig_chuva.update_traces(line_color='#2E7D32')
+            st.plotly_chart(fig_chuva, use_container_width=True)
+
+        with col_b:
+            st.subheader("Impacto por Geologia")
+            tipos_solo = ['arenoso', 'argiloso', 'rochoso', 'siltoso']
+            # Simulação por categoria de solo
+            sim_solo = pd.concat([input_df.assign(tipo_solo=s) for s in tipos_solo])
+            preds_solo = pipeline.predict(sim_solo)
+            
+            fig_solo = px.bar(x=[s.title() for s in tipos_solo], y=preds_solo,
+                             labels={'x': 'Geologia', 'y': 'Atraso Estimado'},
+                             color=preds_solo, color_continuous_scale='Greens')
+            st.plotly_chart(fig_solo, use_container_width=True)
+
+        st.success(f"📌 **Insight Técnico:** A combinação de solo **{solo_ui}** com previsão de **{val_chuva}mm** de chuva indica atenção especial na etapa de **{etapa_ui}**.")
+
+    except Exception as e:
+        st.error(f"Erro no processamento da IA: {e}")
+
+st.markdown("<br><hr><center><b>CCBJJ Engenharia & Inteligência de Risco v2.0</b> | Inteligência Artificial Aplicada à Construção Civil | Desenvolvido por Sergio Luiz Santos</center>", unsafe_allow_html=True) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+scripts/database.py
+
+TEM ESSE CONTEÚDO 
+
+
+import os
+import logging
+import sqlite3
+from pathlib import Path
+from datetime import datetime, timezone
+from sqlalchemy import create_engine, text
+from sqlalchemy.exc import SQLAlchemyError
+
+# Logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Infra
+DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL:
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://")
+    # Em SQLAlchemy 2.x, pool_size/max_overflow podem ser ignorados dependendo do driver;
+    # mantenha se necessário para seu driver específico.
+    engine = create_engine(DATABASE_URL, pool_size=5, max_overflow=10, future=True)
+    IS_POSTGRES = True
+else:
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    DB_PATH = BASE_DIR / "users.db"
+    IS_POSTGRES = False
+
+def init_db():
+    """Cria tabela users com timestamps."""
+    query_users = """
+        CREATE TABLE IF NOT EXISTS users (
+            user_id BIGINT PRIMARY KEY,
+            language TEXT DEFAULT 'pt',
+            storage_mode TEXT DEFAULT 'SUPABASE',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    """
+    try:
+        if IS_POSTGRES:
+            # Transacional
+            with engine.begin() as conn:
+                conn.execute(text(query_users))
+            logging.info("DB Postgres inicializado com sucesso.")
+        else:
+            # SQLite com placeholders nomeados
+            with sqlite3.connect(DB_PATH) as conn:
+                conn.execute(query_users)
+            logging.info("DB SQLite inicializado com sucesso.")
+    except Exception as e:
+        logging.exception("Erro crítico na inicialização do DB")
+
+def _now_utc():
+    return datetime.now(timezone.utc)
+
+def set_language(user_id: int, lang: str):
+    """Upsert de idioma com updated_at (UTC)."""
+    query = """
+        INSERT INTO users (user_id, language, updated_at)
+        VALUES (:id, :lang, :now)
+        ON CONFLICT (user_id) DO UPDATE
+        SET language = EXCLUDED.language,
+            updated_at = EXCLUDED.updated_at;
+    """
+    params = {"id": user_id, "lang": lang, "now": _now_utc()}
+    _execute_query(query, params)
+
+def get_language(user_id: int) -> str:
+    """Retorna idioma ou 'pt'."""
+    query = "SELECT language FROM users WHERE user_id = :id"
+    try:
+        rows = _execute_query(query, {"id": user_id}, fetch=True)
+        return rows[0][0] if rows else "pt"
+    except Exception:
+        logging.exception(f"Falha ao obter idioma para {user_id}")
+        return "pt"
+
+def set_storage_mode(user_id: int, mode: str):
+    """Upsert de modo com updated_at (UTC)."""
+    query = """
+        INSERT INTO users (user_id, storage_mode, updated_at)
+        VALUES (:id, :mode, :now)
+        ON CONFLICT (user_id) DO UPDATE
+        SET storage_mode = EXCLUDED.storage_mode,
+            updated_at = EXCLUDED.updated_at;
+    """
+    params = {"id": user_id, "mode": mode, "now": _now_utc()}
+    _execute_query(query, params)
+
+def get_storage_mode(user_id: int) -> str:
+    """Retorna modo ou 'SUPABASE'."""
+    query = "SELECT storage_mode FROM users WHERE user_id = :id"
+    try:
+        rows = _execute_query(query, {"id": user_id}, fetch=True)
+        return rows[0][0] if rows else "SUPABASE"
+    except Exception:
+        logging.exception(f"Falha ao obter modo para {user_id}")
+        return "SUPABASE"
+
+def _execute_query(query: str, params: dict, fetch: bool = False):
+    """Execução abstrata para Postgres/SQLite com parametrização correta."""
+    if IS_POSTGRES:
+        try:
+            if fetch:
+                with engine.connect() as conn:
+                    result = conn.execute(text(query), params)
+                    return result.fetchall()
+            else:
+                # Usa transação para DML
+                with engine.begin() as conn:
+                    conn.execute(text(query), params)
+        except SQLAlchemyError:
+            logging.exception("Erro SQLAlchemy")
+            raise
+    else:
+        try:
+            with sqlite3.connect(DB_PATH) as conn:
+                # Usa placeholders nomeados (:id, :lang) diretamente
+                cur = conn.execute(query, params)
+                if fetch:
+                    return cur.fetchall()
+                conn.commit()
+        except sqlite3.Error:
+            logging.exception("Erro SQLite")
+            raise
+
+# Inicialização
+init_db() 
+
+
+
+
+
+
+
+
+
+
+
+
+scripts/gerar_dados.py
+
+TEM ESSE CONTEÚDO 
+
+
+
+import pandas as pd
+import numpy as np
+from faker import Faker
+import random
+import os
+
+# Inicialização
+fake = Faker('pt_BR')
+np.random.seed(42)
+random.seed(42)
+
+# Garantir existência das pastas
+os.makedirs('data/raw', exist_ok=True)
+
+# Configurações do Ecossistema CCbjj
+NUM_OBRAS = 200  # Aumentado levemente para melhorar a convergência do modelo
+NUM_FORNECEDORES = 40
+
+# 1. Definições de Domínio (Padronizado em Minúsculo)
+cidades = ['recife', 'são paulo', 'manaus', 'rio de janeiro', 'curitiba', 'salvador', 'fortaleza', 'belo horizonte', 'belém', 'porto alegre']
+tipos_solo = ['arenoso', 'argiloso', 'rochoso', 'siltoso']
+etapas_materiais = {
+    'fundação': ['cimento', 'brita', 'areia', 'madeira'],
+    'estrutura': ['aço', 'madeira', 'cimento'],
+    'acabamento': ['piso', 'tintas', 'revestimento', 'aço']
+}
+
+# 2. Gerar Fornecedores
+fornecedores = []
+for i in range(NUM_FORNECEDORES):
+    fornecedores.append({
+        'id_fornecedor': f'FORN-{i+1}', # Padronizado minúsculo no nome da coluna
+        'nome_fornecedor': fake.company(),
+        'rating_confiabilidade': round(random.uniform(1.0, 5.0), 1)
+    })
+df_fornecedores = pd.DataFrame(fornecedores)
+
+# 3. Gerar Obras
+obras = []
+for i in range(NUM_OBRAS):
+    orcamento = round(random.uniform(5_000_000, 30_000_000), 2)
+    obras.append({
+        'id_obra': f'CCBJJ-{100+i}',
+        'nome_empreendimento': f'Residencial {fake.street_name()}'.title(),
+        'cidade': random.choice(cidades),
+        'tipo_solo': random.choice(tipos_solo),
+        'orcamento_estimado': orcamento,
+        'complexidade_obra': np.log1p(orcamento), 
+        'data_inicio_prevista': fake.date_between(start_date='-1y', end_date='today')
+    })
+df_obras = pd.DataFrame(obras)
+
+# 4. Gerar Clima, Atividades e Suprimentos
+clima, atividades, base_consulta = [], [], []
+
+
+
+for idx, obra in df_obras.iterrows():
+    # Nível de chuva acumulado (Feature forte para o modelo)
+    chuva_acumulada = random.randint(30, 750)
+    clima.append({'id_obra': obra['id_obra'], 'chuva_mm': chuva_acumulada})
+    
+    for etapa, materiais in etapas_materiais.items():
+        id_atv = f"{obra['id_obra']}_{etapa}"
+        
+        # Seleção de Fornecedor
+        forn = df_fornecedores.sample(1).iloc[0]
+        taxa_insucesso_base = round(random.uniform(0.05, 0.45), 2)
+        
+        # Lógica de Atraso Correlacionada (Regras de Engenharia)
+        risco_base = 3.0
+        if etapa == 'fundação' and obra['tipo_solo'] == 'argiloso': risco_base += 5.5
+        if chuva_acumulada > 400: risco_base += 4.0
+        if forn['rating_confiabilidade'] < 2.5: risco_base += 6.0
+        
+        # Variável Alvo: dias_atraso
+        dias_atraso = round(max(0, risco_base + random.normalvariate(2, 2.5)), 1)
+        
+        atividades.append({
+            'id_atividade': id_atv,
+            'id_obra': obra['id_obra'],
+            'id_fornecedor': forn['id_fornecedor'],
+            'etapa': etapa,
+            'dias_atraso': dias_atraso,
+            'status': 'atrasado' if dias_atraso > 5 else 'no prazo'
+        })
+        
+        # Base Consolidada (O que o App e o Bot lerão)
+        base_consulta.append({
+            'id_obra': obra['id_obra'],
+            'orcamento_estimado': obra['orcamento_estimado'],
+            'rating_confiabilidade': forn['rating_confiabilidade'],
+            'taxa_insucesso_fornecedor': taxa_insucesso_base,
+            'complexidade_obra': obra['complexidade_obra'],
+            'risco_etapa': dias_atraso, # Target real
+            'nivel_chuva': chuva_acumulada,
+            'tipo_solo': obra['tipo_solo'],
+            'material': random.choice(materiais),
+            'cidade': obra['cidade'],
+            'etapa': etapa
+        })
+
+# 5. Salvamento Padronizado
+pd.DataFrame(clima).to_csv('data/raw/climaccbjj.csv', index=False)
+pd.DataFrame(atividades).to_csv('data/raw/atividadesccbjj.csv', index=False)
+pd.DataFrame(base_consulta).to_csv('data/raw/base_consulta_botccbjj.csv', index=False)
+df_fornecedores.to_csv('data/raw/fornecedoresccbjj.csv', index=False)
+df_obras.to_csv('data/raw/obrasccbjj.csv', index=False)
+
+print(f"✅ Sucesso! Geradas {NUM_OBRAS} obras com integridade referencial.")
+print(f"📂 Arquivos salvos em 'data/raw/' prontos para o Pipeline de IA.") 
+
+
+
+
+
+
+
+
+
+
+
+
+scripts/handlers.py
+
+TEM ESSE CONTEÚDO 
+
+
+import logging
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.constants import ParseMode
+from telegram.ext import ContextTypes
+
+import database
+from i18n import TEXTS
+
+logger = logging.getLogger(__name__)
+
+def build_language_keyboard() -> InlineKeyboardMarkup:
+    """Teclado dinâmico de idiomas baseado em TEXTS."""
+    lang_labels = {
+        "pt": "🇧🇷 Português",
+        "en": "🇺🇸 English",
+    }
+    buttons = [
+        InlineKeyboardButton(lang_labels[code], callback_data=f"lang_{code}")
+        for code in lang_labels.keys() if code in TEXTS
+    ]
+    rows = [buttons[i:i + 2] for i in range(0, len(buttons), 2)]
+    return InlineKeyboardMarkup(rows)
+
+def build_infra_keyboard() -> InlineKeyboardMarkup:
+    """Teclado para seleção de modo (CSV/Supabase)."""
+    keyboard = [[
+        InlineKeyboardButton("📂 Modo CSV Local", callback_data='set_CSV'),
+        InlineKeyboardButton("☁️ Modo Supabase Cloud", callback_data='set_DB'),
+    ]]
+    return InlineKeyboardMarkup(keyboard)
+
+async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Boas-vindas com seleção de idioma. Usa effective_message para evitar None.
+    """
+    user = update.effective_user
+    logger.info(f"/start acionado por {user.id} ({user.first_name})")
+    msg = update.effective_message
+
+    # Texto centralizado no i18n, com fallback
+    welcome_text = TEXTS.get("pt", {}).get("start") + "\n\n" + TEXTS.get("en", {}).get("start", "")
+    await msg.reply_text(
+        welcome_text,
+        reply_markup=build_language_keyboard(),
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+async def language_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Reapresenta a escolha de idioma, útil para /language.
+    """
+    user = update.effective_user
+    logger.info(f"/language acionado por {user.id}")
+    msg = update.effective_message
+
+    text_pt = TEXTS.get("pt", {}).get("start", "Selecione o idioma:")
+    text_en = TEXTS.get("en", {}).get("start", "Select your language:")
+    await msg.reply_text(
+        f"{text_pt}\n\n{text_en}",
+        reply_markup=build_language_keyboard(),
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Ajuda com fallback seguro.
+    """
+    user_id = update.effective_user.id
+    logger.info(f"/help acionado por {user_id}")
+    msg = update.effective_message
+
+    lang = database.get_language(user_id)
+    help_content = TEXTS.get(lang, {}).get("help") or TEXTS.get("pt", {}).get("help", "⚠️ Help not available. / Ajuda não disponível.")
+    await msg.reply_text(help_content, parse_mode=ParseMode.MARKDOWN)
+
+async def settings_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Reconfigura a infraestrutura (CSV/Supabase) sem importação circular.
+    """
+    user_id = update.effective_user.id
+    lang = database.get_language(user_id)
+    logger.info(f"/settings acionado por {user_id}")
+    msg = update.effective_message
+
+    text = TEXTS.get(lang, {}).get("infra_select", "Selecione o modo de dados / Select data mode:")
+    await msg.reply_text(
+        f"⚙️ **{text}**",
+        reply_markup=build_infra_keyboard(),
+        parse_mode=ParseMode.MARKDOWN,
+    ) 
+
+
+
+
+
+
+
+
+
+
+
+
+scripts/i18n.py
+
+TEM ESSE CONTEÚDO 
+
+
+"""
+Módulo de Internacionalização (i18n) - CCBJJ Engenharia
+Versão: 2.0.0
+Última atualização: 2026-01-06
+"""
+
+import logging
+logger = logging.getLogger(__name__)
+
+TEXTS = {
+    "pt": {
+        "start": "🏗️ **CCBJJ ENGENHARIA & AI**\n\nSelecione o idioma para começar:",
+        "welcome": "🏗️ **CCBJJ ENGENHARIA & AI**\n\nSelecione o idioma para começar:",
+        "language_changed": "✅ Idioma alterado para Português.",
+        "language_changed_full": "✅ Idioma alterado para Português.\n\n{infra_select}",
+        "infra_select": "Selecione o modo de infraestrutura de dados:",
+        "setup_complete": (
+            "✅ **Configuração Concluída!**\n\n🌐 Idioma: `PT`\n🔌 Fonte: `{modo}`\n\n"
+            "Digite o ID da obra para análise (ex: CCBJJ-100)."
+        ),
+        "mode_changed_full": (
+            "✅ Modo definido para `{modo}`.\nAgora digite o ID da obra para análise (ex: CCBJJ-100)."
+        ),
+
+        "help": (
+            "❓ **Central de Ajuda CCBJJ**\n\n"
+            "1. Envie o **ID da Obra** para gerar relatórios preditivos.\n"
+            "2. Use /settings para trocar entre CSV e Supabase.\n"
+            "3. Use /language para alterar o idioma.\n\n"
+            "O sistema utiliza IA para prever atrasos com base no histórico logístico."
+        ),
+
+        "processing": "🔍 **Processando Inteligência de Dados...**",
+        "not_found": "❌ Obra `{id_obra}` não localizada na base `{modo}`.",
+
+        "report_header": "🏗️ **ANÁLISE PREDITIVA CCBJJ**",
+        "report_impact": "⏳ **Impacto Projetado:** `{risco:.2f} dias`",
+        "report_status": "🚦 **Risco:** {status}",
+        "report_note": (
+            "📝 **Parecer Técnico:**\nO modelo detectou variações baseadas em tendências históricas. "
+            "A classificação {status} sugere revisão imediata dos marcos críticos."
+        ),
+        "sending_files": "_Gerando gráficos e PDF oficial..._",
+
+        "pdf_title": "RELATÓRIO TÉCNICO DE INTELIGÊNCIA PREDITIVA",
+        "pdf_section_1": "1. DIAGNÓSTICO DA UNIDADE",
+        "pdf_section_2": "2. ANÁLISE DO MODELO PREDITIVO (ML)",
+        "pdf_footer": "Confidencial - CCBJJ Engenharia & Inteligência",
+
+        "chart_title": "Impacto Previsto no Cronograma",
+        "chart_legend": "Verde: Normal | Amarelo: Alerta | Vermelho: Crítico"
+    },
+
+    "en": {
+        "start": "🏗️ **CCBJJ ENGINEERING & AI**\n\nSelect your language to begin:",
+        "welcome": "🏗️ **CCBJJ ENGINEERING & AI**\n\nSelect your language to begin:",
+        "language_changed": "✅ Language changed to English.",
+        "language_changed_full": "✅ Language changed to English.\n\n{infra_select}",
+        "infra_select": "Select the data infrastructure mode:",
+        "setup_complete": (
+            "✅ **Setup Complete!**\n\n🌐 Language: `EN`\n🔌 Source: `{modo}`\n\n"
+            "Send the Project ID for analysis (e.g., CCBJJ-100)."
+        ),
+        "mode_changed_full": (
+            "✅ Mode set to `{modo}`.\nNow send the Project ID for analysis (e.g., CCBJJ-100)."
+        ),
+
+        "help": (
+            "❓ **CCBJJ Help Center**\n\n"
+            "1. Send the **Project ID** to generate predictive reports.\n"
+            "2. Use /settings to toggle between CSV and Supabase.\n"
+            "3. Use /language to change language.\n\n"
+            "The system uses AI to predict delays based on logistics history."
+        ),
+
+        "processing": "🔍 **Processing Data Intelligence...**",
+        "not_found": "❌ Project `{id_obra}` not found in `{modo}` source.",
+
+        "report_header": "🏗️ **CCBJJ PREDICTIVE ANALYSIS**",
+        "report_impact": "⏳ **Projected Impact:** `{risco:.2f} days`",
+        "report_status": "🚦 **Risk Status:** {status}",
+        "report_note": (
+            "📝 **Technical Note:**\nThe model identified variations based on historical trends. "
+            "The {status} status suggests an immediate review of critical milestones."
+        ),
+        "sending_files": "_Generating official charts and PDF..._",
+
+        "pdf_title": "PREDICTIVE INTELLIGENCE TECHNICAL REPORT",
+        "pdf_section_1": "1. UNIT DIAGNOSTICS",
+        "pdf_section_2": "2. PREDICTIVE MODEL ANALYSIS (ML)",
+        "pdf_footer": "Confidential - CCBJJ Engineering & Data Intelligence",
+
+        "chart_title": "Predicted Schedule Impact",
+        "chart_legend": "Green: Normal | Yellow: Warning | Red: Critical"
+    }
+}
+
+def get_text(lang: str, key: str, **kwargs) -> str:
+    """
+    Retorna a mensagem traduzida com suporte a placeholders e fallback seguro.
+    Uso: get_text("pt", "not_found", id_obra="CCBJJ-100", modo="CSV")
+    """
+    language_pack = TEXTS.get(lang, TEXTS.get("en", TEXTS["pt"]))
+    message = language_pack.get(key, f"⚠️ Missing translation for: {key}")
+    try:
+        return message.format(**kwargs) if kwargs else message
+    except KeyError as e:
+        logger.warning(f"Missing placeholder {e} for key '{key}' (lang='{lang}')")
+        return f"{message} (Error: missing placeholder {e})" 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+scripts/run_all.py
+
+TEM ESSE CONTEÚDO 
+
+
+
+import os
+import subprocess
+import sys
+import time
+from tqdm import tqdm
+
+# Configuração de Estilo
+BANNER = """
+============================================================
+       🏗️  CCBJJ - SISTEMA INTEGRADO DE ANTECIPAÇÃO DE RISCO
+============================================================
+Status: Iniciando Pipeline MLOps...
+"""
+
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def executar_modulo(nome_modulo, script_path):
+    """Executa um script python e retorna se houve sucesso."""
+    try:
+        # shell=True para compatibilidade entre Windows/Linux
+        resultado = subprocess.run([sys.executable, script_path], 
+                                   capture_output=True, 
+                                   text=True)
+        
+        if resultado.returncode == 0:
+            return True, None
+        else:
+            return False, resultado.stderr
+    except Exception as e:
+        return False, str(e)
+
+def main():
+    limpar_tela()
+    print(BANNER)
+
+    # Definição dos estágios do projeto
+    etapas = [
+        {"nome": "Geração de Dados Brutos", "script": "scripts/gerar_dados.py"},
+        {"nome": "Consolidação e Limpeza (Célula 18)", "script": "scripts/consolidar_base.py"},
+        {"nome": "Treinamento da IA (Random Forest)", "script": "scripts/train_model.py"},
+        {"nome": "BI e Relatórios Executivos (Célula 19)", "script": "scripts/gerar_relatorios.py"}
+    ]
+
+    
+
+    # Barra de Progresso Visual
+    pbar = tqdm(total=len(etapas), desc="Progresso Geral", bar_format="{l_bar}{bar:30}{r_bar}")
+
+    erros = []
+
+    for etapa in etapas:
+        pbar.set_description(f"Processando: {etapa['nome']}")
+        
+        sucesso, erro_msg = executar_modulo(etapa['nome'], etapa['script'])
+        
+        if sucesso:
+            pbar.update(1)
+            time.sleep(0.5) # Pausa dramática para leitura visual
+        else:
+            erros.append(f"Erro em [{etapa['nome']}]: {erro_msg}")
+            break # Interrompe se houver erro crítico
+
+    pbar.close()
+
+    print("\n" + "="*60)
+    if not erros:
+        print("✅ PIPELINE FINALIZADO COM SUCESSO!")
+        print("-" * 60)
+        print("📂 RESULTADOS DISPONÍVEIS EM:")
+        print("   - Relatórios: /reports/relatorio_top20.csv")
+        print("   - Inteligência: /models/pipeline_random_forest.pkl")
+        print("   - Dashboard: /reports/charts/status_portfolio.html")
+        print("-" * 60)
+        print("\n💡 Para iniciar a interface visual, execute:")
+        print("   streamlit run scripts/app.py")
+    else:
+        print("❌ O PIPELINE FALHOU EM UMA ETAPA CRÍTICA:")
+        for e in erros:
+            print(f"\n{e}")
+    print("="*60 + "\n")
+
+if __name__ == "__main__":
+    main() 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+scripts/run_project.py
+
+TEM ESSE CONTEÚDO 
+
+
+import os
+import subprocess
+import sys
+import time
+
+# Configuração de cores para o terminal (opcional, para melhor leitura)
+GREEN = "\033[92m"
+BLUE = "\033[94m"
+YELLOW = "\033[93m"
+RED = "\033[91m"
+RESET = "\033[0m"
+
+def log(mensagem, cor=BLUE):
+    print(f"{cor}[{time.strftime('%H:%M:%S')}] {mensagem}{RESET}")
+
+def executar_passo(nome, script_path):
+    log(f"Iniciando: {nome}...", YELLOW)
+    
+    if not os.path.exists(script_path):
+        log(f"❌ ERRO: Arquivo {script_path} não encontrado.", RED)
+        return False
+
+    # Executa o script python como um processo separado
+    processo = subprocess.run([sys.executable, script_path], capture_output=True, text=True)
+
+    if processo.returncode == 0:
+        log(f"✅ {nome} concluído com sucesso.", GREEN)
+        return True
+    else:
+        log(f"⚠️ FALHA em {nome}:", RED)
+        print(f"\n--- LOG DE ERRO ---\n{processo.stderr}\n-------------------")
+        return False
+
+def main():
+    start_time = time.time()
+    
+    print("\n" + "="*60)
+    print("🏗️  SISTEMA INTEGRADO CCBJJ - INTELECTO DE ENGENHARIA")
+    print("="*60 + "\n")
+
+    # Ordem de execução do Pipeline
+    pipeline = [
+        ("Geração de Dados Sintéticos", "scripts/gerar_dados.py"),
+        ("Consolidação de Database (Célula 18)", "scripts/consolidar_base.py"),
+        ("Treinamento do Modelo de IA", "scripts/train_model.py"),
+        ("Geração de Relatórios e BI (Célula 19)", "scripts/gerar_relatorios.py")
+    ]
+
+    
+
+    sucessos = 0
+    for nome, script in pipeline:
+        if executar_passo(nome, script):
+            sucessos += 1
+        else:
+            log("🛑 Execução interrompida devido a erro crítico no pipeline.", RED)
+            break
+
+    total_time = time.time() - start_time
+    
+    print("\n" + "="*60)
+    if sucessos == len(pipeline):
+        log(f"🚀 PIPELINE FINALIZADO COM SUCESSO!", GREEN)
+        log(f"⏱️  Tempo total de processamento: {total_time:.2f} segundos", BLUE)
+        print("\n📂 Ativos disponíveis:")
+        print("   - Gráficos: reports/charts/")
+        print("   - Modelo IA: models/pipeline_random_forest.pkl")
+        print("   - Dashboard: Rode 'streamlit run scripts/app.py'")
+    else:
+        log("❌ Ocorreram erros durante a execução.", RED)
+    print("="*60 + "\n")
+
+if __name__ == "__main__":
+    main() 
+
+
+
+
+
+
+
+
+
+
+
+
+scripts/setup_database.py
+
+TEM ESSE CONTEÚDO 
+
+
+
+import pandas as pd
+import os
+import logging
+from sqlalchemy import create_engine
+from dotenv import load_dotenv
+
+# Configuração de logs
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
+
+def carregar_dados_supabase():
+    load_dotenv()
+    
+    db_url = os.getenv("DATABASE_URL")
+    
+    if not db_url:
+        logging.error("❌ Erro: DATABASE_URL não encontrada!")
+        return
+
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+    try:
+        # Aumentamos o pool_size para manter a conexão estável durante a carga pesada
+        engine = create_engine(db_url, pool_pre_ping=True)
+        path_arquivo = "data/processed/df_mestre_consolidado.csv.gz"
+        
+        logging.info(f"📂 Abrindo arquivo comprimido: {path_arquivo}")
+
+        chunk_size = 10000 
+        total_registros = 0
+        primeiro_lote = True
+
+        # O 'engine.connect()' garante que a conexão está ativa
+        with engine.connect() as conn:
+            for chunk in pd.read_csv(path_arquivo, compression='gzip', chunksize=chunk_size):
+                
+                # Garantimos que os nomes das colunas estão em minúsculo para bater com o SQL
+                chunk.columns = [c.lower() for c in chunk.columns]
+                
+                metodo_sql = 'replace' if primeiro_lote else 'append'
+                
+                # Enviamos para a tabela 'dashboard_obras'
+                chunk.to_sql(
+                    'dashboard_obras', 
+                    conn, 
+                    if_exists=metodo_sql, 
+                    index=False,
+                    method='multi' # <-- Isso acelera muito a inserção!
+                )
+                
+                total_registros += len(chunk)
+                logging.info(f"✅ Lote processado. Total no banco: {total_registros}")
+                primeiro_lote = False
+
+        logging.info("🚀 Missão cumprida! O Supabase recebeu todos os dados.")
+
+    except Exception as e:
+        logging.error(f"❌ Falha na migração: {e}")
+
+if __name__ == "__main__":
+    carregar_dados_supabase() 
+
+
+
+
+
+
+
+
+
+
+
+
+
+scripts/simulador_de_risco.py
+
+TEM ESSE CONTEÚDO 
+
+
+
+# ============================================================
+# 23. Simulador de Risco CCbjj – Consumo de Pipeline IA
+# ============================================================
+import pandas as pd
+import numpy as np
+import joblib
+import os
+
+# 1. Carregamento do Cérebro do Projeto (Pipeline + Metadados)
+MODEL_PATH = "models/pipeline_random_forest.pkl"
+META_PATH = "models/features_metadata.joblib"
+
+if not os.path.exists(MODEL_PATH):
+    print("❌ Erro: Modelo não encontrado. Rode o scripts/train_model.py primeiro.")
+else:
+    # Carregamos o pipeline completo (já inclui o tratamento de dados)
+    pipeline = joblib.load(MODEL_PATH)
+    features_originais = joblib.load(META_PATH)
+
+    # 2. Definição do Cenário de Simulação (Exemplo de Obra de Alto Risco)
+    # IMPORTANTE: Usamos minúsculo para bater com o padrão do gerador_dados.py
+    nova_obra = {
+        'orcamento_estimado': 12000000.0,
+        'rating_confiabilidade': 2.5,        # Fornecedor com nota baixa
+        'taxa_insucesso_fornecedor': 0.35,   # Histórico de falhas alto
+        'complexidade_obra': np.log1p(12000000.0),
+        'risco_etapa': 8.0,                  # Valor base de risco da etapa
+        'nivel_chuva': 450.0,                # Cenário de muita chuva
+        'tipo_solo': 'argiloso',             # Solo instável
+        'material': 'cimento',
+        'cidade': 'belo horizonte',
+        'etapa': 'fundação'
+    }
+
+    # 3. Transformação em DataFrame
+    df_nova = pd.DataFrame([nova_obra])
+
+    # 4. Garantia de Contrato (Reordenar colunas conforme o treinamento)
+    # Isso evita erros de predição se a ordem das chaves no dicionário mudar
+    df_nova = df_nova[features_originais]
+
+    # 5. Predição Direta via Pipeline
+    # O pipeline aplica o StandardScaler e o OneHotEncoder automaticamente!
+    
+    pred_atraso = pipeline.predict(df_nova)[0]
+
+    # 6. Relatório de Diagnóstico
+    print("=== 🏗️ SIMULADOR DE RISCO CCBJJ ===")
+    print(f"📍 Obra em: {nova_obra['cidade'].title()} | Etapa: {nova_obra['etapa'].title()}")
+    print(f"🌧️ Clima: {nova_obra['nivel_chuva']}mm | Solo: {nova_obra['tipo_solo'].title()}")
+    print("-" * 40)
+    
+    status = "🔴 CRÍTICO" if pred_atraso > 12 else "🟡 ALERTA" if pred_atraso > 7 else "🟢 SEGURO"
+    print(f"🔮 PREVISÃO DE ATRASO: {pred_atraso:.1f} dias")
+    print(f"📊 STATUS DO CRONOGRAMA: {status}")
+    print("-" * 40)
+    print("💡 Sugestão: Verifique planos de drenagem ou troque o fornecedor.") 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+scripts/telegram_bot.py 
+
+TEM ESSE CONTEÚDO 
+
+
+import os
+import sys
+import io
+import joblib
+import pandas as pd
+import pytz
+import logging
+import warnings
+import asyncio
+from pathlib import Path
+from datetime import datetime
+from sqlalchemy import create_engine, text
+
+# 1. CONFIGURAÇÕES DE AMBIENTE E SEGURANÇA
+os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib'
+warnings.filterwarnings("ignore", category=UserWarning)
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from reportlab.lib.utils import ImageReader
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import cm
+
+# Ajuste de Path para módulos locais
+current_dir = Path(__file__).resolve().parent
+if str(current_dir) not in sys.path:
+    sys.path.append(str(current_dir))
+
+from fastapi import FastAPI, Request, Response
+import uvicorn
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputFile
+from telegram.constants import ParseMode
+from telegram.ext import (
+    ApplicationBuilder, CommandHandler, MessageHandler,
+    CallbackQueryHandler, ContextTypes, filters
+)
+
+import database
+from i18n import get_text
+from handlers import start_command, help_command, settings_command
+
+# Configurações Globais
+BR_TIMEZONE = pytz.timezone('America/Sao_Paulo')
+BASE_DIR = Path(__file__).resolve().parent.parent
+LOGO_PATH = BASE_DIR / "assets" / "logo_ccbjj.png"
+PIPELINE_PATH = BASE_DIR / "models" / "pipeline_random_forest.pkl"
+FEATURES_PATH = BASE_DIR / "models" / "features_metadata.joblib"
+DB_PATH = BASE_DIR / "data" / "processed" / "df_mestre_consolidado.csv.gz"
+
+# Cache de Recursos (Lazy Loading)
+RESOURCES = {"pipeline": None, "features": None, "df_base": None, "engine": None}
+
+def get_resources():
+    if RESOURCES["pipeline"] is None:
+        RESOURCES["pipeline"] = joblib.load(PIPELINE_PATH)
+        RESOURCES["features"] = joblib.load(FEATURES_PATH)
+        RESOURCES["df_base"] = pd.read_csv(DB_PATH, compression="gzip")
+        db_url = os.getenv("DATABASE_URL")
+        if db_url:
+            RESOURCES["engine"] = create_engine(
+                db_url.replace("postgres://", "postgresql://"),
+                future=True
+            )
+    return RESOURCES
+
+# --- AUXILIARES DE INTERFACE ---
+def obter_menu_infra():
+    keyboard = [[
+        InlineKeyboardButton("📂 Modo CSV Local", callback_data='set_CSV'),
+        InlineKeyboardButton("☁️ Modo Supabase Cloud", callback_data='set_DB')
+    ]]
+    return InlineKeyboardMarkup(keyboard)
+
+# --- GERADORES DE MÍDIA ---
+def gerar_grafico_ia(risco_valor, id_obra, lang):
+    plt.style.use('ggplot')
+    fig, ax = plt.subplots(figsize=(10, 5))
+    cor = 'green' if risco_valor <= 7 else 'orange' if risco_valor <= 10 else 'red'
+
+    ax.barh(['Impacto'], [risco_valor], color=cor, height=0.5)
+    ax.set_xlim(0, 15)
+    ax.set_title(f"{get_text(lang, 'chart_title')}: {id_obra}", fontsize=12, fontweight='bold')
+
+    plt.figtext(0.15, 0.02, get_text(lang, "chart_legend"),
+                fontsize=9, bbox=dict(facecolor='white', alpha=0.5))
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', bbox_inches='tight', dpi=100)
+    buf.seek(0)
+    plt.close(fig)
+    return buf
+
+def gerar_pdf_corporativo(id_obra, risco, status, modo, graf_buf, lang):
+    pdf_buf = io.BytesIO()
+    c = canvas.Canvas(pdf_buf, pagesize=A4)
+    width, height = A4
+    now_br = datetime.now(BR_TIMEZONE).strftime('%d/%m/%Y %H:%M')
+
+    # Cabeçalho com Logo
+    if LOGO_PATH.exists():
+        c.drawImage(str(LOGO_PATH), width/2 - 2*cm, height - 4*cm,
+                    width=4*cm, preserveAspectRatio=True)
+    else:
+        logging.warning(f"Logo não encontrado em {LOGO_PATH}")
+
+    c.setFont("Helvetica-Bold", 20)
+    c.drawCentredString(width/2, height - 6*cm, "CCBJJ ENGENHARIA")
+    c.setFont("Helvetica", 14)
+    c.drawCentredString(width/2, height - 7*cm, get_text(lang, "pdf_title"))
+    c.line(2*cm, height - 8*cm, width - 2*cm, height - 8*cm)
+
+    # Conteúdo Detalhado
+    text_obj = c.beginText(2*cm, height - 9.5*cm)
+    text_obj.setFont("Helvetica-Bold", 12)
+    text_obj.textLine(get_text(lang, "pdf_section_1"))
+    text_obj.setFont("Helvetica", 11)
+    text_obj.textLine(f"• ID: {id_obra}")
+    text_obj.textLine(f"• Status: {status}")
+    text_obj.textLine(f"• Impacto: {risco:.2f} dias")
+    text_obj.textLine(f"• Fonte: {modo} | Data: {now_br}")
+
+    text_obj.moveCursor(0, 15)
+    text_obj.setFont("Helvetica-Bold", 12)
+    text_obj.textLine(get_text(lang, "pdf_section_2"))
+    text_obj.setFont("Helvetica", 11)
+    text_obj.textLine("Análise preditiva baseada em algoritmos de Machine Learning (Random Forest).")
+    c.drawText(text_obj)
+
+    # Imagem do Gráfico
+    graf_buf.seek(0)
+    img_reader = ImageReader(graf_buf)
+    c.drawImage(img_reader, 2*cm, height - 20*cm, width=17*cm, preserveAspectRatio=True)
+
+    c.setFont("Helvetica-Oblique", 8)
+    c.drawCentredString(width/2, 2*cm, get_text(lang, "pdf_footer"))
+
+    c.showPage()
+    c.save()
+    pdf_buf.seek(0)
+    return pdf_buf
+
+# --- CORE HANDLERS ---
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    lang = database.get_language(user_id)
+    modo = database.get_storage_mode(user_id)
+    id_obra = update.message.text.strip().upper()
+
+    res = get_resources()
+
+    try:
+        # Busca Segura
+        if modo == "SUPABASE" and res["engine"]:
+            query = text("SELECT * FROM dashboard_obras WHERE UPPER(id_obra) = :val")
+            df = pd.read_sql(query, res["engine"], params={"val": id_obra})
+        else:
+            df = res["df_base"][res["df_base"]["id_obra"].str.upper() == id_obra]
+
+        if df.empty:
+            await update.message.reply_text(
+                get_text(lang, "not_found", id_obra=id_obra, modo=modo)
+            )
+            return
+
+        wait_msg = await update.message.reply_text(
+            get_text(lang, "processing"), parse_mode=ParseMode.MARKDOWN
+        )
+
+        X = df.reindex(columns=res["features"], fill_value=0)
+        prediction = await asyncio.to_thread(res["pipeline"].predict, X)
+        risco_val = float(prediction.mean())
+        status = "🟢 NORMAL" if risco_val <= 7 else "🟡 ALERTA" if risco_val <= 10 else "🔴 CRÍTICO"
+
+        await update.message.reply_text(
+            f"{get_text(lang, 'report_header')}\n"
+            f"ID: `{id_obra}`\n"
+            f"{get_text(lang, 'report_status', status=status)}\n"
+            f"{get_text(lang, 'report_impact', risco=risco_val)}\n\n"
+            f"{get_text(lang, 'report_note', status=status)}",
+            parse_mode=ParseMode.MARKDOWN
+        )
+
+        graf_buf = await asyncio.to_thread(gerar_grafico_ia, risco_val, id_obra, lang)
+        await update.message.reply_photo(photo=graf_buf)
+
+        pdf_buf = await asyncio.to_thread(
+            gerar_pdf_corporativo, id_obra, risco_val, status, modo, graf_buf, lang
+        )
+        await update.message.reply_document(
+            document=InputFile(pdf_buf, filename=f"Relatorio_{id_obra}.pdf"),
+            caption=get_text(lang, "sending_files"),
+            parse_mode=ParseMode.MARKDOWN
+        )
+        await wait_msg.delete()
+
+    except Exception as e:
+        logging.exception(f"Erro ao processar ID {id_obra}")
+        await update.message.reply_text(get_text(lang, "internal_error"))
+
+# --- CALLBACKS ---
+async def language_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    lang = query 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+scripts/train_model.py
+
+TEM ESSE CONTEÚDO 
+
+
+import pandas as pd
+import numpy as np
+import joblib
+import os
+
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.impute import SimpleImputer # Importante para segurança
+from sklearn.metrics import mean_absolute_error, r2_score
+
+# 1. Configurações de Caminhos Sincronizados
+# Agora usamos o dado PROCESSADO pela célula 18
+DATA_PATH = "data/processed/df_mestre_consolidado.csv"
+MODEL_PATH = "models/pipeline_random_forest.pkl"
+META_PATH = "models/features_metadata.joblib"
+os.makedirs("models", exist_ok=True)
+
+def train():
+    print("🚀 Iniciando treinamento do modelo CCbjj IA...")
+
+    # 2. Carregamento dos dados
+    if not os.path.exists(DATA_PATH):
+        print(f"❌ Erro: Arquivo processado {DATA_PATH} não encontrado. Rode consolidar_base.py primeiro.")
+        return
+
+    df = pd.read_csv(DATA_PATH)
+
+    # 3. Pré-processamento Preventivo
+    for col in df.select_dtypes(include=['object']).columns:
+        df[col] = df[col].astype(str).str.lower().str.strip()
+
+    # 4. Definição de Features e Target
+    # O alvo ideal é o risco calculado ou atraso real (aqui usamos risco_etapa conforme seu design)
+    target = 'risco_etapa'
+    
+    # Removemos colunas que não são preditivas (IDs)
+    X = df.drop(columns=['id_obra', target], errors='ignore')
+    y = df[target]
+
+    # Salvar contrato de variáveis
+    feature_names = X.columns.tolist()
+    joblib.dump(feature_names, META_PATH)
+
+    # 5. Definição de Colunas por Tipo
+    cat_features = ['cidade', 'tipo_solo', 'material', 'etapa']
+    num_features = [col for col in X.columns if col not in cat_features]
+
+    
+
+    # 6. Criação do Processador (Pipeline Robusto)
+    # Adicionamos SimpleImputer para que o modelo não quebre se houver nulos em produção
+    numeric_transformer = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='median')),
+        ('scaler', StandardScaler())
+    ])
+
+    categorical_transformer = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='constant', fill_value='desconhecido')),
+        ('onehot', OneHotEncoder(handle_unknown='ignore', sparse_output=False))
+    ])
+
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ('cat', categorical_transformer, cat_features),
+            ('num', numeric_transformer, num_features)
+        ])
+
+    # 7. Pipeline de Produção CCbjj
+    model_pipeline = Pipeline(steps=[
+        ('preprocessor', preprocessor),
+        ('regressor', RandomForestRegressor(
+            n_estimators=300,
+            max_depth=12,
+            min_samples_leaf=2,
+            random_state=42,
+            n_jobs=-1
+        ))
+    ])
+
+    # 8. Divisão Treino/Teste
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # 9. Execução do Treinamento
+    print(f"🧠 Treinando floresta com {len(X_train)} exemplos...")
+    model_pipeline.fit(X_train, y_train)
+
+    # 10. Avaliação
+    preds = model_pipeline.predict(X_test)
+    mae = mean_absolute_error(y_test, preds)
+    r2 = r2_score(y_test, preds)
+
+    print("-" * 40)
+    print(f"✅ MODELO CCBJJ PRONTO!")
+    print(f"📊 Erro Médio: {mae:.2f} dias")
+    print(f"📈 Acurácia (R²): {r2*100:.1f}%")
+    print("-" * 40)
+
+    # 11. Exportação
+    joblib.dump(model_pipeline, MODEL_PATH)
+    print(f"💾 Modelo salvo em: {MODEL_PATH}")
+
+if __name__ == "__main__":
+    train() 
+
+
+
+
+
+
+
+
+
+
+models/features_metadata.joblib
+
+
+
+models/pipeline_random_forest.pkl
+
+
+
+data/processed/atividadesccbjj.csv
+
+
+data/processed/base_consulta_botccbjj.csv
+
+
+data/processed/climaccbjj.csv
+
+
+
+data/processed/df_mestre_consolidado.csv.gz
+
+
+
+data/processed/fornecedoresccbjj.csv
+
+
+
+
+data/processed/mao_obraccbjj.csv
+
+
+
+data/processed/obrasccbjj.csv
+
+
+
+data/processed/relatorio_executivo_completo.csv
+
+
+
+data/processed/relatorio_top20.csv
+
+
+data/processed/suprimentosccbjj.csv
+
+
+assets/logo_ccbjj.png
+
+
+
+
+
+
+Notebooks/00_gera_csvs.ipynb
+
+TEM ESSE CONTEÚDO 
+
+
+
+Open In Colab
+
+
+
+# ============================
+# Bootstrap: gerar CSVs simulados e robustos para CCbjj
+# ============================
+import os
+import numpy as np
+import pandas as pd
+
+np.random.seed(42)
+os.makedirs("data/raw", exist_ok=True)
+
+# -----------------------
+# fornecedoresccbjj.csv
+# -----------------------
+forn = pd.DataFrame({
+    "Id_fornecedor": [f"FORN-{i}" for i in range(1, 1001)],  # 1k fornecedores
+    "nome_ornecedor": np.random.choice(
+        ["Carvalho ME","Duarte","Ribeiro Ltda","Macedo S/A","Silva & Filhos","Oliveira Tec","Pereira Construções"], 1000
+    ),
+    "rating_confiabilidade": np.round(np.random.uniform(1.0, 5.0, 1000), 1)
+})
+forn.to_csv("data/raw/fornecedoresccbjj.csv", index=False)
+
+# -----------------------
+# obrasccbjj.csv
+# -----------------------
+N_OBRAS = 50000
+cidades = ["Belo Horizonte","Rio de Janeiro","São Paulo","Salvador","Curitiba","Porto Alegre","Fortaleza","Manaus","Recife","Belém"]
+ids_obras = [f"CCbjj-{100+i}" for i in range(N_OBRAS)]
+
+prazo_prev = np.clip(np.random.normal(360, 60, N_OBRAS).astype(int), 90, 900)
+chuva_mm = np.random.randint(30, 500, N_OBRAS)
+prazo_real = np.clip(
+    prazo_prev
+    + (chuva_mm * np.random.uniform(0.02, 0.08, N_OBRAS)).astype(int)
+    + np.random.normal(10, 40, N_OBRAS).astype(int),
+    60, 1200
+)
+obras = pd.DataFrame({
+    "Id_obra": ids_obras,
+    "nome_empreendimento": [f"Residencial {i}" for i in range(N_OBRAS)],
+    "cidade": np.random.choice(cidades, N_OBRAS),
+    "orcamento_estimado": np.round(np.random.uniform(3_000_000, 25_000_000, N_OBRAS), 2),
+    "data_inicio_prevista": pd.to_datetime("2025-01-01") + pd.to_timedelta(np.random.randint(0, 365, N_OBRAS), unit="D"),
+    "prazo_previsto_dias": prazo_prev,
+    "prazo_real_dias": prazo_real,
+    "chuva_mm": chuva_mm,
+    "Atrasou": (prazo_real > prazo_prev).astype(int)
+})
+obras.to_csv("data/raw/obrasccbjj.csv", index=False)
+
+# -----------------------
+# climaccbjj.csv
+# -----------------------
+clima = obras[["Id_obra","chuva_mm"]].rename(columns={"Id_obra":"id_obra"})
+clima.to_csv("data/raw/climaccbjj.csv", index=False)
+
+# -----------------------
+# mao_obraccbjj.csv
+# -----------------------
+mao = pd.DataFrame({
+    "Id_obra": ids_obras,
+    "qtd_engenheiros": np.clip(np.random.poisson(4, N_OBRAS), 1, 20),
+    "qtd_pedreiros": np.clip(np.random.poisson(18, N_OBRAS), 5, 120),
+    "qtd_servente_pedreiros": np.clip(np.random.poisson(20, N_OBRAS), 5, 150)
+})
+mao.to_csv("data/raw/mao_obraccbjj.csv", index=False)
+
+# -----------------------
+# atividadesccbjj.csv (3 etapas por obra)
+# -----------------------
+etapas = ["Fundação","Estrutura","Acabamento"]
+ativ_rows = []
+for oid in ids_obras:
+    for e in etapas:
+        atras = max(0, int(np.random.normal(5, 10)))  # pode ser 0
+        status = "Atrasado" if atras > 0 else "No Prazo"
+        ativ_rows.append({
+            "id_atividade": f"{oid}_{e}",
+            "id_obra": oid,
+            "etapa": e,
+            "dias_atraso": atras,
+            "status": status
+        })
+ativ = pd.DataFrame(ativ_rows)
+ativ.to_csv("data/raw/atividadesccbjj.csv", index=False)
+
+# -----------------------
+# suprimentosccbjj.csv
+# -----------------------
+materiais = ["Cimento","Areia","Brita","Tintas","Madeira","Aço","Piso","Revestimento"]
+supr_rows = []
+for oid in ids_obras:
+    for e in etapas:
+        for _ in range(np.random.randint(1, 4)):  # 1 a 3 itens por etapa
+            supr_rows.append({
+                "id_obra": oid,
+                "id_atividade": f"{oid}_{e}",
+                "Id_fornecedor": np.random.choice(forn["Id_fornecedor"]),
+                "material": np.random.choice(materiais),
+                "atrasou_entrega": np.random.choice([0,1], p=[0.7,0.3])  # 30% atraso em entrega
+            })
+supr = pd.DataFrame(supr_rows)
+supr.to_csv("data/raw/suprimentosccbjj.csv", index=False)
+
+# -----------------------
+# base_consulta_botccbjj.csv (agregado por obra)
+# -----------------------
+taxa_obra = supr.groupby("id_obra")["atrasou_entrega"].mean().rename("taxa_insucesso_fornecedor").reset_index()
+bot = obras[["Id_obra","orcamento_estimado","cidade"]].rename(columns={"Id_obra":"id_obra"})
+bot["rating_confiabilidade"] = np.round(np.random.uniform(1.0, 5.0, len(bot)), 1)
+bot["complexidade_obra"] = np.random.normal(15.5, 1.0, len(bot))
+bot["risco_etapa"] = np.round(np.random.uniform(6.0, 12.0, len(bot)), 2)
+bot["nivel_chuva"] = np.random.randint(50, 300, len(bot))
+bot["tipo_solo"] = np.random.choice(["Rochoso","Argiloso","Siltoso","Arenoso"], len(bot))
+bot["material"] = np.random.choice(materiais, len(bot))
+bot["etapa"] = np.random.choice(etapas, len(bot))
+bot = bot.merge(taxa_obra, on="id_obra", how="left").fillna({"taxa_insucesso_fornecedor":0})
+bot.to_csv("data/raw/base_consulta_botccbjj.csv", index=False)
+
+# -----------------------
+# relatorio_consolidadoccbjj.csv (resumo por obra)
+# -----------------------
+rel = pd.DataFrame({
+    "id_obra": obras["Id_obra"],
+    "cidade": obras["cidade"],
+    "tipo_solo": np.random.choice(["Rochoso","Argiloso","Siltoso","Arenoso"], len(obras)),
+    "nivel_chuva": np.random.randint(50, 300, len(obras)),
+    "risco_medio": np.round(np.random.uniform(6.0, 12.0, len(obras)), 2),
+    "pior_etapa": np.random.choice(etapas, len(obras)),
+    "risco_pior": np.round(np.random.uniform(8.0, 13.0, len(obras)), 2),
+    "material_critico": np.random.choice(materiais, len(obras)),
+    "taxa_insucesso": np.round(np.random.uniform(0.3, 0.9, len(obras)), 2)
+})
+rel.to_csv("data/raw/relatorio_consolidadoccbjj.csv", index=False)
+
+print("✅ CSVs simulados e robustos criados em data/raw")
+     
+✅ CSVs simulados e robustos criados em data/raw
+
+
+# ============================
+# Bootstrap: gerar CSVs simulados e robustos para CCbjj
+# ============================
+import os
+import numpy as np
+import pandas as pd
+
+np.random.seed(42)
+os.makedirs("data/raw", exist_ok=True)
+
+# ... [todo o código de geração dos CSVs que já montamos] ...
+
+print("✅ CSVs simulados e robustos criados em data/raw")
+
+# ============================
+# Download automático no Colab
+# ============================
+try:
+    from google.colab import files
+    for file in [
+        "data/raw/fornecedoresccbjj.csv",
+        "data/raw/obrasccbjj.csv",
+        "data/raw/climaccbjj.csv",
+        "data/raw/mao_obraccbjj.csv",
+        "data/raw/atividadesccbjj.csv",
+        "data/raw/suprimentosccbjj.csv",
+        "data/raw/base_consulta_botccbjj.csv",
+        "data/raw/relatorio_consolidadoccbjj.csv"
+    ]:
+        files.download(file)
+    print("⬇️ Downloads iniciados para todos os CSVs.")
+except Exception:
+    print("ℹ️ Download automático indisponível neste ambiente. Os arquivos estão salvos em data/raw/.")
+     
+✅ CSVs simulados e robustos criados em data/raw
+⬇️ Downloads iniciados para todos os CSVs.
+
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Notebooks/02_modelagem_preditiva.ipynb
+
+TEM ESSE CONTEÚDO 
+
+
+
+Open In Colab
+
+
+
+# ============================================================
+# 1. Preparação do Ambiente e Clonagem (CCbjj Edition)
+# ============================================================
+import os
+
+# Define o nome do repositório
+repo_name = 'analiseRiscosAtrasoObras'
+
+# Lógica de clonagem/atualização mais segura
+if not os.path.exists(repo_name):
+    print(f"📥 Clonando o repositório {repo_name}...")
+    !git clone https://github.com/Santosdevbjj/{repo_name}.git
+    %cd {repo_name}
+else:
+    # Se já estiver dentro da pasta, não tenta dar CD novamente para evitar erro
+    if os.path.basename(os.getcwd()) != repo_name:
+        %cd {repo_name}
+    print("✅ Repositório já presente. Atualizando...")
+    !git pull origin main
+
+# Instalação de dependências
+!pip install -q joblib pandas numpy scikit-learn matplotlib plotly faker
+
+# Garantir estrutura de pastas para os próximos passos
+os.makedirs('data/raw', exist_ok=True)
+os.makedirs('models', exist_ok=True)
+
+# ============================================================
+# 2. Imports e Carregamento
+# ============================================================
+import pandas as pd
+import numpy as np
+
+try:
+    path = "data/raw/"
+
+    # Carregamento e PADRONIZAÇÃO IMEDIATA (Colunas em minúsculo)
+    atividades   = pd.read_csv(f"{path}atividadesccbjj.csv")
+    atividades.columns = [c.lower() for c in atividades.columns]
+
+    fornecedores = pd.read_csv(f"{path}fornecedoresccbjj.csv")
+    fornecedores.columns = [c.lower() for c in fornecedores.columns]
+
+    obras        = pd.read_csv(f"{path}obrasccbjj.csv")
+    obras.columns = [c.lower() for c in obras.columns]
+
+    suprimentos  = pd.read_csv(f"{path}suprimentosccbjj.csv")
+    suprimentos.columns = [c.lower() for c in suprimentos.columns]
+
+    base_bot     = pd.read_csv(f"{path}base_consulta_botccbjj.csv")
+    base_bot.columns = [c.lower() for c in base_bot.columns]
+
+    print("🚀 Dados da CCbjj Engenharia carregados e padronizados!\n")
+
+    # Validação de Features Críticas
+    features_obrigatorias = ['nivel_chuva', 'tipo_solo']
+    for feat in features_obrigatorias:
+        if feat not in base_bot.columns:
+            print(f"⚠️ AVISO: Coluna '{feat}' não encontrada. O modelo pode precisar de simulação.")
+        else:
+            print(f"✅ Variável '{feat}' detectada.")
+
+except FileNotFoundError as e:
+    print(f"❌ Erro: Arquivo não encontrado. Verifique os nomes no seu GitHub.")
+    print(f"Detalhe: {e}")
+
+# ============================================================
+# 3. Visualização Diagnóstica
+# ============================================================
+datasets = {
+    "Atividades": atividades,
+    "Fornecedores": fornecedores,
+    "Obras": obras,
+    "Suprimentos": suprimentos,
+    "Base Consolidada IA": base_bot
+}
+
+for nome, df in datasets.items():
+    print(f"📌 {nome} | Shape: {df.shape}")
+    display(df.head(2))
+     
+📥 Clonando o repositório analiseRiscosAtrasoObras...
+Cloning into 'analiseRiscosAtrasoObras'...
+remote: Enumerating objects: 1649, done.
+remote: Counting objects: 100% (516/516), done.
+remote: Compressing objects: 100% (172/172), done.
+remote: Total 1649 (delta 472), reused 343 (delta 343), pack-reused 1133 (from 2)
+Receiving objects: 100% (1649/1649), 18.86 MiB | 2.58 MiB/s, done.
+Resolving deltas: 100% (867/867), done.
+/content/analiseRiscosAtrasoObras
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 7.6 MB/s eta 0:00:00
+🚀 Dados da CCbjj Engenharia carregados e padronizados!
+
+✅ Variável 'nivel_chuva' detectada.
+✅ Variável 'tipo_solo' detectada.
+📌 Atividades | Shape: (150000, 5)
+id_atividade	id_obra	etapa	dias_atraso	status
+0	CCbjj-100_Fundação	CCbjj-100	Fundação	3	Atrasado
+1	CCbjj-100_Estrutura	CCbjj-100	Estrutura	9	Atrasado
+📌 Fornecedores | Shape: (1000, 3)
+id_fornecedor	nome_ornecedor	rating_confiabilidade
+0	FORN-1	Pereira Construções	3.5
+1	FORN-2	Macedo S/A	4.4
+📌 Obras | Shape: (50000, 9)
+id_obra	nome_empreendimento	cidade	orcamento_estimado	data_inicio_prevista	prazo_previsto_dias	prazo_real_dias	chuva_mm	atrasou
+0	CCbjj-100	Residencial 0	Recife	15367032.92	2025-09-12	338	375	58	1
+1	CCbjj-101	Residencial 1	Manaus	6477549.48	2025-12-07	387	458	205	1
+📌 Suprimentos | Shape: (300475, 5)
+id_obra	id_atividade	id_fornecedor	material	atrasou_entrega
+0	CCbjj-100	CCbjj-100_Fundação	FORN-361	Madeira	0
+1	CCbjj-100	CCbjj-100_Fundação	FORN-735	Brita	0
+📌 Base Consolidada IA | Shape: (50000, 11)
+id_obra	orcamento_estimado	cidade	rating_confiabilidade	complexidade_obra	risco_etapa	nivel_chuva	tipo_solo	material	etapa	taxa_insucesso_fornecedor
+0	CCbjj-100	15367032.92	Recife	2.3	14.550093	10.81	67	Arenoso	Piso	Acabamento	0.166667
+1	CCbjj-101	6477549.48	Manaus	4.7	15.394106	7.32	165	Arenoso	Tintas	Acabamento	0.200000
+
+
+# ============================================================
+# 2. Configuração do Ambiente de IA (Pipeline & Estética)
+# ============================================================
+import pandas as pd
+import numpy as np
+import joblib
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os  # Adicionado para gestão de diretórios
+import warnings # Adicionado para limpeza de log
+
+# Desativar avisos chatos de depreciação
+warnings.filterwarnings('ignore')
+
+# Ferramentas de Engenharia de Machine Learning
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
+
+# Configurações de exibição e estética CCbjj
+pd.set_option('display.max_columns', None)
+sns.set_theme(style="whitegrid")
+plt.rcParams['figure.figsize'] = (12, 6)
+plt.rcParams['axes.titlesize'] = 16
+
+# Cores da Identidade Visual CCbjj (Verde Profissional e Destaques)
+paleta_ccbjj = ["#004A2F", "#00A859", "#2E86C1", "#E67E22"]
+sns.set_palette(sns.color_palette(paleta_ccbjj))
+
+# Garantir que as pastas de exportação existam desde o início
+os.makedirs('data/raw', exist_ok=True)
+os.makedirs('models', exist_ok=True)
+
+print("✅ Setup de IA concluído. Infraestrutura de diretórios e estética carregadas.")
+     
+✅ Setup de IA concluído. Infraestrutura de diretórios e estética carregadas.
+
+
+# ============================================================
+# 3. Validação e Inspeção de Dados (Ecossistema CCbjj)
+# ============================================================
+
+# Nota: Os dados já foram carregados na Célula 1.
+# Aqui apenas garantimos que a base_ia (usada no treinamento) está correta.
+
+# Sincronizando nomes (Caso você tenha usado base_bot na Célula 1)
+if 'base_bot' in locals() and 'base_ia' not in locals():
+    base_ia = base_bot
+
+# Garantir que a padronização de minúsculas persista
+for df_temp in [atividades, fornecedores, obras, suprimentos, base_ia]:
+    df_temp.columns = [c.lower() for c in df_temp.columns]
+
+# Exibição do sumário de carga (Métricas de Data Engineering)
+print("🏗️ Status dos Datasets CCbjj:")
+print(f"📊 Atividades:    {atividades.shape[0]} registros")
+print(f"🏢 Obras:         {obras.shape[0]} registros")
+print(f"🚚 Suprimentos:   {suprimentos.shape[0]} registros")
+print(f"🤝 Fornecedores:  {fornecedores.shape[0]} registros")
+print(f"🧠 Base de IA:    {base_ia.shape[0]} amostras para treinamento")
+
+# ------------------------------------------------------------
+# Verificação de colunas estratégicas para o Modelo de IA
+# ------------------------------------------------------------
+colunas_alvo = ['id_obra', 'nivel_chuva', 'tipo_solo', 'risco_etapa']
+missing_cols = [c for c in colunas_alvo if c not in base_ia.columns]
+
+if not missing_cols:
+    print("\n🔍 Verificação de colunas preditivas OK:")
+    display(base_ia[colunas_alvo].head())
+else:
+    print(f"\n⚠️ Atenção: Colunas ausentes na base_ia: {missing_cols}")
+    print("Sugestão: Verifique o merge na Célula 4 ou a geração dos dados.")
+     
+🏗️ Status dos Datasets CCbjj:
+📊 Atividades:    150000 registros
+🏢 Obras:         50000 registros
+🚚 Suprimentos:   300475 registros
+🤝 Fornecedores:  1000 registros
+🧠 Base de IA:    50000 amostras para treinamento
+
+🔍 Verificação de colunas preditivas OK:
+id_obra	nivel_chuva	tipo_solo	risco_etapa
+0	CCbjj-100	67	Arenoso	10.81
+1	CCbjj-101	165	Arenoso	7.32
+2	CCbjj-102	228	Siltoso	10.26
+3	CCbjj-103	200	Argiloso	6.57
+4	CCbjj-104	137	Argiloso	11.39
+
+
+# ============================================================
+# 4. Integração dos Dados (Consolidação Mestre CCbjj)
+# ============================================================
+
+# Padronização preventiva: Crucial para evitar KeyErrors
+for df_tmp in [atividades, obras, suprimentos, fornecedores, base_ia]:
+    df_tmp.columns = [c.lower() for c in df_tmp.columns]
+
+# 1. Unir Atividades com Obras
+df_mestre = atividades.merge(obras, on="id_obra", how="left", suffixes=('', '_obra'))
+
+# 2. Adicionar Suprimentos (Cruzamento por atividade para identificar materiais)
+df_mestre = df_mestre.merge(suprimentos, on=["id_obra", "id_atividade"], how="left", suffixes=('', '_sup'))
+
+# 3. Adicionar Fornecedores
+df_mestre = df_mestre.merge(fornecedores, on="id_fornecedor", how="left", suffixes=('', '_forn'))
+
+# 4. Integração Inteligente com Base IA (Solo e Clima)
+# Removemos colunas de clima/solo do mestre se já existirem para evitar conflito (_x, _y)
+cols_to_drop = [c for c in ['nivel_chuva', 'tipo_solo'] if c in df_mestre.columns]
+if cols_to_drop:
+    df_mestre = df_mestre.drop(columns=cols_to_drop)
+
+# Merge garantindo que não haja duplicatas na chave id_obra
+df_mestre = df_mestre.merge(
+    base_ia[['id_obra', 'nivel_chuva', 'tipo_solo']].drop_duplicates('id_obra'),
+    on='id_obra',
+    how='left'
+)
+
+# ------------------------------------------------------------
+# Limpeza Seletiva de Colunas e Feature Engineering
+# ------------------------------------------------------------
+if 'orcamento_estimado' in df_mestre.columns:
+    df_mestre['complexidade_obra'] = np.log1p(df_mestre['orcamento_estimado'].fillna(0))
+
+# ------------------------------------------------------------
+# Fallback para Clima e Solo (Garante que o modelo nunca receba NaN)
+# ------------------------------------------------------------
+# Nível de Chuva
+if 'nivel_chuva' not in df_mestre.columns or df_mestre['nivel_chuva'].isnull().all():
+    print("ℹ️ Simulando 'nivel_chuva' (dados ausentes)...")
+    df_mestre['nivel_chuva'] = np.random.randint(30, 550, size=len(df_mestre))
+else:
+    median_chuva = df_mestre['nivel_chuva'].median()
+    df_mestre['nivel_chuva'] = df_mestre['nivel_chuva'].fillna(median_chuva if not np.isnan(median_chuva) else 150)
+
+# Tipo de Solo
+if 'tipo_solo' not in df_mestre.columns or df_mestre['tipo_solo'].isnull().all():
+    print("ℹ️ Simulando 'tipo_solo' (dados ausentes)...")
+    df_mestre['tipo_solo'] = np.random.choice(['Arenoso', 'Argiloso', 'Rochoso', 'Siltoso'], size=len(df_mestre))
+else:
+    df_mestre['tipo_solo'] = df_mestre['tipo_solo'].fillna('Desconhecido')
+
+# ------------------------------------------------------------
+# Validação Final da Tabela de Treinamento
+# ------------------------------------------------------------
+colunas_preditivas = ['nivel_chuva', 'tipo_solo', 'orcamento_estimado', 'rating_confiabilidade', 'material']
+missing = [c for c in colunas_preditivas if c not in df_mestre.columns]
+
+if not missing:
+    print("✅ Integração CCbjj concluída: Pronto para o Feature Engineering.")
+else:
+    print(f"⚠️ Atenção: Faltam colunas essenciais: {missing}")
+
+print(f"📏 Shape da Tabela Mestre: {df_mestre.shape}")
+display(df_mestre.head())
+     
+✅ Integração CCbjj concluída: Pronto para o Feature Engineering.
+📏 Shape da Tabela Mestre: (300475, 21)
+id_atividade	id_obra	etapa	dias_atraso	status	nome_empreendimento	cidade	orcamento_estimado	data_inicio_prevista	prazo_previsto_dias	prazo_real_dias	chuva_mm	atrasou	id_fornecedor	material	atrasou_entrega	nome_ornecedor	rating_confiabilidade	nivel_chuva	tipo_solo	complexidade_obra
+0	CCbjj-100_Fundação	CCbjj-100	Fundação	3	Atrasado	Residencial 0	Recife	15367032.92	2025-09-12	338	375	58	1	FORN-361	Madeira	0	Oliveira Tec	3.1	67	Arenoso	16.547735
+1	CCbjj-100_Fundação	CCbjj-100	Fundação	3	Atrasado	Residencial 0	Recife	15367032.92	2025-09-12	338	375	58	1	FORN-735	Brita	0	Ribeiro Ltda	4.2	67	Arenoso	16.547735
+2	CCbjj-100_Estrutura	CCbjj-100	Estrutura	9	Atrasado	Residencial 0	Recife	15367032.92	2025-09-12	338	375	58	1	FORN-806	Aço	0	Oliveira Tec	2.4	67	Arenoso	16.547735
+3	CCbjj-100_Estrutura	CCbjj-100	Estrutura	9	Atrasado	Residencial 0	Recife	15367032.92	2025-09-12	338	375	58	1	FORN-801	Revestimento	0	Pereira Construções	3.0	67	Arenoso	16.547735
+4	CCbjj-100_Acabamento	CCbjj-100	Acabamento	9	Atrasado	Residencial 0	Recife	15367032.92	2025-09-12	338	375	58	1	FORN-420	Tintas	1	Silva & Filhos	2.1	67	Arenoso	16.547735
+
+
+# ============================================================
+# 5. Limpeza e Saneamento de Dados (Data Wrangling CCbjj)
+# ============================================================
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 1. Remover registros onde o alvo (target) é nulo ou negativo
+df_mestre = df_mestre.dropna(subset=["dias_atraso"]).copy()
+df_mestre = df_mestre[df_mestre["dias_atraso"] >= 0].copy()
+
+# 2. Tratamento de Variáveis Numéricas (Foco em Estabilidade)
+# Nota: Adicionamos variáveis que podem vir de merges anteriores
+num_cols = ["rating_confiabilidade", "orcamento_estimado", "nivel_chuva", "taxa_insucesso_fornecedor"]
+
+for col in num_cols:
+    if col in df_mestre.columns:
+        # Preenchimento com mediana (robusta contra outliers)
+        mediana = df_mestre[col].median()
+        df_mestre[col] = df_mestre[col].fillna(mediana if not np.isnan(mediana) else 0)
+
+        # Clipping: Proteção contra ruídos extremos
+        if col == "nivel_chuva":
+            df_mestre[col] = df_mestre[col].clip(lower=0, upper=800)
+        elif col == "rating_confiabilidade":
+            df_mestre[col] = df_mestre[col].clip(lower=1, upper=5)
+        elif col == "taxa_insucesso_fornecedor":
+            df_mestre[col] = df_mestre[col].clip(lower=0, upper=1)
+
+# 3. Tratamento de Variáveis Categóricas (Normalização CCbjj)
+cols_categoricas = ["material", "cidade", "etapa", "tipo_solo"]
+
+for col in cols_categoricas:
+    if col in df_mestre.columns:
+        # Preenchimento, remoção de espaços e padronização para minúsculo
+        df_mestre[col] = df_mestre[col].fillna("n/a").astype(str).str.strip().str.lower()
+
+# 4. Feature Engineering Extra: Complexidade_Obra
+# Garantindo que a variável logarítmica esteja pronta para o modelo
+if 'orcamento_estimado' in df_mestre.columns:
+    df_mestre['complexidade_obra'] = np.log1p(df_mestre['orcamento_estimado'].fillna(0))
+
+# 5. Verificação Final de Sanidade
+nulos_restantes = df_mestre.isnull().sum().sum()
+print(f"✅ Saneamento CCbjj concluído. Linhas para treino: {len(df_mestre)}")
+print(f"🔍 Nulos restantes: {nulos_restantes}")
+
+if nulos_restantes > 0:
+    print("⚠️ ALERTA: Ainda existem nulos nas colunas:", df_mestre.columns[df_mestre.isnull().any()].tolist())
+
+# Visualização da distribuição do alvo
+plt.figure(figsize=(8, 4))
+sns.histplot(df_mestre['dias_atraso'], bins=30, kde=True, color="#004A2F")
+plt.title("Distribuição do Alvo: Dias de Atraso (Target)")
+plt.xlabel("Dias")
+plt.ylabel("Frequência")
+plt.show()
+     
+✅ Saneamento CCbjj concluído. Linhas para treino: 300475
+🔍 Nulos restantes: 0
+
+
+
+# ============================================================
+# 6. Feature Engineering (Engenharia de Variáveis CCbjj)
+# ============================================================
+
+# 1. Taxa de Insucesso do Fornecedor (Frequência Histórica de Atrasos)
+if 'id_fornecedor' in df_mestre.columns and 'dias_atraso' in df_mestre.columns:
+    df_mestre["taxa_insucesso_fornecedor"] = df_mestre.groupby("id_fornecedor")["dias_atraso"].transform(
+        lambda x: (x > 0).mean()
+    ).fillna(0.15) # Fallback para fornecedores novos
+else:
+    df_mestre["taxa_insucesso_fornecedor"] = 0.15
+
+# 2. Complexidade da Obra (Logaritmo para normalizar grandes orçamentos)
+if 'orcamento_estimado' in df_mestre.columns:
+    # Usamos fillna(0) antes do log1p para evitar erro matemático
+    df_mestre["complexidade_obra"] = np.log1p(df_mestre["orcamento_estimado"].fillna(0))
+
+# 3. Risco Médio da Etapa (Target Encoding)
+if 'etapa' in df_mestre.columns:
+    df_mestre["risco_etapa"] = df_mestre.groupby("etapa")["dias_atraso"].transform("mean").fillna(0)
+
+# 4. Score de Risco Solo-Clima (Interação Geotécnica)
+# Mapeamento robusto: Solo Argiloso sob chuva é o pior cenário para fundações
+pesos_solo = {'argiloso': 4.0, 'siltoso': 3.0, 'arenoso': 2.0, 'rochoso': 1.0, 'n/a': 2.0, 'desconhecido': 2.0}
+
+if 'tipo_solo' in df_mestre.columns:
+    # O .str.lower() já foi garantido na Célula 5, mas reforçamos aqui por segurança
+    df_mestre['fator_clima_solo'] = df_mestre['nivel_chuva'] * df_mestre['tipo_solo'].str.lower().map(pesos_solo).fillna(2.0)
+else:
+    df_mestre['fator_clima_solo'] = df_mestre['nivel_chuva'] * 2.0
+
+# 5. Feature Logística: Score de Confiabilidade do Suprimento
+materiais_criticos = {'aço': 1.5, 'cimento': 1.3, 'brita': 1.1, 'madeira': 1.0, 'piso': 1.0}
+
+if 'material' in df_mestre.columns:
+    # Mapeia o peso do material e evita divisão por valores menores que 1
+    peso_mat = df_mestre['material'].str.lower().map(materiais_criticos).fillna(1.0)
+    rating_safe = df_mestre['rating_confiabilidade'].fillna(3.5)
+    df_mestre['score_logistica'] = rating_safe / peso_mat
+
+print("✅ Feature Engineering CCbjj concluída!")
+print(f"📈 Total de colunas agora: {len(df_mestre.columns)}")
+
+# Visualização das colunas calculadas
+cols_analise = ["id_obra", "etapa", "tipo_solo", "nivel_chuva", "fator_clima_solo",
+                "taxa_insucesso_fornecedor", "complexidade_obra", "score_logistica"]
+cols_presentes = [c for c in cols_analise if c in df_mestre.columns]
+
+display(df_mestre[cols_presentes].head())
+     
+✅ Feature Engineering CCbjj concluída!
+📈 Total de colunas agora: 25
+id_obra	etapa	tipo_solo	nivel_chuva	fator_clima_solo	taxa_insucesso_fornecedor	complexidade_obra	score_logistica
+0	CCbjj-100	fundação	arenoso	67	134.0	0.593443	16.547735	3.100000
+1	CCbjj-100	fundação	arenoso	67	134.0	0.701863	16.547735	3.818182
+2	CCbjj-100	estrutura	arenoso	67	134.0	0.677419	16.547735	1.600000
+3	CCbjj-100	estrutura	arenoso	67	134.0	0.663121	16.547735	3.000000
+4	CCbjj-100	acabamento	arenoso	67	134.0	0.684385	16.547735	2.100000
+
+
+# ============================================================
+# 7. Sincronização de Features (Arquitetura CCbjj IA 2.0)
+# ============================================================
+
+# 1. Lista Mestra de Features (Obrigatórias para o Pipeline do Modelo)
+features_modelo = [
+    "orcamento_estimado",
+    "rating_confiabilidade",
+    "taxa_insucesso_fornecedor",
+    "complexidade_obra",
+    "risco_etapa",
+    "nivel_chuva",
+    "tipo_solo",
+    "material",
+    "cidade",
+    "etapa"
+]
+
+# 2. Blindagem: Garantir que TODAS as colunas do contrato existam no df_mestre
+# Se algo sumiu nos processos anteriores, restauramos com valores neutros
+for col in features_modelo:
+    if col not in df_mestre.columns:
+        if col in ['tipo_solo', 'material', 'cidade', 'etapa']:
+            df_mestre[col] = "n/a"  # Alinhado com a limpeza da Célula 5
+            print(f"⚠️ Aviso: Feature categórica '{col}' foi restaurada como 'n/a'.")
+        else:
+            # Para numéricos, tentamos usar a mediana global se a coluna existir mas estiver vazia
+            df_mestre[col] = 0.0
+            print(f"⚠️ Aviso: Feature numérica '{col}' foi restaurada como 0.0.")
+
+# 3. Definição da Variável Alvo (Target)
+# Removemos qualquer nulo residual no alvo para não "enganar" a IA
+df_mestre = df_mestre.dropna(subset=["dias_atraso"])
+y = df_mestre["dias_atraso"]
+
+# 4. Seleção das Variáveis de Entrada (Features)
+# Copiamos apenas o que o modelo foi desenhado para processar
+X = df_mestre[features_modelo].copy()
+
+# 5. Validação de Sanidade das Features
+print("\n🏗️ Sincronização CCbjj concluída com sucesso!")
+print(f"📊 Volume de Treino: {X.shape[0]} amostras")
+print(f"🧩 Features Ativas:  {X.shape[1]} colunas preditivas")
+
+# Verificação de tipos (OneHotEncoder exige strings para categóricos)
+print("\n🔍 Verificação de Tipagem:")
+# Forçamos as colunas categóricas a serem string por segurança extrema
+cols_cat = ['tipo_solo', 'material', 'cidade', 'etapa']
+for c in cols_cat:
+    X[c] = X[c].astype(str)
+
+print(X.dtypes)
+
+# Preview final antes do Treinamento
+display(X.head())
+     
+🏗️ Sincronização CCbjj concluída com sucesso!
+📊 Volume de Treino: 300475 amostras
+🧩 Features Ativas:  10 colunas preditivas
+
+🔍 Verificação de Tipagem:
+orcamento_estimado           float64
+rating_confiabilidade        float64
+taxa_insucesso_fornecedor    float64
+complexidade_obra            float64
+risco_etapa                  float64
+nivel_chuva                    int64
+tipo_solo                     object
+material                      object
+cidade                        object
+etapa                         object
+dtype: object
+orcamento_estimado	rating_confiabilidade	taxa_insucesso_fornecedor	complexidade_obra	risco_etapa	nivel_chuva	tipo_solo	material	cidade	etapa
+0	15367032.92	3.1	0.593443	16.547735	6.614827	67	arenoso	madeira	recife	fundação
+1	15367032.92	4.2	0.701863	16.547735	6.614827	67	arenoso	brita	recife	fundação
+2	15367032.92	2.4	0.677419	16.547735	6.654187	67	arenoso	aço	recife	estrutura
+3	15367032.92	3.0	0.663121	16.547735	6.654187	67	arenoso	revestimento	recife	estrutura
+4	15367032.92	2.1	0.684385	16.547735	6.643839	67	arenoso	tintas	recife	acabamento
+
+
+# ============================================================
+# 8. Treinamento e Exportação do Pipeline IA (Padrão CCbjj)
+# ============================================================
+import joblib
+import os
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.pipeline import Pipeline
+
+# 1. Preparação de Infraestrutura
+os.makedirs('models', exist_ok=True)
+
+# 2. Divisão de Treino e Teste (80/20)
+# Garantimos que X e y estejam sincronizados após as limpezas anteriores
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 3. Definição do Pré-processamento Multivariado
+categorical_features = ["material", "cidade", "etapa", "tipo_solo"]
+numeric_features = [col for col in X.columns if col not in categorical_features]
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        # sparse_output=False é essencial para que o modelo aceite novos dados no Bot/App
+        ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), categorical_features),
+        ("num", StandardScaler(), numeric_features)
+    ]
+)
+
+# 4. Construção do Pipeline Integrado CCbjj
+# Ajustamos a profundidade dinamicamente para evitar Overfitting em bases pequenas
+max_d = 18 if len(X_train) > 1000 else 8
+
+pipeline_ccbjj = Pipeline(steps=[
+    ("preprocessor", preprocessor),
+    ("regressor", RandomForestRegressor(
+        n_estimators=500,
+        max_depth=max_d,
+        min_samples_split=5,
+        min_samples_leaf=2,
+        random_state=42,
+        n_jobs=-1                # Velocidade máxima: usa todos os cores
+    ))
+])
+
+# 5. Execução do Treinamento
+print(f"🧠 CCbjj IA treinando com {len(X_train)} amostras...")
+pipeline_ccbjj.fit(X_train, y_train)
+
+# 6. Validação de Performance
+r2_train = pipeline_ccbjj.score(X_train, y_train)
+r2_test = pipeline_ccbjj.score(X_test, y_test)
+
+print(f"✅ Treino Finalizado!")
+print(f"📈 R² Treino: {r2_train:.4f}")
+print(f"🎯 R² Teste:  {r2_test:.4f} (Este é o valor real de precisão)")
+
+# 7. Serialização (Salvamento para Produção)
+model_path = 'models/pipeline_random_forest.pkl'
+joblib.dump(pipeline_ccbjj, model_path)
+
+print("-" * 45)
+print(f"💾 MODELO EXPORTADO COM SUCESSO: {model_path}")
+print("🚀 Inteligência CCbjj pronta para o Bot e Dashboard!")
+     
+🧠 CCbjj IA treinando com 240380 amostras...
+✅ Treino Finalizado!
+📈 R² Treino: 0.2125
+🎯 R² Teste:  0.0068 (Este é o valor real de precisão)
+---------------------------------------------
+💾 MODELO EXPORTADO COM SUCESSO: models/pipeline_random_forest.pkl
+🚀 Inteligência CCbjj pronta para o Bot e Dashboard!
+
+
+# ============================================================
+# 9. Avaliação de Performance (Métricas de Precisão CCbjj)
+# ============================================================
+from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+# 1. Realizar predições usando o Pipeline Final
+y_pred = pipeline_ccbjj.predict(X_test)
+
+# 2. Cálculo de Métricas de Negócio e Engenharia
+mae = mean_absolute_error(y_test, y_pred)
+rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+r2 = r2_score(y_test, y_pred)
+vies = np.mean(y_pred - y_test) # Indica se o modelo subestima ou superestima
+
+print("=== 📊 DASHBOARD DE PERFORMANCE IA CCbjj ===")
+print(f"🔹 Erro Médio Absoluto (MAE): {mae:.2f} dias")
+print(f"🔹 Erro Quadrático (RMSE):   {rmse:.2f} dias")
+print(f"🔹 Aderência do Modelo (R²): {r2:.4f}")
+print(f"🔹 Viés de Predição (Bias):  {vies:.2f} dias")
+print("-" * 45)
+
+# 3. Visualização de Resíduos (Real vs. Previsto)
+plt.figure(figsize=(10, 6))
+
+# Scatter plot dos dados reais vs previstos
+sns.scatterplot(x=y_test, y=y_pred, alpha=0.5, color='#004A2F', label='Obras Analisadas')
+
+# Linha de Identidade (Onde a predição seria perfeita: y = x)
+lims = [0, max(max(y_test), max(y_pred))]
+plt.plot(lims, lims, color='#E67E22', linestyle='--', linewidth=2, label='Referência Ideal (1:1)')
+
+plt.title("Análise de Dispersão: Realidade vs. Predição IA CCbjj", fontsize=15)
+plt.xlabel("Atraso Real medido em Obra (Dias)", fontsize=12)
+plt.ylabel("Previsão da IA (Dias)", fontsize=12)
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.4)
+
+# 4. Insights Técnicos e Tomada de Decisão
+print(f"💡 INSIGHT: Em média, a IA CCbjj erra por apenas {mae:.1f} dia(s).")
+
+if abs(vies) < 0.5:
+    print("⚖️ EQUILÍBRIO: O modelo não apresenta tendências de subestimar ou superestimar atrasos.")
+elif vies > 0:
+    print("🚩 CAUTELA: A IA tende a ser ligeiramente 'pessimista' (prevê mais atraso que o real).")
+else:
+    print("🚩 ATENÇÃO: A IA tende a ser ligeiramente 'otimista' (prevê menos atraso que o real).")
+
+if r2 > 0.75:
+    print("✅ STATUS: Modelo com EXCELENTE confiabilidade para uso executivo.")
+else:
+    print("⚠️ STATUS: Modelo em fase de maturação. Recomenda-se validar com Engenheiro de Campo.")
+
+plt.show()
+     
+=== 📊 DASHBOARD DE PERFORMANCE IA CCbjj ===
+🔹 Erro Médio Absoluto (MAE): 6.02 dias
+🔹 Erro Quadrático (RMSE):   7.28 dias
+🔹 Aderência do Modelo (R²): 0.0068
+🔹 Viés de Predição (Bias):  0.05 dias
+---------------------------------------------
+💡 INSIGHT: Em média, a IA CCbjj erra por apenas 6.0 dia(s).
+⚖️ EQUILÍBRIO: O modelo não apresenta tendências de subestimar ou superestimar atrasos.
+⚠️ STATUS: Modelo em fase de maturação. Recomenda-se validar com Engenheiro de Campo.
+
+
+
+# ============================================================
+# 10. Feature Importance (O "Porquê" dos Atrasos CCbjj)
+# ============================================================
+
+# 1. Recuperar nomes das features após a transformação do Pipeline
+preprocessor = pipeline_ccbjj.named_steps['preprocessor']
+cat_encoder = preprocessor.transformers_[0][1]
+cat_features_transformed = cat_encoder.get_feature_names_out(categorical_features).tolist()
+
+# Combinamos as novas colunas categóricas com as numéricas originais
+all_features_names = cat_features_transformed + numeric_features
+
+# 2. Extrair importâncias do regressor RandomForest
+importances = pipeline_ccbjj.named_steps['regressor'].feature_importances_
+
+# 3. Organizar em DataFrame e Limpar Nomes para o Gráfico
+feature_importance_df = pd.DataFrame({
+    "Feature": all_features_names,
+    "Importância": importances
+}).sort_values(by="Importância", ascending=False)
+
+# Limpeza estética: remove prefixos como 'cat__' ou 'num__' se existirem
+feature_importance_df['Feature'] = feature_importance_df['Feature'].str.replace('cat__', '').str.replace('num__', '')
+
+# 4. Plotagem Estilizada (Identidade Visual CCbjj)
+plt.figure(figsize=(12, 8))
+# Usamos o verde principal da CCbjj definido na Célula 2
+sns.barplot(
+    x="Importância",
+    y="Feature",
+    data=feature_importance_df.head(15),
+    color="#004A2F"
+)
+
+plt.title("Fatores Determinantes de Atraso - CCbjj Engenharia", fontsize=16, fontweight='bold', pad=20)
+plt.xlabel("Grau de Influência no Modelo (Gini Importance)", fontsize=12)
+plt.ylabel("Variáveis Analisadas", fontsize=12)
+plt.grid(axis='x', linestyle='--', alpha=0.3)
+
+# 5. Conclusão Executiva
+print("🏆 RANKING DE IMPACTO NO CRONOGRAMA (Top 5):")
+print("-" * 45)
+print(feature_importance_df.head(5).to_string(index=False))
+
+print("\n💡 INSIGHT ESTRATÉGICO CCbjj:")
+top_f = feature_importance_df.iloc[0]['Feature']
+segundo_f = feature_importance_df.iloc[1]['Feature']
+
+print(f"1. O fator '{top_f}' é o maior influenciador nos desvios de prazo.")
+print(f"2. Note a relevância de '{segundo_f}', sugerindo atenção imediata da gestão de contratos.")
+print("3. Variáveis de solo e clima aparecem como 'multiplicadores de risco' conforme o previsto.")
+
+
+
+plt.tight_layout()
+plt.show()
+     
+🏆 RANKING DE IMPACTO NO CRONOGRAMA (Top 5):
+---------------------------------------------
+                  Feature  Importância
+              nivel_chuva     0.185328
+taxa_insucesso_fornecedor     0.155522
+        complexidade_obra     0.130432
+       orcamento_estimado     0.130304
+    rating_confiabilidade     0.108855
+
+💡 INSIGHT ESTRATÉGICO CCbjj:
+1. O fator 'nivel_chuva' é o maior influenciador nos desvios de prazo.
+2. Note a relevância de 'taxa_insucesso_fornecedor', sugerindo atenção imediata da gestão de contratos.
+3. Variáveis de solo e clima aparecem como 'multiplicadores de risco' conforme o previsto.
+
+
+
+# ============================================================
+# 11. Simulação de Cenário Real (What-If Analysis CCbjj)
+# ============================================================
+
+def simular_atraso(cidade, etapa, solo, chuva, material, orcamento):
+    """
+    Função para testar a inteligência do modelo em cenários hipotéticos.
+    Garante compatibilidade com o pipeline de produção.
+    """
+    # 1. Padronização dos inputs para bater com o treinamento (minúsculo)
+    cidade, etapa, solo, material = [str(x).lower() for x in [cidade, etapa, solo, material]]
+
+    # 2. Cálculo dinâmico do risco_etapa (com fallback se a etapa for nova)
+    risco_hist = df_mestre[df_mestre['etapa'] == etapa]['risco_etapa'].mean()
+    if np.isnan(risco_hist):
+        risco_hist = df_mestre['risco_etapa'].median() # Fallback para média global
+
+    # 3. Criar DataFrame com as colunas EXATAS da Célula 7
+    cenario = pd.DataFrame({
+        'orcamento_estimado': [float(orcamento)],
+        'rating_confiabilidade': [3.5],
+        'taxa_insucesso_fornecedor': [0.15],
+        'complexidade_obra': [np.log1p(orcamento)],
+        'risco_etapa': [risco_hist],
+        'nivel_chuva': [float(chuva)],
+        'tipo_solo': [solo],
+        'material': [material],
+        'cidade': [cidade],
+        'etapa': [etapa]
+    })
+
+    # Reordenar colunas para garantir que o Pipeline receba a ordem correta
+    cenario = cenario[features_modelo]
+
+    # 4. Predição
+    predicao = pipeline_ccbjj.predict(cenario)[0]
+
+    print(f"🏗️  CENÁRIO ANALISADO (CCbjj Engine):")
+    print(f"   📍 Local: {cidade.title()} | Etapa: {etapa.title()} | Solo: {solo.title()}")
+    print(f"   🌧️  Chuva: {chuva}mm | Orçamento: R${orcamento:,.2f}")
+    print(f"\n🔮 PREVISÃO IA:")
+    print(f"   ⚠️  Atraso Estimado: {predicao:.1f} dias")
+
+    # Insight Adicional
+    if predicao > 10:
+        print("🚨 ALERTA: Risco crítico detectado. Recomenda-se plano de contingência.")
+    print("-" * 45)
+
+# --- TESTES DE ESTRESSE CCbjj ---
+
+# Cenário 1: Crítico (Norte do país, solo instável, chuva extrema)
+simular_atraso('Manaus', 'Fundação', 'Argiloso', 450, 'Cimento', 15000000)
+
+# Cenário 2: Seguro (Nordeste, solo firme, tempo seco)
+simular_atraso('Recife', 'Acabamento', 'Rochoso', 20, 'Piso', 5000000)
+     
+🏗️  CENÁRIO ANALISADO (CCbjj Engine):
+   📍 Local: Manaus | Etapa: Fundação | Solo: Argiloso
+   🌧️  Chuva: 450mm | Orçamento: R$15,000,000.00
+
+🔮 PREVISÃO IA:
+   ⚠️  Atraso Estimado: 7.3 dias
+---------------------------------------------
+🏗️  CENÁRIO ANALISADO (CCbjj Engine):
+   📍 Local: Recife | Etapa: Acabamento | Solo: Rochoso
+   🌧️  Chuva: 20mm | Orçamento: R$5,000,000.00
+
+🔮 PREVISÃO IA:
+   ⚠️  Atraso Estimado: 5.2 dias
+---------------------------------------------
+
+
+# ============================================================
+# 12. Persistência do Modelo e Ativos (Exportação Final CCbjj)
+# ============================================================
+import os
+import joblib
+
+# 1. Garantir integridade da estrutura de pastas
+export_path = "models"
+data_path = "data/processed" # Nova pasta para dados tratados
+os.makedirs(export_path, exist_ok=True)
+os.makedirs(data_path, exist_ok=True)
+
+# 2. Definição de arquivos para produção
+model_file = f"{export_path}/pipeline_random_forest.pkl"
+data_file = f"{data_path}/df_mestre_consolidado.csv"
+features_file = f"{export_path}/features_metadata.joblib"
+
+try:
+    # 3. Serialização do Pipeline completo
+    joblib.dump(pipeline_ccbjj, model_file)
+
+    # 4. Salvar os metadados das colunas (garante que o App não erre a ordem)
+    joblib.dump(features_modelo, features_file)
+
+    # 5. Exportar a base mestre para o App/Bot consultar médias históricas
+    df_mestre.to_csv(data_file, index=False)
+
+    print("✅ DEPLOY CCbjj: Todos os ativos foram exportados com sucesso!")
+    print(f"🧠 Modelo: {model_file} ({os.path.getsize(model_file) / 1024:.2f} KB)")
+    print(f"📋 Metadata: {features_file}")
+    print(f"📊 Dados Consolidados: {data_file}")
+    print("\n🚀 O ecossistema está pronto para alimentar o Bot e o Dashboard Streamlit.")
+
+except Exception as e:
+    print(f"❌ ERRO CRÍTICO no Deploy: {e}")
+
+# ============================================================
+# 🎯 DICA CCbjj:
+# Agora, ao abrir seu app.py, você pode carregar o CSV e o PKL
+# e terá toda a inteligência pronta para simular em tempo real.
+# ============================================================
+     
+✅ DEPLOY CCbjj: Todos os ativos foram exportados com sucesso!
+🧠 Modelo: models/pipeline_random_forest.pkl (569688.74 KB)
+📋 Metadata: models/features_metadata.joblib
+📊 Dados Consolidados: data/processed/df_mestre_consolidado.csv
+
+🚀 O ecossistema está pronto para alimentar o Bot e o Dashboard Streamlit.
+📊 Previsão de Atrasos – Versão Executiva
+🎯 Objetivo
+Antecipar atrasos em etapas de obras, permitindo ações preventivas que reduzem custos e riscos.
+
+🔑 Principais Resultados
+Erro Médio Absoluto (MAE): ~X dias
+R² Score: ~Y
+Impacto Financeiro Médio: ~R 50.000/dia)
+🧩 Variáveis mais relevantes
+Risco da Etapa
+Taxa de Insucesso do Fornecedor
+Complexidade da Obra
+Localização e Materiais
+💡 Insights Estratégicos
+Antecipar atrasos para negociar prazos e replanejar cronogramas.
+Reduz multas e custos indiretos.
+Melhora confiabilidade da entrega e satisfação dos clientes.
+🚀 Conclusão
+Este modelo conecta ciência de dados ao valor financeiro. Com previsões de atrasos, gestores podem agir com antecedência, economizando e fortalecendo a competitividade.
+
+
+
+# ============================================================
+# 13. Simulador de Risco – Aplicação Prática CCbjj
+# ============================================================
+
+# 1. Definição do Cenário de Teste (Inputs simulando entrada de usuário)
+# Aplicamos .lower() nos c deampos de texto para alinhar com o treinamento
+nova_obra_data = {
+    'orcamento_estimado': 12000000.0,
+    'rating_confiabilidade': 2.5,
+    'taxa_insucesso_fornecedor': 0.8,
+    'complexidade_obra': np.log1p(12000000),
+    'risco_etapa': 10.0,
+    'nivel_chuva': 350.0,
+    'tipo_solo': 'argiloso', # Padronizado minúsculo
+    'material': 'cimento',   # Padronizado minúsculo
+    'cidade': 'belo horizonte',
+    'etapa': 'fundação'
+}
+
+# 2. Conversão para DataFrame e Sincronização de Colunas
+df_simulacao = pd.DataFrame([nova_obra_data])
+
+# IMPORTANTE: Garante a ordem exata das colunas definida na Célula 7
+try:
+    df_simulacao = df_simulacao[features_modelo]
+except NameError:
+    # Caso features_modelo não esteja na memória, definimos manualmente
+    cols_manual = ["orcamento_estimado", "rating_confiabilidade", "taxa_insucesso_fornecedor",
+                   "complexidade_obra", "risco_etapa", "nivel_chuva", "tipo_solo", "material", "cidade", "etapa"]
+    df_simulacao = df_simulacao[cols_manual]
+
+# 3. Execução da Predição
+try:
+    pred_atraso = pipeline_ccbjj.predict(df_simulacao)[0]
+
+    print("🛡️  SISTEMA DE ANÁLISE DE RISCO - CCBJJ")
+    print("=" * 45)
+    print(f"🏢 Projeto em: {nova_obra_data['cidade'].title()}")
+    print(f"🏗️  Etapa: {nova_obra_data['etapa'].title()} | Material: {nova_obra_data['material'].title()}")
+    print(f"🌍 Condições: Solo {nova_obra_data['tipo_solo'].title()} | Chuva: {nova_obra_data['nivel_chuva']}mm")
+    print("-" * 45)
+
+    # Formatação da saída para o usuário
+    atraso_formatado = max(0, pred_atraso) # Garante que não mostre atraso negativo
+    print(f"🔮 PREVISÃO DE ATRASO: {atraso_formatado:.1f} DIAS")
+
+    # 4. Lógica de Gestão de Riscos
+    if atraso_formatado > 15:
+        print("🚨 STATUS: RISCO EXTREMO - Mobilização de diretoria imediata.")
+    elif atraso_formatado > 8:
+        print("🟡 STATUS: ATENÇÃO - Revisar cronograma de suprimentos.")
+    else:
+        print("🟢 STATUS: OPERAÇÃO NORMAL - Dentro da margem de segurança.")
+
+except Exception as e:
+    print(f"❌ Erro na simulação: {e}")
+    print("💡 Verifique se o Pipeline foi treinado e se as colunas estão sincronizadas.")
+     
+🛡️  SISTEMA DE ANÁLISE DE RISCO - CCBJJ
+=============================================
+🏢 Projeto em: Belo Horizonte
+🏗️  Etapa: Fundação | Material: Cimento
+🌍 Condições: Solo Argiloso | Chuva: 350.0mm
+---------------------------------------------
+🔮 PREVISÃO DE ATRASO: 9.1 DIAS
+🟡 STATUS: ATENÇÃO - Revisar cronograma de suprimentos.
+
+
+# ============================================================
+# 14. Exportação de Ativos para Documentação (README.md - CCbjj)
+# ============================================================
+import os
+
+# 1. Preparação da Infraestrutura de Relatórios
+path_figures = 'reports/figures'
+os.makedirs(path_figures, exist_ok=True)
+
+# 2. Geração do Ativo Visual Profissional (Identidade CCbjj)
+plt.figure(figsize=(12, 8))
+sns.barplot(
+    x="Importância",
+    y="Feature",
+    data=feature_importance_df.head(10),
+    color="#004A2F" # Mantendo o padrão institucional
+)
+plt.title("Fatores Determinantes de Atraso - Relatório Executivo", fontsize=16, fontweight='bold')
+plt.xlabel("Impacto na Previsão (Gini)", fontsize=12)
+plt.ylabel("Variáveis Críticas", fontsize=12)
+plt.grid(axis='x', linestyle='--', alpha=0.3)
+plt.tight_layout()
+
+# Salvando para o Portfólio
+fig_path = f'{path_figures}/feature_importance_ccbjj.png'
+plt.savefig(fig_path, dpi=300)
+plt.close()
+print(f"✅ Ativo visual exportado: {fig_path}")
+
+# 3. Lógica Financeira Realista (Cálculo de Prevenção de Perdas)
+custo_diario_medio = 5000.00
+# Calculamos o atraso médio histórico vs a precisão da IA
+atraso_real_medio = df_mestre['dias_atraso'].mean()
+perda_potencial_obra = atraso_real_medio * custo_diario_medio
+perda_residual_ia = mae * custo_diario_medio # O que ainda "escapa" do modelo
+
+# 4. Geração do Markdown para o GitHub
+print("\n" + "="*60)
+print("📋 CONTEÚDO PARA O README.MD (Sincronizado com CCbjj IA 2.0)")
+print("="*60)
+
+markdown_text = f"""
+### 🏗️ Governança de Prazos com IA - Ecossistema CCbjj
+
+Este modelo utiliza **Machine Learning** para mitigar riscos operacionais e financeiros em projetos de construção civil.
+
+| Métrica de Performance | Resultado | Observação |
+| :--- | :--- | :--- |
+| **Aderência (R²)** | {r2:.2%} | Precisão na explicação da variabilidade |
+| **Erro Médio (MAE)** | {mae:.1f} dias | Desvio médio por obra |
+| **Custo de Atraso Médio** | R$ {perda_potencial_obra:,.2f} | Risco financeiro sem o uso da IA |
+| **Eficiência de Previsão** | R$ {perda_residual_ia:,.2f} | Incerteza residual após análise preditiva |
+
+
+
+#### 📊 Dashboard de Influência de Risco
+![Gráfico de Importância]({fig_path})
+
+> **Insight Estratégico:** A implementação deste pipeline permite à **CCbjj Engenharia** antecipar gargalos em etapas de fundação, onde variáveis de solo e clima têm impacto direto de até {feature_importance_df.iloc[0]['Importância']:.1%} no desvio total do cronograma.
+"""
+
+print(markdown_text)
+     
+✅ Ativo visual exportado: reports/figures/feature_importance_ccbjj.png
+
+============================================================
+📋 CONTEÚDO PARA O README.MD (Sincronizado com CCbjj IA 2.0)
+============================================================
+
+### 🏗️ Governança de Prazos com IA - Ecossistema CCbjj
+
+Este modelo utiliza **Machine Learning** para mitigar riscos operacionais e financeiros em projetos de construção civil.
+
+| Métrica de Performance | Resultado | Observação |
+| :--- | :--- | :--- |
+| **Aderência (R²)** | 0.68% | Precisão na explicação da variabilidade |
+| **Erro Médio (MAE)** | 6.0 dias | Desvio médio por obra |
+| **Custo de Atraso Médio** | R$ 33,188.00 | Risco financeiro sem o uso da IA |
+| **Eficiência de Previsão** | R$ 30,098.80 | Incerteza residual após análise preditiva |
+
+
+
+#### 📊 Dashboard de Influência de Risco
+![Gráfico de Importância](reports/figures/feature_importance_ccbjj.png)
+
+> **Insight Estratégico:** A implementação deste pipeline permite à **CCbjj Engenharia** antecipar gargalos em etapas de fundação, onde variáveis de solo e clima têm impacto direto de até 18.5% no desvio total do cronograma.
+
+
+
+     
+: ## 9.0. Exportação e Deploy do Simulador.
+
+
+
+# ============================================================
+# 15. Finalização da Estrutura de Pastas (Padrão CCbjj)
+# ============================================================
+import os
+
+# Definimos as pastas essenciais para o ecossistema completo
+pastas_projeto = [
+    'scripts',          # telegram_bot.py, app.py, utils.py
+    'models',           # pipeline_random_forest.pkl, features_metadata.joblib
+    'data/raw',         # Arquivos CSV originais
+    'data/processed',    # df_mestre_consolidado.csv (gerado na célula 12)
+    'reports/figures',  # Gráficos para o README e apresentações
+    'notebooks'         # Para salvar este arquivo .ipynb
+]
+
+print("📁 Organizando diretórios do ecossistema CCbjj...")
+
+for pasta in pastas_projeto:
+    os.makedirs(pasta, exist_ok=True)
+
+    # Criação de um arquivo .gitkeep para garantir que pastas vazias subam para o GitHub
+    with open(os.path.join(pasta, '.gitkeep'), 'a'):
+        os.utime(os.path.join(pasta, '.gitkeep'), None)
+
+    print(f"  ✅ Pasta '{pasta}' sincronizada e pronta para o Git.")
+
+print("\n" + "="*45)
+print("🚀 ESTRUTURA FINALIZADA COM SUCESSO!")
+print("="*45)
+print("Próximos passos recomendados:")
+print("1. Mova seus scripts (.py) para a pasta /scripts")
+print("2. Verifique se o modelo .pkl está em /models")
+print("3. Suba o projeto para o GitHub para o seu portfólio.")
+     
+📁 Organizando diretórios do ecossistema CCbjj...
+  ✅ Pasta 'scripts' sincronizada e pronta para o Git.
+  ✅ Pasta 'models' sincronizada e pronta para o Git.
+  ✅ Pasta 'data/raw' sincronizada e pronta para o Git.
+  ✅ Pasta 'data/processed' sincronizada e pronta para o Git.
+  ✅ Pasta 'reports/figures' sincronizada e pronta para o Git.
+  ✅ Pasta 'notebooks' sincronizada e pronta para o Git.
+
+=============================================
+🚀 ESTRUTURA FINALIZADA COM SUCESSO!
+=============================================
+Próximos passos recomendados:
+1. Mova seus scripts (.py) para a pasta /scripts
+2. Verifique se o modelo .pkl está em /models
+3. Suba o projeto para o GitHub para o seu portfólio.
+
+
+%%writefile scripts/app.py
+import streamlit as st
+import pandas as pd
+import joblib
+import plotly.express as px
+import numpy as np
+import os
+
+# 1. Configuração da Página (Identidade CCbjj)
+st.set_page_config(page_title="CCbjj - Inteligência de Risco", layout="wide", page_icon="🏗️")
+
+# Estilização via CSS para as cores da marca
+st.markdown("""
+    
+    """, unsafe_allow_html=True)
+
+# Lista de features na ordem correta do treinamento
+FEATURES_ORDEM = [
+    "orcamento_estimado", "rating_confiabilidade", "taxa_insucesso_fornecedor",
+    "complexidade_obra", "risco_etapa", "nivel_chuva", "tipo_solo", "material", "cidade", "etapa"
+]
+
+# =====================
+# 1. Carregamento do Modelo
+# =====================
+@st.cache_resource
+def load_pipeline():
+    paths = ["models/pipeline_random_forest.pkl", "../models/pipeline_random_forest.pkl", "pipeline_random_forest.pkl"]
+    for p in paths:
+        if os.path.exists(p):
+            return joblib.load(p)
+    return None
+
+pipeline = load_pipeline()
+
+# =====================
+# 2. Interface Lateral (Inputs)
+# =====================
+st.sidebar.image("https://img.icons8.com/fluency/96/engineering.png", width=80)
+st.sidebar.title("Painel de Controle")
+
+with st.sidebar:
+    st.subheader("📍 Projeto e Local")
+    cidade = st.selectbox("Cidade da Obra", ['Belo Horizonte', 'São Paulo', 'Manaus', 'Recife', 'Curitiba'])
+    etapa = st.selectbox("Etapa Atual", ['Fundação', 'Estrutura', 'Alvenaria', 'Acabamento'])
+    material = st.selectbox("Insumo Crítico", ['Cimento', 'Aço', 'Brita', 'Madeira', 'Piso'])
+
+    st.divider()
+    st.subheader("🌦️ Variáveis Ambientais")
+    val_chuva = st.slider("Previsão de Chuva (mm)", 0, 800, 150)
+    tipo_solo = st.selectbox("Tipo de Solo", ['Arenoso', 'Argiloso', 'Rochoso', 'Siltoso'])
+
+    st.divider()
+    st.subheader("💰 Gestão Financeira")
+    val_orcamento = st.number_input("Orçamento (R$)", value=12000000, step=100000)
+    val_rating = st.slider("Rating do Fornecedor", 1.0, 5.0, 3.5)
+
+# =====================
+# 3. Processamento dos Dados (Sincronização IA)
+# =====================
+# Convertemos textos para minúsculo para bater com o treinamento da Célula 5/7
+dados_input = pd.DataFrame([{
+    'orcamento_estimado': float(val_orcamento),
+    'rating_confiabilidade': float(val_rating),
+    'taxa_insucesso_fornecedor': 0.15,
+    'complexidade_obra': np.log1p(val_orcamento),
+    'risco_etapa': 8.5, # Valor médio de referência
+    'nivel_chuva': float(val_chuva),
+    'tipo_solo': tipo_solo.lower(),
+    'material': material.lower(),
+    'cidade': cidade.lower(),
+    'etapa': etapa.lower()
+}])
+
+# Garante a ordem correta das colunas
+dados_input = dados_input[FEATURES_ORDEM]
+
+# =====================
+# 4. Painel Principal
+# =====================
+st.title("🛡️ Sistema de Antecipação de Riscos - CCbjj Engenharia")
+st.markdown(f"**Análise de impacto para a etapa de {etapa} em solo {tipo_solo}.**")
+
+if pipeline is None:
+    st.error("❌ Erro: Modelo não encontrado. Rode o treinamento primeiro.")
+else:
+    col1, col2 = st.columns([1, 2])
+
+    with col1:
+        st.subheader("📊 Previsão IA")
+        predicao = max(0, pipeline.predict(dados_input)[0]) # Evita valores negativos
+
+        if predicao > 15:
+            st.error(f"**CRÍTICO:** Risco alto de paralisação.")
+            cor_delta = "inverse"
+        elif predicao > 7:
+            st.warning("**ATENÇÃO:** Risco moderado detectado.")
+            cor_delta = "off"
+        else:
+            st.success("**SEGURO:** Operação estável.")
+            cor_delta = "normal"
+
+        st.metric(label="Atraso Estimado", value=f"{predicao:.1f} Dias", delta="Risco Operacional", delta_color=cor_delta)
+        st.info(f"💡 Dica: Em solo {tipo_solo}, chuvas intensas impactam fundações em até 3x mais que acabamentos.")
+
+    with col2:
+        st.subheader("📈 Simulação de Sensibilidade (Impacto da Chuva)")
+
+        faixa_chuva = np.linspace(0, 800, 50)
+        dfs_simulados = []
+        for c in faixa_chuva:
+            df_temp = dados_input.copy()
+            df_temp['nivel_chuva'] = float(c)
+            dfs_simulados.append(df_temp)
+
+        df_res_total = pd.concat(dfs_simulados)
+        y_simulado = [max(0, val) for val in pipeline.predict(df_res_total)]
+
+        df_plot = pd.DataFrame({'Chuva (mm)': faixa_chuva, 'Atraso Previsto (Dias)': y_simulado})
+        fig = px.area(df_plot, x='Chuva (mm)', y='Atraso Previsto (Dias)', color_discrete_sequence=['#004A2F'])
+
+        # Adiciona o ponto onde o usuário está agora
+        fig.add_scatter(x=[val_chuva], y=[predicao], mode='markers', name="Cenário Atual",
+                        marker=dict(size=12, color='#E67E22', symbol='diamond'))
+
+        st.plotly_chart(fig, use_container_width=True)
+
+st.divider()
+st.caption("© 2026 CCbjj Engenharia | Dados integrados via Scikit-Learn Pipeline")
+     
+Overwriting scripts/app.py
+
+
+# ============================================================
+# 17. Verificação de Integridade dos Ativos de Produção
+# ============================================================
+import os
+
+# Lista atualizada de ativos críticos conforme o pipeline CCbjj
+arquivos_obrigatorios = {
+    "Dashboard Streamlit": "scripts/app.py",
+    "Pipeline de IA (.pkl)": "models/pipeline_random_forest.pkl",
+    "Metadados de Features": "models/features_metadata.joblib",
+    "Dataset Consolidado": "data/processed/df_mestre_consolidado.csv",
+    "Gráfico de Portfólio": "reports/figures/feature_importance_ccbjj.png"
+}
+
+print("🧪 Iniciando Diagnóstico de Deploy CCbjj IA 2.0...\n")
+
+total_ok = 0
+for nome, path in arquivos_obrigatorios.items():
+    # Verifica o caminho direto e o caminho relativo (útil para diferentes IDEs)
+    possiveis_paths = [path, f"../{path}", os.path.join(os.getcwd(), path)]
+    encontrado = False
+
+    for p in possiveis_paths:
+        if os.path.exists(p):
+            tamanho = os.path.getsize(p) / 1024
+            print(f"✅ {nome:25} | Localizado em: {p} ({tamanho:.1f} KB)")
+            total_ok += 1
+            encontrado = True
+            break
+
+    if not encontrado:
+        print(f"❌ {nome:25} | NÃO ENCONTRADO!")
+
+print("-" * 65)
+if total_ok == len(arquivos_obrigatorios):
+    print("🚀 EXCELENTE: Ecossistema íntegro e pronto para o GitHub/Deploy!")
+    print("Próximo passo: streamlit run scripts/app.py")
+else:
+    print(f"⚠️ ATENÇÃO: {len(arquivos_obrigatorios) - total_ok} arquivo(s) ausente(s).")
+    print("Dica: Verifique se você executou as Células 12, 14 e 16 com sucesso.")
+     
+🧪 Iniciando Diagnóstico de Deploy CCbjj IA 2.0...
+
+✅ Dashboard Streamlit       | Localizado em: scripts/app.py (4.9 KB)
+✅ Pipeline de IA (.pkl)     | Localizado em: models/pipeline_random_forest.pkl (569688.7 KB)
+✅ Metadados de Features     | Localizado em: models/features_metadata.joblib (0.2 KB)
+✅ Dataset Consolidado       | Localizado em: data/processed/df_mestre_consolidado.csv (70024.3 KB)
+✅ Gráfico de Portfólio      | Localizado em: reports/figures/feature_importance_ccbjj.png (209.5 KB)
+-----------------------------------------------------------------
+🚀 EXCELENTE: Ecossistema íntegro e pronto para o GitHub/Deploy!
+Próximo passo: streamlit run scripts/app.py
+Para visualizar a ferramenta em funcionamento, execute o comando abaixo no terminal da sua máquina (dentro da pasta do projeto):
+
+streamlit run scripts/app.py
+
+
+
+# ============================================================
+# 18. Consolidação da Base de Consulta (Database CCbjj) - REVISADA FINAL
+# ============================================================
+import os
+import pandas as pd
+import numpy as np
+
+raw_path = "data/raw/"
+proc_path = "data/processed/"
+os.makedirs(proc_path, exist_ok=True)
+
+def load_and_standardize(filename):
+    path = f"{raw_path}{filename}"
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"⚠️ Arquivo {filename} não encontrado!")
+    df = pd.read_csv(path)
+    df.columns = [col.lower().strip() for col in df.columns]
+    return df
+
+# 1. Carga dos dados
+df_atv = load_and_standardize("atividadesccbjj.csv")
+df_obras = load_and_standardize("obrasccbjj.csv")
+df_forn = load_and_standardize("fornecedoresccbjj.csv")
+df_sup = load_and_standardize("suprimentosccbjj.csv")
+
+# 2. Merges e Limpeza de IDs
+df_consolidado = df_atv.merge(df_obras, on="id_obra", how="left")
+df_consolidado = df_consolidado.merge(df_sup, on=['id_obra', 'id_atividade'], how="left")
+
+df_consolidado['id_fornecedor'] = df_consolidado['id_fornecedor'].astype(str).str.strip().replace(['nan', 'None', '0.0'], 'N/A')
+df_forn['id_fornecedor'] = df_forn['id_fornecedor'].astype(str).str.strip()
+
+# 3. Integração do Rating
+cols_forn = [c for c in ['id_fornecedor', 'rating_confiabilidade'] if c in df_forn.columns]
+df_consolidado = df_consolidado.merge(df_forn[cols_forn], on='id_fornecedor', how='left')
+df_consolidado['rating_confiabilidade'] = df_consolidado['rating_confiabilidade'].fillna(3.5)
+
+# 4. Integração com Base IA (Solo e Clima)
+if 'base_ia' in globals():
+    base_ia_clean = globals()['base_ia'][['id_obra', 'nivel_chuva', 'tipo_solo']].drop_duplicates('id_obra')
+    df_consolidado = df_consolidado.drop(columns=[c for c in ['nivel_chuva', 'tipo_solo'] if c in df_consolidado.columns], errors='ignore')
+    df_consolidado = df_consolidado.merge(base_ia_clean, on='id_obra', how='left')
+
+# 5. Inteligência e Padronização de Texto (Garante que o Slider do App funcione)
+for col in ['cidade', 'etapa', 'material', 'tipo_solo']:
+    if col in df_consolidado.columns:
+        df_consolidado[col] = df_consolidado[col].astype(str).str.lower().str.strip().replace(['nan', 'none'], np.nan)
+
+# Preenchimentos Finais (Segurança para o Streamlit Selectbox)
+df_consolidado['material'] = df_consolidado['material'].fillna('cimento')
+df_consolidado['tipo_solo'] = df_consolidado['tipo_solo'].fillna('argiloso')
+df_consolidado['cidade'] = df_consolidado['cidade'].fillna('recife')
+
+# Ajuste Dinâmico de Chuva (Evita coluna vazia no CSV final)
+mapping_chuva = {'manaus': 350, 'são paulo': 220, 'recife': 280, 'curitiba': 150, 'belo horizonte': 180}
+if 'nivel_chuva' not in df_consolidado.columns or df_consolidado['nivel_chuva'].isnull().all():
+    df_consolidado['nivel_chuva'] = df_consolidado['cidade'].map(mapping_chuva).fillna(200)
+
+# 6. Engenharia de Features
+if 'dias_atraso' not in df_consolidado.columns: df_consolidado['dias_atraso'] = 0
+df_consolidado['taxa_insucesso_fornecedor'] = df_consolidado.groupby('id_fornecedor')['dias_atraso'].transform(lambda x: (x > 0).mean()).fillna(0.1)
+df_consolidado['risco_etapa'] = df_consolidado.groupby('etapa')['dias_atraso'].transform('mean').fillna(6.6)
+df_consolidado['complexidade_obra'] = np.log1p(df_consolidado['orcamento_estimado'].fillna(15000000))
+
+# 7. Seleção Final e Exportação Compactada
+cols_modelo = ['id_obra', 'orcamento_estimado', 'rating_confiabilidade', 'taxa_insucesso_fornecedor',
+               'complexidade_obra', 'risco_etapa', 'nivel_chuva', 'tipo_solo', 'material', 'cidade', 'etapa']
+
+# Verificação de segurança
+for col in cols_modelo:
+    if col not in df_consolidado.columns: df_consolidado[col] = 0.0 if col != 'id_obra' else 'N/A'
+
+df_final = df_consolidado[cols_modelo].drop_duplicates().copy()
+
+# Exportação em dois formatos (CSV para conferência e GZ para o GitHub)
+nome_csv = f"{proc_path}df_mestre_consolidado.csv"
+nome_gz = f"{proc_path}df_mestre_consolidado.csv.gz"
+
+df_final.to_csv(nome_csv, index=False)
+df_final.to_csv(nome_gz, index=False, compression='gzip')
+
+print(f"✅ Sucesso! Base compactada gerada: {nome_gz}")
+print(f"📉 Redução de tamanho: {os.path.getsize(nome_csv)/1024**2:.2f}MB -> {os.path.getsize(nome_gz)/1024**2:.2f}MB")
+     
+✅ Sucesso! Base compactada gerada: data/processed/df_mestre_consolidado.csv.gz
+📉 Redução de tamanho: 35.29MB -> 5.30MB
+
+# ============================================================
+# 19. Inteligência de Negócio: Dashboard Executivo e Priorização
+# ============================================================
+import pandas as pd
+import numpy as np
+import os
+import plotly.express as px
+import plotly.io as pio
+
+# Configurar template padrão do Plotly para CCbjj
+pio.templates.default = "plotly_white"
+
+# 1. Carregamento da Base Consolidada
+path_input = "data/processed/"
+path_output = "reports/"
+os.makedirs(f"{path_output}charts", exist_ok=True)
+
+nome_entrada = f"{path_input}df_mestre_consolidado.csv"
+
+if os.path.exists(nome_entrada):
+    df = pd.read_csv(nome_entrada)
+    print(f"📖 Base CCbjj carregada: {len(df)} registros processados.\n")
+else:
+    raise FileNotFoundError(f"❌ Erro: O arquivo {nome_entrada} não foi encontrado.")
+
+# 2. Função de Consolidação Executiva
+def gerar_view_executiva(df_temp):
+    relatorios = []
+    df_temp['id_obra'] = df_temp['id_obra'].astype(str).str.upper()
+
+    for obra_id, grupo in df_temp.groupby("id_obra"):
+        risco_medio = grupo["risco_etapa"].fillna(0).mean()
+
+        # Identificação da Etapa mais crítica daquela obra específica
+        idx_critico = grupo["risco_etapa"].idxmax()
+        etapa_pior = grupo.loc[idx_critico, "etapa"]
+
+        # Identificação do Insumo mais vulnerável baseado na taxa de insucesso
+        material_gargalo = 'n/a'
+        if 'material' in grupo.columns:
+            material_gargalo = grupo.loc[idx_critico, "material"]
+
+        relatorios.append({
+            "Obra": obra_id,
+            "Cidade": grupo["cidade"].iloc[0],
+            "Terreno": grupo["tipo_solo"].iloc[0],
+            "Pluviometria_mm": grupo["nivel_chuva"].fillna(0).mean(),
+            "Risco_Geral_Dias": round(risco_medio, 1),
+            "Etapa_Critica": etapa_pior,
+            "Insumo_Vulneravel": material_gargalo
+        })
+    return pd.DataFrame(relatorios)
+
+# 3. Gerar DataFrames de Análise
+df_executivo = gerar_view_executiva(df)
+
+# Criar o TOP 20 por Risco (Maior para o Menor)
+df_top20 = df_executivo.sort_values(by='Risco_Geral_Dias', ascending=False).head(20).copy()
+
+# 4. Interface de Saída (Focada em Exceção para evitar truncamento)
+print("🏛️  CENTRAL DE CONTROLE CCBJJ - RESUMO ESTRATÉGICO")
+print("=" * 75)
+print(f"📊 Total de Obras Monitoradas: {len(df_executivo)}")
+print(f"📉 Média de Atraso Global: {df_executivo['Risco_Geral_Dias'].mean():.1f} dias")
+print("=" * 75)
+print(f"🚨 EXIBINDO OS 20 CENÁRIOS DE MAIOR RISCO (CRÍTICOS):")
+print("-" * 75)
+
+for _, row in df_top20.iterrows():
+    status_emoji = "🔴" if row['Risco_Geral_Dias'] > 12 else "🟡" # Using 12 as threshold based on prompt context
+    print(f"{status_emoji} OBRA: {row['Obra']} | {str(row['Cidade']).title()} | RISCO: {row['Risco_Geral_Dias']} dias")
+    print(f"   ⚠️  ETAPA: {str(row['Etapa_Critica']).title()} | 📦 INSUMO: {str(row['Insumo_Vulneravel']).title()}")
+    print("-" * 75)
+
+# 5. Geração de Dashboards Visuais
+print("\n📈 Gerando visualizações interativas...")
+
+# Gráfico de Pizza: Saúde do Portfólio
+df_executivo['Status'] = df_executivo['Risco_Geral_Dias'].apply(
+    lambda x: "Crítico (>12d)" if x > 12 else "Alerta (7-12d)" if x > 7 else "Normal"
+)
+fig_pizza = px.pie(df_executivo, names='Status', title='Status de Saúde das Obras CCbjj',
+                   color='Status', color_discrete_map={'Crítico (>12d)': '#CC3300', 'Alerta (7-12d)': '#FFCC00', 'Normal': '#006633'},
+                   hole=0.4)
+fig_pizza.write_html(f"{path_output}charts/status_portfolio.html")
+fig_pizza.show()
+
+
+# Gráfico de Barras: Top 5 Etapas Críticas (Pode usar Insumo_Vulneravel também)
+df_etapas_criticas = df_executivo.groupby('Etapa_Critica')['Risco_Geral_Dias'].mean().reset_index().sort_values(by='Risco_Geral_Dias', ascending=False)
+
+fig_bar = px.bar(df_etapas_criticas, x='Etapa_Critica', y='Risco_Geral_Dias',
+                 title='Média de Risco por Etapa Crítica',
+                 labels={'Etapa_Critica': 'Etapa da Obra', 'Risco_Geral_Dias': 'Média de Atraso (Dias)'},
+                 color='Risco_Geral_Dias',
+                 color_continuous_scale='Greens', # Escala de cor da CCbjj
+                 hover_data={'Risco_Geral_Dias': ':.1f'})
+fig_bar.update_layout(xaxis={'categoryorder':'total descending'})
+fig_bar.write_html(f"{path_output}charts/etapas_criticas.html") # Salvar como HTML interativo
+print(f"   ✅ Gráfico de Barras salvo: {path_output}charts/etapas_criticas.html")
+fig_bar.show()
+
+# 6. Exportação de Ativos
+df_executivo.to_csv(f"{path_output}relatorio_executivo_completo.csv", index=False)
+df_top20.to_csv(f"{path_output}relatorio_top20.csv", index=False)
+
+print(f"\n✅ Relatórios salvos em {path_output}")
+print(f"   📂 'relatorio_top20.csv' criado para ação imediata.")
+     
+📖 Base CCbjj carregada: 300438 registros processados.
+
+🏛️  CENTRAL DE CONTROLE CCBJJ - RESUMO ESTRATÉGICO
+===========================================================================
+📊 Total de Obras Monitoradas: 50000
+📉 Média de Atraso Global: 6.6 dias
+===========================================================================
+🚨 EXIBINDO OS 20 CENÁRIOS DE MAIOR RISCO (CRÍTICOS):
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9984 | Porto Alegre | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Revestimento
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9983 | Fortaleza | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Cimento
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9982 | Rio De Janeiro | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Tintas
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9981 | Belo Horizonte | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Revestimento
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9980 | Porto Alegre | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Tintas
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-998 | Rio De Janeiro | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Madeira
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9979 | Curitiba | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Tintas
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9978 | Manaus | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Piso
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9977 | Recife | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Brita
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9976 | Salvador | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Brita
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9975 | Belo Horizonte | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Cimento
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9974 | Belém | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Cimento
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9973 | São Paulo | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Brita
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9972 | Belo Horizonte | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Areia
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9971 | Rio De Janeiro | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Cimento
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-9970 | Porto Alegre | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Brita
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-10027 | Recife | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Madeira
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-10026 | São Paulo | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Tintas
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-10025 | Fortaleza | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Tintas
+---------------------------------------------------------------------------
+🟡 OBRA: CCBJJ-10024 | São Paulo | RISCO: 6.6 dias
+   ⚠️  ETAPA: Estrutura | 📦 INSUMO: Tintas
+---------------------------------------------------------------------------
+
+📈 Gerando visualizações interativas...
+   ✅ Gráfico de Barras salvo: reports/charts/etapas_criticas.html
+✅ Relatórios salvos em reports/
+   📂 'relatorio_top20.csv' criado para ação imediata.
+
+
+# ============================================================
+# 20. Treinamento e Exportação do Pipeline Final (Produção CCbjj)
+# ============================================================
+import pandas as pd
+import joblib
+import os
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.ensemble import RandomForestRegressor
+
+# 1. Configuração de Caminhos
+path_input = "data/processed/" # Pasta de dados limpos
+model_path = "models/"
+os.makedirs(model_path, exist_ok=True)
+
+# 2. Carregar dados consolidados
+nome_base = f"{path_input}df_mestre_consolidado.csv"
+
+if os.path.exists(nome_base):
+    df = pd.read_csv(nome_base)
+else:
+    raise FileNotFoundError(f"❌ Erro: Base {nome_base} não encontrada. Execute a Célula 18.")
+
+# 3. Tratamento de Target e Features (Evitando Data Leakage)
+# O modelo deve prever o 'risco_etapa' com base nas outras condições
+target = "risco_etapa"
+
+# Removemos ID e o próprio Target da matriz X
+X = df.drop(columns=["id_obra", target])
+y = df[target]
+
+# 4. Definição do Contrato de Features (Ordem das Colunas)
+# Salvamos isso para que o Bot saiba a ordem exata das perguntas/inputs
+features_treino = X.columns.tolist()
+joblib.dump(features_treino, f"{model_path}features_metadata.joblib")
+
+# 5. Mapeamento de Colunas
+categorical_cols = ["material", "cidade", "etapa", "tipo_solo"]
+numeric_cols = [col for col in X.columns if col not in categorical_cols]
+
+print(f"📊 Iniciando Treinamento CCbjj IA 2.0...")
+print(f"✅ Ordem das Features Protegida: {features_treino}")
+
+# 6. Construção do Pré-processador
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), categorical_cols),
+        ("num", "passthrough", numeric_cols)
+    ]
+)
+
+# 7. Pipeline de Machine Learning (Hiperparâmetros de Produção)
+pipeline_ccbjj = Pipeline(steps=[
+    ("preprocessor", preprocessor),
+    ("regressor", RandomForestRegressor(
+        n_estimators=300,
+        max_depth=12,
+        random_state=42,
+        n_jobs=-1
+    ))
+])
+
+# 8. Divisão, Treino e Validação
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15, random_state=42)
+pipeline_ccbjj.fit(X_train, y_train)
+
+# 9. Verificação de Performance (R²)
+score = pipeline_ccbjj.score(X_test, y_test)
+print(f"\n✅ Treino Concluído!")
+print(f"📈 R² Score (Qualidade do Modelo): {score:.4f}")
+
+# 10. Exportação para Deploy
+model_full_path = f"{model_path}pipeline_random_forest.pkl"
+joblib.dump(pipeline_ccbjj, model_full_path)
+
+print(f"💾 Pipeline Final Exportado: {model_full_path}")
+print(f"📂 Metadados Salvos: {model_path}features_metadata.joblib")
+     
+📊 Iniciando Treinamento CCbjj IA 2.0...
+✅ Ordem das Features Protegida: ['orcamento_estimado', 'rating_confiabilidade', 'taxa_insucesso_fornecedor', 'complexidade_obra', 'nivel_chuva', 'tipo_solo', 'material', 'cidade', 'etapa']
+
+✅ Treino Concluído!
+📈 R² Score (Qualidade do Modelo): 1.0000
+💾 Pipeline Final Exportado: models/pipeline_random_forest.pkl
+📂 Metadados Salvos: models/features_metadata.joblib
+
+
+# ============================================================
+# 21. Painel de Diagnóstico e Interpretabilidade CCbjj
+# ============================================================
+from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import numpy as np
+
+# 1. Realizar predições para validação
+y_pred = pipeline_ccbjj.predict(X_test)
+
+# 2. Cálculo de Métricas de Erro e Aderência
+mae = mean_absolute_error(y_test, y_pred)
+rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+r2 = r2_score(y_test, y_pred)
+
+print(f"=== 📊 DIAGNÓSTICO DE PERFORMANCE CCBJJ ===")
+print(f"✅ Precisão (R²): {r2:.4f}")
+print(f"✅ Erro Médio (MAE): {mae:.2f} dias")
+print(f"✅ Incerteza (RMSE): {rmse:.2f} dias")
+print("-" * 43)
+
+# 3. Construção dos Gráficos de Auditoria
+sns.set_theme(style="whitegrid")
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 8))
+
+# A. Gráfico de Resíduos: Realidade vs. Inteligência Artificial
+sns.regplot(x=y_test, y=y_pred, ax=ax1,
+            scatter_kws={'alpha':0.4, 'color':'#004A2F'},
+            line_kws={'color':'#E67E22', 'label':'Tendência IA'})
+ax1.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], '--k', alpha=0.7, label='Ideal (Zero Erro)')
+ax1.set_title("Qualidade da Predição: Real vs. IA", fontsize=15, fontweight='bold')
+ax1.set_xlabel("Atraso Real medido (Dias)")
+ax1.set_ylabel("Atraso Previsto pela IA (Dias)")
+ax1.legend()
+
+# B. Importância das Variáveis (Feature Importance)
+try:
+    # Extração robusta de nomes de colunas
+    preprocessor = pipeline_ccbjj.named_steps['preprocessor']
+    nomes_colunas = preprocessor.get_feature_names_out()
+
+    # Limpeza estética profunda: remove prefixos e deixa a primeira letra maiúscula
+    nomes_limpos = [n.split("__")[-1].replace("_", " ").title() for n in nomes_colunas]
+
+    importances = pipeline_ccbjj.named_steps['regressor'].feature_importances_
+    feat_imp = pd.DataFrame({'Variável': nomes_limpos, 'Peso': importances})
+    feat_imp = feat_imp.sort_values(by='Peso', ascending=False).head(12)
+
+    sns.barplot(x='Peso', y='Variável', data=feat_imp, ax=ax2, color='#004A2F')
+    ax2.set_title("Top 12 Fatores Determinantes de Atraso", fontsize=15, fontweight='bold')
+    ax2.set_xlabel("Impacto no Modelo (Gini Importance)")
+
+except Exception as e:
+    ax2.text(0.5, 0.5, f"Erro ao mapear variáveis:\n{e}", ha='center', va='center')
+
+plt.tight_layout()
+plt.show()
+
+# 4. Insight de Fechamento Estratégico
+print(f"\n💡 CONCLUSÃO: O sistema explica {r2*100:.1f}% dos desvios de prazo.")
+print(f"O fator de maior impacto detectado foi '{feat_imp.iloc[0]['Variável']}', seguido por '{feat_imp.iloc[1]['Variável']}'.")
+     
+=== 📊 DIAGNÓSTICO DE PERFORMANCE CCBJJ ===
+✅ Precisão (R²): 1.0000
+✅ Erro Médio (MAE): 0.00 dias
+✅ Incerteza (RMSE): 0.00 dias
+-------------------------------------------
+
+💡 CONCLUSÃO: O sistema explica 100.0% dos desvios de prazo.
+O fator de maior impacto detectado foi 'Etapa Fundação', seguido por 'Etapa Acabamento'.
+
+
+# ============================================================
+# 22. Script Unificado de Produção e Exportação de Ativos
+# ============================================================
+import os
+import zipfile
+import pandas as pd
+import numpy as np
+import joblib
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.pipeline import Pipeline
+
+try:
+    from google.colab import files
+except ImportError:
+    files = None
+
+def executar_pipeline_producao():
+    print("🏗️ Iniciando Consolidação do Ecossistema CCbjj...")
+
+    # 1. Definição de Caminhos
+    paths = ['data/raw', 'data/processed', 'models', 'reports/figures', 'scripts']
+    for p in paths: os.makedirs(p, exist_ok=True)
+
+    # 2. Carregamento e Engenharia de Dados (Sincronizado)
+    # Aqui assumimos que a Célula 18 gerou o df_final
+    path_proc = "data/processed/df_mestre_consolidado.csv"
+    if not os.path.exists(path_proc):
+        print("⚠️ Base consolidada não encontrada. Certifique-se de rodar a Célula 18.")
+        return
+
+    df = pd.read_csv(path_proc)
+
+    # 3. Preparação para Treinamento
+    target = "risco_etapa"
+    X = df.drop(columns=["id_obra", target])
+    y = df[target]
+
+    # Salvar Metadados (Contrato de Colunas)
+    features_modelo = X.columns.tolist()
+    joblib.dump(features_modelo, "models/features_metadata.joblib")
+
+    # 4. Construção do Pipeline de Produção
+    cat_cols = ["material", "cidade", "etapa", "tipo_solo"]
+    num_cols = [c for c in features_modelo if c not in cat_cols]
+
+    preprocessor = ColumnTransformer([
+        ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), cat_cols),
+        ("num", "passthrough", num_cols)
+    ])
+
+    model = Pipeline([
+        ("preprocessor", preprocessor),
+        ("regressor", RandomForestRegressor(n_estimators=300, random_state=42, n_jobs=-1))
+    ])
+
+    # 5. Treino Final (Full Dataset para Produção)
+    model.fit(X, y)
+    joblib.dump(model, "models/pipeline_random_forest.pkl")
+    print("✅ Modelo e Metadados exportados para /models")
+
+    # 6. EMPACOTAMENTO PARA DOWNLOAD
+    print("\n📦 Compactando arquivos CSV e Ativos...")
+    zip_name = "assets_ccbjj_entrega.zip"
+    with zipfile.ZipFile(zip_name, 'w') as zipf:
+        # Adicionar CSVs
+        for root, dirs, filenames in os.walk('data'):
+            for filename in filenames:
+                if filename.endswith(".csv"):
+                    zipf.write(os.path.join(root, filename))
+
+        # Adicionar Modelos e Scripts
+        zipf.write("models/pipeline_random_forest.pkl")
+        zipf.write("models/features_metadata.joblib")
+        if os.path.exists("scripts/app.py"):
+            zipf.write("scripts/app.py")
+
+    print(f"✅ Arquivo '{zip_name}' criado com sucesso!")
+
+    if files:
+        print("📥 Iniciando download...")
+        files.download(zip_name)
+
+# Executar o processo
+executar_pipeline_producao()
+     
+🏗️ Iniciando Consolidação do Ecossistema CCbjj...
+✅ Modelo e Metadados exportados para /models
+
+📦 Compactando arquivos CSV e Ativos...
+✅ Arquivo 'assets_ccbjj_entrega.zip' criado com sucesso!
+📥 Iniciando download...
+
+
+# ============================================================
+# 23. Simulador de Risco CCbjj – Consumo de Pipeline IA
+# ============================================================
+import pandas as pd
+import numpy as np
+import joblib
+import os
+
+# 1. Carregamento do Cérebro do Projeto (Pipeline + Metadados)
+MODEL_PATH = "models/pipeline_random_forest.pkl"
+META_PATH = "models/features_metadata.joblib"
+
+if not os.path.exists(MODEL_PATH):
+    print("❌ Erro: Modelo não encontrado. Rode o scripts/train_model.py primeiro.")
+else:
+    # Carregamos o pipeline completo (já inclui o tratamento de dados)
+    pipeline = joblib.load(MODEL_PATH)
+    features_originais = joblib.load(META_PATH)
+
+    # 2. Definição do Cenário de Simulação (Exemplo de Obra de Alto Risco)
+    # IMPORTANTE: Usamos minúsculo para bater com o padrão do gerador_dados.py
+    nova_obra = {
+        'orcamento_estimado': 12000000.0,
+        'rating_confiabilidade': 2.5,        # Fornecedor com nota baixa
+        'taxa_insucesso_fornecedor': 0.35,   # Histórico de falhas alto
+        'complexidade_obra': np.log1p(12000000.0),
+        'risco_etapa': 8.0,                  # Valor base de risco da etapa
+        'nivel_chuva': 450.0,                # Cenário de muita chuva
+        'tipo_solo': 'argiloso',             # Solo instável
+        'material': 'cimento',
+        'cidade': 'belo horizonte',
+        'etapa': 'fundação'
+    }
+
+    # 3. Transformação em DataFrame
+    df_nova = pd.DataFrame([nova_obra])
+
+    # 4. Garantia de Contrato (Reordenar colunas conforme o treinamento)
+    # Isso evita erros de predição se a ordem das chaves no dicionário mudar
+    df_nova = df_nova[features_originais]
+
+    # 5. Predição Direta via Pipeline
+    # O pipeline aplica o StandardScaler e o OneHotEncoder automaticamente!
+
+    pred_atraso = pipeline.predict(df_nova)[0]
+
+    # 6. Relatório de Diagnóstico
+    print("=== 🏗️ SIMULADOR DE RISCO CCBJJ ===")
+    print(f"📍 Obra em: {nova_obra['cidade'].title()} | Etapa: {nova_obra['etapa'].title()}")
+    print(f"🌧️ Clima: {nova_obra['nivel_chuva']}mm | Solo: {nova_obra['tipo_solo'].title()}")
+    print("-" * 40)
+
+    status = "🔴 CRÍTICO" if pred_atraso > 12 else "🟡 ALERTA" if pred_atraso > 7 else "🟢 SEGURO"
+    print(f"🔮 PREVISÃO DE ATRASO: {pred_atraso:.1f} dias")
+    print(f"📊 STATUS DO CRONOGRAMA: {status}")
+    print("-" * 40)
+    print("💡 Sugestão: Verifique planos de drenagem ou troque o fornecedor.")
+     
+=== 🏗️ SIMULADOR DE RISCO CCBJJ ===
+📍 Obra em: Belo Horizonte | Etapa: Fundação
+🌧️ Clima: 450.0mm | Solo: Argiloso
+----------------------------------------
+🔮 PREVISÃO DE ATRASO: 6.6 dias
+📊 STATUS DO CRONOGRAMA: 🟢 SEGURO
+----------------------------------------
+💡 Sugestão: Verifique planos de drenagem ou troque o fornecedor.
+
+
+# ============================================================
+# 24. Teste de Integração: Auditoria de Ponta a Ponta
+# ============================================================
+import os
+import subprocess
+import joblib
+import pandas as pd
+
+def realizar_auditoria():
+    print("🛡️ Iniciando Auditoria do Ecossistema CCbjj...")
+    print("=" * 50)
+
+    sucesso_total = True
+    passos = [
+        ("Geração de Dados", "scripts/gerar_dados.py", "data/raw/base_consulta_botccbjj.csv"),
+        ("Treinamento de IA", "scripts/train_model.py", "models/pipeline_random_forest.pkl"),
+        ("Simulação de Risco", "scripts/simulador_de_risco.py", None)
+    ]
+
+
+
+    for nome, script, output in passos:
+        print(f"🔄 Executando: {nome}...")
+
+        if not os.path.exists(script):
+            print(f"❌ ERRO: O arquivo {script} não foi encontrado!")
+            sucesso_total = False
+            continue
+
+        # Executa o script via terminal
+        resultado = subprocess.run(["python", script], capture_output=True, text=True)
+
+        if resultado.returncode == 0:
+            print(f"✅ {nome} finalizado com sucesso.")
+            if output and os.path.exists(output):
+                tamanho = os.path.getsize(output) / 1024
+                print(f"   📂 Arquivo gerado: {output} ({tamanho:.1f} KB)")
+        else:
+            print(f"⚠️ FALHA em {nome}:")
+            print(f"   Erro: {resultado.stderr[:200]}...")
+            sucesso_total = False
+            break # Interrompe se houver erro crítico
+
+    print("=" * 50)
+    if sucesso_total:
+        print("🚀 AUDITORIA CONCLUÍDA: Todos os componentes estão integrados!")
+
+        # Teste final de Sanidade: Carregar o modelo e checar as colunas
+        try:
+            pipeline = joblib.load("models/pipeline_random_forest.pkl")
+            features = joblib.load("models/features_metadata.joblib")
+            print(f"🎯 Sanidade IA: {len(features)} variáveis mapeadas no contrato.")
+        except Exception as e:
+            print(f"❌ Erro na sanidade do modelo: {e}")
+    else:
+        print("❌ AUDITORIA REPROVADA: Verifique os logs acima.")
+
+if __name__ == "__main__":
+    realizar_auditoria()
+     
+🛡️ Iniciando Auditoria do Ecossistema CCbjj...
+==================================================
+🔄 Executando: Geração de Dados...
+✅ Geração de Dados finalizado com sucesso.
+   📂 Arquivo gerado: data/raw/base_consulta_botccbjj.csv (55.5 KB)
+🔄 Executando: Treinamento de IA...
+✅ Treinamento de IA finalizado com sucesso.
+   📂 Arquivo gerado: models/pipeline_random_forest.pkl (453.0 KB)
+🔄 Executando: Simulação de Risco...
+✅ Simulação de Risco finalizado com sucesso.
+==================================================
+🚀 AUDITORIA CONCLUÍDA: Todos os componentes estão integrados!
+🎯 Sanidade IA: 9 variáveis mapeadas no contrato.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+As regras de Meigarom Lopes e Luiz Café 
+
+
+
+
+ Luiz Café Tech Recruiter 
+
+
+Como escrever um README que torna seu Portfólio Legível para Recrutadores
+
+
+
+Olá, comunidade da DIO!
+
+Ao longo da minha carreira como Tech Recruiter, já avaliei centenas de repositórios no GitHub de desenvolvedores em diferentes níveis: júnior, pleno e sênior. E há algo que percebo com muita frequência ao longo desses anos, uma verdade que pode doer um pouco:
+
+Na maioria dos casos, o README decide se eu continuo analisando o repositório ou se sigo para o próximo candidato.
+E isso não acontece porque o código seja irrelevante, muito pelo contrário. Já encontrei projetos tecnicamente brilhantes que, infelizmente, passam despercebidos por muitos recrutadores que não possuem conhecimento técnico aprofundado para avaliá-los.
+
+Além disso, o tempo é escasso. São várias vagas para preencher em um curto período. É exatamente nesse cenário que o README ganha importância: ele é o primeiro sinal de que você sabe explicar o que construiu e por quê.
+
+Este artigo tem um objetivo simples: mostrar como tornar seu portfólio legível para recrutadores, sem truques, exageros ou promessas mágicas. Tudo o que compartilho aqui vem da prática real de quem avalia repositórios diariamente.
+
+Vamos lá?
+
+O erro mais comum que vejo em READMEs de portfólio
+Na maioria das vezes, o problema não é falta de código, e sim, falta de contexto.
+
+O que vejo com frequência em READMEs:
+
+Apenas dizem “Projeto feito em X tecnologia”, sem explicar o objetivo, a motivação ou as decisões envolvidas;
+READMEs claramente copiados de templates genéricos, o que demonstra falta de curiosidade e cuidado;
+Não explicam qual problema o projeto resolve.
+No dia a dia, o trabalho de um desenvolvedor é resolver problemas complexos. Se um profissional não consegue demonstrar isso no próprio repositório, ele tende a ir para o final da fila, quando não é descartado logo de início.
+
+Quando isso acontece, a sensação para quem avalia é simples:
+
+Não fica claro o que essa pessoa realmente sabe fazer;
+Parece que não há responsabilidade sobre o que foi produzido;
+Transmite desleixo e falta de profissionalismo.
+O que um recrutador quer encontrar em um repositório?
+Quando um recrutador técnico abre seu repositório, ele tenta responder rapidamente perguntas como:
+
+Que problema esse projeto resolve?
+Esse dev entende o que construiu ou apenas seguiu um tutorial?
+Ele sabe justificar suas escolhas técnicas?
+Qual o nível de complexidade do projeto?
+Como esse dev trabalha em equipe?
+Ele demonstra atualização constante?
+Aqui vale um ponto importante:
+
+Legibilidade não tem a ver com simplicidade.
+Você pode, e deve, criar projetos complexos, desde que haja intencionalidade clara. Um bom README não tenta impressionar; ele explica. E explicar bem é uma habilidade extremamente valorizada.
+
+A estrutura de README que funciona na prática
+Após analisar muitos repositórios, esta é a estrutura que mais facilita minha avaliação como recrutador. Você não precisa usar todas as seções, mas quanto mais contexto fornecer, melhor.
+
+Visão geral
+Explique em poucas linhas:
+
+O que é o projeto
+Qual problema ele resolve
+Exemplo:
+
+Aplicação web para gerenciamento de tarefas, voltada para usuários que precisam organizar demandas recorrentes de forma simples e eficiente.
+
+Objetivo do projeto
+Aqui você demonstra intencionalidade.
+
+Responda:
+
+Por que você criou esse projeto?
+Era para aprender algo específico?
+Resolver um problema real?
+Exemplo:
+
+Criei este projeto para aprofundar meus conhecimentos em autenticação JWT e na organização de uma API REST escalável.
+
+Decisões técnicas
+Essa é uma das seções mais importantes, e também uma das mais ignoradas.
+
+Explique:
+
+Por que escolheu essa stack;
+Quais alternativas considerou;
+Quais trade-offs aceitou.
+Exemplo:
+
+Optei por Node.js com Express pela simplicidade e maturidade do ecossistema. Avaliei utilizar NestJS, mas para o escopo do projeto preferi uma abordagem mais direta e com menor curva de aprendizado.
+Isso demonstra pensamento crítico, algo extremamente valorizado em processos seletivos.
+
+Tecnologias utilizadas
+Seja objetivo e evite listas infladas sem propósito.
+
+Exemplo:
+
+Node.js
+Express
+PostgreSQL
+JWT para autenticação
+Docker para ambiente de desenvolvimento
+
+Como executar o projeto
+Simples, mas faz muita diferença.
+
+Inclua:
+
+Pré-requisitos;
+Passos claros para rodar o projeto localmente.
+Isso demonstra cuidado, organização e respeito por quem está avaliando.
+
+Aprendizados
+Essa seção costuma ser decisiva.
+
+Aqui você pode responder:
+
+O que foi mais difícil e como pretende superar essas adversidades?
+Quais foram seus principais aprendizados?
+O que faria diferente hoje?
+Quem te ajudou ou inspirou durante o desenvolvimento?
+Exemplo:
+
+Aprendi a importância de separar regras de negócio da camada de controllers, o que facilitou a escrita de testes e a manutenção do código.
+
+Próximos passos
+Mostrar que o projeto não está “fechado” é um ponto positivo.
+
+Exemplo:
+
+Melhorar a cobertura de testes
+Implementar cache
+Refatorar parte da arquitetura
+Isso demonstra visão de evolução e maturidade técnica.
+
+
+O README como narrativa técnica
+O README não é apenas documentação. Ele é a sua narrativa técnica.
+
+Para nós, recrutadores, o README funciona melhor quando conta uma história clara:
+
+Qual era o problema;
+Quais decisões você tomou;
+Quais foram seus aprendizados, erros e acertos;
+Como foi sua jornada de desenvolvimento.
+Mesmo um projeto simples pode se tornar relevante quando bem explicado. É por isso que alguns candidatos conseguem oportunidades mesmo com poucos projetos, porque sabem comunicar bem seu raciocínio.
+
+Para quem esse modelo de README funciona melhor?
+Com base na minha experiência, esse modelo é especialmente útil para:
+
+Desenvolvedores júnior e pleno;
+Pessoas em transição de carreira;
+Profissionais sênior que contribuem com projetos open source.
+O segredo é facilitar a vida de quem avalia. Se o recrutador entende rapidamente seu raciocínio, suas chances de avançar aumentam.
+
+Considerações finais
+Espero sinceramente que, após este artigo, você tenha entendido a importância de dedicar tempo à escrita de um bom README. Ele não garante uma vaga, mas evita que você seja eliminado logo de cara. Minha dica final é: invista tempo, revise, peça para amigos e colegas lerem o que você escreveu. Feedback externo ajuda a identificar falhas e melhorar a clareza.
+
+Inspire-se em outros READMEs, mas evite copiar e colar. Seja autoral. É assim que você se destaca.
+
+Bons estudos e projetos!
+
+
+
+
+Let´s code! 
+
+
+
+
+
+
+
+
+Código de conduta
+
+Luiz Café - 16/12/2025 11:50
+Olá, Alex! Obrigado pelo seu comentário. A área de dados está com muitas oportunidades abertas, capriche nos seus projetos e no Readme que as portas irão se abrir. Não deixe também de participar das competições no Kaggle para ganhar destaque e experiência. Muito sucesso!
+
+
+
+Brasil
+Luiz Café - 16/12/2025 11:48
+Olá, Nubia. Muito obrigado pelo seu feedback, ele é muito importante para que eu continue escrevendo artigos como esse. Desejo muito sucesso na sua carreira.
+
+
+
+Brasil
+Alex Almeida - 16/12/2025 09:25
+Muito Bacana.
+
+Já venho melhorando os meu reddits em busca de uma oportunidade na área de dados
+
+
+
+Brasil
+Nubia Alves - 15/12/2025 22:16
+Olá, Luiz,
+
+Que riqueza de material que você se dispôs a compartilhar!
+
+Já estou salvando esse material no meu notebookLM porque ele merece ser lido mais de uma vez e ser seguido como roteiro para o meu próximo README de projetos.
+
+
+
+Brasil
+Luiz Café - 15/12/2025 21:06
+Muito obrigado Manuel. Seu comentário me motiva a continuar compartilhando conteúdos como esse para toda comunidade. Fico feliz em ajudar.
+
+
+
+MN
+Manuel Nvula - 15/12/2025 17:45
+Muito bom e útil o artigo, Luiz Café. Obrigado por compartilhar.
+
+Aprendi bastante com ele.
+
+
+
+
+
+REGRAS DE MEIGAROM DA CDS PARA DOCUMENTAÇÃO DE PROJETOS COMO CIENTISTA DE DADOS PROFISSIONAL 
+
+
+
+
+MEIGAROM DA CDS
+
+
+
+
+Análise de Atrasos de Entregas da Amazon
+
+1. Problema de Negócio
+
+A empresa enfrenta um aumento no número de entregas realizadas fora do prazo, o que tem
+gerado insatisfação dos clientes, aumento de reclamações e risco de perda de confiança na
+marca.
+O principal desafio do negócio é entender por que os atrasos acontecem, identificar onde
+eles se concentram e gerar informações claras que apoiem decisões operacionais para
+reduzir a taxa de atraso e melhorar a previsibilidade das entregas.
+
+2. Contexto
+
+A operação de entregas envolve diferentes variáveis que impactam diretamente o prazo, como:
+● condições climáticas,
+● tráfego,
+● tipo de veículo utilizado,
+● área de entrega,
+● perfil do entregador,
+● categoria do produto.
+A empresa já possui os dados operacionais registrados em uma base histórica, mas não utiliza
+essas informações de forma analítica para apoiar decisões estratégicas.
+O objetivo deste projeto é transformar dados brutos de entregas em insights acionáveis,
+utilizando análises descritivas e visualizações simples, capazes de serem compreendidas por
+áreas como Operações, Logística e Gestão.
+
+
+3. Premissas da análise
+
+Para a realização da análise, foram adotadas as seguintes premissas:
+
+
+
+● O status de entrega (Delivery_Status) é considerado a fonte oficial para identificar
+atrasos (delay) e entregas no prazo (ontime).
+● O tempo de entrega (Delivery_Time) está representado em minutos.
+● Registros com valores ausentes em colunas como tráfego ou clima foram tratados como
+“informação desconhecida” ou excluídos quando necessário.
+● As análises foram feitas com foco em identificação de padrões, não em causalidade
+estatística.
+● O período analisado representa uma amostra válida do comportamento operacional
+recente da empresa.
+
+4. Estratégia da solução
+
+A estratégia adotada seguiu uma abordagem estruturada de análise de dados:
+
+1. Entendimento do problema de negócio
+Identificar claramente o que significa atraso e por que ele é prejudicial para a empresa.
+
+2. Exploração e organização dos dados
+Compreensão das colunas, tipos de dados e possíveis inconsistências.
+
+3. Análise descritiva
+Cálculo de métricas como quantidade de entregas, taxa de atraso e estatísticas de
+tempo de entrega.
+
+4. Segmentação dos atrasos
+Avaliação dos atrasos por diferentes dimensões:
+○ tempo,
+○ área,
+○ clima,
+○ tráfego,
+○ veículo,
+○ categoria de produtos
+
+5. Visualização dos dados
+Criação de gráficos claros para facilitar a interpretação dos resultados e comunicação
+com o negócio.
+
+
+5. Insights da Análise
+
+A análise dos dados permitiu identificar padrões relevantes, como:
+● O tempo médio de entrega é de 125 min (2h) com desvio-padrão de 52 min (2h). A
+entrega mais rápida aconteceu em 10 min e a mais lenta em 270 min (4,5h).
+
+
+
+A área “Semi-Urban” é a única área que apresenta mais atrasos do que entregas sem
+atraso.
+● Os atrasos aumentam em dias nublados e com neblina, e diminuem em dias de sol.
+● Veículos como motocicletas apresentam maior taxa de entrega atrasada em relação aos
+outros meios de transporte.
+● O nível de tráfego forte ( Jam ), apresenta mais atrasos.
+● Os maiores atrasos aconteceram com entregas para a área “Semi-Urban” realizadas por
+motocicletas como veículo.
+● Entregadores com idade acima dos 30 anos tendem a atrasar mais as entregas do que
+entregadores abaixo dos 30.
+● As entregas estão distribuídas uniformemente entre as categorias, exceto a categoria
+outros que representa 43% das entregas.
+● A menor avaliação acontece com entregas na área “Semi-Urbam” com o veículo
+motocicleta que também apresenta maior volume de atrasos.
+Esses insights mostram que o atraso não é aleatório, mas resultado de fatores operacionais
+como área e tipo de veículos para entrega.
+
+
+6. Resultados
+
+
+Como resultado do projeto, as iniciativas são:
+● Aprofundar o entendimento do motivo pelo qual a área “Semi-Urban” tem os maiores
+volumes de atraso.
+● Mudar o tipo de veículo de entrega para a área “Semi-Urban”
+● Diagnóstico visual dos pontos mais críticos da operação.
+● Base analítica para priorizar ações corretivas.
+● Relatórios e gráficos que podem ser utilizados por áreas não técnicas.
+Além disso, o projeto demonstra como a análise de dados pode transformar dados
+operacionais em decisões práticas, mesmo utilizando técnicas simples.
+
+
+7. Próximos passos
+
+
+Com base nos resultados obtidos, os próximos passos recomendados são:
+● Criar planos de ação específicos para áreas, veículos e condições mais críticas.
+● Monitorar a taxa de atraso de forma contínua por meio de dashboards.
+● Avaliar treinamentos ou ajustes operacionais para entregadores e rotas.
+● Integrar análises preditivas para antecipar riscos de atraso.
+
+
+Aprofundar a análise com dados adicionais, como distância percorrida ou horário de
+pico.
+Este projeto serve como primeiro passo para uma cultura orientada a dados, onde decisões
+operacionais passam a ser guiadas por evidências e não apenas por percepção. 
+
+
+
+
+Estrutura de um Projeto de Dados de Sucesso:
+
+​O MEIGAROM destaca que um projeto não deve ser apenas um "gráfico bonito", mas deve seguir 7 passos:
+
+​1- Problema de Negócio: O que motivou a análise?
+
+​2- Contexto: O cenário da empresa.
+
+​3- Premissas: O que foi considerado verdade nos dados.
+
+​4- Estratégia da Solução: O passo a passo técnico.
+
+​5- Insights: A interpretação dos dados (o que os gráficos dizem).
+
+​6- Resultados: Conclusão e recomendação para a empresa.
+
+​7- Próximos Passos: O que seria feito com mais tempo.
+
+
+
+
+
+Implementação dos 11 Passos Profissionais (Framework CDS) DE MEIGAROM LOPES 
+
+​Para o seu README refletir esse novo nível, você deve reorganizar as seções seguindo fielmente a metodologia do vídeo:
+
+​Problema de Negócio: (Você já tem - Redução de multas na MRV).
+​Baseline: Novo! Como a MRV prevê atrasos hoje? (Ex: "Hoje a empresa usa apenas a média histórica de 10 dias"). O seu modelo precisa bater essa média.
+​Planejamento da Solução: Liste as ferramentas (Python, Scikit-Learn, Telegram API, Render Cloud).
+​Limpeza de Dados: Detalhe como tratou inconsistências de clima e solo.
+​EDA (Exploratória): Foque em validar hipóteses (Ex: "Obras em solo arenoso atrasam 20% mais?").
+​Preparação de Dados: Explique o One-Hot Encoding e Scaler.
+​Treinamento: Justifique a escolha do algoritmo (Random Forest).
+​Performance: Apresente o MAE e RMSE.
+​Business Performance: O Pulo do Gato! Converta o erro do modelo em Reais (R$). "Cada dia de atraso custa R$ X. Com erro de 5 dias, o risco financeiro residual é de R$ Y."
+​Modelo em Produção: Explique como a API Flask/FastAPI serve o modelo.
+​Storytelling: A apresentação final (O Bot do Telegram).
+
+
+
+  Pontos importantes: 
+
+Para virar um resolvedor de problemas, 
+você tem que mostrar que resolve problemas com a ferramenta, e não que apenas usa a ferramenta. 
+
+Você tem que se posicionar como um resolvedor de problemas.
+
+O mercado de trabalho não contrata ferramenta, o mercado de trabalho contrata quem resolve problemas.
+
+
+
+
+
+
+
+
+
