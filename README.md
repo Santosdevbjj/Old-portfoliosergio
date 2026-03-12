@@ -1,7 +1,6 @@
 # 👨‍💻 Sérgio Santos – Portfólio Profissional de TI e Data Science
 
 
-[![Telegram Bot](https://img.shields.io/badge/Bot-Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/CCbjj_risk_bot)
 
 
 
