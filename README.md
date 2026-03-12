@@ -1,5 +1,14 @@
 # 👨‍💻 Sérgio Santos – Portfólio Profissional de TI e Data Science
 
+
+[![Telegram Bot](https://img.shields.io/badge/Bot-Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/CCbjj_risk_bot)
+
+
+
+
+
+
+
 ![Banner](https://user-images.githubusercontent.com/1234567/your-banner.png)
 
 ## 🌎 Multilingual: [Português 🇧🇷](./README.md) | [English 🇺🇸](./README_EN.md)
