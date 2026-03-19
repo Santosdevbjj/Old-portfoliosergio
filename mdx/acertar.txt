@@ -1,0 +1,2517 @@
+ERRO NO DEPLOY DO VERCEL 
+
+11:04:39.522 Running build in Washington, D.C., USA (East) – iad1
+11:04:39.522 Build machine configuration: 2 cores, 8 GB
+11:04:39.643 Cloning github.com/Santosdevbjj/portfoliosantossergio (Branch: main, Commit: f58d49a)
+11:04:40.377 Cloning completed: 734.000ms
+11:04:41.630 Restored build cache from previous deployment (FwWL8QJuNpT6M9zXLiphc1w8oK8e)
+11:04:41.898 Running "vercel build"
+11:04:42.455 Vercel CLI 50.32.4
+11:04:42.748 Installing dependencies...
+11:05:14.437 
+11:05:14.438 changed 5 packages in 31s
+11:05:14.439 
+11:05:14.440 301 packages are looking for funding
+11:05:14.440   run `npm fund` for details
+11:05:14.480 Detected Next.js version: 16.2.0
+11:05:14.490 Running "npm run build"
+11:05:14.593 
+11:05:14.593 > portfolio-sergio-santos@13.0.1 build
+11:05:14.593 > next build
+11:05:14.593 
+11:05:15.170 ▲ Next.js 16.2.0 (Turbopack)
+11:05:15.171 - Experiments (use with caution):
+11:05:15.171   ✓ mdxRs
+11:05:15.171 
+11:05:15.208   Creating an optimized production build ...
+11:05:26.776 ✓ Compiled successfully in 11.2s
+11:05:26.778   Running TypeScript ...
+11:05:33.879 Failed to type check.
+11:05:33.879 
+11:05:33.880 ./src/app/[lang]/page.tsx:167:40
+11:05:33.880 Type error: Type 'ConstructionDictionary' is missing the following properties from type 'ProjectDictionary': cta, tabs, mainInsight
+11:05:33.880 
+11:05:33.880   [90m165 |[0m           <div className=[32m"mx-auto max-w-7xl"[0m>
+11:05:33.881   [90m166 |[0m             {dict.construction && (
+11:05:33.881 [31m[1m>[0m [90m167 |[0m               <[33mConstructionRiskProject[0m dict={dict.construction [36mas[0m [33mConstructionDictionary[0m} />
+11:05:33.881   [90m    |[0m                                        [31m[1m^[0m
+11:05:33.881   [90m168 |[0m             )}
+11:05:33.881   [90m169 |[0m           </div>
+11:05:33.881   [90m170 |[0m         </section>
+11:05:33.921 Next.js build worker exited with code: 1 and signal: null
+11:05:33.963 Error: Command "npm run build" exited with 1 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Por favor, vamos fazer com bastante calma e bastante atenção.
+Vamos fazer um de cada vez.
+De acordo com as regras do typescript 6.0 e next.js 16.2.0 e React 19 e Node 24 e tailwindcss versão 4.2
+
+
+ANÁLISE JUNTO COM OS DICIONÁRIOS ENVIADOS ABAIXO:
+
+Por favor, revise o arquivo src/app/[lang]/page.tsx
+ 
+
+E me entregue o arquivo completo e corrigido.
+
+
+É totalmente responsivo?
+É multilingue português inglês e espanhol da Espanha e espanhol da Argentina e espanhol do México?
+
+
+Está consistente e alinhado com os dicionários?
+
+
+
+O ARQUIVO src/app/[lang]/page.tsx
+Está com esse conteúdo 
+
+
+// src/app/[lang]/page.tsx
+import type { Metadata, Viewport } from "next";
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+
+// Importação rigorosa de tipos conforme src/types/dictionary.ts
+// Removido 'Dictionary' que não estava sendo usado explicitamente como tipo de variável
+import type { Locale, ConstructionDictionary } from "@/types/dictionary";
+import type { ProjectDomain } from "@/domain/projects";
+
+import { resolveProjectTechnology } from "@/domain/projects";
+import { getServerDictionary } from "@/lib/getServerDictionary";
+import { getPortfolioRepos } from "@/lib/github";
+import { locales, normalizeLocale, type SupportedLocale } from "@/dictionaries/locales";
+
+// Componentes de Interface
+import ProxyPage from "@/components/ProxyPage";
+import HeroSection from "@/components/HeroSection";
+import AboutSection from "@/components/AboutSection";
+import ExperienceSection from "@/components/ExperienceSection";
+import ContactSection from "@/components/ContactSection";
+
+import PdfSafeLoader from "@/components/pdf/PdfSafeLoader";
+import { ResumeLangSelector } from "@/components/pdf/ResumeLangSelector";
+
+import { PortfolioGrid } from "@/components/PortfolioGrid";
+import { CareerHighlights } from "@/components/CareerHighlights";
+import ConstructionRiskProject from "@/components/ConstructionRiskProject";
+
+/**
+ * CONFIGURAÇÕES DE RENDERIZAÇÃO - Next.js 16+ (Turbopack Ready)
+ */
+export const dynamic = "force-static";
+export const revalidate = 3600;
+
+export function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#020617",
+};
+
+interface PageProps {
+  params: Promise<{ lang: string }>;
+}
+
+/**
+ * METADADOS DINÂMICOS (SEO) - Suporte Total Multilingue
+ */
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lang: rawLang } = await params;
+  const locale = normalizeLocale(rawLang) as SupportedLocale;
+
+  if (!locales.includes(locale)) return {};
+
+  const siteUrl = "https://portfoliosantossergio.vercel.app";
+  const fullUrl = `${siteUrl}/${locale}`;
+  const ogImage = `${siteUrl}/og/og-image-${locale}.png`;
+
+  const titles: Record<SupportedLocale, string> = {
+    "pt-BR": "Sérgio Santos | Cientista de Dados e Engenheiro de Software",
+    "en-US": "Sérgio Santos | Data Scientist & Software Engineer",
+    "es-ES": "Sérgio Santos | Científico de Datos e Ingeniero de Software",
+    "es-AR": "Sérgio Santos | Científico de Datos e Ingeniero de Software",
+    "es-MX": "Sérgio Santos | Científico de Datos e Ingeniero de Software",
+  };
+
+  const title = titles[locale] || titles["en-US"];
+  
+  return {
+    title,
+    description: "Especialista em Ciência de Dados e IA com foco em Sistemas Críticos e Missão Crítica.",
+    metadataBase: new URL(siteUrl),
+    alternates: {
+      canonical: fullUrl,
+      languages: Object.fromEntries(locales.map((l) => [l, `${siteUrl}/${l}`])),
+    },
+    openGraph: {
+      url: fullUrl,
+      type: "website",
+      title,
+      description: "Data Scientist specialist in Critical Systems.",
+      siteName: "Sérgio Santos Portfolio",
+      locale: locale.replace("-", "_"),
+      images: [{ 
+        url: ogImage, 
+        width: 1200, 
+        height: 630, 
+        alt: title 
+      }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      images: [ogImage],
+    },
+    icons: {
+      icon: "/icons/icon.png",
+      shortcut: "/icons/favicon.ico",
+      apple: "/icons/apple-touch-icon.png",
+    }
+  };
+}
+
+/**
+ * NORMALIZAÇÃO DE PROJETOS GITHUB
+ */
+function normalizeProjects(repos: any[]): ProjectDomain[] {
+  if (!Array.isArray(repos)) return [];
+  return repos
+    .map((repo, index): ProjectDomain => {
+      const topics = Array.isArray(repo?.topics) ? repo.topics.map((t: string) => t.toLowerCase()) : [];
+      return {
+        id: String(repo?.id ?? index),
+        name: (repo?.name ?? "Projeto").replace(/-/g, " "),
+        description: repo?.description ?? "",
+        htmlUrl: repo?.html_url ?? "",
+        homepage: repo?.homepage ?? null,
+        topics,
+        technology: resolveProjectTechnology(topics),
+        isPortfolio: topics.includes("portfolio"),
+        isFeatured: topics.includes("featured") || index < 2,
+        isFirst: index === 0,
+      };
+    })
+    .filter((p) => p.isPortfolio && p.htmlUrl);
+}
+
+/**
+ * COMPONENTE PRINCIPAL
+ */
+export default async function HomePage({ params }: PageProps) {
+  const { lang: rawLang } = await params;
+  const locale = normalizeLocale(rawLang);
+  
+  if (!locales.includes(locale)) notFound();
+  const lang = locale as Locale;
+
+  // Busca de dados (Dicionário tipado implicitamente pelo retorno da função)
+  const [dict, repos] = await Promise.all([
+    getServerDictionary(lang),
+    getPortfolioRepos("Santosdevbjj").catch(() => []),
+  ]);
+
+  if (!dict) notFound();
+
+  const projects = normalizeProjects(repos);
+  const pdfFile = `/pdf/cv-sergio-santos-${lang}.pdf`;
+
+  const featuredArticle = dict.articles.items?.[0];
+
+  return (
+    <ProxyPage lang={lang}>
+      <main className="flex min-h-screen flex-col bg-white dark:bg-[#020617] transition-colors duration-300">
+        
+        {/* HERO SECTION */}
+        <HeroSection dictionary={dict} />
+
+        {/* PROJETO DE RISCO (DESTAQUE) */}
+        <section className="py-12 px-4">
+          <div className="mx-auto max-w-7xl">
+            {dict.construction && (
+              <ConstructionRiskProject dict={dict.construction as ConstructionDictionary} />
+            )}
+          </div>
+        </section>
+
+        {/* SOBRE & HIGHLIGHTS */}
+        <section id="about" className="scroll-mt-20">
+          <AboutSection dict={dict.about} />
+          <div className="mx-auto max-w-7xl px-4 py-12">
+            <CareerHighlights dict={dict} />
+          </div>
+        </section>
+
+        {/* EXPERIÊNCIA PROFISSIONAL */}
+        <ExperienceSection experience={dict.experience} />
+
+        {/* GRID DE PROJETOS */}
+        <section id="projects" className="py-20 scroll-mt-20">
+          <div className="mx-auto max-w-7xl px-4 mb-10 text-center md:text-left">
+            <h2 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">
+              {dict.projects.title}{" "}
+              <span className="text-blue-600">Full-Stack</span>
+            </h2>
+          </div>
+          <PortfolioGrid projects={projects} lang={lang} dict={dict} />
+        </section>
+
+        {/* CURRÍCULO (DINÂMICO PARA 5 IDIOMAS) */}
+        <section id="resume" className="py-20 bg-slate-100/50 dark:bg-slate-900/20 border-y border-slate-200 dark:border-slate-800 scroll-mt-20">
+          <div className="text-center mb-10 px-4">
+            <h2 className="text-4xl font-black mb-8 text-slate-900 dark:text-white tracking-tighter">
+              Curriculum <span className="text-blue-600">Vitae</span>
+            </h2>
+            <div className="max-w-xs mx-auto mb-12">
+              <ResumeLangSelector currentLang={lang as SupportedLocale} dict={dict.resume} />
+            </div>
+          </div>
+          <div className="max-w-5xl mx-auto px-4">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
+              <PdfSafeLoader fileUrl={pdfFile} lang={lang} />
+            </div>
+          </div>
+        </section>
+
+        {/* ARTIGOS E RECONHECIMENTO */}
+        <section id="featured-articles" className="py-24 bg-white dark:bg-[#020617] scroll-mt-20">
+          <div className="mx-auto max-w-7xl px-4">
+            <header className="mb-16 text-center max-w-3xl mx-auto">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 mb-6">
+                <span className="text-xs font-bold uppercase tracking-widest text-blue-700 dark:text-blue-400">
+                  {dict.articles.awardWinner}
+                </span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tighter mb-6">
+                {dict.articles.title}
+              </h2>
+            </header>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+              {/* CARD MEDIUM - PREMIADO */}
+              <div className="group relative flex flex-col bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 shadow-xl">
+                <div className="absolute top-8 right-8">
+                  <span className="px-2 py-1 rounded-full bg-amber-400 text-black text-[9px] font-black uppercase">
+                    {dict.articles.bestOfMonth}
+                  </span>
+                </div>
+                <div className="flex flex-col md:flex-row items-center gap-6 mb-8 mt-6">
+                  <div className="relative w-32 h-32 rounded-2xl overflow-hidden border-4 border-white dark:border-slate-800 shadow-xl">
+                    <Image 
+                      src="/images/trofeus-vencedor-dio.png" 
+                      alt="Troféus DIO" 
+                      fill 
+                      className="object-cover" 
+                      sizes="128px"
+                      priority
+                    />
+                  </div>
+                  <div className="flex-1 text-center md:text-left">
+                    <p className="text-[10px] font-bold uppercase text-blue-600 mb-1">
+                      {featuredArticle?.category || "Data Strategy"}
+                    </p>
+                    <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white">
+                      {featuredArticle?.title || dict.articles.title}
+                    </h3>
+                  </div>
+                </div>
+                <div className="mt-auto pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-wrap gap-2">
+                  <a href={featuredArticle?.link} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-white dark:bg-slate-800 border rounded-xl text-xs font-black hover:bg-blue-600 hover:text-white transition-colors">
+                    {dict.articles.readMore}
+                  </a>
+                </div>
+              </div>
+
+              {/* CARD INTERNO */}
+              <Link href={`/${lang}/artigos`} className="group flex flex-col bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 shadow-xl hover:border-blue-500 transition-all">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="p-3 bg-slate-900 dark:bg-white rounded-2xl text-white dark:text-black">
+                    <svg role="img" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white">
+                      {dict.common.nav.articles}
+                    </h3>
+                  </div>
+                </div>
+                <div className="mt-auto flex items-center justify-between pt-5 border-t border-slate-200 dark:border-slate-800 text-xs font-black text-blue-600">
+                  <span>{dict.articles.mediumProfile}</span>
+                  <span>{dict.articles.readMore} →</span>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* RODAPÉ E CONTATO */}
+        <ContactSection contact={dict.contact} common={dict.common} locale={lang} />
+      </main>
+    </ProxyPage>
+  );
+}
+
+
+              
+
+
+
+
+
+
+
+
+
+
+OS DICIONÁRIOS PARA VERIFICAÇÃO DE CONSISTÊNCIA:
+
+
+PORTUGUÊS:
+
+src/dictionaries/pt-BR.json
+
+TEM ESSE CONTEÚDO:
+
+{
+  "meta": {
+    "version": "1.0.1",
+    "locale": "pt-BR",
+    "direction": "ltr",
+    "lastUpdated": "2026-03-08T21:00:00Z",
+    "author": "Sérgio Santos",
+    "source": "manual",
+    "contentVersion": "2026.03.08",
+    "contentHash": "i18n-ptbr-2026-03-08",
+    "sourceType": "curated-manual",
+    "description": "Portfólio de Sérgio Santos: Especialista em Ciência de Dados, IA e Engenharia de Software com foco em Sistemas Críticos e Missão Crítica. Veja projetos e artigos técnicos."
+  },
+
+  "hero": {
+    "greeting": "Disponível para Projetos Críticos",
+    "title": "Cientista de Dados",
+    "subtitle": "Dados e Resiliência",
+    "headline": "Especialista em transformar infraestruturas complexas em sistemas de alta disponibilidade e pipelines de dados escaláveis.",
+    "ctaPrimary": "Ver Projetos"
+  },
+
+  "construction": {
+    "badge": "Análise de Risco & IA",
+    "title": "Previsão de Riscos em Construção Civil",
+    "description": "Desenvolvimento de modelos preditivos para identificar gargalos operacionais e riscos estruturais em grandes obras, utilizando redes neurais e análise de séries temporais.",
+    "techStack": ["Python", "TensorFlow", "Azure Data Factory", "Power BI"],
+    "viewProject": "Explorar Solução",
+    "metrics": {
+      "accuracy": "94%",
+      "label": "Precisão do Modelo"
+    }
+  },
+
+  "about": {
+    "title": "Sobre Mim",
+    "differentialTitle": "Engenharia de Dados com Foco em Missão Crítica",
+    "description": "Cientista de Dados com base sólida em sistemas críticos bancários e foco em transformar dados em decisões, redução de custos e eficiência operacional.",
+    "differentialContent": "Atuei por mais de 15 anos no Banco Bradesco em ambientes regulados de missão crítica. Atualmente direciono minha atuação para Ciência de Dados e IA.",
+    "highlights": [
+      "15+ anos em Bancos",
+      "Especialista Cloud",
+      "Data Science & IA"
+    ],
+    "stats": {
+      "experienceValue": "+15",
+      "experienceLabel": "Anos",
+      "availabilityValue": "99.9%",
+      "availabilityLabel": "Uptime",
+      "automation": "Sistemas 100% Automatizados"
+    }
+  },
+
+  "contact": {
+    "title": "Vamos Conversar?",
+    "subtitle": "Busco oportunidades em projetos de governança e modernização.",
+    "cta": "Enviar Email",
+    "emailLabel": "Copiar Email",
+    "cvLabel": "Ver CV",
+    "linkedinLabel": "LinkedIn",
+    "ctaTitle": "Vamos construir algo juntos?",
+    "buttonText": "Entrar em Contato →"
+  },
+
+  "experience": {
+    "title": "Experiência Profissional",
+    "emptyLabel": "Nenhuma experiência encontrada",
+    "items": [
+      {
+        "company": "Consultor Autônomo / Transição",
+        "period": "2008 - Atual",
+        "role": "Especialista em Sistemas Críticos",
+        "description": "Arquitetura e manutenção de pipelines de dados e infraestrutura resiliente."
+      }
+    ]
+  },
+
+  "articles": {
+    "title": "Artigos Técnicos",
+    "mediumProfile": "Ver perfil no Medium",
+    "readMore": "Ler artigo completo",
+    "publishedAt": "Publicado em",
+    "bestOfMonth": "Destaque do Mês",
+    "awardWinner": "Artigo Premiado",
+    "items": [
+      {
+        "title": "A Era dos Dados em Sistemas Críticos",
+        "description": "Como a governança de dados transforma sistemas legados em ativos estratégicos.",
+        "date": "2025",
+        "category": "Data Strategy",
+        "isAward": true,
+        "link": "https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
+      }
+    ]
+  },
+
+  "projects": {
+    "title": "Projetos e Soluções",
+    "featuredLabel": "Destaque Técnico",
+    "firstLabel": "Desafio e Arquitetura",
+    "impactLabel": "Impacto e Resultado",
+    "problem": "Problema",
+    "solution": "Solução",
+    "viewProject": "Repositório GitHub",
+    "viewDemo": "Visualizar Demo",
+    "viewAll": "Ver Todos",
+
+    "portfolio": {
+      "all": "Todos",
+      "viewProject": "Ver Projeto"
+    },
+
+    "categories": {
+      "Data Engineering": { "labelKey": "Engenharia de Dados" },
+      "Cloud & Infrastructure": { "labelKey": "Nuvem e Infraestrutura" },
+      "Data Science": { "labelKey": "Ciência de Dados" },
+      "Data Analytics": { "labelKey": "Análise de Dados" },
+      "Outros": { "labelKey": "Outros Projetos" },
+
+      "dataScience": { "labelKey": "Ciência de Dados" },
+      "cloud": { "labelKey": "Cloud & Databricks" },
+      "graphs": { "labelKey": "Análise de Grafos (Neo4J)" },
+      "analysis": { "labelKey": "Análise de Dados & Power BI" },
+      "excel": { "labelKey": "Excel e Modelagem de Dados" },
+      "database": { "labelKey": "Banco de Dados & SQL" },
+
+      "dev": { "labelKey": "Desenvolvimento de Software" },
+      "security": { "labelKey": "Cibersegurança" },
+
+      "html": { "labelKey": "HTML" },
+      "css": { "labelKey": "CSS" },
+      "javascript": { "labelKey": "JavaScript" },
+      "typescript": { "labelKey": "TypeScript" },
+      "next": { "labelKey": "Next.js" },
+      "node": { "labelKey": "Node.js" },
+      "react": { "labelKey": "React" },
+      "articles": { "labelKey": "Artigos Técnicos" }
+    },
+
+    "featuredProjects": []
+  },
+
+  "common": {
+    "navigation": "Navegação principal",
+    "role": "Cientista de Dados | Python | SQL | Azure",
+    "footer": "© 2026 Sérgio Santos. Todos os direitos reservados.",
+    "rights": "Todos os direitos reservados",
+    "builtWith": "Desenvolvido com Next.js 16 & TypeScript",
+    "loading": "Carregando...",
+    "error": "Algo deu errado.",
+    "socialLinks": "Abrir perfil de {platform}",
+    "skipToContent": "Pular para o conteúdo",
+    "languageSwitcher": "Alterar idioma",
+    "email": "santossergiorealbjj@outlook.com",
+
+    "nav": {
+      "about": "Sobre",
+      "experience": "Experiência",
+      "projects": "Projetos",
+      "articles": "Artigos",
+      "contact": "Contato"
+    },
+
+    "theme": {
+      "light": "Claro",
+      "dark": "Escuro",
+      "system": "Sistema"
+    },
+
+    "externalLinks": {
+      "linkedin": "https://www.linkedin.com/in/santossergioluiz",
+      "github": "https://github.com/Santosdevbjj",
+      "medium": "https://medium.com/@sergiosantosluiz",
+      "email": "mailto:santossergiorealbjj@outlook.com"
+    }
+  },
+
+  "intl": {
+    "locale": "pt-BR",
+    "fallbackLocale": "pt",
+    "currency": "BRL",
+    "timezone": "America/Sao_Paulo",
+    "unitDisplay": "short",
+    "numberFormat": "pt-BR"
+  },
+
+  "states": {
+    "loading": "Carregando...",
+    "empty": "Sem dados.",
+    "error": "Erro ao carregar.",
+    "emptyProjects": {
+      "title": "Nenhum projeto",
+      "description": "Em breve.",
+      "cta": "Voltar"
+    },
+    "emptyExperience": "Sem registros.",
+    "errorArticles": "Erro nos artigos."
+  },
+
+  "cookie": {
+    "title": "Cookies",
+    "description": "Melhoramos sua experiência.",
+    "necessary": "Necessários",
+    "alwaysActive": "Ativo",
+    "analytics": "Analíticos",
+    "acceptAll": "Aceitar",
+    "savePreferences": "Salvar"
+  },
+
+  "seo": {
+    "siteName": "Sérgio Santos | Portfolio",
+    "title": "Sérgio Santos",
+    "description": "Cientista de Dados especialista em Sistemas Críticos e Missão Crítica.",
+    "keywords": [
+      "Ciência de Dados",
+      "Data Science",
+      "Machine Learning",
+      "ETL",
+      "Cloud Computing",
+      "Azure",
+      "Python"
+    ]
+  },
+
+  "metrics": {
+    "availability": "99,5%",
+    "availabilityNormalized": {
+      "value": 99.5,
+      "unit": "%"
+    }
+  },
+
+  "resume": {
+    "selectLanguage": "Selecionar Idioma",
+    "languages": {
+      "pt-BR": "Português",
+      "en-US": "Inglês",
+      "es-ES": "Espanhol",
+      "es-AR": "Espanhol (AR)",
+      "es-MX": "Espanhol (MX)"
+    }
+  },
+
+  "menu": {
+    "open": "Abrir menu",
+    "close": "Fechar"
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+INGLÊS:
+
+src/dictionaries/en-US.json
+
+TEM ESSE CONTEÚDO:
+
+{
+  "meta": {
+    "version": "1.0.1",
+    "locale": "en-US",
+    "direction": "ltr",
+    "lastUpdated": "2026-03-08T21:00:00Z",
+    "author": "Sérgio Santos",
+    "source": "manual",
+    "contentVersion": "2026.03.08",
+    "contentHash": "i18n-enus-2026-03-08",
+    "sourceType": "curated-manual",
+    "description": "Sérgio Santos Portfolio: Data Scientist, AI, and Software Engineer specialist focusing on Critical Systems and Mission Critical. View projects and technical articles."
+  },
+
+  "hero": {
+    "greeting": "Available for Critical Projects",
+    "title": "Data Scientist",
+    "subtitle": "Data and Resilience",
+    "headline": "Specialist in transforming complex infrastructures into high-availability systems and scalable data pipelines.",
+    "ctaPrimary": "View Projects"
+  },
+
+  "construction": {
+    "badge": "Risk Analysis & AI",
+    "title": "Risk Forecasting in Civil Construction",
+    "description": "Development of predictive models to identify operational bottlenecks and structural risks in large-scale projects, using neural networks and time-series analysis.",
+    "techStack": ["Python", "TensorFlow", "Azure Data Factory", "Power BI"],
+    "viewProject": "Explore Solution",
+    "metrics": {
+      "accuracy": "94%",
+      "label": "Model Accuracy"
+    }
+  },
+
+  "about": {
+    "title": "About Me",
+    "differentialTitle": "Data Engineering with Mission Critical Focus",
+    "description": "Data Scientist with a solid background in banking critical systems, focused on transforming data into decisions, cost reduction, and operational efficiency.",
+    "differentialContent": "I worked for over 15 years at Banco Bradesco in regulated mission-critical environments. Currently, I direct my career towards Data Science and AI.",
+    "highlights": [
+      "15+ years in Banking",
+      "Cloud Specialist",
+      "Data Science & AI"
+    ],
+    "stats": {
+      "experienceValue": "+15",
+      "experienceLabel": "Years",
+      "availabilityValue": "99.9%",
+      "availabilityLabel": "Uptime",
+      "automation": "100% Automated Systems"
+    }
+  },
+
+  "contact": {
+    "title": "Let's Talk?",
+    "subtitle": "Seeking opportunities in governance and modernization projects.",
+    "cta": "Send Email",
+    "emailLabel": "Copy Email",
+    "cvLabel": "View CV",
+    "linkedinLabel": "LinkedIn",
+    "ctaTitle": "Let's build something together?",
+    "buttonText": "Get in Touch →"
+  },
+
+  "experience": {
+    "title": "Professional Experience",
+    "emptyLabel": "No experience found",
+    "items": [
+      {
+        "company": "Freelance Consultant / Transition",
+        "period": "2008 - Present",
+        "role": "Critical Systems Specialist",
+        "description": "Architecture and maintenance of data pipelines and resilient infrastructure."
+      }
+    ]
+  },
+
+  "articles": {
+    "title": "Technical Articles",
+    "mediumProfile": "View Medium profile",
+    "readMore": "Read full article",
+    "publishedAt": "Published on",
+    "bestOfMonth": "Highlight of the Month",
+    "awardWinner": "Award-Winning Article",
+    "items": [
+      {
+        "title": "The Era of Data in Critical Systems",
+        "description": "How data governance transforms legacy systems into strategic assets.",
+        "date": "2025",
+        "category": "Data Strategy",
+        "isAward": true,
+        "link": "https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
+      }
+    ]
+  },
+
+  "projects": {
+    "title": "Projects and Solutions",
+    "featuredLabel": "Technical Highlight",
+    "firstLabel": "Challenge and Architecture",
+    "impactLabel": "Impact and Result",
+    "problem": "Problem",
+    "solution": "Solution",
+    "viewProject": "GitHub Repository",
+    "viewDemo": "View Demo",
+    "viewAll": "View All",
+
+    "portfolio": {
+      "all": "All",
+      "viewProject": "View Project"
+    },
+
+    "categories": {
+      "Data Engineering": { "labelKey": "Data Engineering" },
+      "Cloud & Infrastructure": { "labelKey": "Cloud & Infrastructure" },
+      "Data Science": { "labelKey": "Data Science" },
+      "Data Analytics": { "labelKey": "Data Analytics" },
+      "Outros": { "labelKey": "Other Projects" },
+
+      "dataScience": { "labelKey": "Data Science" },
+      "cloud": { "labelKey": "Cloud & Databricks" },
+      "graphs": { "labelKey": "Graph Analysis (Neo4J)" },
+      "analysis": { "labelKey": "Data Analysis & Power BI" },
+      "excel": { "labelKey": "Excel and Data Modeling" },
+      "database": { "labelKey": "Database & SQL" },
+
+      "dev": { "labelKey": "Software Development" },
+      "security": { "labelKey": "Cybersecurity" },
+
+      "html": { "labelKey": "HTML" },
+      "css": { "labelKey": "CSS" },
+      "javascript": { "labelKey": "JavaScript" },
+      "typescript": { "labelKey": "TypeScript" },
+      "next": { "labelKey": "Next.js" },
+      "node": { "labelKey": "Node.js" },
+      "react": { "labelKey": "React" },
+      "articles": { "labelKey": "Technical Articles" }
+    },
+
+    "featuredProjects": []
+  },
+
+  "common": {
+    "navigation": "Main navigation",
+    "role": "Data Scientist | Python | SQL | Azure",
+    "footer": "© 2026 Sérgio Santos. All rights reserved.",
+    "rights": "All rights reserved",
+    "builtWith": "Built with Next.js 16 & TypeScript",
+    "loading": "Loading...",
+    "error": "Something went wrong.",
+    "socialLinks": "Open {platform} profile",
+    "skipToContent": "Skip to content",
+    "languageSwitcher": "Change language",
+    "email": "santossergiorealbjj@outlook.com",
+
+    "nav": {
+      "about": "About",
+      "experience": "Experience",
+      "projects": "Projects",
+      "articles": "Articles",
+      "contact": "Contact"
+    },
+
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+
+    "externalLinks": {
+      "linkedin": "https://www.linkedin.com/in/santossergioluiz",
+      "github": "https://github.com/Santosdevbjj",
+      "medium": "https://medium.com/@sergiosantosluiz",
+      "email": "mailto:santossergiorealbjj@outlook.com"
+    }
+  },
+
+  "intl": {
+    "locale": "en-US",
+    "fallbackLocale": "en",
+    "currency": "USD",
+    "timezone": "UTC",
+    "unitDisplay": "short",
+    "numberFormat": "en-US"
+  },
+
+  "states": {
+    "loading": "Loading...",
+    "empty": "No data.",
+    "error": "Error loading.",
+    "emptyProjects": {
+      "title": "No projects",
+      "description": "Coming soon.",
+      "cta": "Back"
+    },
+    "emptyExperience": "No records.",
+    "errorArticles": "Error in articles."
+  },
+
+  "cookie": {
+    "title": "Cookies",
+    "description": "We improve your experience.",
+    "necessary": "Necessary",
+    "alwaysActive": "Active",
+    "analytics": "Analytics",
+    "acceptAll": "Accept All",
+    "savePreferences": "Save"
+  },
+
+  "seo": {
+    "siteName": "Sérgio Santos | Portfolio",
+    "title": "Sérgio Santos",
+    "description": "Data Scientist specialist in Critical Systems and Mission Critical.",
+    "keywords": [
+      "Data Science",
+      "Machine Learning",
+      "ETL",
+      "Cloud Computing",
+      "Azure",
+      "Python"
+    ]
+  },
+
+  "metrics": {
+    "availability": "99.5%",
+    "availabilityNormalized": {
+      "value": 99.5,
+      "unit": "%"
+    }
+  },
+
+  "resume": {
+    "selectLanguage": "Select Language",
+    "languages": {
+      "pt-BR": "Portuguese",
+      "en-US": "English",
+      "es-ES": "Spanish",
+      "es-AR": "Spanish (AR)",
+      "es-MX": "Spanish (MX)"
+    }
+  },
+
+  "menu": {
+    "open": "Open menu",
+    "close": "Close"
+  }
+} 
+
+
+
+
+
+
+
+
+
+ESPANHOL DA ESPANHA:
+
+src/dictionaries/es-ES.json
+
+TEM ESSE CONTEÚDO:
+
+
+{
+  "meta": {
+    "version": "1.0.1",
+    "locale": "es-ES",
+    "direction": "ltr",
+    "lastUpdated": "2026-03-08T21:00:00Z",
+    "author": "Sérgio Santos",
+    "source": "manual",
+    "contentVersion": "2026.03.08",
+    "contentHash": "i18n-eses-2026-03-08",
+    "sourceType": "curated-manual",
+    "description": "Portafolio de Sérgio Santos: Especialista en Ciencia de Datos, IA e Ingeniería de Software con enfoque en Sistemas Críticos y Misión Crítica. Vea proyectos y artículos técnicos."
+  },
+
+  "hero": {
+    "greeting": "Disponible para Proyectos Críticos",
+    "title": "Científico de Datos",
+    "subtitle": "Datos y Resiliencia",
+    "headline": "Especialista en transformar infraestructuras complejas en sistemas de alta disponibilidad y pipelines de datos escalables.",
+    "ctaPrimary": "Ver Proyectos"
+  },
+
+  "construction": {
+    "badge": "Análisis de Riesgo e IA",
+    "title": "Predicción de Riesgos en Construcción Civil",
+    "description": "Desarrollo de modelos predictivos para identificar cuellos de botella operativos y riesgos estructurales en grandes obras, utilizando redes neuronales y análisis de series temporales.",
+    "techStack": ["Python", "TensorFlow", "Azure Data Factory", "Power BI"],
+    "viewProject": "Explorar Solución",
+    "metrics": {
+      "accuracy": "94%",
+      "label": "Precisión del Modelo"
+    }
+  },
+
+  "about": {
+    "title": "Sobre Mí",
+    "differentialTitle": "Ingeniería de Datos con Enfoque en Misión Crítica",
+    "description": "Científico de Datos con una sólida base en sistemas críticos bancarios y enfoque en transformar datos en decisiones, reducción de costes y eficiencia operativa.",
+    "differentialContent": "Trabajé durante más de 15 años en Banco Bradesco en entornos regulados de misión crítica. Actualmente dirijo mi carrera hacia la Ciencia de Datos e IA.",
+    "highlights": [
+      "15+ años en Banca",
+      "Especialista Cloud",
+      "Data Science & IA"
+    ],
+    "stats": {
+      "experienceValue": "+15",
+      "experienceLabel": "Años",
+      "availabilityValue": "99.9%",
+      "availabilityLabel": "Uptime",
+      "automation": "Sistemas 100% Automatizados"
+    }
+  },
+
+  "contact": {
+    "title": "¿Hablamos?",
+    "subtitle": "Busco oportunidades en proyectos de gobernanza y modernización.",
+    "cta": "Enviar Correo",
+    "emailLabel": "Copiar Correo",
+    "cvLabel": "Ver CV",
+    "linkedinLabel": "LinkedIn",
+    "ctaTitle": "¿Construimos algo juntos?",
+    "buttonText": "Contactar →"
+  },
+
+  "experience": {
+    "title": "Experiencia Profesional",
+    "emptyLabel": "No se ha encontrado experiencia",
+    "items": [
+      {
+        "company": "Consultor Autónomo / Transición",
+        "period": "2008 - Actualidad",
+        "role": "Especialista en Sistemas Críticos",
+        "description": "Arquitectura y mantenimiento de pipelines de datos e infraestructura resiliente."
+      }
+    ]
+  },
+
+  "articles": {
+    "title": "Artículos Técnicos",
+    "mediumProfile": "Ver perfil en Medium",
+    "readMore": "Leer artículo completo",
+    "publishedAt": "Publicado el",
+    "bestOfMonth": "Destacado del Mes",
+    "awardWinner": "Artículo Premiado",
+    "items": [
+      {
+        "title": "La Era de los Datos en Sistemas Críticos",
+        "description": "Cómo la gobernanza de datos transforma sistemas heredados en activos estratégicos.",
+        "date": "2025",
+        "category": "Data Strategy",
+        "isAward": true,
+        "link": "https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
+      }
+    ]
+  },
+
+  "projects": {
+    "title": "Proyectos y Soluciones",
+    "featuredLabel": "Destacado Técnico",
+    "firstLabel": "Desafío y Arquitectura",
+    "impactLabel": "Impacto y Resultado",
+    "problem": "Problema",
+    "solution": "Solución",
+    "viewProject": "Repositorio GitHub",
+    "viewDemo": "Visualizar Demo",
+    "viewAll": "Ver Todos",
+
+    "portfolio": {
+      "all": "Todos",
+      "viewProject": "Ver Proyecto"
+    },
+
+    "categories": {
+      "Data Engineering": { "labelKey": "Ingeniería de Datos" },
+      "Cloud & Infrastructure": { "labelKey": "Nube e Infraestructura" },
+      "Data Science": { "labelKey": "Ciencia de Datos" },
+      "Data Analytics": { "labelKey": "Análisis de Datos" },
+      "Outros": { "labelKey": "Otros Proyectos" },
+
+      "dataScience": { "labelKey": "Ciencia de Datos" },
+      "cloud": { "labelKey": "Cloud & Databricks" },
+      "graphs": { "labelKey": "Análisis de Grafos (Neo4J)" },
+      "analysis": { "labelKey": "Análisis de Datos y Power BI" },
+      "excel": { "labelKey": "Excel y Modelado de Datos" },
+      "database": { "labelKey": "Base de Datos y SQL" },
+
+      "dev": { "labelKey": "Desarrollo de Software" },
+      "security": { "labelKey": "Ciberseguridad" },
+
+      "html": { "labelKey": "HTML" },
+      "css": { "labelKey": "CSS" },
+      "javascript": { "labelKey": "JavaScript" },
+      "typescript": { "labelKey": "TypeScript" },
+      "next": { "labelKey": "Next.js" },
+      "node": { "labelKey": "Node.js" },
+      "react": { "labelKey": "React" },
+      "articles": { "labelKey": "Artículos Técnicos" }
+    },
+
+    "featuredProjects": []
+  },
+
+  "common": {
+    "navigation": "Navegación principal",
+    "role": "Científico de Datos | Python | SQL | Azure",
+    "footer": "© 2026 Sérgio Santos. Todos los derechos reservados.",
+    "rights": "Todos los derechos reservados",
+    "builtWith": "Desarrollado con Next.js 16 & TypeScript",
+    "loading": "Cargando...",
+    "error": "Algo ha salido mal.",
+    "socialLinks": "Abrir perfil de {platform}",
+    "skipToContent": "Saltar al contenido",
+    "languageSwitcher": "Cambiar idioma",
+    "email": "santossergiorealbjj@outlook.com",
+
+    "nav": {
+      "about": "Sobre mí",
+      "experience": "Experiencia",
+      "projects": "Proyectos",
+      "articles": "Artículos",
+      "contact": "Contacto"
+    },
+
+    "theme": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    },
+
+    "externalLinks": {
+      "linkedin": "https://www.linkedin.com/in/santossergioluiz",
+      "github": "https://github.com/Santosdevbjj",
+      "medium": "https://medium.com/@sergiosantosluiz",
+      "email": "mailto:santossergiorealbjj@outlook.com"
+    }
+  },
+
+  "intl": {
+    "locale": "es-ES",
+    "fallbackLocale": "es",
+    "currency": "EUR",
+    "timezone": "Europe/Madrid",
+    "unitDisplay": "short",
+    "numberFormat": "es-ES"
+  },
+
+  "states": {
+    "loading": "Cargando...",
+    "empty": "Sin datos.",
+    "error": "Error al cargar.",
+    "emptyProjects": {
+      "title": "Sin proyectos",
+      "description": "Próximamente.",
+      "cta": "Volver"
+    },
+    "emptyExperience": "Sin registros.",
+    "errorArticles": "Error en los artículos."
+  },
+
+  "cookie": {
+    "title": "Cookies",
+    "description": "Mejoramos tu experiencia.",
+    "necessary": "Necesarias",
+    "alwaysActive": "Activo",
+    "analytics": "Analíticas",
+    "acceptAll": "Aceptar",
+    "savePreferences": "Guardar"
+  },
+
+  "seo": {
+    "siteName": "Sérgio Santos | Portafolio",
+    "title": "Sérgio Santos",
+    "description": "Científico de Datos especialista en Sistemas Críticos y Misión Crítica.",
+    "keywords": [
+      "Ciencia de Datos",
+      "Data Science",
+      "Machine Learning",
+      "ETL",
+      "Cloud Computing",
+      "Azure",
+      "Python"
+    ]
+  },
+
+  "metrics": {
+    "availability": "99,5%",
+    "availabilityNormalized": {
+      "value": 99.5,
+      "unit": "%"
+    }
+  },
+
+  "resume": {
+    "selectLanguage": "Seleccionar Idioma",
+    "languages": {
+      "pt-BR": "Portugués",
+      "en-US": "Inglés",
+      "es-ES": "Español",
+      "es-AR": "Español (AR)",
+      "es-MX": "Español (MX)"
+    }
+  },
+
+  "menu": {
+    "open": "Abrir menú",
+    "close": "Cerrar"
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+ESPANHOL DA ARGENTINA 
+
+src/dictionaries/es-AR.json
+
+TEM ESSE CONTEÚDO:
+
+
+{
+  "meta": {
+    "version": "1.0.1",
+    "locale": "es-AR",
+    "direction": "ltr",
+    "lastUpdated": "2026-03-08T21:00:00Z",
+    "author": "Sérgio Santos",
+    "source": "manual",
+    "contentVersion": "2026.03.08",
+    "contentHash": "i18n-esar-2026-03-08",
+    "sourceType": "curated-manual",
+    "description": "Portafolio de Sérgio Santos: Especialista en Ciencia de Datos, IA e Ingeniería de Software con foco en Sistemas Críticos y Misión Crítica. Vea proyectos y artículos técnicos."
+  },
+
+  "hero": {
+    "greeting": "Disponible para Proyectos Críticos",
+    "title": "Científico de Datos",
+    "subtitle": "Datos y Resiliencia",
+    "headline": "Especialista en transformar infraestructuras complejas en sistemas de alta disponibilidad y pipelines de datos escalables.",
+    "ctaPrimary": "Ver Proyectos"
+  },
+
+  "construction": {
+    "badge": "Análisis de Riesgo e IA",
+    "title": "Predicción de Riesgos en Construcción Civil",
+    "description": "Desarrollo de modelos predictivos para identificar cuellos de botella operativos y riesgos estructurales en grandes obras, utilizando redes neuronales y análisis de series temporales.",
+    "techStack": ["Python", "TensorFlow", "Azure Data Factory", "Power BI"],
+    "viewProject": "Explorar Solución",
+    "metrics": {
+      "accuracy": "94%",
+      "label": "Precisión del Modelo"
+    }
+  },
+
+  "about": {
+    "title": "Sobre Mí",
+    "differentialTitle": "Ingeniería de Datos con Foco en Misión Crítica",
+    "description": "Científico de Datos con base sólida en sistemas críticos bancarios y foco en transformar datos en decisiones, reducción de costos y eficiencia operativa.",
+    "differentialContent": "Me desempeñé por más de 15 años en el Banco Bradesco en entornos regulados de misión crítica. Actualmente direcciono mi carrera hacia la Ciencia de Datos e IA.",
+    "highlights": [
+      "15+ años en Bancos",
+      "Especialista Cloud",
+      "Data Science & IA"
+    ],
+    "stats": {
+      "experienceValue": "+15",
+      "experienceLabel": "Años",
+      "availabilityValue": "99.9%",
+      "availabilityLabel": "Uptime",
+      "automation": "Sistemas 100% Automatizados"
+    }
+  },
+
+  "contact": {
+    "title": "¿Hablamos?",
+    "subtitle": "Busco oportunidades en proyectos de gobernanza y modernización.",
+    "cta": "Enviar Email",
+    "emailLabel": "Copiar Email",
+    "cvLabel": "Ver CV",
+    "linkedinLabel": "LinkedIn",
+    "ctaTitle": "¿Construimos algo juntos?",
+    "buttonText": "Contactar →"
+  },
+
+  "experience": {
+    "title": "Experiencia Profesional",
+    "emptyLabel": "No se encontró experiencia",
+    "items": [
+      {
+        "company": "Consultor Autónomo / Transición",
+        "period": "2008 - Actualidad",
+        "role": "Especialista en Sistemas Críticos",
+        "description": "Arquitectura y mantenimiento de pipelines de datos e infraestructura resiliente."
+      }
+    ]
+  },
+
+  "articles": {
+    "title": "Artículos Técnicos",
+    "mediumProfile": "Ver perfil en Medium",
+    "readMore": "Leer artículo completo",
+    "publishedAt": "Publicado el",
+    "bestOfMonth": "Destacado del Mes",
+    "awardWinner": "Artículo Premiado",
+    "items": [
+      {
+        "title": "La Era de los Datos en Sistemas Críticos",
+        "description": "Cómo la gobernanza de datos transforma sistemas legados en activos estratégicos.",
+        "date": "2025",
+        "category": "Data Strategy",
+        "isAward": true,
+        "link": "https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
+      }
+    ]
+  },
+
+  "projects": {
+    "title": "Proyectos y Soluciones",
+    "featuredLabel": "Destacado Técnico",
+    "firstLabel": "Desafío y Arquitectura",
+    "impactLabel": "Impacto y Resultado",
+    "problem": "Problema",
+    "solution": "Solución",
+    "viewProject": "Repositorio GitHub",
+    "viewDemo": "Visualizar Demo",
+    "viewAll": "Ver Todos",
+
+    "portfolio": {
+      "all": "Todos",
+      "viewProject": "Ver Proyecto"
+    },
+
+    "categories": {
+      "Data Engineering": { "labelKey": "Ingeniería de Datos" },
+      "Cloud & Infrastructure": { "labelKey": "Nube e Infraestructura" },
+      "Data Science": { "labelKey": "Ciencia de Datos" },
+      "Data Analytics": { "labelKey": "Análisis de Datos" },
+      "Outros": { "labelKey": "Otros Proyectos" },
+
+      "dataScience": { "labelKey": "Ciencia de Datos" },
+      "cloud": { "labelKey": "Cloud & Databricks" },
+      "graphs": { "labelKey": "Análisis de Grafos (Neo4J)" },
+      "analysis": { "labelKey": "Análisis de Datos & Power BI" },
+      "excel": { "labelKey": "Excel y Modelado de Datos" },
+      "database": { "labelKey": "Base de Datos & SQL" },
+
+      "dev": { "labelKey": "Desarrollo de Software" },
+      "security": { "labelKey": "Ciberseguridad" },
+
+      "html": { "labelKey": "HTML" },
+      "css": { "labelKey": "CSS" },
+      "javascript": { "labelKey": "JavaScript" },
+      "typescript": { "labelKey": "TypeScript" },
+      "next": { "labelKey": "Next.js" },
+      "node": { "labelKey": "Node.js" },
+      "react": { "labelKey": "React" },
+      "articles": { "labelKey": "Artículos Técnicos" }
+    },
+
+    "featuredProjects": []
+  },
+
+  "common": {
+    "navigation": "Navegación principal",
+    "role": "Científico de Datos | Python | SQL | Azure",
+    "footer": "© 2026 Sérgio Santos. Todos los derechos reservados.",
+    "rights": "Todos los derechos reservados",
+    "builtWith": "Desarrollado con Next.js 16 & TypeScript",
+    "loading": "Cargando...",
+    "error": "Algo salió mal.",
+    "socialLinks": "Abrir perfil de {platform}",
+    "skipToContent": "Saltar al contenido",
+    "languageSwitcher": "Cambiar idioma",
+    "email": "santossergiorealbjj@outlook.com",
+
+    "nav": {
+      "about": "Sobre mí",
+      "experience": "Experiencia",
+      "projects": "Proyectos",
+      "articles": "Artículos",
+      "contact": "Contacto"
+    },
+
+    "theme": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    },
+
+    "externalLinks": {
+      "linkedin": "https://www.linkedin.com/in/santossergioluiz",
+      "github": "https://github.com/Santosdevbjj",
+      "medium": "https://medium.com/@sergiosantosluiz",
+      "email": "mailto:santossergiorealbjj@outlook.com"
+    }
+  },
+
+  "intl": {
+    "locale": "es-AR",
+    "fallbackLocale": "es",
+    "currency": "ARS",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "unitDisplay": "short",
+    "numberFormat": "es-AR"
+  },
+
+  "states": {
+    "loading": "Cargando...",
+    "empty": "Sin datos.",
+    "error": "Error al cargar.",
+    "emptyProjects": {
+      "title": "Sin proyectos",
+      "description": "Próximamente.",
+      "cta": "Volver"
+    },
+    "emptyExperience": "Sin registros.",
+    "errorArticles": "Error en los artículos."
+  },
+
+  "cookie": {
+    "title": "Cookies",
+    "description": "Mejoramos tu experiencia.",
+    "necessary": "Necesarias",
+    "alwaysActive": "Activo",
+    "analytics": "Analíticas",
+    "acceptAll": "Aceptar",
+    "savePreferences": "Guardar"
+  },
+
+  "seo": {
+    "siteName": "Sérgio Santos | Portafolio",
+    "title": "Sérgio Santos",
+    "description": "Científico de Datos especialista en Sistemas Críticos y Misión Crítica.",
+    "keywords": [
+      "Ciencia de Datos",
+      "Data Science",
+      "Machine Learning",
+      "ETL",
+      "Cloud Computing",
+      "Azure",
+      "Python"
+    ]
+  },
+
+  "metrics": {
+    "availability": "99,5%",
+    "availabilityNormalized": {
+      "value": 99.5,
+      "unit": "%"
+    }
+  },
+
+  "resume": {
+    "selectLanguage": "Seleccionar Idioma",
+    "languages": {
+      "pt-BR": "Portugués",
+      "en-US": "Inglés",
+      "es-ES": "Español",
+      "es-AR": "Español (AR)",
+      "es-MX": "Español (MX)"
+    }
+  },
+
+  "menu": {
+    "open": "Abrir menú",
+    "close": "Cerrar"
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ESPANHOL DO MÉXICO 
+
+src/dictionaries/es-MX.json
+
+TEM ESSE CONTEÚDO:
+
+
+{
+  "meta": {
+    "version": "1.0.1",
+    "locale": "es-MX",
+    "direction": "ltr",
+    "lastUpdated": "2026-03-08T21:00:00Z",
+    "author": "Sérgio Santos",
+    "source": "manual",
+    "contentVersion": "2026.03.08",
+    "contentHash": "i18n-esmx-2026-03-08",
+    "sourceType": "curated-manual",
+    "description": "Portafolio de Sérgio Santos: Especialista en Ciencia de Datos, IA e Ingeniería de Software con enfoque en Sistemas Críticos y Misión Crítica. Vea proyectos y artículos técnicos."
+  },
+
+  "hero": {
+    "greeting": "Disponible para Proyectos Críticos",
+    "title": "Científico de Datos",
+    "subtitle": "Datos y Resiliencia",
+    "headline": "Especialista en transformar infraestructuras complejas en sistemas de alta disponibilidad y pipelines de datos escalables.",
+    "ctaPrimary": "Ver Proyectos"
+  },
+
+  "construction": {
+    "badge": "Análisis de Riesgo e IA",
+    "title": "Predicción de Riesgos en Construcción Civil",
+    "description": "Desarrollo de modelos predictivos para identificar cuellos de botella operativos y riesgos estructurales en grandes obras, utilizando redes neuronales y análisis de series temporales.",
+    "techStack": ["Python", "TensorFlow", "Azure Data Factory", "Power BI"],
+    "viewProject": "Explorar Solución",
+    "metrics": {
+      "accuracy": "94%",
+      "label": "Precisión del Modelo"
+    }
+  },
+
+  "about": {
+    "title": "Sobre Mí",
+    "differentialTitle": "Ingeniería de Datos con Enfoque en Misión Crítica",
+    "description": "Científico de Datos con base sólida en sistemas críticos bancarios y enfoque en transformar datos en decisiones, reducción de costos y eficiencia operativa.",
+    "differentialContent": "Me desempeñé por más de 15 años en el Banco Bradesco en entornos regulados de misión crítica. Actualmente dirijo mi carrera hacia la Ciencia de Datos e IA.",
+    "highlights": [
+      "15+ años en Banca",
+      "Especialista Cloud",
+      "Data Science & IA"
+    ],
+    "stats": {
+      "experienceValue": "+15",
+      "experienceLabel": "Años",
+      "availabilityValue": "99.9%",
+      "availabilityLabel": "Uptime",
+      "automation": "Sistemas 100% Automatizados"
+    }
+  },
+
+  "contact": {
+    "title": "¿Hablamos?",
+    "subtitle": "Busco oportunidades en proyectos de gobernanza y modernización.",
+    "cta": "Enviar Email",
+    "emailLabel": "Copiar Email",
+    "cvLabel": "Ver CV",
+    "linkedinLabel": "LinkedIn",
+    "ctaTitle": "¿Construimos algo juntos?",
+    "buttonText": "Contactar →"
+  },
+
+  "experience": {
+    "title": "Experiencia Profesional",
+    "emptyLabel": "No se encontró experiencia",
+    "items": [
+      {
+        "company": "Consultor Autónomo / Transición",
+        "period": "2008 - Actualidad",
+        "role": "Especialista en Sistemas Críticos",
+        "description": "Arquitectura y mantenimiento de pipelines de datos e infraestructura resiliente."
+      }
+    ]
+  },
+
+  "articles": {
+    "title": "Artículos Técnicos",
+    "mediumProfile": "Ver perfil en Medium",
+    "readMore": "Leer artículo completo",
+    "publishedAt": "Publicado el",
+    "bestOfMonth": "Destacado del Mes",
+    "awardWinner": "Artículo Premiado",
+    "items": [
+      {
+        "title": "La Era de los Datos en Sistemas Críticos",
+        "description": "Cómo la gobernanza de datos transforma sistemas legados en activos estratégicos.",
+        "date": "2025",
+        "category": "Data Strategy",
+        "isAward": true,
+        "link": "https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
+      }
+    ]
+  },
+
+  "projects": {
+    "title": "Proyectos y Soluciones",
+    "featuredLabel": "Destacado Técnico",
+    "firstLabel": "Desafío y Arquitectura",
+    "impactLabel": "Impacto y Resultado",
+    "problem": "Problema",
+    "solution": "Solución",
+    "viewProject": "Repositorio GitHub",
+    "viewDemo": "Visualizar Demo",
+    "viewAll": "Ver Todos",
+
+    "portfolio": {
+      "all": "Todos",
+      "viewProject": "Ver Proyecto"
+    },
+
+    "categories": {
+      "Data Engineering": { "labelKey": "Ingeniería de Datos" },
+      "Cloud & Infrastructure": { "labelKey": "Nube e Infraestructura" },
+      "Data Science": { "labelKey": "Ciencia de Datos" },
+      "Data Analytics": { "labelKey": "Análisis de Datos" },
+      "Outros": { "labelKey": "Otros Proyectos" },
+
+      "dataScience": { "labelKey": "Ciencia de Datos" },
+      "cloud": { "labelKey": "Cloud & Databricks" },
+      "graphs": { "labelKey": "Análisis de Grafos (Neo4J)" },
+      "analysis": { "labelKey": "Análisis de Datos & Power BI" },
+      "excel": { "labelKey": "Excel y Modelado de Datos" },
+      "database": { "labelKey": "Base de Datos & SQL" },
+
+      "dev": { "labelKey": "Desarrollo de Software" },
+      "security": { "labelKey": "Ciberseguridad" },
+
+      "html": { "labelKey": "HTML" },
+      "css": { "labelKey": "CSS" },
+      "javascript": { "labelKey": "JavaScript" },
+      "typescript": { "labelKey": "TypeScript" },
+      "next": { "labelKey": "Next.js" },
+      "node": { "labelKey": "Node.js" },
+      "react": { "labelKey": "React" },
+      "articles": { "labelKey": "Artículos Técnicos" }
+    },
+
+    "featuredProjects": []
+  },
+
+  "common": {
+    "navigation": "Navegación principal",
+    "role": "Científico de Datos | Python | SQL | Azure",
+    "footer": "© 2026 Sérgio Santos. Todos los derechos reservados.",
+    "rights": "Todos los derechos reservados",
+    "builtWith": "Desarrollado con Next.js 16 & TypeScript",
+    "loading": "Cargando...",
+    "error": "Algo salió mal.",
+    "socialLinks": "Abrir perfil de {platform}",
+    "skipToContent": "Saltar al contenido",
+    "languageSwitcher": "Cambiar idioma",
+    "email": "santossergiorealbjj@outlook.com",
+
+    "nav": {
+      "about": "Sobre mí",
+      "experience": "Experiencia",
+      "projects": "Proyectos",
+      "articles": "Artículos",
+      "contact": "Contacto"
+    },
+
+    "theme": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    },
+
+    "externalLinks": {
+      "linkedin": "https://www.linkedin.com/in/santossergioluiz",
+      "github": "https://github.com/Santosdevbjj",
+      "medium": "https://medium.com/@sergiosantosluiz",
+      "email": "mailto:santossergiorealbjj@outlook.com"
+    }
+  },
+
+  "intl": {
+    "locale": "es-MX",
+    "fallbackLocale": "es",
+    "currency": "MXN",
+    "timezone": "America/Mexico_City",
+    "unitDisplay": "short",
+    "numberFormat": "es-MX"
+  },
+
+  "states": {
+    "loading": "Cargando...",
+    "empty": "Sin datos.",
+    "error": "Error al cargar.",
+    "emptyProjects": {
+      "title": "Sin proyectos",
+      "description": "Próximamente.",
+      "cta": "Volver"
+    },
+    "emptyExperience": "Sin registros.",
+    "errorArticles": "Error en los artículos."
+  },
+
+  "cookie": {
+    "title": "Cookies",
+    "description": "Mejoramos tu experiencia.",
+    "necessary": "Necesarias",
+    "alwaysActive": "Activo",
+    "analytics": "Analíticas",
+    "acceptAll": "Aceptar",
+    "savePreferences": "Guardar"
+  },
+
+  "seo": {
+    "siteName": "Sérgio Santos | Portafolio",
+    "title": "Sérgio Santos",
+    "description": "Científico de Datos especialista en Sistemas Críticos y Misión Crítica.",
+    "keywords": [
+      "Ciencia de Datos",
+      "Data Science",
+      "Machine Learning",
+      "ETL",
+      "Cloud Computing",
+      "Azure",
+      "Python"
+    ]
+  },
+
+  "metrics": {
+    "availability": "99,5%",
+    "availabilityNormalized": {
+      "value": 99.5,
+      "unit": "%"
+    }
+  },
+
+  "resume": {
+    "selectLanguage": "Seleccionar Idioma",
+    "languages": {
+      "pt-BR": "Portugués",
+      "en-US": "Inglés",
+      "es-ES": "Español",
+      "es-AR": "Español (AR)",
+      "es-MX": "Español (MX)"
+    }
+  },
+
+  "menu": {
+    "open": "Abrir menú",
+    "close": "Cerrar"
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O DICIONÁRIO DE TIPOS 
+
+src/types/dictionary.ts
+
+TEM ESSE CONTEÚDO 
+
+
+// src/types/dictionary.ts
+
+import type { SupportedLocale } from "@/dictionaries/locales";
+
+export type Locale = SupportedLocale;
+
+/* ================= META ================= */
+export interface DictionaryMeta {
+  version: string;
+  locale: Locale;
+  direction: "ltr" | "rtl";
+  lastUpdated: string;
+  author: string;
+  source?: string;
+  contentVersion?: string;
+  contentHash?: string;
+  sourceType?: string;
+  description: string;
+}
+
+/* ================= HERO ================= */
+export interface HeroDictionary {
+  greeting: string;
+  title: string;
+  subtitle: string;
+  headline: string;
+  ctaPrimary: string;
+}
+
+/* ================= CONSTRUCTION ================= */
+export interface ConstructionDictionary {
+  badge: string;
+  title: string;
+  description: string;
+  techStack: string[];
+  viewProject: string;
+  metrics: {
+    accuracy: string;
+    label: string;
+  };
+}
+
+/* ================= ABOUT ================= */
+export interface AboutDictionary {
+  title: string;
+  differentialTitle: string;
+  description: string;
+  differentialContent: string;
+  highlights: string[];
+  stats: {
+    experienceValue: string;
+    experienceLabel: string;
+    availabilityValue: string;
+    availabilityLabel: string;
+    automation: string;
+  };
+}
+
+/* ================= CONTACT ================= */
+export interface ContactDictionary {
+  title: string;
+  subtitle: string;
+  cta: string;
+  emailLabel: string;
+  cvLabel: string;
+  linkedinLabel: string;
+  ctaTitle?: string;
+  buttonText?: string;
+}
+
+/* ================= EXPERIENCE ================= */
+export interface ExperienceItem {
+  company: string;
+  period: string;
+  role: string;
+  description: string;
+}
+
+export interface ExperienceDictionary {
+  title: string;
+  items: ExperienceItem[];
+  emptyLabel: string;
+}
+
+/* ================= ARTICLES ================= */
+export interface ArticleItem {
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+  isAward: boolean;
+  link: string;
+}
+
+export interface ArticlesSectionDictionary {
+  title: string;
+  mediumProfile: string;
+  readMore: string;
+  publishedAt: string;
+  bestOfMonth: string;
+  awardWinner: string;
+  items: ArticleItem[];
+}
+
+/* ================= PROJECTS ================= */
+export interface CategoryDetail {
+  labelKey: string;
+}
+
+/**
+ * 🔥 MANTIDO + FLEXÍVEL (SEM QUEBRAR O ANTIGO)
+ */
+export interface ProjectCategories {
+  "Data Engineering": CategoryDetail;
+  "Cloud & Infrastructure": CategoryDetail;
+  "Data Science": CategoryDetail;
+  "Data Analytics": CategoryDetail;
+  "Outros": CategoryDetail;
+
+  dataScience: CategoryDetail;
+  cloud: CategoryDetail;
+  graphs: CategoryDetail;
+  analysis: CategoryDetail;
+  excel: CategoryDetail;
+  database: CategoryDetail;
+  dev: CategoryDetail;
+  security: CategoryDetail;
+
+  html: CategoryDetail;
+  css: CategoryDetail;
+  javascript: CategoryDetail;
+  typescript: CategoryDetail;
+  next: CategoryDetail;
+  node: CategoryDetail;
+  react: CategoryDetail;
+
+  articles: CategoryDetail;
+
+  /**
+   * 🔥 mantém compatibilidade com ES-ES
+   */
+  [key: string]: CategoryDetail;
+}
+
+export interface ProjectItem {
+  id: string | number;
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+  category: string;
+  github?: string;
+  homepage?: string;
+}
+
+export interface ProjectsSectionDictionary {
+  title: string;
+  featuredLabel: string;
+  firstLabel: string;
+  impactLabel: string;
+  problem: string;
+  solution: string;
+  viewProject: string;
+  viewDemo: string;
+  viewAll: string;
+  portfolio: {
+    all: string;
+    viewProject: string;
+  };
+  categories: ProjectCategories;
+  featuredProjects: ProjectItem[];
+}
+
+/* ================= COMMON ================= */
+export interface CommonDictionary {
+  navigation: string;
+  role: string;
+  footer: string;
+  rights: string;
+  builtWith: string;
+  loading: string;
+  error: string;
+  socialLinks: string;
+  skipToContent: string;
+  languageSwitcher: string;
+  email: string;
+
+  nav: {
+    about: string;
+    experience: string;
+    projects: string;
+    articles: string;
+    contact: string;
+  };
+
+  theme: {
+    light: string;
+    dark: string;
+    system: string;
+  };
+
+  /**
+   * 🔥 VOLTOU A SER OBRIGATÓRIO (como era antes)
+   */
+  errorBoundary: {
+    title: string;
+    description: string;
+    actions: {
+      retry: string;
+      home: string;
+    };
+  };
+
+  notFound: {
+    title: string;
+    description: string;
+    button: string;
+  };
+
+  externalLinks: {
+    linkedin: string;
+    github: string;
+    medium: string;
+    email: string;
+  };
+
+  /**
+   * 🔥 CRÍTICO — obrigatório
+   */
+  menu: {
+    open: string;
+    close: string;
+    aria: {
+      open: string;
+      close: string;
+    };
+  };
+}
+
+/* ================= STATES ================= */
+export interface StateDictionary {
+  loading: string;
+  empty: string;
+  error: string;
+  emptyProjects: {
+    title: string;
+    description: string;
+    cta: string;
+  };
+  emptyExperience: string;
+  errorArticles: string;
+}
+
+/* ================= INTL ================= */
+export interface IntlDictionary {
+  locale: Locale;
+  fallbackLocale: string;
+  currency: string;
+  timezone: string;
+  unitDisplay: string;
+  numberFormat: string;
+}
+
+/* ================= COOKIE ================= */
+export interface CookieDictionary {
+  title: string;
+  description: string;
+  necessary: string;
+  alwaysActive: string;
+  analytics: string;
+  acceptAll: string;
+  savePreferences: string;
+}
+
+/* ================= SEO ================= */
+export interface SeoDictionary {
+  siteName: string;
+  title: string;
+  description: string;
+  keywords: string[];
+
+  /**
+   * 🔥 voltou a ser obrigatório
+   */
+  pages: {
+    [key: string]: {
+      title: string;
+      description: string;
+    };
+  };
+}
+
+/* ================= METRICS ================= */
+export interface MetricsDictionary {
+  availability: string;
+  availabilityNormalized: {
+    value: number;
+    unit: string;
+  };
+}
+
+/* ================= RESUME ================= */
+export interface ResumeDictionary {
+  selectLanguage: string;
+  languages: Record<string, string>;
+}
+
+/* ================= ROOT ================= */
+export interface Dictionary {
+  meta: DictionaryMeta;
+  hero: HeroDictionary;
+
+  /**
+   * 🔥 NOVO - Seção de Projetos de Construção Civil / IA
+   */
+  construction: ConstructionDictionary;
+
+  about: AboutDictionary;
+  contact: ContactDictionary;
+  experience: ExperienceDictionary;
+  articles: ArticlesSectionDictionary;
+  projects: ProjectsSectionDictionary;
+  common: CommonDictionary;
+  intl: IntlDictionary;
+  states: StateDictionary;
+  cookie: CookieDictionary;
+  seo: SeoDictionary;
+  metrics: MetricsDictionary;
+
+  /**
+   * 🔥 NOVO (não quebra nada)
+   */
+  resume: ResumeDictionary;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MEUS CURRÍCULOS VITAE, NAS NOVAS PASTAS E NOMES CORRETOS.
+
+Estão em português, inglês e espanhol da Espanha, e espanhol da Argentina, e espanhol do México.
+
+
+
+public/pdf/cv-sergio-santos-pt-BR.pdf
+
+public/pdf/cv-sergio-santos-en-US.pdf
+
+public/pdf/cv-sergio-santos-es-ES.pdf
+
+public/pdf/cv-sergio-santos-es-AR.pdf
+
+public/pdf/cv-sergio-santos-es-MX.pdf
+
+
+
+
+
+
+
+
+
+
+
+MINHAS OGIMAGE 
+Estão em português inglês, e espanhol da Espanha, e espanhol da Argentina, e espanhol do México.
+
+
+public/og/og-image-pt-BR.png
+
+
+public/og/og-image-es-MX.png
+
+
+public/og/og-image-es-ES.png
+
+
+public/og/og-image-es-AR.png
+
+
+public/og/og-image-en-US.png
+
+
+
+
+
+
+
+
+
+MEUS ÍCONS 
+
+
+public/icons/apple-icon.png
+
+
+public/icons/apple-touch-icon.png
+
+
+public/icons/favicon.ico
+
+
+public/icons/icon.png
+
+
+public/icons/icon.svg
+
+
+
+
+
+
+
+MINHAS IMAGES
+
+
+MINHA FOTO:
+
+public/images/sergio-santos-profile.png
+
+
+
+
+
+
+ TROFEUS DE MELHOR ARTIGO DA 35° edição da competição de artigos da DIO.
+E troféu de melhor artigo do mês de setembro de 2025:
+
+public/images/trofeus-vencedor-dio.png
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ESSA É A LOGICA PARA LER OS REPOSITÓRIO DE ARTIGOS DO GITHUB. 
+
+O CARD PARA MOSTRAR O ARTIGOS DO REPOSITÓRIO 
+DEVERÁ LISTAR AS PASTAS E ARQUIVOS PARA O USUÁRIO SELECIONAR O ARQUIVO QUE DESEJA LER.
+O NOME DA PASTA IDENTIFICA A TECNOLOGIA DO ARTIGO ESCRITO.
+
+
+O ARQUIVO src/app/[lang]/artigos/[...slug]/page.tsx
+
+ESTÁ COM ESSE CONTEÚDO:
+
+
+
+
+// src/app/[lang]/artigos/[...slug]/page.tsx
+
+// 1. Imports com tipagem estrita para TS 6.0 (verbatimModuleSyntax)
+import type { Metadata } from "next";
+import { getArticleContent } from "@/lib/github";
+import { getAllArticlesRecursively } from "@/lib/github-scanner";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { notFound } from "next/navigation";
+import MdxLayout from "@/components/mdx-layout";
+import ShareArticle from "@/components/ShareArticle";
+import { getServerDictionary } from "@/lib/getServerDictionary";
+import { normalizeLocale, SUPPORTED_LOCALES } from "@/dictionaries/locales";
+import type { Locale } from "@/types/dictionary";
+
+/**
+ * TIPAGEM NEXT.JS 16 E REACT 19
+ * Params deve ser tratado como uma Promise.
+ */
+interface PageProps {
+  params: Promise<{ slug: string[]; lang: string }>;
+}
+
+/**
+ * 2. METADADOS DINÂMICOS (SEO & OPEN GRAPH)
+ * Integrado com descrição longa (>100 caracteres) para evitar avisos no LinkedIn.
+ */
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lang, slug } = await params;
+  
+  // Proteção contra undefined e tratamento do slug
+  const safeSlugArray = slug ?? [];
+  const lastPart = safeSlugArray[safeSlugArray.length - 1] ?? "artigo";
+  const fullSlugPath = safeSlugArray.join("/");
+  
+  const siteUrl = "https://portfoliosantossergio.vercel.app";
+  const fullUrl = `${siteUrl}/${lang}/artigos/${fullSlugPath}`;
+  
+  // URL para o Route Handler de imagem OG (api/og/article)
+  const ogImageUrl = `${siteUrl}/api/og/article?lang=${lang}&slug=${encodeURIComponent(fullSlugPath)}`;
+
+  // Título em UpperCase para consistência visual
+  const cleanTitle = lastPart.replace(/-/g, " ").toUpperCase();
+  
+  // DESCRIÇÃO AMPLIADA (Solução para o Warning do LinkedIn Inspector)
+  // Ultrapassa os 100 caracteres exigidos para melhor SEO e engajamento.
+  const description = `Artigo técnico detalhado sobre ${cleanTitle.toLowerCase()}. Explore este e outros conteúdos sobre Ciência de Dados e Inteligência Artificial no portfólio profissional de Sérgio Santos.`;
+
+  return {
+    title: `${cleanTitle} | Sérgio Santos`,
+    description: description,
+    alternates: { canonical: fullUrl },
+    openGraph: {
+      title: cleanTitle,
+      description: description,
+      url: fullUrl,
+      siteName: "Sérgio Santos | Portfolio",
+      type: "article",
+      authors: ["Sérgio Santos"],
+      publishedTime: new Date().toISOString(),
+      locale: lang.replace("-", "_"),
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: cleanTitle,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: cleanTitle,
+      description: description,
+      images: [ogImageUrl],
+    },
+  };
+}
+
+/**
+ * 3. GERAÇÃO ESTÁTICA (SSG)
+ * Suporte multilingue: pt-BR, en-US, es-ES, es-AR, es-MX.
+ */
+export async function generateStaticParams() {
+  const articles = await getAllArticlesRecursively();
+  
+  return articles.flatMap((art) => 
+    SUPPORTED_LOCALES.map((locale) => ({
+      lang: locale,
+      slug: art.slug,
+    }))
+  );
+}
+
+/**
+ * 4. RENDERIZAÇÃO DA PÁGINA (SERVER COMPONENT)
+ * Otimizado para Node 24 e Tailwind CSS 4.2.
+ */
+export default async function ArtigoDetalhePage(props: PageProps) {
+  const { slug, lang: rawLang } = await props.params;
+  
+  const lang = normalizeLocale(rawLang) as Locale;
+  const dict = await getServerDictionary(lang);
+
+  // Busca o conteúdo Markdown direto do GitHub via Service
+  const content = await getArticleContent(slug);
+
+  if (!content) {
+    return notFound();
+  }
+
+  // Lógica de extração de título para o componente ShareArticle
+  const titleMatch = content.match(/^#\s+(.*)$/m);
+  const fallbackTitle = (slug?.[slug.length - 1] ?? "").replace(/-/g, " ");
+  const articleTitle = titleMatch?.[1]?.trim() ?? fallbackTitle;
+
+  return (
+    <MdxLayout lang={lang} dict={dict}>
+      <article className="container mx-auto py-12 max-w-4xl px-4 overflow-hidden animate-in fade-in duration-500">
+        
+        {/* CONTEÚDO MDX - TAILWIND 4.2 PROSE (TYPOGRAPHY) */}
+        <div className="prose prose-slate dark:prose-invert max-w-none 
+          prose-blue prose-headings:scroll-mt-32 
+          prose-img:rounded-3xl prose-img:shadow-2xl
+          prose-a:text-blue-600 dark:prose-a:text-blue-400
+          selection:bg-blue-500/30 text-slate-900 dark:text-slate-100">
+          
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {content}
+          </ReactMarkdown>
+        </div>
+        
+        {/* RODAPÉ INTEGRADO COM SHARE ARTICLE */}
+        <footer className="mt-20 pt-10 border-t border-slate-200 dark:border-slate-800">
+          <ShareArticle title={articleTitle} dict={dict} lang={lang} />
+        </footer>
+      </article>
+    </MdxLayout>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/[lang]/artigos/page.tsx
+
+ESTÁ COM ESSE CONTEÚDO:
+
+
+
+// src/app/[lang]/artigos/page.tsx
+
+import Link from "next/link";
+import MdxLayout from "@/components/mdx-layout";
+import { getServerDictionary } from "@/lib/getServerDictionary";
+import { getAllArticlesRecursively } from "@/lib/github-scanner";
+import type { Locale } from "@/types/dictionary";
+
+// Forçamos a página a ser dinâmica para refletir mudanças no GitHub sem novo deploy
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Revalida a cada 1 hora
+
+/**
+ * PÁGINA DE LISTAGEM DE ARTIGOS - DINÂMICA
+ * -----------------------------------------------------------------------------
+ * ✔ Consome o repositório Santosdevbjj/myArticles em tempo real
+ * ✔ Agrupa artigos por categoria (pastas do GitHub)
+ * ✔ Layout de Cards modernos com cores padrão (Blue/Slate)
+ */
+
+export default async function ArticlesListPage({ 
+  params 
+}: { 
+  params: Promise<{ lang: string }> 
+}) {
+  const { lang } = await params;
+  const locale = lang as Locale;
+  const dict = await getServerDictionary(locale);
+
+  // BUSCA DINÂMICA: Substituímos o array estático pelo scanner recursivo
+  const allArticles = await getAllArticlesRecursively();
+
+  // AGRUPAMENTO: Organiza os artigos por categoria para uma UX melhor
+  const categories = allArticles.reduce((acc, art) => {
+    const catName = art.category || "Geral";
+    if (!acc[catName]) acc[catName] = [];
+    acc[catName].push(art);
+    return acc;
+  }, {} as Record<string, typeof allArticles>);
+
+  return (
+    <MdxLayout lang={locale} dict={dict}>
+      <div className="not-prose max-w-7xl mx-auto px-4">
+        
+        {/* HEADER DINÂMICO */}
+        <header className="mb-16">
+          <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase italic text-slate-900 dark:text-white leading-[0.85]">
+            {dict.articles.title.split(' ')[0]}{" "}
+            <span className="text-blue-600 dark:text-blue-500">
+              {dict.articles.title.split(' ').slice(1).join(' ')}
+            </span>
+          </h1>
+          <div className="h-2 w-24 bg-blue-600 mt-8 rounded-full" />
+          <p className="mt-6 text-slate-500 dark:text-slate-400 font-medium max-w-2xl">
+            Explorando tecnologias, arquitetura de software e desenvolvimento pessoal através de artigos técnicos direto do meu repositório.
+          </p>
+        </header>
+
+        {/* LISTAGEM POR CATEGORIAS */}
+        <div className="space-y-20">
+          {Object.entries(categories).map(([category, articles]) => (
+            <section key={category} className="relative">
+              {/* Título da Categoria (Pasta) */}
+              <div className="flex items-center gap-4 mb-8">
+                <h2 className="text-xs font-black uppercase tracking-[0.3em] text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 px-4 py-2 rounded-lg">
+                  {category.replace(/-/g, ' ')}
+                </h2>
+                <div className="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800" />
+              </div>
+
+              {/* GRID DE CARDS */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {articles.map((art) => {
+                  const fullSlug = art.slug.join("/");
+                  
+                  // CORREÇÃO DO ERRO DE DEPLOY:
+                  // Garantimos que o título existe antes de aplicar o .replace()
+                  const lastSegment = art.slug[art.slug.length - 1] || "artigo";
+                  const displayTitle = lastSegment.replace(/-/g, ' ');
+
+                  return (
+                    <Link 
+                      key={fullSlug} 
+                      href={`/${lang}/artigos/${fullSlug}`}
+                      className="group relative flex flex-col p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500"
+                    >
+                      {/* Ícone sutil no Card */}
+                      <div className="mb-6 w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center group-hover:bg-blue-600 transition-colors duration-500">
+                        <svg className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                      </div>
+
+                      <h3 className="text-xl font-bold capitalize leading-tight text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        {displayTitle}
+                      </h3>
+                      
+                      <div className="mt-auto pt-8 flex items-center justify-between">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors">
+                          {dict.articles.readMore || "Ler Artigo"}
+                        </span>
+                        
+                        <div className="transform translate-x-0 group-hover:translate-x-2 transition-transform">
+                          <svg className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                          </svg>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
+        </div>
+
+        {/* EMPTY STATE DINÂMICO */}
+        {allArticles.length === 0 && (
+          <div className="py-40 text-center rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 mb-6">
+              <svg className="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+            </div>
+            <p className="text-slate-500 uppercase font-black text-xs tracking-[0.2em]">
+              {dict.states.empty || "Nenhum artigo encontrado no repositório."}
+            </p>
+          </div>
+        )}
+      </div>
+    </MdxLayout>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
