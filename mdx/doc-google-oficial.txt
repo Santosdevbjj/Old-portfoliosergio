@@ -1,0 +1,895 @@
+
+
+
+https://developers.google.com/search/docs/appearance/structured-data/search-gallery?hl=pt-br
+
+
+
+Ir para o conteúdo principal
+
+Google Search Central
+Search Central
+
+
+Documentation
+Search Console
+
+Google Search Central
+Search Central
+Página inicial
+Search Central
+Documentation
+Isso foi útil?
+
+Envie comentários
+Marcações de dados estruturados compatíveis com a Pesquisa Google
+
+
+O Google usa dados estruturados para entender o conteúdo da página e exibir as informações de uma forma mais útil nos resultados da pesquisa, o que é chamado de pesquisa aprimorada. Para que seu site seja qualificado para exibição como pesquisa aprimorada, siga o guia e veja como implementar dados estruturados. Se você é iniciante, acesse Entender como dados estruturados funcionam.
+
+Observação: a aparência real nos resultados da pesquisa pode ser diferente. É possível ver uma prévia da maioria dos recursos com o teste de pesquisa aprimorada.
+Escolha uma categoria que descreva o site
+Filtrar por…
+         
+E-commerce
+Organizações
+         
+Esportes
+Empregos
+         
+Entretenimento
+Notícias
+         
+Alimentos e bebidas
+Educação e ciência
+       
+Filtrar por…
+Recursos de dados estruturados
+Artigo
+
+São artigos de blogs, esportes ou notícias exibidos em vários recursos de pesquisa aprimorada, como o título do artigo e imagens maiores do que miniaturas.
+
+Primeiros passos
+exemplo de artigo nos resultados da pesquisa
+Navegação estrutural
+
+É a navegação que indica a posição da página na hierarquia do site.
+
+Primeiros passos
+exemplo de localização atual nos resultados da pesquisa
+Carrossel
+
+É a pesquisa aprimorada exibida em uma lista sequencial ou galeria de um único site. Essa ferramenta funciona melhor quando usada com um dos seguintes recursos: Receita, Lista de cursos, Restaurante e Filme.
+
+Primeiros passos
+Uma ilustração de como um carrossel de host de receitas pode aparecer na Pesquisa Google. Ela mostra três receitas diferentes do mesmo site em um formato de carrossel que os usuários podem explorar e selecionar uma receita específica.
+Lista de cursos
+
+É uma lista de cursos do mesmo fornecedor. Eles podem incluir o título do curso, o provedor e uma breve descrição.
+
+Primeiros passos
+Pesquisa aprimorada da lista de cursos nos resultados da pesquisa
+Conjunto de dados
+
+São grandes conjuntos de dados que aparecem na Pesquisa de Datasets.
+
+Primeiros passos
+exemplo de conjunto de dados nos resultados da pesquisa
+Fórum de discussão
+
+É o conteúdo gerado pelo usuário (tradicionalmente de formato curto em comparação com Article), seguido por uma discussão com ou sem conversas sobre esse tema.
+
+Primeiros passos
+Ilustração da pesquisa aprimorada de discussões e fóruns
+Perguntas e respostas educacionais
+
+São perguntas e respostas relacionadas à educação que ajudam os alunos a encontrar cartões didáticos na Pesquisa Google.
+
+Primeiros passos
+Carrossel de Perguntas e respostas educacionais nos resultados da pesquisa
+Avaliação agregada de empregador
+
+É uma avaliação de uma organização contratante, compilada com base em vários usuários, que é exibida na experiência de pesquisa de empregos no Google.
+
+Primeiros passos
+exemplo de avaliação agregada de empregador nos resultados da pesquisa
+Evento
+
+É uma pesquisa aprimorada interativa que mostra uma lista de eventos organizados, como shows ou festivais de arte, em que as pessoas podem participar em determinado horário e local.
+
+Primeiros passos
+Como a experiência de eventos aparece na Pesquisa Google
+Perguntas frequentes
+
+As páginas de Perguntas frequentes têm uma lista de perguntas e respostas relacionadas a um tópico específico.
+
+Primeiros passos
+exemplo de Perguntas frequentes nos resultados da pesquisa
+Metadados de imagens
+
+Quando você especifica metadados de imagem, o Imagens do Google pode mostrar mais detalhes sobre a imagem, como quem é o criador, como as pessoas podem usar a imagem e informações de crédito.
+
+Começar
+Um exemplo de metadados de imagem no Imagens do Google
+Anúncio de emprego
+
+É uma pesquisa aprimorada interativa que permite que candidatos encontrem um emprego. A experiência de pesquisa de emprego no Google pode exibir o logotipo, as avaliações, as classificações e os detalhes da vaga.
+
+Primeiros passos
+exemplo de vaga de emprego nos resultados da pesquisa
+Empresa local
+
+São os detalhes da empresa exibidos no Painel de informações do Google, incluindo horário de funcionamento, avaliações, rotas e ações para agendar horários ou pedir itens.
+
+Começar
+exemplo de empresa local nos resultados da pesquisa
+Solucionador matemático
+
+Ajude alunos, professores e outros com problemas matemáticos adicionando dados estruturados para indicar o tipo de cálculo e instruções de problemas matemáticos específicos.
+
+Primeiros passos
+solucionadores matemáticos nos resultados da pesquisa
+Filme
+
+O carrossel de filmes ajuda os usuários a explorar listas com essas obras na Pesquisa Google, por exemplo, "melhores filmes de 2023". Você pode fornecer detalhes sobre os filmes, como o título, diretor e imagens.
+
+Começar
+Ilustração de como uma pesquisa aprimorada de filme pode aparecer na Pesquisa Google. Ela mostra três filmes diferentes do mesmo site em um formato de carrossel que os usuários podem explorar e selecionar um filme específico.
+Organização
+
+Informações sobre sua organização, como logotipo, razão social da organização, endereço, dados de contato e identificadores da empresa. Essas informações podem ser exibidas em painéis de informações e outros elementos visuais (como atribuição).
+
+Primeiros passos
+exemplo de organização nos resultados da pesquisa
+Produto
+
+Mostra informações sobre um produto, incluindo preço, disponibilidade e classificações de avaliação.
+
+Primeiros passos
+exemplo de produto nos resultados da pesquisa
+Página de perfil
+
+É uma página focada principalmente em informações sobre uma única pessoa ou organização que de alguma forma é afiliada ao site em geral.
+
+Primeiros passos
+Ilustração do filtro &quot;Perspectivas&quot; nos resultados da pesquisa
+Perguntas e respostas
+
+As páginas da Web de Perguntas e respostas contêm informações em um formato de uma pergunta seguida pelas respostas.
+
+Primeiros passos
+exemplo de página de perguntas e respostas nos resultados da pesquisa
+Receita
+
+São receitas exibidas como uma pesquisa aprimorada individual ou parte de um carrossel de host.
+
+Primeiros passos
+Uma ilustração de como um carrossel de host de receitas pode aparecer na Pesquisa Google. Ela mostra três receitas diferentes do mesmo site em um formato de carrossel que os usuários podem explorar e selecionar uma receita específica.
+Snippet de avaliação
+
+É um pequeno trecho de uma avaliação ou da classificação de um site de avaliações. Em geral, mostra uma média das pontuações de avaliações combinadas dos revisores. Um snippet de avaliação pode ser sobre um livro, uma receita, um filme, um produto, um app ou uma empresa local.
+
+Primeiros passos
+exemplo de snippet de avaliação nos resultados da pesquisa
+App de software
+
+São informações sobre um app, incluindo dados de classificação, uma descrição e um link para ele.
+
+Primeiros passos
+exemplo de app de software nos resultados da pesquisa
+Pronunciável
+
+Permita que mecanismos de pesquisa e outros aplicativos identifiquem conteúdos de notícias para ler em voz alta. Para isso, use dispositivos que têm o Google Assistente ativado com a conversão de texto em voz (TTS).
+
+Primeiros passos
+exemplo de pronunciável que mostra uma conversa com o Google Home. Uma pessoa pergunta ao
+                Google Home quais são as notícias mais recentes sobre a Nasa. O Google Home responde com uma lista de
+                três artigos de notícias.
+Conteúdo com paywall e assinatura
+
+Indique o conteúdo com paywall no site para ajudar o Google a diferenciá-lo das técnicas de cloaking, que violam nossas políticas de spam.
+
+Primeiros passos
+Um exemplo de paywall do New York Times que mostra que um leitor atingiu o limite de artigos
+Aluguel por temporada
+
+Informações sobre um imóvel disponível para aluguel por temporada, como nome, descrição, imagens, localização, classificação e avaliações.
+
+Primeiros passos
+ilustração de uma pesquisa aprimorada sobre aluguel por temporada
+Vídeo
+
+São informações de vídeo nos resultados da pesquisa, com a opção de assistir ao vídeo, especificar segmentos de vídeo e indicar a transmissão de conteúdo ao vivo.
+
+Primeiros passos
+exemplo de vídeo nos resultados da pesquisa
+Isso foi útil?
+
+Envie comentários
+Exceto em caso de indicação contrária, o conteúdo desta página é licenciado de acordo com a Licença de atribuição 4.0 do Creative Commons, e as amostras de código são licenciadas de acordo com a Licença Apache 2.0. Para mais detalhes, consulte as políticas do site do Google Developers. Java é uma marca registrada da Oracle e/ou afiliadas.
+
+Última atualização 2026-01-07 UTC.
+
+LinkedInLinkedIn
+YouTubeYouTube
+BlogBlog
+PodcastPodcast
+X (Twitter)X (Twitter)
+Receber suporte
+Acesse o Fórum de Ajuda
+Enviar uma pergunta para o horário de atendimento
+Denunciar spam, phishing ou malware
+Mais recursos de suporte
+Recursos
+Você precisa de SEO?
+Guia de SEO para iniciantes
+Status dos sistemas da Pesquisa
+Documentação do Search Console
+Estudos de caso
+Ferramentas
+Search Console
+Teste de pesquisa aprimorada
+PageSpeed Insights
+Teste de AMP
+Google Developers
+Android
+Chrome
+Firebase
+Google Cloud Platform
+Google AI
+Todos os produtos
+Termos de Serviço
+Privacidade
+Português – Brasil
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://developers.google.com/search/docs/appearance/structured-data/image-license-metadata?hl=pt-br
+
+
+
+
+Ir para o conteúdo principal
+
+Google Search Central
+Search Central
+
+
+Documentation
+Search Console
+
+Google Search Central
+Search Central
+Página inicial
+Search Central
+Documentation
+Isso foi útil?
+
+Envie comentários
+
+Metadados de imagem nas Imagens do Google
+
+
+Quando você especifica metadados de imagem, o Imagens do Google pode mostrar mais detalhes sobre a imagem, como quem é o criador, como as pessoas podem usar a imagem e informações de crédito. Por exemplo, incluir informações de licenciamento pode qualificar a imagem para o selo Licença, que tem um link para a licença e mais detalhes sobre como as pessoas podem usar a imagem.
+
+Metadados de imagem nas Imagens do Google
+Disponibilidade do recurso 
+Esse recurso está disponível para computadores e dispositivos móveis e em todas as regiões e idiomas em que a Pesquisa Google está disponível.
+
+Preparar suas imagens e páginas da Web 
+Para garantir que o Google possa encontrar e indexar suas imagens, siga os passos abaixo:
+
+Confirme se as pessoas podem acessar e visualizar suas páginas que têm imagens sem precisar de uma conta nem de login.
+Confira se o Googlebot pode acessar suas páginas que têm imagens. Isso significa garantir que elas não estejam bloqueadas por um arquivo robots.txt nem por uma tag meta robots. É possível conferir todas as páginas bloqueadas no seu site com o Relatório de indexação de páginas ou testar uma página específica usando a Ferramenta de inspeção de URL.
+Siga os Fundamentos da Pesquisa para garantir que o Google possa descobrir seu conteúdo.
+Siga as práticas recomendadas de SEO para imagens.
+Para informar o Google sobre qualquer mudança, recomendamos enviar um sitemap. É possível automatizar isso com a API Search Console Sitemap.
+Adicionar dados estruturados ou metadados de foto do IPTC 
+Para informar o Google sobre os metadados da imagem, adicione dados estruturados ou metadados de foto do IPTC a cada imagem no site. Se a mesma imagem estiver em várias páginas, adicione dados estruturados ou metadados de foto do IPTC a cada instância em todas as páginas em que ela aparecer.
+
+Há duas maneiras de adicionar metadados de foto a imagens. Só é necessário enviar ao Google um tipo de informação para se qualificar ao selo Licença, e qualquer um dos seguintes métodos é suficiente:
+
+Dados estruturados: são uma associação entre a imagem e a página em que ela aparece com a marcação. É necessário adicionar dados estruturados para cada instância em que uma imagem é usada, mesmo que seja a mesma imagem.
+Metadados de foto do IPTC: são incorporados à própria imagem, e ambos podem ser movidos de uma página a outra sem que sofram alterações. Só é necessário incorporar metadados de foto do IPTC uma vez por imagem.
+Se você optar por usar metadados de foto IPTC e dados estruturados, e alguma informação conflitar entre os dois, o Google vai usar as informações de dados estruturados.
+O diagrama a seguir mostra como as informações de licença podem aparecer no Imagens do Google:
+
+Frases de destaque indicam quais partes dos metadados de licença podem ser mostradas no Imagens do Google
+Um URL para uma página com a descrição da licença que rege o uso de uma imagem. Especifique essas informações com a propriedade license do Schema.org ou com o campo "IPTC Web Statement of Rights".
+Um URL para uma página que descreve onde o usuário pode encontrar informações sobre como licenciar essa imagem. Especifique essas informações com a propriedade acquireLicensePage do Schema.org ou com o campo IPTC Licensor URL (de um Licensor).
+Dados estruturados
+Uma maneira de informar o Google sobre os metadados da sua imagem é adicionar campos de dados estruturados. Os dados estruturados são um formato padronizado para disponibilizar informações sobre uma página e classificar o conteúdo dela. Caso você não saiba muito sobre o assunto, descubra como os dados estruturados funcionam.
+
+Esta é uma visão geral de como criar, testar e lançar dados estruturados.
+
+Adicione as propriedades obrigatórias. Com base no formato que você está usando, saiba onde inserir dados estruturados na página.
+Usando um CMS? Talvez seja mais fácil usar um plug-in integrado ao CMS.
+Usando JavaScript? Saiba como gerar dados estruturados com JavaScript.
+Siga as diretrizes gerais de dados estruturados.
+Valide o código usando o teste de pesquisa aprimorada.
+Implante algumas páginas que incluam os dados estruturados e use a Ferramenta de inspeção de URL para testar como o Google vê a página. Confirme se a página está acessível ao Google e se não está bloqueada por um arquivo robots.txt, pela tag noindex ou por requisitos de login. Se estiver tudo certo, peça ao Google para rastrear novamente seus URLs.
+Aguarde a conclusão do novo rastreamento e da reindexação. Pode levar vários dias depois da publicação de uma página para que o Google a localize e rastreie.
+Para manter o Google informado sobre alterações futuras, recomendamos que você envie um sitemap. É possível automatizar isso com a API Search Console Sitemap.
+Exemplos
+Imagem única
+Este é um exemplo de página com uma única imagem.
+
+JSON-LDRDFaMicrodados
+
+<html>
+  <head>
+    <title>Black labrador puppy</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "ImageObject",
+      "contentUrl": "https://example.com/photos/1x1/black-labrador-puppy.jpg",
+      "license": "https://example.com/license",
+      "acquireLicensePage": "https://example.com/how-to-use-my-images",
+      "creditText": "Labrador PhotoLab",
+      "creator": {
+        "@type": "Person",
+        "name": "Brixton Brownstone"
+       },
+      "copyrightNotice": "Clara Kent"
+    }
+    </script>
+  </head>
+  <body>
+    <img alt="Black labrador puppy" src="https://example.com/photos/1x1/black-labrador-puppy.jpg">
+    <p><a href="https://example.com/license">License</a></p>
+    <p><a href="https://example.com/how-to-use-my-images">How to use my images</a></p>
+    <p><b>Photographer</b>: Brixton Brownstone</p>
+    <p><b>Copyright</b>: Clara Kent</p>
+    <p><b>Credit</b>: Labrador PhotoLab</p>
+  </body>
+</html>
+Imagem única em uma tag srcset
+Veja um exemplo de página com uma única imagem em uma tag srcset.
+
+JSON-LDRDFaMicrodados
+
+<html>
+  <head>
+    <title>Black labrador puppy</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "ImageObject",
+      "contentUrl": "https://example.com/photos/320/black-labrador-puppy-800w.jpg",
+      "license": "https://example.com/license",
+      "acquireLicensePage": "https://example.com/how-to-use-my-images",
+      "creditText": "Labrador PhotoLab",
+      "creator": {
+        "@type": "Person",
+        "name": "Brixton Brownstone"
+       },
+      "copyrightNotice": "Clara Kent"
+    }
+    </script>
+  </head>
+  <body>
+    <img srcset="https://example.com/photos/320/black-labrador-puppy-320w.jpg 320w,
+                   https://example.com/photos/480/black-labrador-puppy-480w.jpg 480w,
+                   https://example.com/photos/800/black-labrador-puppy-800w.jpg 800w"
+           sizes="(max-width: 320px) 280px,
+                  (max-width: 480px) 440px,
+                  800px"
+           src="https://example.com/photos/320/black-labrador-puppy-800w.jpg"
+           alt="Black labrador puppy"><br>
+    <p><a href="https://example.com/license">License</a></p>
+    <p><a href="https://example.com/how-to-use-my-images">How to use my images</a></p>
+    <p><b>Photographer</b>: Brixton Brownstone</p>
+    <p><b>Copyright</b>: Clara Kent</p>
+    <p><b>Credit</b>: Labrador PhotoLab</p>
+  </body>
+</html>
+Várias imagens em uma página
+Este é um exemplo de uma página com várias imagens.
+
+JSON-LDRDFaMicrodados
+
+<html>
+  <head>
+    <title>Photos of black labradors</title>
+    <script type="application/ld+json">
+    [{
+      "@context": "https://schema.org/",
+      "@type": "ImageObject",
+      "contentUrl": "https://example.com/photos/1x1/black-labrador-puppy.jpg",
+      "license": "https://example.com/license",
+      "acquireLicensePage": "https://example.com/how-to-use-my-images",
+      "creditText": "Labrador PhotoLab",
+      "creator": {
+        "@type": "Person",
+        "name": "Brixton Brownstone"
+       },
+      "copyrightNotice": "Clara Kent"
+    },
+   {
+      "@context": "https://schema.org/",
+      "@type": "ImageObject",
+      "contentUrl": "https://example.com/photos/1x1/adult-black-labrador.jpg",
+      "license": "https://example.com/license",
+      "acquireLicensePage": "https://example.com/how-to-use-my-images",
+      "creditText": "Labrador PhotoLab",
+      "creator": {
+        "@type": "Person",
+        "name": "Brixton Brownstone"
+       },
+      "copyrightNotice": "Clara Kent"
+    }]
+    </script>
+  </head>
+  <body>
+    <h2>Black labrador puppy</h2>
+    <img alt="Black labrador puppy" src="https://example.com/photos/1x1/black-labrador-puppy.jpg">
+    <p><a href="https://example.com/license">License</a></p>
+    <p><a href="https://example.com/how-to-use-my-images">How to use my images</a></p>
+    <p><b>Photographer</b>: Brixton Brownstone</p>
+    <p><b>Copyright</b>: Clara Kent</p>
+    <p><b>Credit</b>: Labrador PhotoLab</p>
+    <h2>Adult black labrador</h2>
+    <img alt="Adult black labrador" src="https://example.com/photos/1x1/adult-black-labrador.jpg">
+    <p><a href="https://example.com/license">License</a></p>
+    <p><a href="https://example.com/how-to-use-my-images">How to use my images</a></p>
+    <p><b>Photographer</b>: Brixton Brownstone</p>
+    <p><b>Copyright</b>: Clara Kent</p>
+    <p><b>Credit</b>: Labrador PhotoLab</p>
+  </body>
+</html>
+Definições de tipos de dados estruturados
+Veja a definição completa de ImageObject no site schema.org/ImageObject (em inglês). Veja as propriedades aceitas pelo Google:
+
+Propriedades obrigatórias
+contentUrl
+URL
+
+É um URL para o conteúdo da imagem. O Google usa contentUrl para determinar a que imagem os metadados de foto se aplicam.
+
+O Google também é compatível com a propriedade url para especificar o URL da imagem caso você não tenha incluído contentUrl. Embora a propriedade url não seja tão precisa, e seja recomendado usar contentUrl, as marcações que já existem podem continuar usando url.
+creator, creditText, copyrightNotice ou license
+Além de contentUrl, é necessário incluir uma das seguintes propriedades:
+
+creator
+creditText
+copyrightNotice
+license
+Depois de incluir uma dessas propriedades, as outras três se tornam recomendadas no teste de pesquisa aprimorada.
+Propriedades recomendadas
+acquireLicensePage
+URL
+
+É um URL para uma página em que o usuário pode encontrar informações sobre como licenciar essa imagem. Veja alguns exemplos:
+
+Uma página de finalização da compra da imagem em que o usuário pode selecionar resoluções específicas ou direitos de uso
+Uma página geral que explica como entrar em contato com você
+creator
+Organization ou Person
+
+É quem criou a imagem. Geralmente, é o fotógrafo, mas pode ser uma empresa ou organização (se adequado).
+
+creator.name
+Text
+
+É o nome de quem criou.
+
+creditText
+Text
+
+É o nome da pessoa e/ou organização que recebe crédito pela imagem quando ela é publicada.
+
+copyrightNotice
+Text
+
+É o aviso de direitos autorais sobre a propriedade intelectual desta foto. Isso identifica o proprietário atual dos direitos autorais da foto.
+
+license
+URL
+
+Um URL para uma página com a descrição da licença que rege o uso de uma imagem. Por exemplo, podem ser os Termos e Condições que você tem no site. Se aplicável, também pode ser uma licença Creative Commons (por exemplo, BY-NC 4.0).
+
+Se você estiver usando dados estruturados para especificar uma imagem, será necessário incluir a propriedade license para que ela seja qualificada a ser exibida com o selo de licença. Recomendamos também que você adicione a propriedade acquireLicensePage se tiver essas informações.
+
+Metadados de foto do IPTC
+Como alternativa, você pode incorporar metadados de foto do IPTC diretamente dentro de uma imagem. É recomendável usar um software de gerenciamento de metadados. A tabela a seguir contém as propriedades extraídas pelo Google:
+
+Propriedades recomendadas
+Notificação de direitos autorais
+É o aviso de direitos autorais sobre a propriedade intelectual desta foto. Isso identifica o proprietário atual dos direitos autorais da foto.
+
+Criador
+É quem criou a imagem. Normalmente, é o nome do fotógrafo, mas pode ser o nome de uma empresa ou organização (se adequado).
+
+Limite de crédito
+É o nome da pessoa e/ou organização que recebe crédito pela imagem quando ela é publicada.
+
+Tipo de origem digital
+É o tipo de fonte digital usada para criar a imagem. O Google é compatível com os seguintes NewsCodes do IPTC:
+
+trainedAlgorithmicMedia: a imagem foi criada por algoritmo usando um modelo derivado de conteúdo amostrado.
+compositeSynthetic: a imagem é uma mistura ou uma composição com pelo menos um elemento sintético.
+algorithmicMedia: a imagem foi criada puramente por um algoritmo, e não com base em dados de treinamento de amostra (por exemplo, uma imagem criada por software usando uma fórmula matemática).
+compositeWithTrainedAlgorithmicMedia: A imagem é uma composição de mídia algorítmica treinada com alguma outra mídia, como operações de retoque ou contorno.
+Licensor URL
+É um URL de uma página com informações sobre como licenciar a imagem. O Licensor URL precisa ser uma propriedade de um objeto Licensor, e não do objeto da imagem. Veja alguns exemplos:
+
+Uma página de finalização da compra dessa imagem em que o usuário pode selecionar. 
+
+
+ resoluções específicas
+Uma página geral que explica como entrar em contato com você
+Web Statement of Rights
+É o URL de uma página com a descrição da licença que rege o uso da imagem e outras informações opcionais sobre direitos. Por exemplo, podem ser os Termos e Condições do site. Se aplicável, também pode ser uma licença Creative Commons (por exemplo, BY-NC 4.0).
+
+É necessário incluir o campo "Web Statement of Rights" para que a imagem seja qualificada para exibição com o selo de licença. Recomendamos também que você adicione o campo Licensor URL se tiver essas informações.
+
+Como os metadados C2PA podem aparecer nos resultados da Pesquisa Google
+Se uma imagem contiver metadados C2PA, o Google poderá extrair esses detalhes e mostrar informações no recurso Sobre esta imagem. Por exemplo, como a imagem foi criada ou se ela foi editada com ferramentas de IA. Esses metadados vêm de um signatário, que geralmente é um app, dispositivo ou serviço (por exemplo, software de edição de fotos, a própria câmera ou outros serviços que modificam ou criam imagens) que atende às seguintes condições:
+
+O app, dispositivo ou serviço adotou a versão 2.1 ou mais recente da C2PA.
+O manifesto da imagem precisa ser assinado por um certificado de uma autoridade certificadora na lista de confiança C2PA.
+Solução de problemas
+Importante: o Google não garante que os dados estruturados ou metadados de foto do IPTC vão aparecer nos resultados de pesquisa. Para ver uma lista de motivos comuns por que o Google talvez não exiba dados estruturados nos resultados da pesquisa, consulte as Diretrizes gerais de dados estruturados.
+Se você estiver com problemas para implementar os metadados de imagem nas Imagens do Google, veja alguns recursos que podem ajudar.
+
+Se você usa um sistema de gerenciamento de conteúdo (CMS) ou se alguém está cuidando do seu site, peça ajuda para o prestador de serviço. Não se esqueça de encaminhar todas as mensagens do Search Console com os detalhes do problema.
+Em caso de dúvidas sobre o recurso, consulte as Perguntas frequentes sobre licença de imagens no Imagens do Google.
+Pode haver um erro nos dados estruturados. Consulte a lista de erros de dados estruturados.
+Se você recebeu uma ação manual de dados estruturados relacionada à sua página, esses dados vão ser ignorados, embora a página ainda possa aparecer nos resultados da Pesquisa Google. Para corrigir problemas de dados estruturados, use o Relatório de ações manuais.
+Consulte as diretrizes novamente para identificar se o conteúdo não está em conformidade com elas.
+O problema pode ser causado por conteúdo com spam ou uso de marcação com spam. No entanto, talvez o problema não seja de sintaxe e, por isso, não seja identificado pelo teste de pesquisa aprimorada.
+Resolva problemas relacionados à ausência e à queda no total de pesquisas aprimoradas.
+Para perguntas gerais sobre rastreamento e indexação, consulte as Perguntas frequentes sobre rastreamento e indexação da Pesquisa Google.
+Aguarde algum tempo antes de voltar a rastrear e reindexar. Pode levar vários dias depois da publicação de uma página para que o Google a localize e rastreie.
+Faça uma pergunta durante o horário de atendimento da Central da Pesquisa Google.
+Poste uma pergunta no fórum da Central da Pesquisa Google Para ajuda com os metadados de foto do IPTC, poste neste fórum.
+Posso remover os metadados de uma imagem?
+A remoção de metadados da imagem pode reduzir o tamanho do arquivo, o que ajuda as páginas da Web a carregar mais rápido. No entanto, tenha cuidado. A remoção de metadados é ilegal em algumas jurisdições. Os metadados de imagem disponibilizam informações de licenciamento e direitos autorais de imagens on-line. O Google recomenda manter, no mínimo, os metadados fundamentais relacionados à identificação e às informações de direitos de imagem. Por exemplo, sempre que possível, mantenha os campos do IPTC criador, linha de crédito e notificação de direitos autorais para disponibilizar as atribuições adequadas.
+
+Isso foi útil?
+
+Envie comentários
+Exceto em caso de indicação contrária, o conteúdo desta página é licenciado de acordo com a Licença de atribuição 4.0 do Creative Commons, e as amostras de código são licenciadas de acordo com a Licença Apache 2.0. Para mais detalhes, consulte as políticas do site do Google Developers. Java é uma marca registrada da Oracle e/ou afiliadas.
+
+Última atualização 2026-02-20 UTC.
+
+LinkedInLinkedIn
+YouTubeYouTube
+BlogBlog
+PodcastPodcast
+X (Twitter)X (Twitter)
+Receber suporte
+Acesse o Fórum de Ajuda
+Enviar uma pergunta para o horário de atendimento
+Denunciar spam, phishing ou malware
+Mais recursos de suporte
+Recursos
+Você precisa de SEO?
+Guia de SEO para iniciantes
+Status dos sistemas da Pesquisa
+Documentação do Search Console
+Estudos de caso
+Ferramentas
+Search Console
+Teste de pesquisa aprimorada
+PageSpeed Insights
+Teste de AMP
+Google Developers
+Android
+Chrome
+Firebase
+Google Cloud Platform
+Google AI
+Todos os produtos
+Termos de Serviço
+Privacidade
+Português – Brasil
+A nova página foi carregada.
+
+
+
+
+
+
+
+
+https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data?hl=pt-br
+
+
+Ir para o conteúdo principal
+
+Google Search Central
+Search Central
+
+
+Documentation
+Search Console
+
+Google Search Central
+Search Central
+Página inicial
+Search Central
+Documentation
+Isso foi útil?
+
+Envie comentários
+Introdução à marcação de dados estruturados na Pesquisa Google
+
+
+Entender o conteúdo de uma página exige muito da Pesquisa Google. Você pode nos ajudar fornecendo pistas claras sobre o significado de uma página para o Google, incluindo dados estruturados na página. Os dados estruturados são um formato padronizado para fornecer informações sobre uma página e classificar o conteúdo dela. Por exemplo, em uma página de receitas, quais são os ingredientes, o tempo e a temperatura de cozimento, as calorias e assim por diante.
+
+Por que adicionar dados estruturados a uma página?
+Adicionar dados estruturados pode ativar resultados de pesquisa mais interessantes para os usuários, chamados de pesquisas aprimoradas, e incentivar a interagir mais com seu site. Veja alguns estudos de caso de sites que implementaram dados estruturados:
+
+O Rotten Tomatoes adicionou dados estruturados a 100 mil páginas únicas e mediu uma taxa de cliques 25% maior nas páginas aprimoradas com dados estruturados, em comparação às páginas sem esse recurso.
+O Food Network converteu 80% das páginas deles para ativar os recursos de pesquisa e registrou um aumento de 35% nos acessos.
+A Rakuten descobriu que os usuários passam 1,5 vez mais tempo acessando páginas com dados estruturados do que em páginas sem dados estruturados. Além disso, há uma taxa de interação 3,6 vezes maior em páginas AMP com recursos de pesquisa.
+A Nestlé identificou uma taxa de cliques 82% mais alta nas páginas que exibem pesquisas aprimoradas em comparação às que não apresentam o recurso.
+Leia mais estudos de caso de sites que implementaram dados estruturados.
+Como os dados estruturados funcionam na Pesquisa Google
+O Google usa os dados estruturados que encontra na Web para entender o conteúdo da página, bem como para coletar informações sobre a Web e o mundo em geral, como dados sobre as pessoas, livros ou empresas incluídos na marcação. Por exemplo, quando uma página de receita tem dados estruturados JSON-LD (que descrevem o título da receita, o autor da receita e outros detalhes), a Pesquisa Google pode usar essas informações para mostrar uma pesquisa aprimorada para a receita:
+
+Como os dados estruturados de uma página da Web de receita podem influenciar uma pesquisa aprimorada na Pesquisa Google
+Como os dados estruturados etiquetam cada elemento individual da receita, os usuários podem pesquisar por ingrediente, contagem de calorias, tempo de cozimento e assim por diante.
+
+Se você usar um CMS (sistema de gerenciamento de conteúdo), como o Wix, o WordPress ou o Shopify, talvez não consiga editar o HTML diretamente. Nesse caso, talvez o CMS tenha uma página de configurações para mecanismo de pesquisa ou você possa instalar um plug-in que permita especificar dados estruturados. Procure instruções sobre como adicionar dados estruturados ao seu CMS (por exemplo, pesquise "dados estruturados do Wix" ou "plug-in de dados estruturados do WordPress").
+Os dados estruturados são codificados usando a marcação na página a que as informações se aplicam. Os dados estruturados na página descrevem o conteúdo dela. Não crie páginas em branco ou vazias somente para armazenar dados estruturados. Além disso, não adicione dados estruturados sobre informações que não são visíveis para o usuário, mesmo que estejam corretas. Para ver mais diretrizes técnicas e de qualidade, consulte as Diretrizes gerais de dados estruturados.
+
+OTeste de pesquisa aprimorada é uma ferramenta fácil e útil para validar dados estruturados e, em alguns casos, visualizar um recurso na Pesquisa Google. Faça um teste.
+
+Formato e vocabulário de dados estruturados
+Esta documentação descreve quais propriedades são obrigatórias, recomendadas ou opcionais para dados estruturados com significado especial para a Pesquisa Google. A maioria dos dados estruturados da Pesquisa usa o vocabulário do schema.org (em inglês), mas considere a documentação da Central da Pesquisa Google como definitiva quanto ao comportamento da Pesquisa Google, em vez da documentação do schema.org. Existem mais atributos e objetos no schema.org que não são exigidos pela Pesquisa Google, embora possam ser úteis para outros mecanismos de pesquisa, serviços, ferramentas e plataformas.
+
+A marcação data-vocabulary.org não está mais qualificada para os recursos de pesquisa aprimorada do Google. Saiba mais sobre a desativação do suporte para data-vocabulary.
+Verifique seus dados estruturados usando o Teste de pesquisa aprimorada durante o desenvolvimento e os relatórios de status de pesquisa aprimorada após a implantação para monitorar a validade das suas páginas, que pode ser prejudicada devido a problemas de modelos ou de veiculação.
+
+É necessário incluir todas as propriedades obrigatórias para que um objeto seja qualificado para exibição aprimorada na Pesquisa Google. Em geral, a definição de mais recursos recomendados pode aumentar a probabilidade de que suas informações apareçam nos resultados da Pesquisa com exibição aprimorada. No entanto, é mais importante fornecer um número menor de propriedades recomendadas, mas que sejam completas e precisas, do que tentar fornecer todas as propriedades recomendadas possíveis com dados incompletos, malformados ou imprecisos.
+
+Além das propriedades e dos objetos documentados aqui, o Google pode fazer uso geral da propriedade sameAs e de outros dados estruturados do schema.org. Alguns desses elementos poderão ser usados para permitir futuros recursos da Pesquisa, se forem considerados úteis.
+
+Formatos compatíveis
+A Pesquisa Google é compatível com dados estruturados nos seguintes formatos, a menos que seja documentado de outra forma. Em geral, recomendamos o uso de um formato mais fácil de implementar e manter (na maioria dos casos, JSON-LD). Os três formatos são iguais para o Google, desde que a marcação seja válida e implementada de acordo com a documentação do recurso.
+
+Formatos
+JSON-LD* (recomendado)
+Uma notação JavaScript incorporada em uma tag <script> nos elementos <head> e <body> de uma página HTML. A marcação não é intercalada com texto visível para o usuário, o que facilita a expressão de itens de dados aninhados, como o Country de um PostalAddress de um MusicVenue de um Event. Além disso, o Google pode ler dados JSON-LD quando eles são injetados dinamicamente no conteúdo da página, como por código JavaScript ou widgets incorporados no seu sistema de gerenciamento de conteúdo.
+Microdados
+É uma especificação HTML de comunidade aberta usada para aninhar dados estruturados no conteúdo HTML. Assim como o RDFa, esse formato usa atributos de tag HTML para nomear as propriedades que você quer expor como dados estruturados. Normalmente, é usado no elemento <body>, mas pode ser usado em <head>.
+RDFa
+É uma extensão HTML5 compatível com dados vinculados, introduzindo atributos de tags HTML que correspondem ao conteúdo visível ao usuário que você quer descrever para os mecanismos de pesquisa. O RDFa costuma ser usado nas seções <head> e <body> da página HTML.
+Em geral, o Google recomenda o uso de JSON-LD para dados estruturados se a configuração do site permitir, porque é a solução mais fácil para proprietários de sites implementarem e manterem em grande escala (ou seja, menos propensas a erros do usuário).
+Diretrizes para dados estruturados
+Siga as diretrizes gerais de dados estruturados, bem como as diretrizes específicas para seu tipo de dado estruturado. Caso contrário, eles poderão não ser qualificados para a exibição de pesquisa aprimorada na Pesquisa Google.
+
+Primeiros passos com os dados estruturados
+Caso você não saiba muito sobre o assunto, consulte o guia para iniciantes do schema.org sobre dados estruturados (em inglês). Embora o guia se concentre em microdados, as ideias básicas são relevantes para JSON-LD e RDFa.
+
+Quando estiver familiarizado com as noções básicas dos dados estruturados, consulte a lista de recursos de dados estruturados na Pesquisa Google e escolha um recurso para implementar. Cada guia detalha como implementar os dados estruturados e qualificar o site para exibição na pesquisa aprimorada da Pesquisa Google.
+
+Escolher um recurso
+
+Como avaliar o efeito dos dados estruturados
+É provável que você queira comparar o desempenho das páginas que têm dados estruturados com as páginas sem dados estruturados para decidir se vale a pena aplicá-los. A melhor maneira de fazer isso é gerar um teste antes e depois em algumas páginas do seu site. Talvez isso seja um pouco complicado, já que as exibições de página podem variar para uma única página por diversos motivos.
+
+Use algumas páginas do seu site sem dados estruturados e acesse vários meses de informações no Search Console. Escolha páginas que não serão afetadas pela época do ano ou pela atualidade do conteúdo. Use páginas que não mudam muito, mas ainda são conhecidas o suficiente e lidas com a frequência necessária para gerar dados relevantes.
+Adicione dados estruturados ou outros recursos às suas páginas. Confirme se a marcação é válida e se o Google encontrou os dados estruturados usando a Ferramenta de inspeção de URL na página.
+Registre os resultados por alguns meses no relatório de performance e filtre por URL para comparar as informações da sua página.
+Isso foi útil?
+
+Envie comentários
+Exceto em caso de indicação contrária, o conteúdo desta página é licenciado de acordo com a Licença de atribuição 4.0 do Creative Commons, e as amostras de código são licenciadas de acordo com a Licença Apache 2.0. Para mais detalhes, consulte as políticas do site do Google Developers. Java é uma marca registrada da Oracle e/ou afiliadas.
+
+Última atualização 2025-12-18 UTC.
+
+LinkedInLinkedIn
+YouTubeYouTube
+BlogBlog
+PodcastPodcast
+X (Twitter)X (Twitter)
+Receber suporte
+Acesse o Fórum de Ajuda
+Enviar uma pergunta para o horário de atendimento
+Denunciar spam, phishing ou malware
+Mais recursos de suporte
+Recursos
+Você precisa de SEO?
+Guia de SEO para iniciantes
+Status dos sistemas da Pesquisa
+Documentação do Search Console
+Estudos de caso
+Ferramentas
+Search Console
+Teste de pesquisa aprimorada
+PageSpeed Insights
+Teste de AMP
+Google Developers
+Android
+Chrome
+Firebase
+Google Cloud Platform
+Google AI
+Todos os produtos
+Termos de Serviço
+Privacidade
+Português – Brasil
+A nova página foi carregada.
+
+
+
+
+
+
+
+
+https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data?hl=pt-br 
+
+
+
+
+
+
+
+Ir para o conteúdo principal
+
+Google Search Central
+Search Central
+
+
+Documentation
+Search Console
+
+Google Search Central
+Search Central
+Página inicial
+Search Central
+Documentation
+Isso foi útil?
+
+Envie comentários
+Introdução à marcação de dados estruturados na Pesquisa Google
+
+
+Entender o conteúdo de uma página exige muito da Pesquisa Google. Você pode nos ajudar fornecendo pistas claras sobre o significado de uma página para o Google, incluindo dados estruturados na página. Os dados estruturados são um formato padronizado para fornecer informações sobre uma página e classificar o conteúdo dela. Por exemplo, em uma página de receitas, quais são os ingredientes, o tempo e a temperatura de cozimento, as calorias e assim por diante.
+
+Por que adicionar dados estruturados a uma página?
+Adicionar dados estruturados pode ativar resultados de pesquisa mais interessantes para os usuários, chamados de pesquisas aprimoradas, e incentivar a interagir mais com seu site. Veja alguns estudos de caso de sites que implementaram dados estruturados:
+
+O Rotten Tomatoes adicionou dados estruturados a 100 mil páginas únicas e mediu uma taxa de cliques 25% maior nas páginas aprimoradas com dados estruturados, em comparação às páginas sem esse recurso.
+O Food Network converteu 80% das páginas deles para ativar os recursos de pesquisa e registrou um aumento de 35% nos acessos.
+A Rakuten descobriu que os usuários passam 1,5 vez mais tempo acessando páginas com dados estruturados do que em páginas sem dados estruturados. Além disso, há uma taxa de interação 3,6 vezes maior em páginas AMP com recursos de pesquisa.
+A Nestlé identificou uma taxa de cliques 82% mais alta nas páginas que exibem pesquisas aprimoradas em comparação às que não apresentam o recurso.
+Leia mais estudos de caso de sites que implementaram dados estruturados.
+Como os dados estruturados funcionam na Pesquisa Google
+O Google usa os dados estruturados que encontra na Web para entender o conteúdo da página, bem como para coletar informações sobre a Web e o mundo em geral, como dados sobre as pessoas, livros ou empresas incluídos na marcação. Por exemplo, quando uma página de receita tem dados estruturados JSON-LD (que descrevem o título da receita, o autor da receita e outros detalhes), a Pesquisa Google pode usar essas informações para mostrar uma pesquisa aprimorada para a receita:
+
+Como os dados estruturados de uma página da Web de receita podem influenciar uma pesquisa aprimorada na Pesquisa Google
+Como os dados estruturados etiquetam cada elemento individual da receita, os usuários podem pesquisar por ingrediente, contagem de calorias, tempo de cozimento e assim por diante.
+
+Se você usar um CMS (sistema de gerenciamento de conteúdo), como o Wix, o WordPress ou o Shopify, talvez não consiga editar o HTML diretamente. Nesse caso, talvez o CMS tenha uma página de configurações para mecanismo de pesquisa ou você possa instalar um plug-in que permita especificar dados estruturados. Procure instruções sobre como adicionar dados estruturados ao seu CMS (por exemplo, pesquise "dados estruturados do Wix" ou "plug-in de dados estruturados do WordPress").
+Os dados estruturados são codificados usando a marcação na página a que as informações se aplicam. Os dados estruturados na página descrevem o conteúdo dela. Não crie páginas em branco ou vazias somente para armazenar dados estruturados. Além disso, não adicione dados estruturados sobre informações que não são visíveis para o usuário, mesmo que estejam corretas. Para ver mais diretrizes técnicas e de qualidade, consulte as Diretrizes gerais de dados estruturados.
+
+OTeste de pesquisa aprimorada é uma ferramenta fácil e útil para validar dados estruturados e, em alguns casos, visualizar um recurso na Pesquisa Google. Faça um teste.
+
+Formato e vocabulário de dados estruturados
+Esta documentação descreve quais propriedades são obrigatórias, recomendadas ou opcionais para dados estruturados com significado especial para a Pesquisa Google. A maioria dos dados estruturados da Pesquisa usa o vocabulário do schema.org (em inglês), mas considere a documentação da Central da Pesquisa Google como definitiva quanto ao comportamento da Pesquisa Google, em vez da documentação do schema.org. Existem mais atributos e objetos no schema.org que não são exigidos pela Pesquisa Google, embora possam ser úteis para outros mecanismos de pesquisa, serviços, ferramentas e plataformas.
+
+A marcação data-vocabulary.org não está mais qualificada para os recursos de pesquisa aprimorada do Google. Saiba mais sobre a desativação do suporte para data-vocabulary.
+Verifique seus dados estruturados usando o Teste de pesquisa aprimorada durante o desenvolvimento e os relatórios de status de pesquisa aprimorada após a implantação para monitorar a validade das suas páginas, que pode ser prejudicada devido a problemas de modelos ou de veiculação.
+
+É necessário incluir todas as propriedades obrigatórias para que um objeto seja qualificado para exibição aprimorada na Pesquisa Google. Em geral, a definição de mais recursos recomendados pode aumentar a probabilidade de que suas informações apareçam nos resultados da Pesquisa com exibição aprimorada. No entanto, é mais importante fornecer um número menor de propriedades recomendadas, mas que sejam completas e precisas, do que tentar fornecer todas as propriedades recomendadas possíveis com dados incompletos, malformados ou imprecisos.
+
+Além das propriedades e dos objetos documentados aqui, o Google pode fazer uso geral da propriedade sameAs e de outros dados estruturados do schema.org. Alguns desses elementos poderão ser usados para permitir futuros recursos da Pesquisa, se forem considerados úteis.
+
+Formatos compatíveis
+A Pesquisa Google é compatível com dados estruturados nos seguintes formatos, a menos que seja documentado de outra forma. Em geral, recomendamos o uso de um formato mais fácil de implementar e manter (na maioria dos casos, JSON-LD). Os três formatos são iguais para o Google, desde que a marcação seja válida e implementada de acordo com a documentação do recurso.
+
+Formatos
+JSON-LD* (recomendado)
+Uma notação JavaScript incorporada em uma tag <script> nos elementos <head> e <body> de uma página HTML. A marcação não é intercalada com texto visível para o usuário, o que facilita a expressão de itens de dados aninhados, como o Country de um PostalAddress de um MusicVenue de um Event. Além disso, o Google pode ler dados JSON-LD quando eles são injetados dinamicamente no conteúdo da página, como por código JavaScript ou widgets incorporados no seu sistema de gerenciamento de conteúdo.
+Microdados
+É uma especificação HTML de comunidade aberta usada para aninhar dados estruturados no conteúdo HTML. Assim como o RDFa, esse formato usa atributos de tag HTML para nomear as propriedades que você quer expor como dados estruturados. Normalmente, é usado no elemento <body>, mas pode ser usado em <head>.
+RDFa
+É uma extensão HTML5 compatível com dados vinculados, introduzindo atributos de tags HTML que correspondem ao conteúdo visível ao usuário que você quer descrever para os mecanismos de pesquisa. O RDFa costuma ser usado nas seções <head> e <body> da página HTML.
+Em geral, o Google recomenda o uso de JSON-LD para dados estruturados se a configuração do site permitir, porque é a solução mais fácil para proprietários de sites implementarem e manterem em grande escala (ou seja, menos propensas a erros do usuário).
+Diretrizes para dados estruturados
+Siga as diretrizes gerais de dados estruturados, bem como as diretrizes específicas para seu tipo de dado estruturado. Caso contrário, eles poderão não ser qualificados para a exibição de pesquisa aprimorada na Pesquisa Google.
+
+Primeiros passos com os dados estruturados
+Caso você não saiba muito sobre o assunto, consulte o guia para iniciantes do schema.org sobre dados estruturados (em inglês). Embora o guia se concentre em microdados, as ideias básicas são relevantes para JSON-LD e RDFa.
+
+Quando estiver familiarizado com as noções básicas dos dados estruturados, consulte a lista de recursos de dados estruturados na Pesquisa Google e escolha um recurso para implementar. Cada guia detalha como implementar os dados estruturados e qualificar o site para exibição na pesquisa aprimorada da Pesquisa Google.
+
+Escolher um recurso
+
+Como avaliar o efeito dos dados estruturados
+É provável que você queira comparar o desempenho das páginas que têm dados estruturados com as páginas sem dados estruturados para decidir se vale a pena aplicá-los. A melhor maneira de fazer isso é gerar um teste antes e depois em algumas páginas do seu site. Talvez isso seja um pouco complicado, já que as exibições de página podem variar para uma única página por diversos motivos.
+
+Use algumas páginas do seu site sem dados estruturados e acesse vários meses de informações no Search Console. Escolha páginas que não serão afetadas pela época do ano ou pela atualidade do conteúdo. Use páginas que não mudam muito, mas ainda são conhecidas o suficiente e lidas com a frequência necessária para gerar dados relevantes.
+Adicione dados estruturados ou outros recursos às suas páginas. Confirme se a marcação é válida e se o Google encontrou os dados estruturados usando a Ferramenta de inspeção de URL na página.
+Registre os resultados por alguns meses no relatório de performance e filtre por URL para comparar as informações da sua página.
+Isso foi útil?
+
+Envie comentários
+Exceto em caso de indicação contrária, o conteúdo desta página é licenciado de acordo com a Licença de atribuição 4.0 do Creative Commons, e as amostras de código são licenciadas de acordo com a Licença Apache 2.0. Para mais detalhes, consulte as políticas do site do Google Developers. Java é uma marca registrada da Oracle e/ou afiliadas.
+
+Última atualização 2025-12-18 UTC.
+
+LinkedInLinkedIn
+YouTubeYouTube
+BlogBlog
+PodcastPodcast
+X (Twitter)X (Twitter)
+Receber suporte
+Acesse o Fórum de Ajuda
+Enviar uma pergunta para o horário de atendimento
+Denunciar spam, phishing ou malware
+Mais recursos de suporte
+Recursos
+Você precisa de SEO?
+Guia de SEO para iniciantes
+Status dos sistemas da Pesquisa
+Documentação do Search Console
+Estudos de caso
+Ferramentas
+Search Console
+Teste de pesquisa aprimorada
+PageSpeed Insights
+Teste de AMP
+Google Developers
+Android
+Chrome
+Firebase
+Google Cloud Platform
+Google AI
+Todos os produtos
+Termos de Serviço
+Privacidade
+Português – Brasil
+A nova página foi carregada.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
