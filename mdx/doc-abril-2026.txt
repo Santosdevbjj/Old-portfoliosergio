@@ -1,0 +1,4240 @@
+
+qual a versão mais recente do next.js em 2 de abril de 2026
+
+
++6
+Em 2 de abril de 2026, a versão mais recente e estável do Next.js é a
+v16.2.x. 
+A série Next.js 16 (lançada em outubro de 2025) trouxe melhorias significativas de desempenho, focando no Turbopack estável, suporte ao React 19.2 e Partial Prerendering (PPR). 
+Destaques da versão (aprox. Março/Abril 2026):
+Next.js 16.2: Atualizações focadas em melhorias de IA, renderização cerca de 50% mais rápida e inicialização do next dev até 400% mais rápida.
+Adaptadores de Build (v16.2): Introdução de um Adaptador de Build estável que permite a descrição tipada e versionada da aplicação (rotas, pré-renderizações) para melhorar a portabilidade entre plataformas.
+Turbopack: Tornou-se o padrão para compilação (bundler) no Next.js 16. 
+Para instalar a versão mais recente nesta data, utiliza-se:
+npm install next@latest react@latest react-dom@latest. 
+Next.js 16.2
+18 de mar. de 2026 — Next.js 16.2 includes performance improvements, better debugging, improvements for Agents, and over 200 Turbopack fixes and improvements. Faster Time-to-URL: ~4...
+
+Next.js
+
+Next.js by Vercel - Release Notes - Releasebot
+26 de mar. de 2026 — Mar 17, 2026. Mar 19, 2026. Next.js by Vercel. v16.2.0. Next.js releases a comprehensive v16.2 update highlighting React upgrades, Turbopack improvements, exper...
+
+Releasebot
+Next.js 16 (beta)
+9 de out. de 2025 — js 16 (beta) ... Next. js 16 (beta) is now available. This early release provides access to the latest improvements to Turbopack, caching, and the Next. js arch...
+
+Next.js
+
+Upgrading: Version 16 - Next.js
+1 de abr. de 2026 — js 16 includes a complete overhaul of the routing and navigation system, making page transitions leaner and faster. This optimizes how Next. js prefetches and c...
+
+Next.js
+
+Next.js Across Platforms: Adapters, OpenNext, and ...
+25 de mar. de 2026 — The Adapter API. Next.js 16.2 ships with a stable, public Adapter API. On build, Next.js now produces a typed, versioned description of your application: routes...
+
+Next.js
+
+From Zero to Hero: The Evolution of Next.js Versions (And ... - Medium
+18 de fev. de 2026 — Always follow this process. * Step 1: Check Breaking Changes. Visit official release notes: 👉 https://nextjs.org/docs/upgrading. Understand: Deprecated APIs. R...
+
+Medium
+
+Next.js - endoflife.date
+22 de mar. de 2026 — Table_title: Next. js Table_content: header: | Release | Released | Latest | row: | Release: 16 ( LTS ) | Released: 5 months ago (22 Oct 2025) | Latest: 16.2.1 ...
+
+endoflife.date
+
+What is Next.js? Complete Guide to React Framework 2026
+13 de jan. de 2026 — October 2024 – Next. js 15: Introduced stable Turbopack as the default bundler (faster than Webpack), full React 19 support, and asynchronous request APIs (Wiki...
+
+Articsledge
+
+
+
+
+
+
+
+Skip to content
+
+Back to Blog
+Wednesday, March 18th 2026
+
+Next.js 16.2
+Posted by
+Jimmy Lai
+Jimmy Lai@feedthejim
+Tim Neutkens
+Tim Neutkens@timneutkens
+Next.js 16.2 includes performance improvements, better debugging, improvements for Agents, and over 200 Turbopack fixes and improvements.
+
+Faster Time-to-URL: ~400% faster next dev startup
+Faster Rendering: ~50% faster rendering
+New Default Error Page: Redesigned built-in 500 page
+Server Function Logging: Dev terminal logs for Server Function execution
+Hydration Diff Indicator: Clear server/client diff in the error overlay
+--inspect for next start: Attach the Node.js debugger to your production server
+We also published dedicated deep-dive posts for two major areas of this release:
+
+Turbopack: Faster builds, SRI support, postcss.config.ts, tree shaking improvements, Server Fast Refresh, and 200+ bug fixes
+AI Improvements: AGENTS.md in create-next-app, browser log forwarding, and next-browser (experimental)
+Upgrade today, or get started with:
+
+terminal
+# Use the automated upgrade CLI
+npx @next/codemod@canary upgrade latest
+ 
+# ...or upgrade manually
+npm install next@latest react@latest react-dom@latest
+ 
+# ...or start a new project
+npx create-next-app@latest
+Faster Time-to-URL in Development
+We've significantly improved the time it takes before localhost:3000 is ready during next dev. On the same machine and project, startup is ~87% faster compared to Next.js 16.1 on the default application.
+
+Faster Rendering
+We contributed a change to React that makes Server Components payload deserialization up to 350% faster. The previous implementation used a JSON.parse reviver callback, which crosses the C++/JavaScript boundary in V8 for every key-value pair in the parsed JSON. Even a trivial no-op reviver makes JSON.parse roughly 4x slower than without one.
+
+The new approach uses a two-step process: plain JSON.parse() followed by a recursive walk in pure JavaScript. This eliminates the boundary-crossing overhead and adds optimizations like short-circuiting plain strings that don't need transformation.
+
+In real-world Next.js applications, this translates to 25% to 60% faster rendering to HTML, depending on the RSC payload size.
+
+Server render time
+
+Server Component Table with 1000 items
+
+26% faster
+
+Before
+
+19ms
+
+After
+
+15ms
+
+Server Component with nested Suspense
+
+33% faster
+
+Before
+
+80ms
+
+After
+
+60ms
+
+Payload CMS homepage
+
+34% faster
+
+Before
+
+43ms
+
+After
+
+32ms
+
+Payload CMS with rich text
+
+60% faster
+
+Before
+
+52ms
+
+After
+
+33ms
+
+New Default Error Page
+The default error page shown in production has been redesigned. When your application encounters an error and you haven't defined a custom global-error.tsx or error.tsx, Next.js renders a built-in fallback page. This fallback has been updated with a cleaner, more modern design.
+
+
+The redesigned default error page in Next.js 16.2
+Server Function Logging
+Next.js now logs Server Function execution in the terminal during development. Each log shows the function name, its arguments, execution time, and the file it's defined in.
+
+
+Server Function execution logs in the development terminal
+Hydration Diff Indicator
+When a hydration mismatch occurs, the error overlay now clearly labels which content came from the server and which from the client. The diff uses a + Client / - Server legend, making it immediately clear what diverged.
+
+
+The hydration diff indicator showing client/server content differences
+--inspect for next start
+Next.js 16.1 introduced next dev --inspect for attaching the Node.js debugger during development. In 16.2, this extends to next start, allowing you to attach a Node.js debugger to your production server.
+
+terminal
+next start --inspect
+This is useful for debugging issues or profiling CPU and memory usage.
+
+For more information on how to use the Node.js debugger, see the Chrome documentation.
+
+transitionTypes Prop for next/link
+The <Link> component now accepts a transitionTypes prop — an array of strings that specifies the types of View Transitions to apply when navigating. Each type is passed to React.addTransitionType during the navigation Transition, allowing you to trigger different animations based on the navigation direction or context.
+
+<Link href="/about" transitionTypes={['slide']}>
+  About
+</Link>
+This is only supported in the App Router, since the Pages Router does not use React Transitions for navigation. transitionTypes on Pages Router links is silently ignored, so shared link components work across both routers.
+
+To learn more about view transitions, see the documentation.
+
+Faster ImageResponse
+ImageResponse has been updated with significant improvements:
+
+2x faster ImageResponse for basic images, up to 20x faster for complex images
+Improved CSS and SVG coverage, including support for inline CSS variables, text-indent, text-decoration-skip-ink, box-sizing, display: contents, position: static, and percentage values for gap
+Default font changed from Noto Sans to Geist Sans
+Learn more about ImageResponse.
+
+Error Causes in the Dev Overlay
+The error overlay now displays Error.cause chains, making it easier to debug errors that wrap other errors. Causes are shown in a flat list below the top-level error, up to 5 levels deep.
+
+
+The error overlay showing the full error cause chain
+Adapters
+Adapters are now stable. This is a new API that allows platforms to customize the build process.
+
+This is useful for deployment platforms or custom build integrations that need to modify the Next.js configuration or process the build output.
+
+We will share a more detailed overview of Adapters next week.
+
+Multiple Icon Formats
+Multiple icon files with the same base name but different extensions are now handled automatically in your app directory (e.g., icon.png and icon.svg). This is useful for browser fallback support. Modern browsers can use SVG icons while older browsers fall back to PNG. Both formats are rendered as separate <link> tags.
+
+Experimental Features
+unstable_catchError()
+Extending the error recovery experience with the error.js file convention, unstable_catchError() provides more granular control of the error boundaries on the component level. By creating a custom error boundary using unstable_catchError(), you can place it anywhere in your component tree.
+
+Compared to a custom React error boundary, unstable_catchError() is designed to work with Next.js out of the box:
+
+Built-in error recovery: unstable_retry() re-renders the page from the server in transition.
+Framework-aware integration: APIs like redirect() and notFound() work by throwing special errors under the hood. unstable_catchError() handles these seamlessly, so they're not accidentally caught by your error boundary.
+Client navigation handling: The error state automatically clears when you do a client navigation to a different route.
+The error boundary created by unstable_catchError() receives the props passed from the call site and the ErrorInfo value as the second argument, which is the same shape as the props passed to the error.js file convention.
+
+Just like error.js, unstable_catchError() can only be called from Client Components.
+
+app/custom-error-boundary.tsx
+'use client';
+ 
+import { unstable_catchError, type ErrorInfo } from 'next/error';
+ 
+function CustomErrorBoundary(
+  props: { title: string },
+  { error, unstable_retry }: ErrorInfo,
+) {
+  return (
+    <div>
+      <h2>{props.title}</h2>
+      <p>{error.message}</p>
+      <button onClick={() => unstable_retry()}>Try again</button>
+    </div>
+  );
+}
+ 
+export default unstable_catchError(CustomErrorBoundary);
+app/page.tsx
+import CustomErrorBoundary from './custom-error-boundary';
+ 
+export default function Page() {
+  return (
+    <CustomErrorBoundary title="Oops! Something went wrong!">
+      <Component />
+    </CustomErrorBoundary>
+  );
+}
+unstable_retry() in error.tsx
+A new unstable_retry() prop is now available in error.tsx components. Previously, the reset() prop only cleared the error state and re-rendered the children, which works for temporary rendering errors but doesn't help when the error originates from data fetching or the RSC phase.
+
+unstable_retry() calls router.refresh() and reset() within a startTransition(), providing built-in retry logic that re-fetches data and re-renders the segment. This is expected to be preferred over reset() for most error recovery scenarios.
+
+app/error.tsx
+'use client';
+ 
+import type { ErrorInfo } from 'next/error';
+ 
+export default function Error({ error, unstable_retry }: ErrorInfo) {
+  return (
+    <div>
+      <h2>Something went wrong</h2>
+      <p>{error.message}</p>
+      <button onClick={() => unstable_retry()}>Try again</button>
+    </div>
+  );
+}
+experimental.prefetchInlining
+Next.js 16 introduced per-segment prefetching, where the client issues individual requests for each segment in the route tree. This improves cache efficiency as shared layouts between sibling routes are fetched once and reused, but increases request volume.
+
+The new experimental.prefetchInlining option bundles all segment data for a route into a single response, reducing the number of prefetch requests to one per link. The trade-off is that shared layout data is duplicated across inlined responses rather than being cached and reused.
+
+next.config.ts
+const nextConfig = {
+  experimental: {
+    prefetchInlining: true,
+  },
+};
+ 
+export default nextConfig;
+This is a stepping stone toward a size-based heuristic where small segments are inlined automatically and larger segments remain separate.
+
+experimental.cachedNavigations
+This flag independently controls the Cached Navigations behavior, which caches static and dynamic Server Components data from navigations and the initial HTML loads so that repeat visits can be served instantly. Requires cacheComponents to be enabled.
+
+experimental.appNewScrollHandler
+A reworked scroll and focus management system for App Router using React Fragment refs. The new handler improves how focus is managed after navigations. Instead of focusing the first focusable descendant deep within a segment (which could skip past content), it now blurs the active element, matching how browser navigations work.
+
+next.config.ts
+const nextConfig = {
+  experimental: {
+    appNewScrollHandler: true,
+  },
+};
+ 
+export default nextConfig;
+Feedback and Community
+Share your feedback and help shape the future of Next.js:
+
+GitHub Discussions
+GitHub Issues
+Discord Community
+Contributors
+Next.js is the result of the combined work of over 3,770 individual developers. This release was brought to you by:
+
+The Next.js team: Andrew, Hendrik, Janka, Jiachi, Jimmy, Jiwon, JJ, Josh, Jude, Sam, Sebbie, Tim, and Zack.
+The Turbopack team: Benjamin, Andrew, Luke, Niklas, Tobias, and Will.
+The Next.js Docs team: Delba, Rich, Ismael, Joseph and Aurora.
+Huge thanks to @acdlite, @unstubbable, @mischnic, @sokra, @ztanner, @mmastrac, @bgw, @lukesandberg, @wyattjoh, @huozhi, @eps1lon, @jwueller, @brookemosby, @delbaoliveira, @icyJoseph, @gaojude, @hanzala-sohrab, @dango0812, @ijjk, @msmx-mnakagawa, @Juneezee, @davidgolden, @LucianBuzzo, @devjiwonchoi, @alexcarpenter, @jaffarkeikei, @BradErz, @mintydev789, @naaa760, @Suhaib3100, @pavan-sh, @amannn, @fireairforce, @JamBalaya56562, @wheresrhys, @ericrav, @lubieowoce, @Thomas465xd, @bgub, @wbinnssmith, @Netail, @robert-j-webb, @bencmbrook, @shadcn, @sigmachirality, @abhishekmardiya, @vvscode, @feedthejim, @freek-boon-greenberry, @andrewimm, @alubbe, @FurryR, @01-binary, @andrewdamelio, @swarnava, @gnoff, @kristiyan-velkov, @styfle, @haydenbleasel, @rishishanbhag, @tdarthur, @lavanitha, and @karlhorky for helping!
+
+
+
+
+Resources
+DocsSupport PolicyLearnShowcaseBlogTeamAnalyticsNext.js ConfPreviewsEvals
+More
+Next.js CommerceContact SalesCommunityGitHubReleasesTelemetryGovernanceEcosystem Working Group
+About Vercel
+Next.js + VercelOpen Source SoftwareGitHubBlueskyX
+Legal
+Privacy PolicyCookie Preferences
+Subscribe to our newsletter
+Stay updated on new releases and features, guides, and case studies.
+
+you@domain.com
+Subscribe
+© 2026 Vercel, Inc.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://nextjs.org/docs/app/guides/upgrading/version-16
+
+
+
+Skip to content
+
+GuidesUpgradingVersion 16
+How to upgrade to version 16
+Last updated April 2, 2026
+Upgrading from 15 to 16
+Using AI Agents with Next.js DevTools MCP
+If you're using an AI coding assistant that supports the Model Context Protocol (MCP), you can use the Next.js DevTools MCP to automate the upgrade process and migration tasks.
+
+Setup
+Add the following configuration to your MCP client, for each coding agent you can read this section for configuration details.
+
+example:
+
+.mcp.json
+{
+  "mcpServers": {
+    "next-devtools": {
+      "command": "npx",
+      "args": ["-y", "next-devtools-mcp@latest"]
+    }
+  }
+}
+For more information, visit the next-devtools-mcp documentation to configure with your MCP client.
+
+Note: Using next-devtools-mcp@latest ensures that your MCP client will always use the latest version of the Next.js DevTools MCP server.
+
+Example Prompts
+Once configured, you can use natural language prompts to upgrade your Next.js app:
+
+To upgrade to Next.js 16:
+
+Connect to your coding agent and then prompt:
+
+Next Devtools, help me upgrade my Next.js app to version 16
+To migrate to Cache Components (after upgrading to v16):
+
+Connect to your coding agent and then prompt:
+
+Next Devtools, migrate my Next.js app to cache components
+Learn more in the documentation here.
+
+Using the Codemod
+To update to Next.js version 16, you can use the upgrade codemod:
+
+Terminal
+npx @next/codemod@canary upgrade latest
+The codemod is able to:
+
+Update next.config.js to use the new turbopack configuration
+Migrate from next lint to the ESLint CLI
+Migrate from deprecated middleware convention to proxy
+Remove unstable_ prefix from stabilized APIs
+Remove experimental_ppr Route Segment Config from pages and layouts
+If you prefer to do it manually, install the latest Next.js and React versions:
+
+Terminal
+npm install next@latest react@latest react-dom@latest
+If you are using TypeScript, ensure you also upgrade @types/react and @types/react-dom to their latest versions.
+
+Node.js runtime and browser support
+Requirement	Change / Details
+Node.js 20.9+	Minimum version now 20.9.0 (LTS); Node.js 18 no longer supported
+TypeScript 5+	Minimum version now 5.1.0
+Browsers	Chrome 111+, Edge 111+, Firefox 111+, Safari 16.4+
+Turbopack by default
+Starting with Next.js 16, Turbopack is stable and used by default with next dev and next build
+
+Previously you had to enable Turbopack using --turbopack, or --turbo.
+
+package.json
+{
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start"
+  }
+}
+This is no longer necessary. You can update your package.json scripts:
+
+package.json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  }
+}
+If your project has a custom webpack configuration and you run next build (which now uses Turbopack by default), the build will fail to prevent misconfiguration issues.
+
+You have a few different ways to address this:
+
+Use Turbopack anyway: Run with next build --turbopack to build using Turbopack and ignore your webpack config.
+Switch to Turbopack fully: Migrate your webpack config to Turbopack-compatible options.
+Keep using Webpack: Use the --webpack flag to opt out of Turbopack and build with Webpack.
+Good to know: If you see failing builds because a webpack configuration was found, but you don't define one yourself, it is likely that a plugin is adding a webpack option
+
+Opting out of Turbopack
+If you need to continue using Webpack, you can opt out with the --webpack flag. For example, to use Turbopack in development but Webpack for production builds:
+
+package.json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build --webpack",
+    "start": "next start"
+  }
+}
+We recommend using Turbopack for development and production. Submit a comment to this thread, if you are unable to switch to Turbopack.
+
+Turbopack configuration location
+The experimental.turbopack configuration is out of experimental.
+
+next.config.ts
+import type { NextConfig } from 'next'
+ 
+// Next.js 15 - experimental.turbopack
+const nextConfig: NextConfig = {
+  experimental: {
+    turbopack: {
+      // options
+    },
+  },
+}
+ 
+export default nextConfig
+You can use it as a top-level turbopack option:
+
+next.config.ts
+import type { NextConfig } from 'next'
+ 
+// Next.js 16 - turbopack at the top level of nextConfig
+const nextConfig: NextConfig = {
+  turbopack: {
+    // options
+  },
+}
+ 
+export default nextConfig
+Make sure to review the Turbopack configuration options. Next.js 16 introduces various improvements and new options, for example:
+
+Advanced Webpack loader conditions
+debugIds
+Resolve alias fallback
+In some projects, client-side code may import files containing Node.js native modules. This will cause Module not found: Can't resolve 'fs' type of errors.
+
+When this happens, you should refactor your code so that your client-side bundles do not reference these Node.js native modules.
+
+However, in some cases, this might not be possible. In Webpack the resolve.fallback option was typically used to silence the error. Turbopack offers a similar option, using turbopack.resolveAlias. In this case, tell Turbopack to load an empty module when fs is requested for the browser.
+
+next.config.ts
+import type { NextConfig } from 'next'
+ 
+const nextConfig: NextConfig = {
+  turbopack: {
+    resolveAlias: {
+      fs: {
+        browser: './empty.ts', // We recommend to fix code imports before using this method
+      },
+    },
+  },
+}
+ 
+export default nextConfig
+It is preferable to refactor your modules so that client code doesn't ever import from modules using Node.js native modules.
+
+Sass node_modules imports
+Turbopack fully supports importing Sass files from node_modules. Note that while Webpack allowed the legacy tilde (~) prefix, Turbopack does not support this syntax.
+
+In Webpack:
+
+styles/globals.scss
+@import '~bootstrap/dist/css/bootstrap.min.css';
+In Turbopack:
+
+styles/globals.scss
+@import 'bootstrap/dist/css/bootstrap.min.css';
+If changing the imports is not possible, you can use turbopack.resolveAlias. For example:
+
+next.config.ts
+import type { NextConfig } from 'next'
+ 
+const nextConfig: NextConfig = {
+  turbopack: {
+    resolveAlias: {
+      '~*': '*',
+    },
+  },
+}
+ 
+export default nextConfig
+Turbopack File System Caching (beta)
+Turbopack now supports filesystem caching in development, storing compiler artifacts on disk between runs for significantly faster compile times across restarts.
+
+Enable filesystem caching in your configuration:
+
+next.config.ts
+TypeScript
+import type { NextConfig } from 'next'
+ 
+const nextConfig: NextConfig = {
+  experimental: {
+    turbopackFileSystemCacheForDev: true,
+  },
+}
+ 
+export default nextConfig
+Async Request APIs (Breaking change)
+Version 15 introduced Async Request APIs as a breaking change, with temporary synchronous compatibility.
+
+Starting with Next.js 16, synchronous access is fully removed. These APIs can only be accessed asynchronously.
+
+cookies
+headers
+draftMode
+params in layout.js, page.js, route.js, default.js, opengraph-image, twitter-image, icon, and apple-icon.
+searchParams in page.js
+Use the codemod to migrate to async Request-time APIs.
+
+Migrating types for async Request-time APIs
+To help migrate to async params and searchParams, you can run npx next typegen to automatically generate these globally available types helpers:
+
+PageProps
+LayoutProps
+RouteContext
+Good to know: typegen was introduced in Next.js 15.5
+
+This simplifies type-safe migration to the new async API pattern, and enables you to update your components with full type safety, for example:
+
+/app/blog/[slug]/page.tsx
+export default async function Page(props: PageProps<'/blog/[slug]'>) {
+  const { slug } = await props.params
+  const query = await props.searchParams
+  return <h1>Blog Post: {slug}</h1>
+}
+This approach gives you fully type-safe access to props.params, including the slug, and to searchParams, directly within your page.
+
+Async parameters for icon, and open-graph Image (Breaking change)
+The props passed to the image generating functions in opengraph-image, twitter-image, icon, and apple-icon, are now Promises.
+
+In previous versions, both the Image (image generation function), and the generateImageMetadata received a params object. The id returned by generateImageMetadata was passed as a string to the image generation function.
+
+app/shop/[slug]/opengraph-image.js
+// Next.js 15 - synchronous params access
+export function generateImageMetadata({ params }) {
+  const { slug } = params
+  return [{ id: '1' }, { id: '2' }]
+}
+ 
+// Next.js 15 - synchronous params and id access
+export default function Image({ params, id }) {
+  const slug = params.slug
+  const imageId = id // string
+  // ...
+}
+Starting with Next.js 16, to align with the Async Request APIs change, the image generating function now receives params and id as promises. The generateImageMetadata function continues to receive synchronous params.
+
+app/shop/[slug]/opengraph-image.js
+export async function generateImageMetadata({ params }) {
+  const { slug } = params
+  return [{ id: '1' }, { id: '2' }]
+}
+ 
+// Next.js 16 - asynchronous params and id access
+export default async function Image({ params, id }) {
+  const { slug } = await params // params now async
+  const imageId = await id // id is now Promise<string> when using generateImageMetadata
+  // ...
+}
+Async id parameter for sitemap (Breaking change)
+Previously, the id values returned from generateSitemaps were passed directly to the sitemap generating function.
+
+app/product/sitemap.js
+export async function generateSitemaps() {
+  return [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }]
+}
+ 
+// Next.js 15 - synchronous id access
+export default async function sitemap({ id }) {
+  const start = id * 50000 // id is a number
+  // ...
+}
+Starting with Next.js 16, the sitemap generating function now receives id as a promise.
+
+app/product/sitemap.js
+export async function generateSitemaps() {
+  return [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }]
+}
+ 
+// Next.js 16 - asynchronous id access
+export default async function sitemap({ id }) {
+  const resolvedId = await id // id is now Promise<string>
+  const start = Number(resolvedId) * 50000
+  // ...
+}
+React 19.2
+The App Router in Next.js 16 uses the latest React Canary release, which includes the newly released React 19.2 features and other features being incrementally stabilized. Highlights include:
+
+View Transitions: Animate elements that update inside a Transition or navigation
+useEffectEvent: Extract non-reactive logic from Effects into reusable Effect Event functions
+Activity: Render "background activity" by hiding UI with display: none while maintaining state and cleaning up Effects
+Learn more in the React 19.2 announcement.
+
+React Compiler Support
+Built-in support for the React Compiler is now stable in Next.js 16 following the React Compiler's 1.0 release. The React Compiler automatically memoizes components, reducing unnecessary re-renders with zero manual code changes.
+
+The reactCompiler configuration option has been promoted from experimental to stable. It is not enabled by default as we continue gathering build performance data across different application types.
+
+next.config.ts
+TypeScript
+import type { NextConfig } from 'next'
+ 
+const nextConfig: NextConfig = {
+  reactCompiler: true,
+}
+ 
+export default nextConfig
+Install the latest version of the React Compiler plugin:
+
+Terminal
+npm install -D babel-plugin-react-compiler
+Good to know: Expect compile times in development and during builds to be higher when enabling this option as the React Compiler relies on Babel.
+
+Caching APIs
+revalidateTag
+revalidateTag now requires a second argument specifying a cacheLife profile. The single-argument form is deprecated and will produce a TypeScript error.
+
+// Before
+revalidateTag('posts')
+ 
+// After
+revalidateTag('posts', 'max')
+If you need immediate expiration rather than stale-while-revalidate, use updateTag in Server Actions instead.
+
+app/actions.ts
+TypeScript
+'use server'
+ 
+import { revalidateTag } from 'next/cache'
+ 
+export async function updateArticle(articleId: string) {
+  // Mark article data as stale - article readers see stale data while it revalidates
+  revalidateTag(`article-${articleId}`, 'max')
+}
+Use revalidateTag for content where a slight delay in updates is acceptable, such as blog posts, product catalogs, or documentation. Users receive stale content while fresh data loads in the background.
+
+updateTag
+updateTag is a new Server Actions-only API that provides read-your-writes semantics, where a user makes a change and the UI immediately shows the change, rather than stale data.
+
+It does this by expiring and immediately refreshing data within the same request.
+
+app/actions.ts
+TypeScript
+'use server'
+ 
+import { updateTag } from 'next/cache'
+ 
+export async function updateUserProfile(userId: string, profile: Profile) {
+  await db.users.update(userId, profile)
+ 
+  // Expire cache and refresh immediately - user sees their changes right away
+  updateTag(`user-${userId}`)
+}
+This ensures interactive features reflect changes immediately. Perfect for forms, user settings, and any workflow where users expect to see their updates instantly.
+
+Learn more about when to use updateTag or revalidateTag here.
+
+refresh
+refresh allows you to refresh the client router from within a Server Action.
+
+app/actions.ts
+TypeScript
+'use server'
+ 
+import { refresh } from 'next/cache'
+ 
+export async function markNotificationAsRead(notificationId: string) {
+  // Update the notification in the database
+  await db.notifications.markAsRead(notificationId)
+ 
+  // Refresh the notification count displayed in the header
+  refresh()
+}
+Use it when you need to refresh the client router after performing an action.
+
+cacheLife and cacheTag
+cacheLife and cacheTag are now stable. The unstable_ prefix is no longer needed.
+
+Wherever you had aliased imports like:
+
+import {
+  unstable_cacheLife as cacheLife,
+  unstable_cacheTag as cacheTag,
+} from 'next/cache'
+You can update your imports to:
+
+import { cacheLife, cacheTag } from 'next/cache'
+Enhanced Routing and Navigation
+Next.js 16 includes a complete overhaul of the routing and navigation system, making page transitions leaner and faster. This optimizes how Next.js prefetches and caches navigation data:
+
+Layout deduplication: When prefetching multiple URLs with a shared layout, the layout is downloaded once.
+Incremental prefetching: Next.js only prefetches parts not already in cache, rather than entire pages.
+These changes require no code modifications and are designed to improve performance across all apps.
+
+However, you may see more individual prefetch requests with much lower total transfer sizes. We believe this is the right trade-off for nearly all applications.
+
+If the increased request count causes issues, please let us know by creating an issue or discussion item.
+
+Partial Prerendering (PPR)
+Next.js 16 removes the experimental Partial Prerendering (PPR) flag and configuration options, including the route level segment experimental_ppr.
+
+Starting with Next.js 16, you can opt into PPR using the cacheComponents configuration.
+
+next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  cacheComponents: true,
+}
+ 
+module.exports = nextConfig
+PPR in Next.js 16 works differently than in Next.js 15 canaries. If you are using PPR today, stay in the current Next.js 15 canary you are using. See Migrating to Cache Components for migration patterns.
+
+next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // If you are using PPR today
+  // stay in the current Next.js 15 canary
+  experimental: {
+    ppr: true,
+  },
+}
+ 
+module.exports = nextConfig
+middleware to proxy
+The middleware filename is deprecated, and has been renamed to proxy to clarify network boundary and routing focus.
+
+The edge runtime is NOT supported in proxy. The proxy runtime is nodejs, and it cannot be configured. If you want to continue using the edge runtime, keep using middleware. We will follow up on a minor release with further edge runtime instructions.
+
+Terminal
+# Rename your middleware file
+mv middleware.ts proxy.ts
+# or
+mv middleware.js proxy.js
+The named export middleware is also deprecated. Rename your function to proxy.
+
+proxy.ts
+TypeScript
+export function proxy(request: Request) {}
+We recommend changing the function name to proxy, even if you are using a default export.
+
+Configuration flags that contained the middleware name are also renamed. For example, skipMiddlewareUrlNormalize is now skipProxyUrlNormalize
+
+next.config.ts
+TypeScript
+import type { NextConfig } from 'next'
+ 
+const nextConfig: NextConfig = {
+  skipProxyUrlNormalize: true,
+}
+ 
+export default nextConfig
+The version 16 codemod is able to update these flags too.
+
+next/image changes
+Local Images with Query Strings (Breaking change)
+Local image sources with query strings now require images.localPatterns.search configuration to prevent enumeration attacks.
+
+app/page.tsx
+import Image from 'next/image'
+ 
+export default function Page() {
+  return <Image src="/assets/photo?v=1" alt="Photo" width="100" height="100" />
+}
+If you need to use query strings with local images, add the pattern to your configuration:
+
+next.config.ts
+TypeScript
+import type { NextConfig } from 'next'
+ 
+const nextConfig: NextConfig = {
+  images: {
+    localPatterns: [
+      {
+        pathname: '/assets/**',
+        search: '?v=1',
+      },
+    ],
+  },
+}
+ 
+export default nextConfig
+minimumCacheTTL Default (Breaking change)
+The default value for images.minimumCacheTTL has changed from 60 seconds to 4 hours (14400 seconds). This reduces revalidation cost for images without cache-control headers.
+
+For some Next.js users, image revalidation was happening frequently, often because the upstream source images missed a cache-control header. This caused revalidation to happen every 60 seconds, which increased CPU usage and cost.
+
+Since most images do not change often, this short interval is not ideal. Setting the default to 4 hours offers a more durable cache by default, while still allowing images to update a few times per day if needed.
+
+If you need the previous behavior, change minimumCacheTTL to a lower value, for example back to 60 seconds:
+
+next.config.ts
+TypeScript
+import type { NextConfig } from 'next'
+ 
+const nextConfig: NextConfig = {
+  images: {
+    minimumCacheTTL: 60,
+  },
+}
+ 
+export default nextConfig
+imageSizes Default (Breaking change)
+The value 16 has been removed from the default images.imageSizes array.
+
+We have looked at request analytics and found out that very few projects ever serve 16 pixels width images. Removing this setting reduces the size of the srcset attribute shipped to the browser by next/image.
+
+If you need to support 16px images:
+
+next.config.ts
+TypeScript
+import type { NextConfig } from 'next'
+ 
+const nextConfig: NextConfig = {
+  images: {
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
+}
+ 
+export default nextConfig
+Rather than lack of developer usage, we believe 16 pixels width images have become less common, because devicePixelRatio: 2 actually fetches a 32px image to prevent blurriness in retina displays.
+
+qualities Default (Breaking change)
+The default value for images.qualities has changed from allowing all qualities to only [75].
+
+If you need to support multiple quality levels:
+
+next.config.ts
+TypeScript
+import type { NextConfig } from 'next'
+ 
+const nextConfig: NextConfig = {
+  images: {
+    qualities: [50, 75, 100],
+  },
+}
+ 
+export default nextConfig
+If you specify a quality prop not included in the image.qualities array, the quality will be coerced to the closest value in images.qualities. For example, given the configuration above, a quality prop of 80, is coerced to 75.
+
+Local IP Restriction (Breaking change)
+A new security restriction blocks local IP optimization by default. Set images.dangerouslyAllowLocalIP to true only for private networks.
+
+next.config.ts
+TypeScript
+import type { NextConfig } from 'next'
+ 
+const nextConfig: NextConfig = {
+  images: {
+    dangerouslyAllowLocalIP: true, // Only for private networks
+  },
+}
+ 
+export default nextConfig
+Maximum Redirects (Breaking change)
+The default for images.maximumRedirects has changed from unlimited to 3 redirects maximum.
+
+next.config.ts
+TypeScript
+import type { NextConfig } from 'next'
+ 
+const nextConfig: NextConfig = {
+  images: {
+    maximumRedirects: 0, // Disable redirects
+    // or
+    maximumRedirects: 5, // Increase for edge cases
+  },
+}
+ 
+export default nextConfig
+next/legacy/image Component (deprecated)
+The next/legacy/image component is deprecated. Use next/image instead:
+
+// Before
+import Image from 'next/legacy/image'
+ 
+// After
+import Image from 'next/image'
+images.domains Configuration (deprecated)
+The images.domains config is deprecated.
+
+next.config.js
+// image.domains is deprecated
+module.exports = {
+  images: {
+    domains: ['example.com'],
+  },
+}
+Use images.remotePatterns instead for improved security:
+
+next.config.js
+// Use image.remotePatterns instead
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'example.com',
+      },
+    ],
+  },
+}
+Concurrent dev and build
+next dev and next build now use separate output directories, enabling concurrent execution. The next dev command outputs to .next/dev.
+
+Additionally, a lockfile mechanism prevents multiple next dev or next build instances on the same project.
+
+Since the development server outputs to .next/dev, the Turbopack tracing command should be:
+
+Terminal
+npx next internal trace .next/dev/trace-turbopack
+Parallel Routes default.js requirement
+All parallel route slots now require explicit default.js files. Builds will fail without them.
+
+To maintain previous behavior, create a default.js file that calls notFound() or returns null.
+
+app/@modal/default.tsx
+import { notFound } from 'next/navigation'
+ 
+export default function Default() {
+  notFound()
+}
+Or return null:
+
+app/@modal/default.tsx
+export default function Default() {
+  return null
+}
+ESLint Flat Config
+@next/eslint-plugin-next now defaults to ESLint Flat Config format, aligning with ESLint v10 which will drop legacy config support.
+
+Make sure to review our API reference for the @next/eslint-plugin-next plugin.
+
+If you're using the legacy .eslintrc format, consider migrating to the flat config format. See the ESLint migration guide for details.
+
+Scroll Behavior Override
+In previous versions of Next.js, if you had set scroll-behavior: smooth globally on your <html> element via CSS, Next.js would override this during SPA route transitions, as follows:
+
+Temporarily set scroll-behavior to auto
+Perform the navigation (causing instant scroll to top)
+Restore your original scroll-behavior value
+This ensured that page navigation always felt snappy and instant, even when you had smooth scrolling enabled for in-page navigation. However, this manipulation could be expensive, especially at the start of every navigation.
+
+In Next.js 16, this behavior has changed. By default, Next.js will no longer override your scroll-behavior setting during navigation.
+
+If you want Next.js to perform this override (the previous default behavior), add the data-scroll-behavior="smooth" attribute to your <html> element:
+
+app/layout.tsx
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" data-scroll-behavior="smooth">
+      <body>{children}</body>
+    </html>
+  )
+}
+Performance Improvements
+Significant performance optimizations for next dev and next start commands, along with improved terminal output with clearer formatting, better error messages, and improved performance metrics.
+
+Next.js 16 removes the size and First Load JS metrics from the next build output. We found these to be inaccurate in server-driven architectures using React Server Components. Both our Turbopack and Webpack implementations had issues, and disagreed on how to account for Client Components payload.
+
+The most effective way to measure actual route performance is through tools such as Chrome Lighthouse or Vercel Analytics, which focus on Core Web Vitals and downloaded resource sizes.
+
+next dev config load
+In previous versions the Next config file was loaded twice during development:
+
+When running the next dev command
+When the next dev command started the Next.js server
+This was inefficient because the next dev command doesn't need the config file to start the Next.js server.
+
+A consequence of this change is that, when running next dev checking if process.argv includes 'dev', in your Next.js config file, will return false.
+
+Good to know: The typegen, and build commands, are still visible in process.argv.
+
+This is specially important for plugins that trigger side-effects on next dev. If that's the case, it might be enough to check if NODE_ENV is set to development.
+
+next.config.js
+import { startServer } from 'docs-lib/dev-server'
+ 
+const isDev = process.env.NODE_ENV === 'development'
+ 
+if (isDev) {
+  startServer()
+}
+ 
+const nextConfig = {
+  /* Your config options */
+}
+ 
+module.exports = nextConfig
+Alternatively, use the phase in which the configuration is loaded.
+
+Build Adapters API (alpha)
+Following the Build Adapters RFC, the first alpha version of the Build Adapters API is now available.
+
+Build Adapters allow you to create custom adapters that hook into the build process, enabling deployment platforms and custom build integrations to modify Next.js configuration or process build output.
+
+next.config.js
+const nextConfig = {
+  experimental: {
+    adapterPath: require.resolve('./my-adapter.js'),
+  },
+}
+ 
+module.exports = nextConfig
+adapterPath was promoted to a stable, top-level option in 16.2.0. See adapterPath for the current API reference.
+
+Modern Sass API
+sass-loader has been bumped to v16, which supports modern Sass syntax and new features.
+
+Removals
+These features were previously deprecated and are now removed:
+
+AMP Support
+AMP adoption has declined significantly, and maintaining this feature adds complexity to the framework. All AMP APIs and configurations have been removed:
+
+amp configuration from your Next config file
+next/amp hook imports and usage (useAmp)
+// Removed
+import { useAmp } from 'next/amp'
+ 
+// Removed
+export const config = { amp: true }
+export const config = { amp: true } from pages
+next.config.js
+const nextConfig = {
+  // Removed
+  amp: {
+    canonicalBase: 'https://example.com',
+  },
+}
+ 
+export default nextConfig
+Evaluate if AMP is still necessary for your use case. Most performance benefits can now be achieved through Next.js's built-in optimizations and modern web standards.
+
+next lint Command
+The next lint command has been removed. Use Biome or ESLint directly. next build no longer runs linting.
+
+A codemod is available to automate migration:
+
+Terminal
+npx @next/codemod@canary next-lint-to-eslint-cli .
+The eslint option in the Next.js config file is also removed.
+
+next.config.mjs
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // No longer supported
+  // eslint: {},
+}
+ 
+export default nextConfig
+Runtime Configuration
+serverRuntimeConfig and publicRuntimeConfig have been removed. Use environment variables instead.
+
+Before (Next.js 15):
+
+next.config.js
+module.exports = {
+  serverRuntimeConfig: {
+    dbUrl: process.env.DATABASE_URL,
+  },
+  publicRuntimeConfig: {
+    apiUrl: '/api',
+  },
+}
+pages/index.tsx
+import getConfig from 'next/config'
+ 
+export default function Page() {
+  const { publicRuntimeConfig } = getConfig()
+  return <p>API URL: {publicRuntimeConfig.apiUrl}</p>
+}
+After (Next.js 16):
+
+For server-only values, access environment variables directly in Server Components:
+
+app/page.tsx
+async function fetchData() {
+  const dbUrl = process.env.DATABASE_URL
+  // Use for server-side operations only
+  return await db.query(dbUrl, 'SELECT * FROM users')
+}
+ 
+export default async function Page() {
+  const data = await fetchData()
+  return <div>{/* render data */}</div>
+}
+Good to know: Use the taint API to prevent accidentally passing sensitive server values to Client Components.
+
+For client-accessible values, use the NEXT_PUBLIC_ prefix:
+
+.env.local
+NEXT_PUBLIC_API_URL="/api"
+app/components/client-component.tsx
+'use client'
+ 
+export default function ClientComponent() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
+  return <p>API URL: {apiUrl}</p>
+}
+To ensure environment variables are read at runtime (not bundled at build time), use the connection() function before reading from process.env:
+
+app/page.tsx
+import { connection } from 'next/server'
+ 
+export default async function Page() {
+  await connection()
+  const config = process.env.RUNTIME_CONFIG
+  return <p>{config}</p>
+}
+Learn more about environment variables.
+
+devIndicators Options
+The following options have been removed from devIndicators:
+
+appIsrStatus
+buildActivity
+buildActivityPosition
+The indicator itself remains available.
+
+experimental.dynamicIO
+The experimental.dynamicIO flag has been renamed to cacheComponents:
+
+Update your Next config file, by removing the dynamicIO flag.
+
+next.config.js
+// Next.js 15 - experimental.dynamicIO is now removed
+module.exports = {
+  experimental: {
+    dynamicIO: true,
+  },
+}
+Add the cacheComponents flag set to true.
+
+next.config.js
+// Next.js 16 - use cacheComponents instead
+module.exports = {
+  cacheComponents: true,
+}
+unstable_rootParams
+The unstable_rootParams function has been removed. We are working on an alternative API that we will ship in an upcoming minor release.
+
+Previous
+Version 15
+Next
+Videos
+Was this helpful?
+
+Your feedback...
+supported.
+
+
+
+Resources
+DocsSupport PolicyLearnShowcaseBlogTeamAnalyticsNext.js ConfPreviewsEvals
+More
+Next.js CommerceContact SalesCommunityGitHubReleasesTelemetryGovernanceEcosystem Working Group
+About Vercel
+Next.js + VercelOpen Source SoftwareGitHubBlueskyX
+Legal
+Privacy PolicyCookie Preferences
+Subscribe to our newsletter
+Stay updated on new releases and features, guides, and case studies.
+
+you@domain.com
+Subscribe
+© 2026 Vercel, Inc.
+
+
+
+
+
+
+
+
+
+
+qual a versão mais recente do Typescript em 2 de abril de 2026
+
+
++7
+Em 2 de abril de 2026, a versão mais recente e estável do TypeScript é a
+6.0.2, lançada em 23 de março de 2026. 
+Esta versão é um marco importante ("bridge release"), sendo a última baseada na base de código JavaScript/TypeScript tradicional antes da transição para a versão 7.0, que será escrita em Go (Project Corsa). 
+Destaques do TypeScript 6.0 (início de 2026):
+Foco na transição: Atua como ponte entre a linha 5.x e a futura 7.0, com muitas mudanças de alinhamento.
+Novas funcionalidades: Inclui Pattern Matching (correspondência de padrões) e Const Type Parameters.
+Depreciações: Prepara o terreno para a versão 7.0, removendo comportamentos antigos, com o modo --strict ativado por padrão e o fim do suporte ao target: es5.
+Performance: A versão 6.0 foi a última a manter a cadeia de ferramentas baseada em JavaScript, enquanto a versão 7.0 (em desenvolvimento paralelo) promete aumentos de 10x na velocidade de compilação. 
+Você pode instalar a versão mais recente executando:
+npm install -D typescript@latest
+typescript - NPM
+23 de mar. de 2026 — TypeScript is a language for application scale JavaScript development. Latest version: 6.0.2, last published: 10 days ago. Start using typescript in your projec...
+
+NPM
+
+Announcing TypeScript 6.0 - Microsoft Developer Blogs
+23 de mar. de 2026 — TypeScript 6.0 is now available! TypeScript 6 is a stepping-stone release, aligning with the upcoming native-speed 7.0 release.
+
+Microsoft Dev Blogs
+
+Announcing TypeScript 6.0 Beta
+11 de fev. de 2026 — TypeScript 6.0 is a unique release in that we intend for it to be the last release based on the current JavaScript codebase. As announced last year (with recent...
+
+Microsoft Dev Blogs
+
+TypeScript 7 Sera Escrito em Go: O Que Muda ...
+A Microsoft anunciou que o TypeScript 7.0, previsto para 2026, sera a primeira versao do compilador escrita inteiramente em Go. O TypeScript 6.0, lancado como "
+
+Jeff Bruchado
+
+TypeScript 6.0: Todas as Novidades e Recursos ...
+TypeScript 6.0 chegou com recursos revolucionarios. Descubra as novidades como Pattern Matching, Const Type Parameters e muito mais que vao mudar seu ...
+
+Jeff Bruchado
+
+Progress on TypeScript 7 - December 2025
+2 de dez. de 2025 — Deprecation Compatibility TypeScript 7.0 will remove behaviors and flags that we plan to deprecate in TypeScript 6.0. Right now, you can see the list of upcomin...
+
+Microsoft Dev Blogs
+
+Microsoft steers native port of TypeScript to early 2026 release
+3 de dez. de 2025 — Developers can confidently use TypeScript 7.0 today to type-check a project for errors, Rosenwasser said. Beyond single-pass/single-project type checking, the c...
+
+InfoWorld
+
+TypeScript 6.0 Iteration Plan · Issue #63085 - GitHub
+3 de fev. de 2026 — Table_title: Description Table_content: header: | Date | Event | row: | Date: 2026-02-10 | Event: TypeScript 6.0 Beta Release | row: | Date: 2026-02-21 | Event:
+
+GitHub
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://www.npmjs.com/package/typescript
+
+
+
+skip to:contentpackage searchsign in
+Pro
+Teams
+Pricing
+Documentation
+npm
+Search packages
+typescript
+TypeScript icon, indicating that this package has built-in type declarations
+6.0.2 • Public • Published 10 days ago
+TypeScript
+CI npm version Downloads OpenSSF Scorecard
+
+TypeScript is a language for application-scale JavaScript. TypeScript adds optional types to JavaScript that support tools for large-scale JavaScript applications for any browser, for any host, on any OS. TypeScript compiles to readable, standards-based JavaScript. Try it out at the playground, and stay up to date via our blog and Twitter account.
+
+Find others who are using TypeScript at our community page.
+
+Installing
+For the latest stable version:
+
+npm install -D typescript
+For our nightly builds:
+
+npm install -D typescript@next
+Contribute
+There are many ways to contribute to TypeScript.
+
+Submit bugs and help us verify fixes as they are checked in.
+Review the source code changes.
+Engage with other TypeScript users and developers on StackOverflow.
+Help each other in the TypeScript Community Discord.
+Join the #typescript discussion on Twitter.
+Contribute bug fixes.
+This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
+
+Documentation
+TypeScript in 5 minutes
+Programming handbook
+Homepage
+Roadmap
+For details on our planned features and future direction, please refer to our roadmap.
+
+Readme
+Keywords
+TypeScript
+Microsoft
+compiler
+language
+javascript
+Package Sidebar
+Install
+npm i typescript
+
+Repository
+github.com/microsoft/TypeScript
+
+Homepage
+www.typescriptlang.org/
+
+Weekly Downloads
+179.184.721
+
+Version
+6.0.2
+
+License
+Apache-2.0
+
+Unpacked Size
+24.3 MB
+
+Total Files
+140
+
+Last publish
+2 days ago
+
+Collaborators
+microsoft1es
+typescript-bot
+weswigham
+andrewbranch
+typescript-deploys
+jakebailey
+Analyze security with SocketCheck bundle sizeView package healthExplore dependencies
+Report malware
+Footer
+Support
+Help
+Advisories
+Status
+Contact npm
+Company
+About
+Blog
+Press
+Terms & Policies
+Policies
+Terms of Use
+Code of Conduct
+Privacy
+Viewing typescript version 6.0.2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://devblogs.microsoft.com/typescript/announcing-typescript-6-0/
+
+
+
+
+
+Skip to main content
+ Microsoft
+Sign in
+Dev Blogs
+TypeScript
+Announcing Type...
+March 23rd, 2026
+celebrateheartlikecompelling16 reactions
+Announcing TypeScript 6.0
+Daniel Rosenwasser
+Daniel Rosenwasser
+Principal Product Manager
+Today we are excited to announce the availability of TypeScript 6.0!
+
+If you are not familiar with TypeScript, it’s a language that builds on JavaScript by adding syntax for types, which enables type-checking to catch errors, and provide rich editor tooling. You can learn more about TypeScript and how to get started on the TypeScript website.
+
+But if you’re already familiar with the language, you can get TypeScript 6.0 through npm with the following command:
+
+npm install -D typescript
+TypeScript 6.0 is a unique release in that we intend for it to be the last release based on the current JavaScript codebase. As announced last year (with recent updates here), we are working on a new codebase for the TypeScript compiler and language service written in Go that takes advantage of the speed of native code and shared-memory multi-threading. That new codebase will be the foundation of TypeScript 7.0 and beyond.
+
+TypeScript 6.0 acts as the bridge between TypeScript 5.9 and 7.0. As such, most changes in TypeScript 6.0 are meant to help align and prepare for adopting TypeScript 7.0. It may seem surprising to say, but TypeScript 7.0 is actually extremely close to completion. You can try it out in Visual Studio Code or install it from npm. In fact, if you’re able to adopt TypeScript 6.0, we encourage you to try out the native previews of TypeScript 7.0.
+
+With that said, there are some new features and improvements in TypeScript 6.0s that are not just about alignment. Let’s take a look at some of the highlights of this release, followed by a more detailed look at what’s changing for 7.0 and how to prepare for it.
+
+What’s New Since the Beta and RC?
+Since TypeScript 6.0 beta, we have made a few noteworthy changes – mostly to align with the behavior of TypeScript 7.0.
+
+One adjustment is in type-checking for function expressions in generic calls, especially those occurring in generic JSX expressions (see this pull request). This will typically catch more bugs in existing code, though you may find that some generic calls may need an explicit type argument.
+
+We have also extended our deprecation of import assertion syntax (i.e. import ... assert {...}) to import() calls like import(..., { assert: {...}})
+
+Finally, we have updated the DOM types to reflect the latest web standards, including some adjustments to the Temporal APIs as well.
+
+Less Context-Sensitivity on this-less Functions
+When parameters don’t have explicit types written out, TypeScript can usually infer them based on an expected type, or even through other arguments in the same function call.
+
+declare function callIt<T>(obj: {
+    produce: (x: number) => T,
+    consume: (y: T) => void,
+}): void;
+
+// Works, no issues.
+callIt({
+    produce: (x: number) => x * 2,
+    consume: y => y.toFixed(),
+});
+
+// Works, no issues even though the order of the properties is flipped.
+callIt({
+    consume: y => y.toFixed(),
+    produce: (x: number) => x * 2,
+});
+Here, TypeScript can infer the type of y in the consume function based on the inferred T from the produce function, regardless of the order of the properties. But what about if these functions were written using method syntax instead of arrow function syntax?
+
+declare function callIt<T>(obj: {
+    produce: (x: number) => T,
+    consume: (y: T) => void,
+}): void;
+
+// Works fine, `x` is inferred to be a number.
+callIt({
+    produce(x: number) { return x * 2; },
+    consume(y) { return y.toFixed(); },
+});
+
+callIt({
+    consume(y) { return y.toFixed(); },
+    //                  ~
+    // error: 'y' is of type 'unknown'.
+
+    produce(x: number) { return x * 2; },
+});
+Strangely enough, the second call to callIt results in an error because TypeScript is not able to infer the type of y in the consume method. What’s happening here is that when TypeScript is trying to find candidates for T, it will first skip over functions whose parameters don’t have explicit types. It does this because certain functions may need the inferred type of T to be correctly checked – in our case, we need to know the type of T to analyze our consume function.
+
+These functions are called contextually sensitive functions – basically, functions that have parameters without explicit types. Eventually the type system will need to figure out types for these parameters – but this is a bit at odds with how inference works in generic functions because the two "pull" on types in different directions.
+
+function callFunc<T>(callback: (x: T) => void, value: T) {
+    return callback(value);
+}
+
+callFunc(x => x.toFixed(), 42);
+//       ^
+// We need to figure out the type of `x` here,
+// but we also need to figure out the type of `T` to check the callback.
+To solve this, TypeScript skips over contextually sensitive functions during type argument inference, and instead checks and infers from other arguments first. If skipping over contextually sensitive functions doesn’t work, inference just continues across any unchecked arguments, going left-to-right in the argument list. In the example immediately above, TypeScript will skip over the callback during inference for T, but will then look at the second argument, 42, and infer that T is number. Then, when it comes back to check the callback, it will have a contextual type of (x: number) => void, which allows it to infer that x is a number as well.
+
+So what’s going on in our earlier examples?
+
+// Arrow syntax - no errors.
+callIt({
+    consume: y => y.toFixed(),
+    produce: (x: number) => x * 2,
+});
+
+// Method syntax - errors!
+callIt({
+    consume(y) { return y.toFixed(); },
+    //                  ~
+    // error: 'y' is of type 'unknown'.
+
+    produce(x: number) { return x * 2; },
+});
+In both examples, produce is assigned a function with an explicitly-typed x parameter. Shouldn’t they be checked identically?
+
+The issue is subtle: most functions (like the ones using method syntax) have an implicit this parameter, but arrow functions do not. Any usage of this could require "pulling" on the type of T – for example, knowing the type of the containing object literal could in turn require the type of consume, which uses T.
+
+But we’re not using this! Sure, the function might have a this value at runtime, but it’s never used!
+
+TypeScript 6.0 takes this into account when it decides if a function is contextually sensitive or not. If this is never actually used in a function, then it is not considered contextually sensitive. That means these functions will be seen as higher-priority when it comes to type inference, and all of our examples above now work!
+
+This change was provided thanks to the work of Mateusz Burzyński.
+
+Subpath Imports Starting with #/
+When Node.js added support for modules, it added a feature called "subpath imports". This is basically a field called imports which allows packages to create internal aliases for modules within their package.
+
+{
+    "name": "my-package",
+    "type": "module",
+    "imports": {
+        "#root/*": "./dist/*"
+    }
+}
+This allows modules in my-package to import from paths starting with #root/
+
+import * as utils from "#root/utils.js";
+instead of using a relative path like the following.
+
+import * as utils from "../../utils.js";
+One minor annoyance with this feature has been that developers always had to write something after the # when specifying a subpath import. Here, we used root, but it is a bit useless since there is no directory we’re mapping over other than ./dist/
+
+Developers who have used bundlers are also accustomed to using path-mapping to avoid long relative paths. A familiar convention with bundlers has been to use a simple @/ as the prefix. Unfortunately, subpath imports could not start with #/ at all, leading to a lot of confusion for developers trying to adopt them in their projects.
+
+But more recently, Node.js added support for subpath imports starting with #/. This allows packages to use a simple #/ prefix for their subpath imports without needing to add an extra segment.
+
+{
+    "name": "my-package",
+    "type": "module",
+    "imports": {
+        "#/*": "./dist/*"
+    }
+}
+This is supported in newer Node.js 20 releases, and so TypeScript now supports it under the options nodenext and bundler for the --moduleResolution setting.
+
+This work was done thanks to magic-akari, and the implementing pull request can be found here.
+
+Combining --moduleResolution bundler with --module commonjs
+TypeScript’s --moduleResolution bundler setting was previously only allowed to be used with --module esnext or --module preserve; however, with the deprecation of --moduleResolution node (a.k.a. --moduleResolution node10), this new combination is often the most suitable upgrade path for many projects.
+
+Projects will often want to instead plan out a migration towards either
+
+--module preserve and --moduleResolution bundler
+--module nodenext
+depending on your project type (e.g. bundled web app, Bun app, or Node.js app).
+
+More information can be found at this implementing pull request.
+
+The --stableTypeOrdering Flag
+As part of our ongoing work on TypeScript’s native port, we’ve introduced a new flag called --stableTypeOrdering intended to assist with 6.0-to-7.0 migrations.
+
+Today, TypeScript assigns type IDs (internal tracking numbers) to types in the order they are encountered, and uses these IDs to sort union types in a consistent manner. A similar process occurs for properties. As a result, the order in which things are declared in a program can have possibly surprising effects on things like declaration emit.
+
+For example, consider the declaration emit from this file:
+
+// Input: some-file.ts
+export function foo(condition: boolean) {
+    return condition ? 100 : 500;
+}
+
+// Output: some-file.d.ts
+export declare function foo(condition: boolean): 100 | 500;
+//                                               ^^^^^^^^^
+//             Note the order of this union: 100, then 500.
+If we add an unrelated const above foo, the declaration emit changes:
+
+// Input: some-file.ts
+const x = 500;
+export function foo(condition: boolean) {
+    return condition ? 100 : 500;
+}
+
+// Output: some-file.d.ts
+export declare function foo(condition: boolean): 500 | 100;
+//                                               ^^^^^^^^^
+//                           Note the change in order here.
+This happens because the literal type 500 gets a lower type ID than 100 because it was processed first when analyzing the const x declaration. In very rare cases this change in ordering can even cause errors to appear or disappear based on program processing order, but in general, the main place you might notice this ordering is in the emitted declaration files, or in the way types are displayed in your editor.
+
+One of the major architectural improvements in TypeScript 7 is parallel type checking, which dramatically improves overall check time. However, parallelism introduces a challenge: when different type-checkers visit nodes, types, and symbols in different orders, the internal IDs assigned to these constructs become non-deterministic. This in turn leads to confusing non-deterministic output, where two files with identical contents in the same program can produce different declaration files, or even calculate different errors when analyzing the same file. To fix this, TypeScript 7.0 sorts its internal objects (e.g. types and symbols) according to a deterministic algorithm based on the content of the object. This ensures that all checkers encounter the same object order regardless of how and when they were created. As a consequence, in the given example, TypeScript 7 will always print 100 | 500, removing the ordering instability entirely.
+
+This means that TypeScript 6 and 7 can and do sometimes display different ordering. While these ordering changes are almost always benign, if you’re comparing compiler outputs between runs (for example, checking emitted declaration files in 6.0 vs 7.0), these different orderings can produce a lot of noise that makes it difficult to assess correctness. Occasionally though, you may witness a change in ordering that causes a type error to appear or disappear, which can be even more confusing.
+
+To help with this situation, in 6.0, you can specify the new --stableTypeOrdering flag. This makes 6.0’s type ordering behavior match 7.0’s, reducing the number of differences between the two codebases. Note that we don’t necessarily encourage using this flag all the time as it can add a substantial slowdown to type-checking (up to 25% depending on codebase).
+
+If you encounter a type error using --stableTypeOrdering, this is typically due to inference differences. The previous inference without --stableTypeOrdering happened to work based on the current ordering of types in your program. To help with this, you’ll often benefit from providing an explicit type somewhere. Often, this will be a type argument
+
+- someFunctionCall(/*...*/);
++ someFunctionCall<SomeExplicitType>(/*...*/);
+or a variable annotation for an argument you intend to pass into a call.
+
+- const someVariable = { /*... some complex object ...*/ };
++ const someVariable: SomeExplicitType = { /*... some complex object ...*/ };
+
+someFunctionCall(someVariable);
+Note that this flag is only intended to help diagnose differences between 6.0 and 7.0 – it is not intended to be used as a long-term feature
+
+See more at this pull-request.
+
+es2025 option for target and lib
+TypeScript 6.0 adds support for the es2025 option for both target and lib. While there are no new JavaScript language features in ES2025, this new target adds new types for built-in APIs (e.g. RegExp.escape), and moves a few declarations from esnext into es2025 (e.g. Promise.try, Iterator methods, and Set methods). Work to enable the new target was contributed thanks to Kenta Moriuchi.
+
+New Types for Temporal
+The long-awaited Temporal proposal has reached stage 4 and will be part of a future ECMAScript standard. TypeScript 6.0 now includes built-in types for the Temporal API, so you can start using it in your TypeScript code today via --target esnext or "lib": ["esnext"] (or the more-granular esnext.temporal).
+
+let yesterday = Temporal.Now.instant().subtract({
+    hours: 24,
+});
+
+let tomorrow = Temporal.Now.instant().add({
+    hours: 24,
+});
+
+console.log(`Yesterday: ${yesterday}`);
+console.log(`Tomorrow: ${tomorrow}`);
+Temporal is already usable in several runtimes, and with stage 4 status it is now officially part of the JavaScript language. Documentation on the Temporal APIs is available on MDN.
+
+This work was contributed thanks to GitHub user Renegade334.
+
+New Types for "upsert" Methods (a.k.a. getOrInsert)
+A common pattern with Maps is to check if a key exists, and if not, set and fetch a default value.
+
+function processOptions(compilerOptions: Map<string, unknown>) {
+    let strictValue: unknown;
+    if (compilerOptions.has("strict")) {
+        strictValue = compilerOptions.get("strict");
+    }
+    else {
+        strictValue = true;
+        compilerOptions.set("strict", strictValue);
+    }
+    // ...
+}
+This pattern can be tedious. ECMAScript’s "upsert" proposal recently reached stage 4, and introduces 2 new methods on Map and WeakMap:
+
+getOrInsert
+getOrInsertComputed
+These methods have been added to the esnext lib so that you can start using them immediately in TypeScript 6.0.
+
+With getOrInsert, we can replace our code above with the following:
+
+function processOptions(compilerOptions: Map<string, unknown>) {
+    let strictValue = compilerOptions.getOrInsert("strict", true);
+    // ...
+}
+getOrInsertComputed works similarly, but is for cases where the default value may be expensive to compute (e.g. requires lots of computations, allocations, or does long-running synchronous I/O). Instead, it takes a callback that will only be called if the key is not already present.
+
+someMap.getOrInsertComputed("someKey", () => {
+    return computeSomeExpensiveValue(/*...*/);
+});
+This callback is also given the key as an argument, which can be useful for cases where the default value is based on the key.
+
+someMap.getOrInsertComputed(someKey, computeSomeExpensiveDefaultValue);
+
+function computeSomeExpensiveValue(key: string) {
+    // ...
+}
+This update was contributed thanks to GitHub user Renegade334.
+
+RegExp.escape
+When constructing some literal string to match within a regular expression, it is important to escape special regular expression characters like *, +, ?, (, ), etc. The RegExp Escaping ECMAScript proposal has reached stage 4, and introduces a new RegExp.escape function that takes care of this for you.
+
+function matchWholeWord(word: string, text: string) {
+    const escapedWord = RegExp.escape(word);
+    const regex = new RegExp(`\\b${escapedWord}\\b`, "g");
+    return text.match(regex);
+}
+RegExp.escape is available in the es2025 lib, so you can start using it in TypeScript 6.0 today.
+
+This work was contributed thanks Kenta Moriuchi.
+
+The dom lib Now Contains dom.iterable and dom.asynciterable
+TypeScript’s lib option allows you to specify which global declarations your target runtime has. One option is dom to represent web environments (i.e. browsers, who implement the DOM APIs). Previously, the DOM APIs were partially split out into dom.iterable and dom.asynciterable for environments that didn’t support Iterables and AsyncIterables. This meant that you had to explicitly add dom.iterable to use iteration methods on DOM collections like NodeList or HTMLCollection.
+
+In TypeScript 6.0, the contents of lib.dom.iterable.d.ts and lib.dom.asynciterable.d.ts are fully included in lib.dom.d.ts. You can still reference dom.iterable and dom.asynciterable in your configuration file’s "lib" array, but they are now just empty files.
+
+// Before TypeScript 6.0, this required "lib": ["dom", "dom.iterable"]
+// Now it works with just "lib": ["dom"]
+for (const element of document.querySelectorAll("div")) {
+    console.log(element.textContent);
+}
+This is a quality-of-life improvement that eliminates a common point of confusion, since no major modern browser lacks these capabilities. If you were already including both dom and dom.iterable, you can now simplify to just dom.
+
+See more at this issue and its corresponding pull request.
+
+Breaking Changes and Deprecations in TypeScript 6.0
+TypeScript 6.0 arrives as a significant transition release, designed to prepare developers for TypeScript 7.0, the upcoming native port of the TypeScript compiler. While TypeScript 6.0 maintains full compatibility with your existing TypeScript knowledge and continues to be API compatible with TypeScript 5.9, this release introduces a number of breaking changes and deprecations that reflect the evolving JavaScript ecosystem and set the stage for TypeScript 7.0.
+
+In the two years since TypeScript 5.0, we’ve seen ongoing shifts in how developers write and ship JavaScript:
+
+Virtually every runtime environment is now "evergreen". True legacy environments (ES5) are vanishingly rare.
+Bundlers and ESM have become the most common module targets for new projects, though CommonJS remains a major target. AMD and other in-browser userland module systems are much rarer than they were in 2012.
+Almost all packages can be consumed through some module system. UMD packages still exist, but virtually no new code is available only as a global variable.
+tsconfig.json is nearly universal as a configuration mechanism.
+Appetite for "stricter" typing continues to grow.
+TypeScript build performance is top of mind. Despite the gains of TypeScript 7, performance must always remain a key goal, and options which can’t be supported in a performant way need to be more strongly justified.
+So TypeScript 6.0 and 7.0 are designed with these realities in mind. For TypeScript 6.0, these deprecations can be ignored by setting "ignoreDeprecations": "6.0" in your tsconfig; however, note that TypeScript 7.0 will not support any of these deprecated options.
+
+Some necessary adjustments can be automatically performed with a codemod or tool. For example, the experimental ts5to6 tool can automatically adjust baseUrl and rootDir across your codebase.
+
+Up-Front Adjustments
+We’ll cover specific adjustments below, but we have to note that some deprecations and behavior changes do not necessarily have an error message that directly points to the underlying issue. So we’ll note up-front that many projects will need to do at least one of the following:
+
+Set the "types" array in tsconfig, typically to "types": ["node"].
+
+"types": ["*"] will restore the 5.9 behavior, but we recommend using an explicit array to improve build performance and predictability.
+
+You’ll typically know this is the issue if you see a lot of type errors related to missing identifiers or unresolved built-in modules.
+
+Set "rootDir": "./src" if you were previously relying on this being inferred
+
+You’ll often know this is the issue if you see files being written to ./dist/src/index.js instead of ./dist/index.js.
+
+Simple Default Changes
+Several compiler options now have updated default values that better reflect modern development practices.
+
+strict is now true by default: The appetite for stricter typing continues to grow, and we’ve found that most new projects want strict mode enabled. If you were already using "strict": true, nothing changes for you. If you were relying on the previous default of false, you’ll need to explicitly set "strict": false in your tsconfig.json.
+
+module defaults to esnext: Similarly, the new default module is esnext, acknowledging that ESM is now the dominant module format.
+
+target defaults to current-year ES version: The new default target is the most recent supported ECMAScript spec version (effectively a floating target). Right now, that target is es2025. This reflects the reality that most developers are shipping to evergreen runtimes and don’t need to transpile down to older ECMAScript versions.
+
+noUncheckedSideEffectImports is now true by default: This helps catch issues with typos in side-effect-only imports.
+
+libReplacement is now false by default: This flag previously incurred a large number of failed module resolutions for every run, which in turn increased the number of locations we needed to watch under --watch and editor scenarios. In a new project, libReplacement never does anything until other explicit configuration takes place, so it makes sense to turn this off by default for the sake of better performance by default.
+
+If these new defaults break your project, you can specify the previous values explicitly in your tsconfig.json.
+
+rootDir now defaults to .
+rootDir controls the directory structure of your output files relative to the output directory. Previously, if you did not specify a rootDir, it was inferred based on the common directory of all non-declaration input files. But this often meant that it was impossible to know if a file belonged to a project without trying to load and parse that project. It also meant that TypeScript had to spend more time inferring that common source directory by analyzing every file path in the program.
+
+In TypeScript 6.0, the default rootDir will always be the directory containing the tsconfig.json file. rootDir will only be inferred when using tsc from the command line without a tsconfig.json file.
+
+If you have source files any level deeper than your tsconfig.json directory and were relying on TypeScript to infer a common root directory for source files, you’ll need to explicitly set rootDir:
+
+  {
+      "compilerOptions": {
+          // ...
++         "rootDir": "./src"
+      },
+      "include": ["./src"]
+  }
+Likewise, if your tsconfig.json referenced files outside of the containing tsconfig.json, you would need to adjust your rootDir to include those files.
+
+  {
+      "compilerOptions": {
+          // ...
++         "rootDir": "../src"
+      },
+      "include": ["../src/**/*.tests.ts"]
+  }
+See more at the discussion here and the implementation here.
+
+types now defaults to []
+In a tsconfig.json, the types field of compilerOptions specifies a list of package names to be included in the global scope during compilation. Typically, packages in node_modules are automatically included via imports in your source code; but for convenience, TypeScript would also include all packages in node_modules/@types by default, so that you can get global declarations like process or the "fs" module from @types/node, or describe and it from @types/jest, without needing to import them directly.
+
+In a sense, the types value previously defaulted to "enumerate everything in node_modules/@types". This can be very expensive, as a normal repository setup these days might transitively pull in hundreds of @types packages, especially in multi-project workspaces with flattened node_modules. Modern projects almost always need only @types/node, @types/jest, or a handful of other common global-affecting packages.
+
+In TypeScript 6.0, the default types value will be [] (an empty array). This change prevents projects from unintentionally pulling in hundreds or even thousands of unneeded declaration files at build time. Many projects we’ve looked at have improved their build time anywhere from 20-50% just by setting types appropriately.
+
+This will affect many projects. You will likely need to add "types": ["node"] or a few others:
+
+  {
+      "compilerOptions": {
+          // Explicitly list the @types packages you need
++         "types": ["node", "jest"]
+      }
+  }
+You can also specify a * entry to re-enable the old enumeration behavior:
+
+  {
+      "compilerOptions": {
+          // Load ALL the types - the default from TypeScript 5.9 and before.
++         "types": ["*"]
+      }
+  }
+If you end up with new error messages like the following:
+
+Cannot find module '...' or its corresponding type declarations.
+Cannot find name 'fs'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+Cannot find name 'path'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.
+Cannot find name 'Bun'. Do you need to install type definitions for Bun? Try `npm i --save-dev @types/bun` and then add 'bun' to the types field in your tsconfig.
+Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha` and then add 'jest' or 'mocha' to the types field in your tsconfig.
+it’s likely that you need to add some entries to your types field.
+
+See more at the proposal here along with the implementing pull request here.
+
+Deprecated: target: es5
+The ECMAScript 5 target was important for a long time to support legacy browsers; but its successor, ECMAScript 2015 (ES6), was released over a decade ago, and all modern browsers have supported it for many years. With Internet Explorer’s retirement, and the universality of evergreen browsers, there are very few use cases for ES5 output today.
+
+TypeScript’s lowest target will now be ES2015, and the target: es5 option is deprecated. If you were using target: es5, you’ll need to migrate to a newer target or use an external compiler. If you still need ES5 output, we recommend using an external compiler to either directly compile your TypeScript source, or to post-process TypeScript’s outputs.
+
+See more about this deprecation here along with its implementing pull request.
+
+Deprecated: --downlevelIteration
+--downlevelIteration only has effects on ES5 emit, and since --target es5 has been deprecated, --downlevelIteration no longer serves a purpose.
+
+Subtly, using --downlevelIteration false with --target es2015 did not error in TypeScript 5.9 and earlier, even though it had no effect. In TypeScript 6.0, setting --downlevelIteration at all will lead to a deprecation error.
+
+See the implementation here.
+
+Deprecated: --moduleResolution node (a.k.a. --moduleResolution node10)
+--moduleResolution node encoded a specific version of Node.js’s module resolution algorithm that most-accurately reflected the behavior of Node.js 10. Unfortunately, this target (and its name) ignores many updates to Node.js’s resolution algorithm that have occurred since then, and it is no longer a good representation of the behavior of modern Node.js versions.
+
+In TypeScript 6.0, --moduleResolution node (specifically, --moduleResolution node10) is deprecated. Users who were using --moduleResolution node should usually migrate to --moduleResolution nodenext if they plan on targeting Node.js directly, or --moduleResolution bundler if they plan on using a bundler or Bun.
+
+See more at this issue and its corresponding pull request.
+
+Deprecated: amd, umd, and systemjs values of module
+The following flag values are no longer supported
+
+--module amd
+--module umd
+--module systemjs
+--module none
+AMD, UMD, and SystemJS were important during the early days of JavaScript modules when browsers lacked native module support. The semantics of "none" were never well-defined and often led to confusion. Today, ESM is universally supported in browsers and Node.js, and both import maps and bundlers have become favored ways for filling in the gaps. If you’re still targeting these module systems, consider migrating to an appropriate ECMAScript module-emitting target, adopt a bundler or different compiler, or stay on TypeScript 5.x until you can migrate.
+
+This also implies dropped support for the amd-module directive, which will no longer have any effect.
+
+See more at the proposal issue along with the implementing pull request.
+
+Deprecated: --baseUrl
+The baseUrl option is most-commonly used in conjunction with paths, and is typically used as a prefix for every value in paths. Unfortunately, baseUrl is also considered a look-up root for module resolution.
+
+For example, given the following tsconfig.json
+
+{
+  "compilerOptions": {
+    // ...
+    "baseUrl": "./src",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@lib/*": ["lib/*"]
+    }
+  }
+}
+and an import like
+
+import * as someModule from "someModule.js";
+TypeScript will probably resolve this to src/someModule.js, even if the developer only intended to add mappings for modules starting with @app/ and @lib/.
+
+In the best case, this also often leads to "worse-looking" paths that bundlers would ignore; but it often meant that that many import paths that would never have worked at runtime are considered "just fine" by TypeScript.
+
+path mappings have not required specifying baseUrl for a long time, and in practice, most projects that use baseUrl only use it as a prefix for their paths entries. In TypeScript 6.0, baseUrl is deprecated and will no longer be considered a look-up root for module resolution.
+
+Developers who used baseUrl as a prefix for path-mapping entries can simply remove baseUrl and add the prefix to their paths entries:
+
+  {
+    "compilerOptions": {
+      // ...
+-     "baseUrl": "./src",
+      "paths": {
+-       "@app/*": ["app/*"],
+-       "@lib/*": ["lib/*"]
++       "@app/*": ["./src/app/*"],
++       "@lib/*": ["./src/lib/*"]
+      }
+    }
+  }
+Developers who actually did use baseUrl as a look-up root can also add an explicit path mapping to preserve the old behavior:
+
+{
+  "compilerOptions": {
+    // ...
+    "paths": {
+      // A new catch-all that replaces the baseUrl:
+      "*": ["./src/*"],
+
+      // Every other path now has an explicit common prefix:
+      "@app/*": ["./src/app/*"],
+      "@lib/*": ["./src/lib/*"],
+    }
+  }
+}
+However, this is extremely rare. We recommend most developers simply remove baseUrl and add the appropriate prefixes to their paths entries.
+
+See more at this issue and the corresponding pull request.
+
+Deprecated: --moduleResolution classic
+The moduleResolution: classic setting has been removed. The classic resolution strategy was TypeScript’s original module resolution algorithm, and predates Node.js’s resolution algorithm becoming a de facto standard. Today, all practical use cases are served by nodenext or bundler. If you were using classic, migrate to one of these modern resolution strategies.
+
+See more at this issue and the implementing pull request.
+
+Deprecated: --esModuleInterop false and --allowSyntheticDefaultImports false
+The following settings can no longer be set to false:
+
+esModuleInterop
+allowSyntheticDefaultImports
+esModuleInterop and allowSyntheticDefaultImports were originally opt-in to avoid breaking existing projects. However, the behavior they enable has been the recommended default for years. Setting them to false often led to subtle runtime issues when consuming CommonJS modules from ESM. In TypeScript 6.0, the safer interop behavior is always enabled.
+
+If you have imports that rely on the old behavior, you may need to adjust them:
+
+// Before (with esModuleInterop: false)
+import * as express from "express";
+
+// After (with esModuleInterop always enabled)
+import express from "express";
+See more at this issue and its implementing pull request.
+
+Deprecated: --alwaysStrict false
+The alwaysStrict flag refers to inference and emit of the "use strict"; directive. In TypeScript 6.0, all code will be assumed to be in JavaScript strict mode, which is a set of JS semantics that most-noticeably affects syntactic corner cases around reserved words. If you have "sloppy mode" code that uses reserved words like await, static, private, or public as regular identifiers, you’ll need to rename them. If you relied on subtle semantics around the meaning of this in non-strict code, you may need to adjust your code as well.
+
+See more at this issue and its corresponding pull request.
+
+Deprecated: outFile
+The --outFile option has been removed from TypeScript 6.0. This option was originally designed to concatenate multiple input files into a single output file. However, external bundlers like Webpack, Rollup, esbuild, Vite, Parcel, and others now do this job faster, better, and with far more configurability. Removing this option simplifies the implementation and allows us to focus on what TypeScript does best: type-checking and declaration emit. If you’re currently using --outFile, you’ll need to migrate to an external bundler. Most modern bundlers have excellent TypeScript support out of the box.
+
+Deprecated: legacy module Syntax for namespaces
+Early versions of TypeScript used the module keyword to declare namespaces:
+
+// ❌ Deprecated syntax - now an error
+module Foo {
+    export const bar = 10;
+}
+This syntax was later aliased to the modern preferred form using the namespace keyword:
+
+// ✅ The correct syntax
+namespace Foo {
+    export const bar = 10;
+}
+When namespace was introduced, the module syntax was simply discouraged. A few years ago, the TypeScript language service started marking the keyword as deprecated, suggesting namespace in its place.
+
+In TypeScript 6.0, using module where namespace is expected is now a hard deprecation. This change is necessary because module blocks are a potential ECMAScript proposal that would conflict with the legacy TypeScript syntax.
+
+The ambient module declaration form remains fully supported:
+
+// ✅ Still works perfectly
+declare module "some-module" {
+    export function doSomething(): void;
+}
+See this issue and its corresponding pull request for more details.
+
+Deprecated: asserts Keyword on Imports
+The asserts keyword was proposed to the JavaScript language via the import assertions proposal; however, the proposal eventually morphed into the import attributes proposal, which uses the with keyword instead of asserts.
+
+Thus, the asserts syntax is now deprecated in TypeScript 6.0, and using it will lead to an error:
+
+// ❌ Deprecated syntax - now an error.
+import blob from "./blahb.json" asserts { type: "json" }
+//                              ~~~~~~~
+// error: Import assertions have been replaced by import attributes. Use 'with' instead of 'asserts'.
+Instead, use the with syntax for import attributes:
+
+// ✅ Works with the new import attributes syntax.
+import blob from "./blahb.json" with { type: "json" }
+See more at this issue and its corresponding pull request.
+
+Deprecated: no-default-lib Directives
+The /// <reference no-default-lib="true"/> directive has been largely misunderstood and misused. In TypeScript 6.0, this directive is no longer supported. If you were using it, consider using --noLib or --libReplacement instead.
+
+See more here and at the corresponding pull request.
+
+Specifying Command-Line Files When tsconfig.json Exists is Now an Error
+Currently, if you run tsc foo.ts in a folder where a tsconfig.json exists, the config file is completely ignored. This was often very confusing if you expected checking and emit options to apply to the input file.
+
+In TypeScript 6.0, if you run tsc with file arguments in a directory containing a tsconfig.json, an error will be issued to make this behavior explicit:
+
+error TS5112: tsconfig.json is present but will not be loaded if files are specified on commandline. Use '--ignoreConfig' to skip this error.
+If it is the case that you wanted to ignore the tsconfig.json and just compile foo.ts with TypeScript’s defaults, you can use the new --ignoreConfig flag.
+
+tsc --ignoreConfig foo.ts
+See more at this issue and its corresponding pull request.
+
+Preparing for TypeScript 7.0
+TypeScript 6.0 is designed as a transition release. While options deprecated in TypeScript 6.0 will continue to work without errors when "ignoreDeprecations": "6.0" is set, those options will be removed entirely in TypeScript 7.0 (the native TypeScript port). If you’re seeing deprecation warnings after upgrading to TypeScript 6.0, we strongly recommend addressing them before adopting TypeScript 7.0 (or trying native previews) in your project.
+
+What’s Next?
+Now that TypeScript 6.0 is available on npm, the team will be focused on bringing TypeScript 7.0 to stability. This is much closer than it might sound: we expect a release within a few months, and we are already seeing broad adoption inside and outside of Microsoft on extremely large codebases. So we encourage teams to try out nightly builds of TypeScript 7.0’s native previews on npm along with the VS Code extension too. Feedback on TypeScript 7.0 will go a long way, and you can file issues on our issue tracker.
+
+Still, TypeScript 6.0 is a stable release that you should be able to adopt today, and it includes a number of improvements and new features that you can start using right away. We hope this release will be a smooth transition for everyone, and we look forward to hearing about your experiences with it.
+
+Happy Hacking!
+
+– Daniel Rosenwasser and the TypeScript Team
+
+16
+4
+Category
+TypeScript
+Share
+Author
+Daniel Rosenwasser
+Daniel Rosenwasser
+Principal Product Manager
+Daniel Rosenwasser is the product manager of the TypeScript team. He has a passion for programming languages, compilers, and great developer tooling.
+
+4 comments
+Join the discussion.
+
+Sort by :
+Newest
+
+Vlad Sazonau 1 week ago
+Very cool! Thank you TypeScript team
+
+Log in to Vote or Reply
+
+Chris Moscoso 1 week ago
+As of Mar 24 2026, the table of contents is broken, it doesn’t scroll with you as you scroll, it gets stuck on “New Type for Temporal”
+
+Log in to Vote or Reply
+
+Erkan Okman 1 week ago
+TypeScript has increasingly evolved into a massive engine for “type-level programming.” New features are often complex generic structures aimed at solving very specific edge cases. However, the average developer is still questioning why JSON.parse() defaults to any rather than unknown, or why Object.keys() isn’t more type-safe. Prioritizing “type gymnastics” over closing fundamental safety gaps is creating fatigue within the community.
+
+Log in to Vote or Reply
+
+Matija Marohnić 1 week ago
+According to the docs –module preserve already implies –moduleResolution bundler, so it shouldn’t be needed.
+
+Log in to Vote or Reply
+Read next
+March 6, 2026
+Announcing TypeScript 6.0 RC
+Daniel Rosenwasser
+Daniel Rosenwasser
+February 11, 2026
+Announcing TypeScript 6.0 Beta
+Daniel Rosenwasser
+Daniel Rosenwasser
+Stay informed
+Get notified when new posts are published.
+Email *
+Enter your email
+Country/Region *
+I would like to receive the TypeScript Newsletter. Privacy Statement.
+Follow this blog
+Stackoverflow
+What's new
+Surface Pro
+Surface Laptop
+Surface Laptop Studio 2
+Copilot for organizations
+Copilot for personal use
+AI in Windows
+Explore Microsoft products
+Windows 11 apps
+Microsoft Store
+Account profile
+Download Center
+Microsoft Store support
+Returns
+Order tracking
+Certified Refurbished
+Microsoft Store Promise
+Flexible Payments
+Education
+Microsoft in education
+Devices for education
+Microsoft Teams for Education
+Microsoft 365 Education
+How to buy for your school
+Educator training and development
+Deals for students and parents
+AI for education
+Business
+Microsoft AI
+Microsoft Security
+Dynamics 365
+Microsoft 365
+Microsoft Power Platform
+Microsoft Teams
+Microsoft 365 Copilot
+Small Business
+Developer & IT
+Azure
+Microsoft Developer
+Microsoft Learn
+Support for AI marketplace apps
+Microsoft Tech Community
+Microsoft Marketplace
+Marketplace Rewards
+Visual Studio
+Company
+Careers
+About Microsoft
+Company news
+Privacy at Microsoft
+Investors
+Diversity and inclusion
+Accessibility
+Sustainability
+Your Privacy Choices Consumer Health Privacy
+Sitemap
+Contact Microsoft
+Privacy
+Manage cookies
+Terms of use
+Trademarks
+Safety & eco
+Recycling
+About our ads
+© Microsoft 2026
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Documentação oficial 
+
+
+
+
+
+
+
+
+
+em 2 de abril de 2026 no Vercel com typescript 6.0.2 next.js 16.2.3 como ler repositórios corretamente
+
+
++8
+Para ler repositórios do GitHub corretamente em 2 de abril de 2026, utilizando Next.js 16.2.3, TypeScript 6.0.2 e
+Vercel, a abordagem recomendada é utilizar a Octokit (biblioteca oficial do GitHub) dentro de Server Components ou Server Actions do Next.js (App Router), garantindo segurança e desempenho. 
+Aqui está o guia passo a passo para configurar e ler repositórios:
+1. Configuração e Instalação
+No diretório do seu projeto Next.js (já com TS 6.0 e Next 16.2), instale a Octokit:
+bash
+npm install octokit
+Use o código com cuidado.
+2. Autenticação Segura (Vercel)
+Nunca exponha seu token.
+Crie um Personal Access Token no GitHub.
+No painel da Vercel, vá em Project Settings > Environment Variables.
+Adicione GITHUB_TOKEN com o valor do seu token. 
+3. Criando o Cliente Octokit (TypeScript)
+Crie um arquivo para gerenciar a conexão, preferencialmente usando ESM, compatível com as versões 2026 de TypeScript. 
+typescript
+// lib/github.ts
+import { Octokit } from "octokit";
+
+// O next.js 16+ no Vercel popula process.env automaticamente
+const octokit = new Octokit({
+  auth: process.env.GITHUB_TOKEN,
+});
+
+export async function getRepoContents(owner: string, repo: string, path: string = "") {
+  try {
+    const response = await octokit.rest.repos.getContent({
+      owner,
+      repo,
+      path,
+      // Define a versão da API para 2026-03-10 ou superior
+      headers: {
+        "X-GitHub-Api-Version": "2026-03-10", 
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao ler repositório:", error);
+    return null;
+  }
+}
+Use o código com cuidado.
+4. Lendo o Repositório no Next.js (App Router)
+Use Server Components para buscar os dados diretamente no servidor antes de renderizar. 
+tsx
+// app/repos/[owner]/[repo]/page.tsx
+import { getRepoContents } from "@/lib/github";
+
+export default async function RepoPage({
+  params,
+}: {
+  params: { owner: string; repo: string };
+}) {
+  const contents = await getRepoContents(params.owner, params.repo);
+
+  if (!contents || !Array.isArray(contents)) {
+    return <div>Repositório não encontrado ou vazio.</div>;
+  }
+
+  return (
+    <ul>
+      {contents.map((item) => (
+        <li key={item.path}>{item.name} ({item.type})</li>
+      ))}
+    </ul>
+  );
+}
+Use o código com cuidado.
+Melhores Práticas para 2026
+API Vercel/Next.js: Use next build --experimental-build-mode compile para otimizar o build TS 6.0.
+Segurança: Mantenha o token no Vercel, nunca no frontend (.env.local apenas para dev local, .env.production no Vercel).
+Octokit: Utilize octokit.paginate para ler repositórios grandes ou listar muitos arquivos.
+Cache: Next.js 16 utiliza fetch automático ou unstable_cache para otimizar chamadas de API. 
+
+2m
+Next.js Tutorial 2026 - Start Your Next.js Journey Here
+
+
+YouTube·ByteGrad
+Scripting with the REST API and JavaScript - GitHub Docs
+Instead of fetching all of the results at once, you can use octokit. paginate. iterator() to iterate through a single page at a time. For example, the following...
+
+GitHub Docs
+
+How to push files programatically to a ...
+26 de dez. de 2019 — How to push files programatically to a repository using Octokit with Typescript. #github #api #typescript #octokit. I've always liked this word programatically,
+
+DEV Community
+
+Deploy Next.js to Vercel | Production Ready 2025 - YouTube
+7 de dez. de 2025 — js. In this complete tutorial, you'll learn: ✅ Two ways to deploy (CLI and GitHub integration) ✅ Push to deploy with automatic preview URLs ✅ Setting up environ...
+
+YouTube
+
+Configuration: TypeScript - Next.js
+9 de dez. de 2025 — js Configuration Files. You can use TypeScript and import types in your Next. js configuration by using next. config. ts . next.config.ts. import type { NextCon...
+
+Next.js
+
+Next.js 16.2
+18 de mar. de 2026 — Next. js 16.2 * Faster Time-to-URL: ~400% faster next dev startup. * Faster Rendering: ~50% faster rendering. * New Default Error Page: Redesigned built-in 500 ...
+
+Next.js
+
+Typescript no Next.js : r/nextjs - Reddit
+31 de jan. de 2026 — Meu chefe e eu passamos um tempo explorando a funcionalidade do Typescript no Next.js e descobrimos algumas coisas curiosas. Gostaria de ouvir pensamentos. Obse...
+
+Reddit
+Scripting with the REST API and JavaScript - GitHub Docs
+Authenticating with a personal access token If you want to use the GitHub REST API for personal use, you can create a personal access token. For more informatio...
+
+GitHub Docs
+
+Entendendo variáveis de ambiente no NextJS
+31 de out. de 2021 — Caso você tenha deployado sua aplicação Next na Vercel você poderá adicionar com facilidade os atributos das variáveis, indo na guia “Project Settings / Environ...
+
+GitHub
+
+Usando com Next.js
+Buscar Dados Antecipadamente em Server Components Similar ao padrão de pré-renderização com dados padrão, com React Server Components (RSC) você pode ir ainda m...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://docs.github.com/pt/rest/guides/scripting-with-the-rest-api-and-javascript?apiVersion=2026-03-10
+
+
+Skip to main content
+Documentos do GitHub
+API REST/
+Guias/
+Script com JavaScript
+Script em API REST e JavaScript
+Escreva um script usando o SDK do Octokit.js para interagir com a API REST.
+
+Neste artigo
+Sobre o Octokit.js
+Se você quiser escrever um script usando JavaScript para interagir com a API REST da GitHub, a GitHub recomenda que você use o SDK do Octokit.js. O Octokit.js é mantido pela GitHub. O SDK implementa as melhores práticas e facilita a interação com a API REST por meio do JavaScript. O Octokit.js funciona com todos os navegadores modernos, Node.js e Deno. Para obter mais informações sobre o Octokit.js, confira o arquivo LEIAME do Octokit.js.
+
+Pré-requisitos
+Este guia pressupõe que você esteja familiarizado com o JavaScript e a API REST da GitHub. Para obter informações sobre a API REST, confira Introdução à API REST.
+
+Você precisa instalar e importar octokit para usar a biblioteca do Octokit.js. Este guia usa instruções de importação de acordo com o ES6. Para obter mais informações sobre diferentes métodos de instalação e importação, confira a seção de uso no README do Octokit.js.
+
+Instanciação e autenticação
+Aviso
+
+Trate suas credenciais de autenticação como uma senha.
+
+Para manter suas credenciais seguras, você pode armazená-las como um segredo e executar seu script por meio de GitHub Actions. Para saber mais, confira Usar segredos em ações do GitHub.
+
+Você também pode armazenar suas credenciais como um segredo do Codespaces e executar seu script no Codespaces. Para saber mais, confira Gerenciando seus segredos específicos da conta no GitHub Codespaces.
+
+Se essas opções não forem possíveis, considere usar outro serviço CLI para armazenar suas credenciais com segurança.
+
+Autenticar com um personal access token
+Se quiser usar a API REST do GitHub para uso pessoal, crie um personal access token. Para obter mais informações sobre como criar um personal access token, confira Gerenciar seus tokens de acesso pessoal.
+
+Primeiro, importe Octokit de octokit. Em seguida, passe seu personal access token ao criar uma instância de Octokit. No exemplo a seguir, substitua YOUR-TOKEN por uma referência ao seu personal access token.
+
+JavaScript
+import { Octokit } from "octokit";
+
+const octokit = new Octokit({ 
+  auth: 'YOUR-TOKEN',
+});
+Autenticação com um GitHub App
+Se você quiser usar a API em nome de uma organização ou de outro usuário, a GitHub recomenda que você use um GitHub App. Se um ponto de extremidade estiver disponível para GitHub Apps, a documentação de referência da API REST para esse ponto de extremidade indicará que tipo de token do GitHub App é necessário. Para saber mais, confira Registrando um aplicativo GitHub e Sobre a autenticação com um aplicativo GitHub.
+
+Em vez de importar Octokit de octokit, importe App. No exemplo a seguir, substitua APP_ID por uma referência à ID do seu aplicativo. Substitua PRIVATE_KEY por uma referência à chave privada do seu aplicativo. Substitua INSTALLATION_ID pela ID de instalação do seu aplicativo em nome do qual deseja se autenticar. Você pode encontrar a ID do seu aplicativo e gerar uma chave privada na página de configurações do aplicativo. Para saber mais, confira Gerenciando chaves privadas para aplicativos GitHub. Você pode obter uma ID de instalação com os pontos de extremidade GET /users/{username}/installation, GET /repos/{owner}/{repo}/installation ou GET /orgs/{org}/installation. Para obter mais informações, confira Pontos de extremidade da API REST para o GitHub Apps.
+
+JavaScript
+import { App } from "octokit";
+
+const app = new App({
+  appId: APP_ID,
+  privateKey: PRIVATE_KEY,
+});
+
+const octokit = await app.getInstallationOctokit(INSTALLATION_ID);
+Autenticação em GitHub Actions
+Se você quiser usar a API em um fluxo de trabalho de GitHub Actions, GitHub recomenda que você faça a autenticação com o GITHUB_TOKEN interno, em vez de criar um token. Você pode conceder permissões à GITHUB_TOKEN com a chave permissions. Para obter mais informações sobre GITHUB_TOKEN, confira GITHUB_TOKEN.
+
+Se o fluxo de trabalho precisar acessar recursos fora do repositório dele, então você não poderá usar GITHUB_TOKEN. Nesse caso, armazene suas credenciais como um segredo e substitua GITHUB_TOKEN nos exemplos abaixo pelo nome do segredo. Para saber mais sobre segredos, confira Usar segredos em ações do GitHub.
+
+Se usar a palavra-chave run para executar o script do JavaScript em seus fluxos de trabalho de GitHub Actions, você poderá armazenar o valor de GITHUB_TOKEN como uma variável de ambiente. Seu script pode acessar a variável de ambiente como process.env.VARIABLE_NAME.
+
+Por exemplo, essa etapa do fluxo de trabalho armazena GITHUB_TOKEN em uma variável de ambiente chamada TOKEN:
+
+- name: Run script
+  env:
+    TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  run: |
+    node .github/actions-scripts/use-the-api.mjs
+O script que o fluxo de trabalho executa usa process.env.TOKEN para se autenticar:
+
+JavaScript
+import { Octokit } from "octokit";
+
+const octokit = new Octokit({ 
+  auth: process.env.TOKEN,
+});
+Instanciação sem autenticação
+Você pode usar a API REST sem autenticação, embora isso resulte em uma limitação de taxa mais baixa e não permita o uso de alguns endpoints. Para criar uma instância de Octokit sem autenticação, não passe o argumento auth.
+
+JavaScript
+import { Octokit } from "octokit";
+
+const octokit = new Octokit({ );
+Como fazer solicitações
+O Octokit dá suporte a várias maneiras de fazer solicitações. Você pode usar o método request para fazer solicitações se souber o verbo HTTP e o caminho para o ponto de extremidade. Você pode usar o método rest se quiser aproveitar o preenchimento automático em seu IDE e digitar. Para pontos de extremidade paginados, você pode usar o método paginate para solicitar várias páginas de dados.
+
+Como usar o método request para fazer solicitações
+Para usar o método request a fim de fazer solicitações, passe o método HTTP e o caminho como o primeiro argumento. Passe quaisquer parâmetros de corpo, consulta ou caminho em um objeto como o segundo argumento. Por exemplo, para fazer uma solicitação GET para /repos/{owner}/{repo}/issues e passar os parâmetros owner, repo e per_page:
+
+JavaScript
+await octokit.request("GET /repos/{owner}/{repo}/issues", {
+  owner: "github",
+  repo: "docs",
+  per_page: 2
+});
+O método request passa automaticamente o cabeçalho Accept: application/vnd.github+json. Para passar cabeçalhos adicionais ou um cabeçalho Accept diferente, adicione uma propriedade headers ao objeto que é passado como o segundo argumento. O valor da propriedade headers é um objeto onde os nomes dos cabeçalhos são as chaves e os valores correspondentes são os valores. Por exemplo, para enviar um cabeçalho content-type com o valor de text/plain e um cabeçalho x-github-api-version com o valor de 2026-03-10:
+
+JavaScript
+await octokit.request("POST /markdown/raw", {
+  text: "Hello **world**",
+  headers: {
+    "content-type": "text/plain",
+    "x-github-api-version": "2026-03-10",
+  },
+});
+Como usar métodos endpoint rest para fazer solicitações
+Cada ponto de extremidade da API REST tem um método de ponto de extremidade rest associado no Octokit. Esses métodos geralmente são preenchidos automaticamente em seu IDE para conveniência. Você pode passar qualquer parâmetro como um objeto para o método.
+
+JavaScript
+await octokit.rest.issues.listForRepo({
+  owner: "github",
+  repo: "docs",
+  per_page: 2
+});
+Além disso, se estiver usando uma linguagem tipada, como TypeScript, você poderá importar tipos para usar com esses métodos. Para obter mais informações, confira a seção de TypeScript no README do plugin-rest-endpoint-methods.js.
+
+Como fazer solicitações paginadas
+Se o endpoint for paginado e você quiser recuperar mais de uma página de resultados, poderá usar o método paginate. paginate buscará a próxima página de resultados até chegar à última página e retornará todos os resultados como uma única matriz. Alguns pontos de extremidade retornam resultados paginados como matriz em um objeto, em vez de retornar os resultados paginados como uma matriz. paginate sempre retorna uma matriz de itens, mesmo que o resultado bruto tenha sido um objeto .
+
+Por exemplo, o exemplo a seguir obtém todos os problemas do repositório github/docs. Embora solicite 100 solicitações por vez, a função não retornará até que a última página de dados seja atingida.
+
+JavaScript
+const issueData = await octokit.paginate("GET /repos/{owner}/{repo}/issues", {
+  owner: "github",
+  repo: "docs",
+  per_page: 100,
+  headers: {
+    "x-github-api-version": "2026-03-10",
+  },
+});
+O método paginate aceita uma função de mapa opcional, que pode ser usada para coletar apenas os dados desejados da resposta. Isso reduz o uso de memória pelo seu script. A função de mapa pode usar um segundo argumento, done, que pode ser chamado para encerrar a paginação antes que a última página seja alcançada. Isso permite que você busque um subconjunto de páginas. Por exemplo, o exemplo a seguir continua buscando resultados até que seja retornada uma questão que inclua "teste" no título. Para as páginas de dados que foram retornadas, apenas o título e o autor da questão são armazenados.
+
+JavaScript
+const issueData = await octokit.paginate("GET /repos/{owner}/{repo}/issues", {
+  owner: "github",
+  repo: "docs",
+  per_page: 100,
+  headers: {
+    "x-github-api-version": "2026-03-10",
+  },
+},
+    (response, done) => response.data.map((issue) => {
+    if (issue.title.includes("test")) {
+      done()
+    }
+    return ({title: issue.title, author: issue.user.login})
+  })
+);
+Em vez de buscar todos os resultados de uma só vez, você pode usar octokit.paginate.iterator() para percorrer uma só página de cada vez. Por exemplo, o caso a seguir busca uma página de resultados por vez e processa cada objeto da página atual antes de buscar a próxima. Uma vez encontrado um problema com "teste" no título, o script interrompe a iteração e retorna o título e o autor do problema de cada objeto que foi processado. O iterador é o método mais eficiente em termos de memória para buscar dados paginados.
+
+JavaScript
+const iterator = octokit.paginate.iterator("GET /repos/{owner}/{repo}/issues", {
+  owner: "github",
+  repo: "docs",
+  per_page: 100,
+  headers: {
+    "x-github-api-version": "2026-03-10",
+  },
+});
+
+let issueData = []
+let breakLoop = false
+for await (const {data} of iterator) {
+  if (breakLoop) break
+  for (const issue of data) {
+    if (issue.title.includes("test")) {
+      breakLoop = true
+      break
+    } else {
+      issueData = [...issueData, {title: issue.title, author: issue.user.login}];
+    }
+  }
+}
+Você também pode usar o método paginate com os métodos de endpoint rest. Passe o método de ponto de extremidade rest como o primeiro argumento. Passe todos os demais parâmetros como o segundo argumento.
+
+JavaScript
+const iterator = octokit.paginate.iterator(octokit.rest.issues.listForRepo, {
+  owner: "github",
+  repo: "docs",
+  per_page: 100,
+  headers: {
+    "x-github-api-version": "2026-03-10",
+  },
+});
+Para saber mais sobre a paginação, confira Como usar paginação na API REST.
+
+Captura de erros
+Capturando todos os erros
+Às vezes, a API REST da GitHub retorna um erro. Por exemplo, um erro será exibido se o token de acesso tiver expirado ou se um parâmetro obrigatório for omitido. O Octokit.js faz automaticamente novas tentativas de executar a solicitação quando obtém um erro diferente de 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found ou 422 Unprocessable Entity. Se ocorrer um erro de API mesmo após novas tentativas, o Octokit.js gera um erro que inclui o código de status HTTP da resposta (response.status) e os cabeçalhos da resposta (response.headers). Você deve tratar esses erros em seu código. Por exemplo, você pode usar um bloco try/catch para capturar erros:
+
+JavaScript
+let filesChanged = []
+
+try {
+  const iterator = octokit.paginate.iterator("GET /repos/{owner}/{repo}/pulls/{pull_number}/files", {
+    owner: "github",
+    repo: "docs",
+    pull_number: 22809,
+    per_page: 100,
+    headers: {
+      "x-github-api-version": "2026-03-10",
+    },
+  });
+
+  for await (const {data} of iterator) {
+    filesChanged = [...filesChanged, ...data.map(fileData => fileData.filename)];
+  }
+} catch (error) {
+  if (error.response) {
+    console.error(`Error! Status: ${error.response.status}. Message: ${error.response.data.message}`)
+  }
+  console.error(error)
+}
+Tratamento de códigos de erro previstos
+Às vezes, a GitHub usa um código de status 4xx para indicar uma resposta sem erro. Se o endpoint que você está usando fizer isso, você poderá adicionar tratamento adicional para erros específicos. Por exemplo, o endpoint GET /user/starred/{owner}/{repo} retornará 404 se o repositório não estiver marcado com estrela. O exemplo a seguir usa a resposta 404 para indicar que o repositório não foi estrelado; todos os demais códigos de erros são tratados como erros.
+
+JavaScript
+try {
+  await octokit.request("GET /user/starred/{owner}/{repo}", {
+    owner: "github",
+    repo: "docs",
+    headers: {
+      "x-github-api-version": "2026-03-10",
+    },
+  });
+
+  console.log(`The repository is starred by me`);
+
+} catch (error) {
+  if (error.status === 404) {
+    console.log(`The repository is not starred by me`);
+  } else {
+    console.error(`An error occurred while checking if the repository is starred: ${error?.response?.data?.message}`);
+  }
+}
+Tratamento de erros de limite de taxa
+Se você receber um erro de limite de taxa, talvez seja necessário repetir a solicitação após aguardar um tempo. Quando você tem taxa limitada, a GitHub responde com um erro 403 Forbidden e o valor do cabeçalho de resposta x-ratelimit-remaining será "0". Os cabeçalhos de resposta incluirão um cabeçalho x-ratelimit-reset, que informa a hora em que a janela de limite de taxa atual é redefinida, em segundos UTC. Você pode repetir a solicitação após aguardar o tempo especificado por x-ratelimit-reset.
+
+JavaScript
+async function requestRetry(route, parameters) {
+  try {
+    const response = await octokit.request(route, parameters);
+    return response
+  } catch (error) {
+    if (error.response && error.status === 403 && error.response.headers['x-ratelimit-remaining'] === '0') {
+      const resetTimeEpochSeconds = error.response.headers['x-ratelimit-reset'];
+      const currentTimeEpochSeconds = Math.floor(Date.now() / 1000);
+      const secondsToWait = resetTimeEpochSeconds - currentTimeEpochSeconds;
+      console.log(`You have exceeded your rate limit. Retrying in ${secondsToWait} seconds.`);
+      setTimeout(requestRetry, secondsToWait * 1000, route, parameters);
+    } else {
+      console.error(error);
+    }
+  }
+}
+
+const response = await requestRetry("GET /repos/{owner}/{repo}/issues", {
+    owner: "github",
+    repo: "docs",
+    per_page: 2
+  })
+Como usar a resposta
+O método request retorna uma promessa que será resolvida para um objeto se a solicitação for bem-sucedida. As propriedades do objeto são data (o corpo da resposta retornado pelo ponto de extremidade), status (o código da resposta HTTP), url (a URL da solicitação) e headers (um objeto que contém os cabeçalhos da resposta). A menos que especificado de outra forma, o corpo da resposta está no formato JSON. Alguns endpoints não retornam um corpo de resposta; nesses casos, a propriedade data é omitida.
+
+JavaScript
+const response = await octokit.request("GET /repos/{owner}/{repo}/issues/{issue_number}", {
+  owner: "github",
+  repo: "docs",
+  issue_number: 11901,
+  headers: {
+    "x-github-api-version": "2026-03-10",
+  },
+});
+
+console.log(`The status of the response is: ${response.status}`)
+console.log(`The request URL was: ${response.url}`)
+console.log(`The x-ratelimit-remaining response header is: ${response.headers["x-ratelimit-remaining"]}`)
+console.log(`The issue title is: ${response.data.title}`)
+Da mesma forma, o método paginate retorna uma promessa. Se a solicitação tiver sido bem-sucedida, a promessa será resolvida para uma matriz de dados retornada pelo ponto de extremidade. Ao contrário do método request, o método paginate não retorna o código de status, a URL ou os cabeçalhos.
+
+JavaScript
+const data = await octokit.paginate("GET /repos/{owner}/{repo}/issues", {
+  owner: "github",
+  repo: "docs",
+  per_page: 100,
+  headers: {
+    "x-github-api-version": "2026-03-10",
+  },
+});
+
+console.log(`${data.length} issues were returned`)
+console.log(`The title of the first issue is: ${data[0].title}`)
+Script de exemplo
+Aqui está um script de exemplo completo que usa o Octokit.js. O script importa Octokit e cria uma instância de Octokit. Se você quisesse se autenticar com um GitHub App em vez de um personal access token, você importaria e instanciaria App em vez de Octokit. Para obter mais informações, confira Como se autenticar com um GitHub App.
+
+A função getChangedFiles obtém todos os arquivos alterados para uma solicitação de pull. A função commentIfDataFilesChanged chama a função getChangedFiles. Se qualquer um dos arquivos que a solicitação de pull alterou incluir /data/ no caminho, a função comentará sobre a solicitação de pull.
+
+JavaScript
+import { Octokit } from "octokit";
+
+const octokit = new Octokit({ 
+  auth: 'YOUR-TOKEN',
+});
+
+async function getChangedFiles({owner, repo, pullNumber}) {
+  let filesChanged = []
+
+  try {
+    const iterator = octokit.paginate.iterator("GET /repos/{owner}/{repo}/pulls/{pull_number}/files", {
+      owner: owner,
+      repo: repo,
+      pull_number: pullNumber,
+      per_page: 100,
+      headers: {
+        "x-github-api-version": "2026-03-10",
+      },
+    });
+
+    for await (const {data} of iterator) {
+      filesChanged = [...filesChanged, ...data.map(fileData => fileData.filename)];
+    }
+  } catch (error) {
+    if (error.response) {
+      console.error(`Error! Status: ${error.response.status}. Message: ${error.response.data.message}`)
+    }
+    console.error(error)
+  }
+
+  return filesChanged
+}
+
+async function commentIfDataFilesChanged({owner, repo, pullNumber}) {
+  const changedFiles = await getChangedFiles({owner, repo, pullNumber});
+
+  const filePathRegex = new RegExp(/\/data\//, "i");
+  if (!changedFiles.some(fileName => filePathRegex.test(fileName))) {
+    return;
+  }
+
+  try {
+    const {data: comment} = await octokit.request("POST /repos/{owner}/{repo}/issues/{issue_number}/comments", {
+      owner: owner,
+      repo: repo,
+      issue_number: pullNumber,
+      body: `It looks like you changed a data file. These files are auto-generated. \n\nYou must revert any changes to data files before your pull request will be reviewed.`,
+      headers: {
+        "x-github-api-version": "2026-03-10",
+      },
+    });
+
+    return comment.html_url;
+  } catch (error) {
+    if (error.response) {
+      console.error(`Error! Status: ${error.response.status}. Message: ${error.response.data.message}`)
+    }
+    console.error(error)
+  }
+}
+
+await commentIfDataFilesChanged({owner: "github", repo: "docs", pullNumber: 191});
+Próximas etapas
+Para saber mais sobre o Octokit.js, confira a documentação do Octokit.js.
+Para obter alguns exemplos da vida real, veja como o GitHub Docs usa o Octokit.js pesquisando o repositório do GitHub Docs.
+Ajuda e suporte
+Você encontrou o que precisava?
+
+Política de privacidade
+Ainda precisa de ajuda?
+Pergunte à comunidade do GitHub
+Contate o suporte
+Legal
+Parte desse conteúdo pode ser traduzida por computador ou IA.
+
+© 2026 GitHub, Inc.
+Termos
+Privacidade
+Status
+Preços
+Serviços especializados
+Blog
+Script em API REST e JavaScript - Documentos do GitHub
+
+
+
+
+
+
+
+https://docs.github.com/pt/rest/using-the-rest-api/using-pagination-in-the-rest-api?apiVersion=2026-03-10
+
+
+
+Skip to main content
+Documentos do GitHub
+API REST/
+Usando a API REST/
+Paginação
+Como usar paginação na API REST
+Saiba como navegar pelas respostas paginadas da API REST.
+
+Neste artigo
+Sobre paginação
+Quando uma resposta da API REST incluir muitos resultados, GitHub paginará os resultados e retornará um subconjunto dos resultados. Por exemplo, GET /repos/octocat/Spoon-Knife/issues retornará apenas 30 problemas do repositório octocat/Spoon-Knife, embora o repositório inclua mais de 1600 problemas abertos. Isso facilita o manuseio da resposta tanto para os servidores quanto para as pessoas.
+
+Você pode usar o cabeçalho de link da resposta para solicitar páginas adicionais de dados. Se um ponto de extremidade oferecer suporte ao parâmetro de consulta per_page, você poderá controlar quantos resultados são retornados em uma página.
+
+Este artigo demonstra como solicitar páginas adicionais de resultados para respostas paginadas, como alterar o número de resultados retornados em cada página e como escrever um script para buscar várias páginas de resultados.
+
+Como usar cabeçalhos de link
+Quando uma resposta for paginada, os cabeçalhos de resposta incluirão um cabeçalho de link. O cabeçalho link será omitido se o ponto de extremidade não der suporte à paginação ou se todos os resultados couberem em uma única página.
+
+O cabeçalho de link contém URLs que você pode usar para buscar páginas adicionais de resultados. Por exemplo, a página de resultados anterior, a seguinte, a primeira, e a última.
+
+Para ver os cabeçalhos de resposta de um ponto de extremidade específico, você pode usar curl, GitHub CLI ou uma biblioteca que você está usando para fazer solicitações. Para ver os cabeçalhos de resposta se você estiver usando uma biblioteca para fazer solicitações, siga a documentação dessa biblioteca. Para ver os cabeçalhos de resposta se você estiver usando curl ou GitHub CLI, passe o sinalizador --include com sua solicitação. Por exemplo:
+
+curl --include --request GET \
+--url "https://api.github.com/repos/octocat/Spoon-Knife/issues" \
+--header "Accept: application/vnd.github+json"
+Se a resposta for paginada, o cabeçalho de link terá esta aparência:
+
+link: <https://api.github.com/repositories/1300192/issues?page=2>; rel="prev", <https://api.github.com/repositories/1300192/issues?page=4>; rel="next", <https://api.github.com/repositories/1300192/issues?page=515>; rel="last", <https://api.github.com/repositories/1300192/issues?page=1>; rel="first"
+O cabeçalho de link fornece a URL para a página anterior, a seguinte, a primeira e a última página de resultados:
+
+A URL da página anterior é seguida por rel="prev".
+A URL da próxima página é seguida por rel="next".
+A URL da última página é seguida por rel="last".
+A URL da primeira página é seguida por rel="first".
+Em alguns casos, apenas um subconjunto desses links está disponível. Por exemplo, o link para a página anterior não será incluído se você estiver na primeira página de resultados e o link para a última página não será incluído se não puder ser calculado.
+
+Você pode usar as URLs do cabeçalho de link para solicitar outra página de resultados. Por exemplo, para solicitar a última página de resultados com base no exemplo anterior:
+
+curl --include --request GET \
+--url "https://api.github.com/repositories/1300192/issues?page=515" \
+--header "Accept: application/vnd.github+json"
+As URLs no cabeçalho de link usam parâmetros de consulta para indicar qual página de resultados retornar. Os parâmetros de consulta nas URLs de link podem ser diferentes entre pontos de extremidade. No entanto, cada ponto de extremidade paginado usará os parâmetros de consulta page, before/after ou since. (Alguns endpoints usam o parâmetro since para algo diferente de paginação). Em todos os casos, você pode usar as URLs no cabeçalho link para buscar páginas adicionais de resultados. Para obter mais informações sobre parâmetros de consulta, confira Introdução à API REST.
+
+Como alterar o número de itens por página
+Se um ponto de extremidade der suporte ao parâmetro de consulta per_page, você poderá controlar quantos resultados são retornados em uma página. Para obter mais informações sobre parâmetros de consulta, confira Introdução à API REST.
+
+Por exemplo, esta solicitação usa o parâmetro de consulta per_page para retornar dois itens por página:
+
+curl --include --request GET \
+--url "https://api.github.com/repos/octocat/Spoon-Knife/issues?per_page=2" \
+--header "Accept: application/vnd.github+json"
+O parâmetro per_page será incluído automaticamente no cabeçalho de link. Por exemplo:
+
+link: <https://api.github.com/repositories/1300192/issues?per_page=2&page=2>; rel="next", <https://api.github.com/repositories/1300192/issues?per_page=2&page=7715>; rel="last"
+Script com paginação
+Em vez de copiar manualmente URLs do cabeçalho de link, você pode escrever um script para buscar várias páginas de resultados.
+
+Os exemplos a seguir usam o JavaScript e a biblioteca Octokit.js do GitHub. Para obter mais informações sobre o Octokit.js, confira Introdução à API REST e o arquivo LEIAME do Octokit.js.
+
+Exemplo de uso do método de paginação Octokit.js
+Para buscar resultados paginados com Octokit.js, você pode usar octokit.paginate(). octokit.paginate() buscará a próxima página de resultados até chegar à última página e retornará todos os resultados como uma única matriz. Alguns pontos de extremidade retornam resultados paginados como matriz em um objeto, em vez de retornar os resultados paginados como uma matriz. octokit.paginate() sempre retorna uma matriz de itens, mesmo que o resultado bruto tenha sido um objeto .
+
+Por exemplo, esse script obtém todos os problemas do repositório octocat/Spoon-Knife. Embora solicite 100 solicitações por vez, a função não retornará até que a última página de dados seja atingida.
+
+JavaScript
+import { Octokit } from "octokit";
+
+const octokit = new Octokit({ );
+
+const data = await octokit.paginate("GET /repos/{owner}/{repo}/issues", {
+  owner: "octocat",
+  repo: "Spoon-Knife",
+  per_page: 100,
+  headers: {
+    "X-GitHub-Api-Version": "2026-03-10",
+  },
+});
+
+console.log(data)
+Você pode passar uma função de mapa opcional para octokit.paginate() para encerrar a paginação antes que a última página seja atingida ou para reduzir o uso de memória mantendo apenas um subconjunto da resposta. Você também pode usar octokit.paginate.iterator() para iterar uma única página por vez, em vez de solicitar todas as páginas. Para obter mais informações, confira a documentação do Octokit.js.
+
+Exemplo de criação de um método de paginação
+Se você estiver usando outro idioma ou biblioteca que não tenha um método de paginação, poderá criar seu próprio método de paginação. Este exemplo ainda usa a biblioteca de Octokit.js para fazer solicitações, mas não depende de octokit.paginate().
+
+A função getPaginatedData faz uma solicitação para um endpoint com octokit.request(). Os dados da resposta são processados por parseData, que manipula casos em que nenhum dado é retornado ou casos em que os dados retornados são um objeto em vez de uma matriz. Os dados processados são acrescentados a uma lista que contém todos os dados paginados coletados até o momento. Se a resposta incluir um cabeçalho de link e se o cabeçalho de link incluir um link para a próxima página, a função usará um padrão RegEx (nextPattern) para obter a URL da próxima página. Em seguida, a função repete as etapas anteriores, agora usando essa nova URL. Quando o cabeçalho de link deixar de incluir um link para a próxima página, todos os resultados serão retornados.
+
+JavaScript
+import { Octokit } from "octokit";
+
+const octokit = new Octokit({ );
+
+async function getPaginatedData(url) {
+  const nextPattern = /(?<=<)([\S]*)(?=>; rel="next")/i;
+  let pagesRemaining = true;
+  let data = [];
+
+  while (pagesRemaining) {
+    const response = await octokit.request(`GET ${url}`, {
+      per_page: 100,
+      headers: {
+        "X-GitHub-Api-Version":
+          "2026-03-10",
+      },
+    });
+
+    const parsedData = parseData(response.data)
+    data = [...data, ...parsedData];
+
+    const linkHeader = response.headers.link;
+
+    pagesRemaining = linkHeader && linkHeader.includes(`rel=\"next\"`);
+
+    if (pagesRemaining) {
+      url = linkHeader.match(nextPattern)[0];
+    }
+  }
+
+  return data;
+}
+
+function parseData(data) {
+  // If the data is an array, return that
+    if (Array.isArray(data)) {
+      return data
+    }
+
+  // Some endpoints respond with 204 No Content instead of empty array
+  //   when there is no data. In that case, return an empty array.
+  if (!data) {
+    return []
+  }
+
+  // Otherwise, the array of items that we want is in an object
+  // Delete keys that don't include the array of items
+  delete data.incomplete_results;
+  delete data.repository_selection;
+  delete data.total_count;
+  // Pull out the array of items
+  const namespaceKey = Object.keys(data)[0];
+  data = data[namespaceKey];
+
+  return data;
+}
+
+const data = await getPaginatedData("/repos/octocat/Spoon-Knife/issues");
+
+console.log(data);
+Ajuda e suporte
+Você encontrou o que precisava?
+
+Política de privacidade
+Ainda precisa de ajuda?
+Pergunte à comunidade do GitHub
+Contate o suporte
+Legal
+Parte desse conteúdo pode ser traduzida por computador ou IA.
+
+© 2026 GitHub, Inc.
+Termos
+Privacidade
+Status
+Preços
+Serviços especializados
+Blog
+Como usar paginação na API REST - Documentos do GitHub
+
+
+
+
+
+
+octokit.js
+The all-batteries-included GitHub SDK for Browsers, Node.js, and Deno.
+
+The octokit package integrates the three main Octokit libraries
+
+API client (REST API requests, GraphQL API queries, Authentication)
+App client (GitHub App & installations, Webhooks, OAuth)
+Action client (Pre-authenticated API client for single repository)
+Table of contents
+octokit.js
+Features
+Usage
+Octokit API Client
+Constructor options
+Authentication
+Proxy Servers (Node.js only)
+Fetch missing
+REST API
+octokit.rest endpoint methods
+octokit.request()
+Pagination
+Media Type formats
+Request error handling
+GraphQL API queries
+Pagination
+Schema previews
+App client
+GitHub App
+Webhooks
+OAuth
+App Server
+OAuth for browser apps
+Action client
+LICENSE
+Features
+Complete. All features of GitHub's platform APIs are covered.
+Prescriptive. All recommended best practices are implemented.
+Universal. Works in all modern browsers, Node.js, and Deno.
+Tested. All libraries have a 100% test coverage.
+Typed. All libraries have extensive TypeScript declarations.
+Decomposable. Use only the code you need. You can build your own Octokit in only a few lines of code or use the underlying static methods. Make your own tradeoff between functionality and bundle size.
+Extendable. A feature missing? Add functionalities with plugins, hook into the request or webhook lifecycle or implement your own authentication strategy.
+Usage
+Browsers	Load octokit directly from esm.sh
+<script type="module">
+import { Octokit, App } from "https://esm.sh/octokit";
+</script>
+Deno	Load octokit directly from esm.sh
+import { Octokit, App } from "https://esm.sh/octokit?dts";
+Node	
+Install with npm/pnpm install octokit, or yarn add octokit
+
+import { Octokit, App } from "octokit";
+Important
+
+As we use conditional exports, you will need to adapt your tsconfig.json by setting "moduleResolution": "node16", "module": "node16".
+
+See the TypeScript docs on package.json "exports".
+See this helpful guide on transitioning to ESM from @sindresorhus
+
+Octokit API Client
+standalone minimal Octokit: @octokit/core.
+
+The Octokit client can be used to send requests to GitHub's REST API and queries to GitHub's GraphQL API.
+
+Example: Get the username for the authenticated user.
+
+// Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
+const octokit = new Octokit({ auth: `personal-access-token123` });
+
+// Compare: https://docs.github.com/en/rest/reference/users#get-the-authenticated-user
+const {
+  data: { login },
+} = await octokit.rest.users.getAuthenticated();
+console.log("Hello, %s", login);
+Constructor options
+The most commonly used options are
+
+name	type	description
+userAgent	String	
+Setting a user agent is required for all requests sent to GitHub's Platform APIs. The user agent defaults to something like this: octokit.js/v1.2.3 Node.js/v8.9.4 (macOS High Sierra; x64). It is recommend to set your own user agent, which will prepend the default one.
+
+const octokit = new Octokit({
+  userAgent: "my-app/v1.2.3",
+});
+authStrategy	Function	
+Defaults to @octokit/auth-token.
+
+See Authentication below.
+
+auth	String or Object	
+Set to a personal access token unless you changed the authStrategy option.
+
+See Authentication below.
+
+baseUrl	String	
+When using with GitHub Enterprise Server, set options.baseUrl to the root URL of the API. For example, if your GitHub Enterprise Server's hostname is github.acme-inc.com, then set options.baseUrl to https://github.acme-inc.com/api/v3. Example
+
+const octokit = new Octokit({
+  baseUrl: "https://github.acme-inc.com/api/v3",
+});
+Advanced options
+
+name	type	description
+request	Object	
+request.signal: Use an AbortController instance to cancel a request. abort-controller is an implementation for Node.
+request.fetch: Replacement for built-in fetch method.
+Node only
+
+request.timeout sets a request timeout, defaults to 0
+The request option can also be set on a per-request basis.
+
+timeZone	String	
+Sets the Time-Zone header which defines a timezone according to the list of names from the Olson database.
+
+const octokit = new Octokit({
+  timeZone: "America/Los_Angeles",
+});
+The time zone header will determine the timezone used for generating the timestamp when creating commits. See GitHub's Timezones documentation.
+
+throttle	Object	
+Octokit implements request throttling using @octokit/plugin-throttling
+
+By default, requests are retried once and warnings are logged in case of hitting a rate or secondary rate limit.
+
+{
+  onRateLimit: (retryAfter, options, octokit) => {
+    octokit.log.warn(
+      `Request quota exhausted for request ${options.method} ${options.url}`
+    );
+
+    if (options.request.retryCount === 0) {
+      // only retries once
+      octokit.log.info(`Retrying after ${retryAfter} seconds!`);
+      return true;
+    }
+  },
+  onSecondaryRateLimit: (retryAfter, options, octokit) => {
+    octokit.log.warn(
+      `SecondaryRateLimit detected for request ${options.method} ${options.url}`
+    );
+
+    if (options.request.retryCount === 0) {
+      // only retries once
+      octokit.log.info(`Retrying after ${retryAfter} seconds!`);
+      return true;
+    }
+  },
+};
+To opt-out of this feature:
+
+new Octokit({ throttle: { enabled: false } });
+Throttling in a cluster is supported using a Redis backend. See @octokit/plugin-throttling Clustering
+
+retry	Object	
+Octokit implements request retries using @octokit/plugin-retry
+
+To opt-out of this feature:
+
+new Octokit({ retry: { enabled: false } });
+Authentication
+By default, the Octokit API client supports authentication using a static token.
+
+There are different means of authentication that are supported by GitHub, that are described in detail at octokit/authentication-strategies.js. You can set each of them as the authStrategy constructor option, and pass the strategy options as the auth constructor option.
+
+For example, in order to authenticate as a GitHub App Installation:
+
+import { createAppAuth } from "@octokit/auth-app";
+const octokit = new Octokit({
+  authStrategy: createAppAuth,
+  auth: {
+    appId: 1,
+    privateKey: "-----BEGIN PRIVATE KEY-----\n...",
+    installationId: 123,
+  },
+});
+
+// authenticates as app based on request URLs
+const {
+  data: { slug },
+} = await octokit.rest.apps.getAuthenticated();
+
+// creates an installation access token as needed
+// assumes that installationId 123 belongs to @octocat, otherwise the request will fail
+await octokit.rest.issues.create({
+  owner: "octocat",
+  repo: "hello-world",
+  title: "Hello world from " + slug,
+});
+You can use the App or OAuthApp SDKs which provide APIs and internal wiring to cover most use cases.
+
+For example, to implement the above using App
+
+const app = new App({ appId, privateKey });
+const { data: slug } = await app.octokit.rest.apps.getAuthenticated();
+const octokit = await app.getInstallationOctokit(123);
+await octokit.rest.issues.create({
+  owner: "octocat",
+  repo: "hello-world",
+  title: "Hello world from " + slug,
+});
+Learn more about how authentication strategies work or how to create your own.
+
+Proxy Servers (Node.js only)
+By default, the Octokit API client does not make use of the standard proxy server environment variables. To add support for proxy servers you will need to provide an https client that supports them such as undici.ProxyAgent().
+
+For example, this would use a ProxyAgent to make requests through a proxy server:
+
+import { fetch as undiciFetch, ProxyAgent } from 'undici';
+
+const myFetch = (url, options) => {
+  return undiciFetch(url, {
+    ...options,
+    dispatcher: new ProxyAgent(<your_proxy_url>)
+  })
+}
+
+const octokit = new Octokit({
+  request: {
+     fetch: myFetch
+  },
+});
+If you are writing a module that uses Octokit and is designed to be used by other people, you should ensure that consumers can provide an alternative agent for your Octokit or as a parameter to specific calls such as:
+
+import { fetch as undiciFetch, ProxyAgent } from 'undici';
+
+const myFetch = (url, options) => {
+  return undiciFetch(url, {
+    ...options,
+    dispatcher: new ProxyAgent(<your_proxy_url>)
+  })
+}
+
+octokit.rest.repos.get({
+  owner,
+  repo,
+  request: {
+    fetch: myFetch
+  },
+});
+Fetch missing
+If you get the following error:
+
+fetch is not set. Please pass a fetch implementation as new Octokit({ request: { fetch }}).
+
+It probably means you are trying to run Octokit with an unsupported version of NodeJS. Octokit requires Node 18 or higher, which includes a native fetch API.
+
+To bypass this problem you can provide your own fetch implementation (or a built-in version like node-fetch) like this:
+
+import fetch from "node-fetch";
+
+const octokit = new Octokit({
+  request: {
+    fetch: fetch,
+  },
+});
+REST API
+There are two ways of using the GitHub REST API, the octokit.rest.* endpoint methods and octokit.request. Both act the same way, the octokit.rest.* methods are just added for convenience, they use octokit.request internally.
+
+For example
+
+await octokit.rest.issues.create({
+  owner: "octocat",
+  repo: "hello-world",
+  title: "Hello, world!",
+  body: "I created this issue using Octokit!",
+});
+Is the same as
+
+await octokit.request("POST /repos/{owner}/{repo}/issues", {
+  owner: "octocat",
+  repo: "hello-world",
+  title: "Hello, world!",
+  body: "I created this issue using Octokit!",
+});
+In both cases a given request is authenticated, retried, and throttled transparently by the octokit instance which also manages the accept and user-agent headers as needed.
+
+octokit.request can be used to send requests to other domains by passing a full URL and to send requests to endpoints that are not (yet) documented in GitHub's REST API documentation.
+
+octokit.rest endpoint methods
+Every GitHub REST API endpoint has an associated octokit.rest endpoint method for better code readability and developer convenience. See @octokit/plugin-rest-endpoint-methods for full details.
+
+Example: Create an issue
+
+await octokit.rest.issues.create({
+  owner: "octocat",
+  repo: "hello-world",
+  title: "Hello, world!",
+  body: "I created this issue using Octokit!",
+});
+The octokit.rest endpoint methods are generated automatically from GitHub's OpenAPI specification. We track operation ID and parameter name changes in order to implement deprecation warnings and reduce the frequency of breaking changes.
+
+Under the covers, every endpoint method is just octokit.request with defaults set, so it supports the same parameters as well as the .endpoint() API.
+
+octokit.request()
+You can call the GitHub REST API directly using octokit.request. The request API matches GitHub's REST API documentation 1:1 so anything you see there, you can call using request. See @octokit/request for all the details.
+
+Example: Create an issue
+
+Screenshot of REST API reference documentation for Create an issue
+
+The octokit.request API call corresponding to that issue creation documentation looks like this:
+
+// https://docs.github.com/en/rest/reference/issues#create-an-issue
+await octokit.request("POST /repos/{owner}/{repo}/issues", {
+  owner: "octocat",
+  repo: "hello-world",
+  title: "Hello, world!",
+  body: "I created this issue using Octokit!",
+});
+The 1st argument is the REST API route as listed in GitHub's API documentation. The 2nd argument is an object with all parameters, independent of whether they are used in the path, query, or body.
+
+Pagination
+All REST API endpoints that paginate return the first 30 items by default. If you want to retrieve all items, you can use the pagination API. The pagination API expects the REST API route as first argument, but you can also pass any of the octokit.rest.*.list* methods for convenience and better code readability.
+
+Example: iterate through all issues in a repository
+
+const iterator = octokit.paginate.iterator(octokit.rest.issues.listForRepo, {
+  owner: "octocat",
+  repo: "hello-world",
+  per_page: 100,
+});
+
+// iterate through each response
+for await (const { data: issues } of iterator) {
+  for (const issue of issues) {
+    console.log("Issue #%d: %s", issue.number, issue.title);
+  }
+}
+Using the async iterator is the most memory efficient way to iterate through all items. But you can also retrieve all items in a single call
+
+const issues = await octokit.paginate(octokit.rest.issues.listForRepo, {
+  owner: "octocat",
+  repo: "hello-world",
+  per_page: 100,
+});
+Media Type formats
+Media type formats can be set using mediaType: { format } on every request.
+
+Example: retrieve the raw content of a package.json file
+
+const { data } = await octokit.rest.repos.getContent({
+  mediaType: {
+    format: "raw",
+  },
+  owner: "octocat",
+  repo: "hello-world",
+  path: "package.json",
+});
+console.log("package name: %s", JSON.parse(data).name);
+Learn more about Media type formats.
+
+Request error handling
+Standalone module: @octokit/request-error
+
+For request error handling, import RequestError and use try...catch statement.
+
+import { RequestError } from "octokit";
+try {
+  // your code here that sends at least one Octokit request
+  await octokit.request("GET /");
+} catch (error) {
+  // Octokit errors are instances of RequestError, so they always have an `error.status` property containing the HTTP response code.
+  if (error instanceof RequestError) {
+    // handle Octokit error
+    // error.message; // Oops
+    // error.status; // 500
+    // error.request; // { method, url, headers, body }
+    // error.response; // { url, status, headers, data }
+  } else {
+    // handle all other errors
+    throw error;
+  }
+}
+GraphQL API queries
+Octokit also supports GitHub's GraphQL API directly -- you can use the same queries shown in the documentation and available in the GraphQL explorer in your calls with octokit.graphql.
+
+Example: get the login of the authenticated user
+
+const {
+  viewer: { login },
+} = await octokit.graphql(`{
+  viewer {
+    login
+  }
+}`);
+Variables can be passed as 2nd argument
+
+const { lastIssues } = await octokit.graphql(
+  `
+    query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
+      repository(owner: $owner, name: $repo) {
+        issues(last: $num) {
+          edges {
+            node {
+              title
+            }
+          }
+        }
+      }
+    }
+  `,
+  {
+    owner: "octokit",
+    repo: "graphql.js",
+  },
+);
+Pagination
+GitHub's GraphQL API returns a maximum of 100 items. If you want to retrieve all items, you can use the pagination API.
+
+Example: get all issues
+
+const { allIssues } = await octokit.graphql.paginate(
+  `
+    query allIssues($owner: String!, $repo: String!, $num: Int = 10, $cursor: String) {
+      repository(owner: $owner, name: $repo) {
+        issues(first: $num, after: $cursor) {
+          edges {
+            node {
+              title
+            }
+          }
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+        }
+      }
+    }
+  `,
+  {
+    owner: "octokit",
+    repo: "graphql.js",
+  },
+);
+Learn more about GitHub's GraphQL Pagination usage.
+
+Schema previews
+Previews can be enabled using the {mediaType: previews: [] } option.
+
+Example: create a label
+
+await octokit.graphql(
+  `mutation createLabel($repositoryId:ID!,name:String!,color:String!) {
+  createLabel(input:{repositoryId:$repositoryId,name:$name}) {
+    label: {
+      id
+    }
+  }
+}`,
+  {
+    repositoryId: 1,
+    name: "important",
+    color: "cc0000",
+    mediaType: {
+      previews: ["bane"],
+    },
+  },
+);
+Learn more about GitHub's GraphQL schema previews
+
+App client
+The App client combines features for GitHub Apps, Webhooks, and OAuth
+
+GitHub App
+Standalone module: @octokit/app
+
+For integrators, GitHub Apps are a means of authentication and authorization. A GitHub app can be registered on a GitHub user or organization account. A GitHub App registration defines a set of permissions and webhooks events it wants to receive and provides a set of credentials in return. Users can grant access to repositories by installing them.
+
+Some API endpoints require the GitHub app to authenticate as itself using a JSON Web Token (JWT). For requests affecting an installation, an installation access token has to be created using the app's credentials and the installation ID.
+
+The App client takes care of all that for you.
+
+Example: Dispatch a repository event in every repository the app is installed on
+
+import { App } from "octokit";
+
+const app = new App({ appId, privateKey });
+
+for await (const { octokit, repository } of app.eachRepository.iterator()) {
+  // https://docs.github.com/en/rest/reference/repos#create-a-repository-dispatch-event
+  await octokit.rest.repos.createDispatchEvent({
+    owner: repository.owner.login,
+    repo: repository.name,
+    event_type: "my_event",
+    client_payload: {
+      foo: "bar",
+    },
+  });
+  console.log("Event dispatched for %s", repository.full_name);
+}
+Example: Get an octokit instance authenticated as an installation
+
+const octokit = await app.getInstallationOctokit(123);
+Learn more about apps.
+
+Webhooks
+Standalone module: @octokit/webhooks
+
+When installing an app, events that the app registration requests will be sent as requests to the webhook URL set in the app's registration.
+
+Webhook event requests are signed using the webhook secret, which is also part of the app's registration. You must verify that secret before handling the request payload.
+
+The app.webhooks.* APIs provide methods to receiving, verifying, and handling webhook events.
+
+Example: create a comment on new issues
+
+import { createServer } from "node:http";
+import { App, createNodeMiddleware } from "octokit";
+
+const app = new App({
+  appId,
+  privateKey,
+  webhooks: { secret },
+});
+
+app.webhooks.on("issues.opened", ({ octokit, payload }) => {
+  return octokit.rest.issues.createComment({
+    owner: payload.repository.owner.login,
+    repo: payload.repository.name,
+    issue_number: payload.issue.number,
+    body: "Hello, World!",
+  });
+});
+
+// Your app can now receive webhook events at `/api/github/webhooks`
+createServer(createNodeMiddleware(app)).listen(3000);
+For serverless environments, you can explicitly verify and receive an event
+
+await app.webhooks.verifyAndReceive({
+  id: request.headers["x-github-delivery"],
+  name: request.headers["x-github-event"],
+  signature: request.headers["x-hub-signature-256"],
+  payload: request.body,
+});
+Learn more about GitHub webhooks.
+
+OAuth
+Standalone module: @octokit/oauth-app
+
+Both OAuth Apps and GitHub Apps support authenticating GitHub users using OAuth, see Authorizing OAuth Apps and Identifying and authorizing users for GitHub Apps.
+
+There are some differences:
+
+Only OAuth Apps support scopes. GitHub apps have permissions, and access is granted via installations of the app on repositories.
+Only GitHub Apps support expiring user tokens
+Only GitHub Apps support creating a scoped token to reduce the permissions and repository access
+App is for GitHub Apps. If you need OAuth App-specific functionality, use OAuthApp instead.
+
+Example: Watch a repository when a user logs in using the OAuth web flow
+
+import { createServer } from "node:http";
+import { App, createNodeMiddleware } from "octokit";
+
+const app = new App({
+  oauth: { clientId, clientSecret },
+});
+
+app.oauth.on("token.created", async ({ token, octokit }) => {
+  await octokit.rest.activity.setRepoSubscription({
+    owner: "octocat",
+    repo: "hello-world",
+    subscribed: true,
+  });
+});
+
+// Your app can receive the OAuth redirect at /api/github/oauth/callback
+// Users can initiate the OAuth web flow by opening /api/github/oauth/login
+createServer(createNodeMiddleware(app)).listen(3000);
+For serverless environments, you can explicitly exchange the code from the OAuth web flow redirect for an access token. app.oauth.createToken() returns an authentication object and emits the "token.created" event.
+
+const { token } = await app.oauth.createToken({
+  code: request.query.code,
+});
+Example: create a token using the device flow.
+
+const { token } = await app.oauth.createToken({
+  async onVerification(verification) {
+    await sendMessageToUser(
+      request.body.phoneNumber,
+      `Your code is ${verification.user_code}. Enter it at ${verification.verification_uri}`,
+    );
+  },
+});
+Example: Create an OAuth App Server with default scopes
+
+import { createServer } from "node:http";
+import { OAuthApp, createNodeMiddleware } from "octokit";
+
+const app = new OAuthApp({
+  clientId,
+  clientSecret,
+  defaultScopes: ["repo", "gist"],
+});
+
+app.oauth.on("token", async ({ token, octokit }) => {
+  await octokit.rest.gists.create({
+    description: "I created this gist using Octokit!",
+    public: true,
+    files: {
+      "example.js": `/* some code here */`,
+    },
+  });
+});
+
+// Your app can receive the OAuth redirect at /api/github/oauth/callback
+// Users can initiate the OAuth web flow by opening /api/oauth/login
+createServer(createNodeMiddleware(app)).listen(3000);
+App Server
+After registering your GitHub app, you need to create and deploy a server which can retrieve the webhook event requests from GitHub as well as accept redirects from the OAuth user web flow.
+
+The simplest way to create such a server is to use createNodeMiddleware(), it works with both, Node's http.createServer() method as well as an Express middleware.
+
+The default routes that the middleware exposes are
+
+Route	Route Description
+POST /api/github/webhooks	Endpoint to receive GitHub Webhook Event requests
+GET /api/github/oauth/login	Redirects to GitHub's authorization endpoint. Accepts optional ?state and ?scopes query parameters. ?scopes is a comma-separated list of supported OAuth scope names
+GET /api/github/oauth/callback	The client's redirect endpoint. This is where the token event gets triggered
+POST /api/github/oauth/token	Exchange an authorization code for an OAuth Access token. If successful, the token event gets triggered.
+GET /api/github/oauth/token	Check if token is valid. Must authenticate using token in Authorization header. Uses GitHub's POST /applications/{client_id}/token endpoint
+PATCH /api/github/oauth/token	Resets a token (invalidates current one, returns new token). Must authenticate using token in Authorization header. Uses GitHub's PATCH /applications/{client_id}/token endpoint.
+PATCH /api/github/oauth/refresh-token	Refreshes an expiring token (invalidates current one, returns new access token and refresh token). Must authenticate using token in Authorization header. Uses GitHub's POST https://github.com/login/oauth/access_token OAuth endpoint.
+POST /api/github/oauth/token/scoped	Creates a scoped token (does not invalidate the current one). Must authenticate using token in Authorization header. Uses GitHub's POST /applications/{client_id}/token/scoped endpoint.
+DELETE /api/github/oauth/token	Invalidates current token, basically the equivalent of a logout. Must authenticate using token in Authorization header.
+DELETE /api/github/oauth/grant	Revokes the user's grant, basically the equivalent of an uninstall. must authenticate using token in Authorization header.
+Example: create a GitHub server with express
+
+import express from "express";
+import { App, createNodeMiddleware } from "octokit";
+
+const expressApp = express();
+const octokitApp = new App({
+  appId,
+  privateKey,
+  webhooks: { secret },
+  oauth: { clientId, clientSecret },
+});
+
+expressApp.use(createNodeMiddleware(app));
+
+expressApp.listen(3000, () => {
+  console.log(`Example app listening at http://localhost:3000`);
+});
+OAuth for browser apps
+You must not expose your app's client secret to the user, so you cannot use the App constructor. Instead, you have to create a server using the App constructor which exposes the /api/github/oauth/* routes, through which you can safely implement an OAuth login for apps running in a web browser.
+
+If you set (User) Authorization callback URL to your own app, than you need to read out the ?code=...&state=... query parameters, compare the state parameter to the value returned by app.oauthLoginUrl() earlier to protect against forgery attacks, then exchange the code for an OAuth Authorization token.
+
+If you run an app server as described above, the default route to do that is POST /api/github/oauth/token.
+
+Once you successfully retrieved the token, it is also recommended to remove the ?code=...&state=... query parameters from the browser's URL
+
+const code = new URL(location.href).searchParams.get("code");
+if (code) {
+  // remove ?code=... from URL
+  const path =
+    location.pathname +
+    location.search.replace(/\b(code|state)=\w+/g, "").replace(/[?&]+$/, "");
+  history.replaceState({}, "", path);
+
+  // exchange the code for a token with your backend.
+  // If you use https://github.com/octokit/oauth-app.js
+  // the exchange would look something like this
+  const response = await fetch("/api/github/oauth/token", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ code }),
+  });
+  const { token } = await response.json();
+  // `token` is the OAuth Access Token that can be use
+
+  const { Octokit } = await import("https://esm.sh/@octokit/core");
+  const octokit = new Octokit({ auth: token });
+
+  const {
+    data: { login },
+  } = await octokit.request("GET /user");
+  alert("Hi there, " + login);
+}
+🚧 We are working on @octokit/auth-oauth-user-client to provide a simple API for all methods related to OAuth user tokens.
+
+The plan is to add an new GET /api/github/oauth/octokit.js route to the node middleware which will return a JavaScript file that can be imported into an HTML file. It will make a pre-authenticated octokit Instance available.
+
+Action client
+standalone module: @octokit/action
+
+🚧 A fully fledged Action client is pending. You can use @actions/github for the time being
+
+LICENSE
+MIT
+
+
+
+
+
+
+
+
+
+
+
+action.js
+GitHub API client for GitHub Actions
+
+@latest Build Status
+
+Usage
+Browsers	
+@octokit/action is not meant for browser usage.
+
+Node	
+Install with npm install @octokit/action
+
+import { Octokit } from "@octokit/action";
+Important
+
+As we use conditional exports, you will need to adapt your tsconfig.json by setting "moduleResolution": "node16", "module": "node16".
+
+See the TypeScript docs on package.json "exports".
+See this helpful guide on transitioning to ESM from @sindresorhus
+
+You can pass secret.GITHUB_TOKEN or any of your own secrets to a Node.js script. For example
+
+name: My Node Action
+on:
+  - pull_request
+jobs:
+  my-action:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out code using git
+      - uses: actions/checkout@v4
+      # Install Node 20
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install @octokit/action
+      # Node.js script can be anywhere. A good convention is to put local GitHub Actions
+      # into the `.github/actions` folder
+      - run: node .github/actions/my-script.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+Setting GITHUB_TOKEN on either with: or env: will work.
+
+// .github/actions/my-script.js
+import { Octokit } from "@octokit/action";
+
+const octokit = new Octokit();
+
+// `octokit` is now authenticated using GITHUB_TOKEN
+Create an issue using REST API
+import { Octokit } from "@octokit/action";
+
+const octokit = new Octokit();
+const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
+
+// See https://developer.github.com/v3/issues/#create-an-issue
+const { data } = await octokit.request("POST /repos/{owner}/{repo}/issues", {
+  owner,
+  repo,
+  title: "My test issue",
+});
+console.log("Issue created: %s", data.html_url);
+You can also use octokit.issues.create({ owner, repo, title }). See the REST endpoint methods plugin for a list of all available methods.
+
+Create an issue using GraphQL
+import { Octokit } from "@octokit/action";
+
+const octokit = new Octokit();
+const eventPayload = require(process.env.GITHUB_EVENT_PATH);
+const repositoryId = eventPayload.repository.node_id;
+
+const response = await octokit.graphql(
+  `
+  mutation($repositoryId:ID!, $title:String!) {
+    createIssue(input:{repositoryId: $repositoryId, title: $title}) {
+      issue {
+        number
+      }
+    }
+  }
+  `,
+  {
+    repositoryId,
+    title: "My test issue",
+  },
+);
+Hooks, plugins, and more
+@octokit/action is build upon @octokit/core. Refer to its README for the full API documentation.
+
+TypeScript: Endpoint method parameters and responses
+Types for endpoint method parameters and responses are exported as RestEndpointMethodTypes. They keys are the same as the endpoint methods. Here is an example to retrieve the parameter and response types for octokit.checks.create()
+
+import { RestEndpointMethodTypes } from `@octokit/action`;
+
+type ChecksCreateParams =
+  RestEndpointMethodTypes["checks"]["create"]["parameters"];
+type ChecksCreateResponse =
+  RestEndpointMethodTypes["checks"]["create"]["response"];
+Proxy Servers
+If you use self-hosted runners and require a proxy server to access internet resources then you will need to ensure that you have correctly configured the runner for proxy servers. @octokit/action will pick up the configured proxy server environment variables and configure @octokit/core with the correct request.dispatcher using ProxyAgent. If you need to supply a different request.dispatcher then you should ensure that it handles proxy servers if needed.
+
+How it works
+@octokit/action is simply a @octokit/core constructor, pre-authenticate using @octokit/auth-action.
+
+The source code is … simple: src/index.ts.
+
+License
+MIT
+
+
+
+
+
+
+
+
+
+
+https://undici.nodejs.org/#/docs/api/ProxyAgent
+
+
+
+
+
+
+Node.js Undici
+Home
+new ProxyAgent([options])
+Parameter: ProxyAgentOptions
+ProxyAgent.close()
+ProxyAgent.dispatch(options, handlers)
+ProxyAgent.request(options[, callback])
+API
+Dispatcher
+Client
+H2CClient
+Pool
+BalancedPool
+RoundRobinPool
+Agent
+ProxyAgent
+Socks5Agent
+RetryAgent
+Connector
+Errors
+EventSource
+Fetch
+Global Installation
+Cookies
+MockClient
+MockPool
+MockAgent
+SnapshotAgent
+MockCallHistory
+MockCallHistoryLog
+MockErrors
+API Lifecycle
+Diagnostics Channel Support
+Debug
+WebSocket
+MIME Type Parsing
+CacheStorage
+Util
+RedirectHandler
+RetryHandler
+DiagnosticsChannel
+EnvHttpProxyAgent
+PoolStats
+Examples
+Undici Examples
+Best Practices
+Undici vs. Built-in Fetch
+Proxy
+Client Certificate
+Writing Tests
+Mocking Request
+Crawling
+Class: ProxyAgent
+Extends: undici.Dispatcher
+
+A Proxy Agent class that implements the Agent API. It allows the connection through proxy in a simple way.
+
+new ProxyAgent([options])
+Arguments:
+
+options ProxyAgentOptions (required) - It extends the Agent options.
+Returns: ProxyAgent
+
+Parameter: ProxyAgentOptions
+Extends: AgentOptions
+
+It ommits AgentOptions#connect.
+
+Note: When AgentOptions#connections is set, and different from 0, the non-standard proxy-connection header will be set to keep-alive in the request.
+
+uri string | URL (required) - The URI of the proxy server. This can be provided as a string, as an instance of the URL class, or as an object with a uri property of type string. If the uri is provided as a string or uri is an object with an uri property of type string, then it will be parsed into a URL object according to the WHATWG URL Specification. For detailed information on the parsing process and potential validation errors, please refer to the "Writing" section of the WHATWG URL Specification.
+token string (optional) - It can be passed by a string of token for authentication.
+auth string (deprecated) - Use token.
+clientFactory (origin: URL, opts: Object) => Dispatcher (optional) - Default: (origin, opts) => new Pool(origin, opts)
+requestTls BuildOptions (optional) - Options object passed when creating the underlying socket via the connector builder for the request. It extends from Client#ConnectOptions.
+proxyTls BuildOptions (optional) - Options object passed when creating the underlying socket via the connector builder for the proxy server. It extends from Client#ConnectOptions.
+proxyTunnel boolean (optional) - For connections involving secure protocols, Undici will always establish a tunnel via the HTTP2 CONNECT extension. If proxyTunnel is set to true, this will occur for unsecured proxy/endpoint connections as well. Currently, there is no way to facilitate HTTP1 IP tunneling as described in https://www.rfc-editor.org/rfc/rfc9484.html#name-http-11-request. If proxyTunnel is set to false (the default), ProxyAgent connections where both the Proxy and Endpoint are unsecured will issue all requests to the Proxy, and prefix the endpoint request path with the endpoint origin address.
+Examples:
+
+import { ProxyAgent } from 'undici'
+
+const proxyAgent = new ProxyAgent('my.proxy.server')
+// or
+const proxyAgent = new ProxyAgent(new URL('my.proxy.server'))
+// or
+const proxyAgent = new ProxyAgent({ uri: 'my.proxy.server' })
+// or
+const proxyAgent = new ProxyAgent({
+  uri: new URL('my.proxy.server'),
+  proxyTls: {
+    signal: AbortSignal.timeout(1000)
+  }
+})
+Copy CodeErrorCopied
+Example - Basic ProxyAgent instantiation
+This will instantiate the ProxyAgent. It will not do anything until registered as the agent to use with requests.
+
+import { ProxyAgent } from 'undici'
+
+const proxyAgent = new ProxyAgent('my.proxy.server')
+Copy CodeErrorCopied
+Example - Basic Proxy Request with global agent dispatcher
+import { setGlobalDispatcher, request, ProxyAgent } from 'undici'
+
+const proxyAgent = new ProxyAgent('my.proxy.server')
+setGlobalDispatcher(proxyAgent)
+
+const { statusCode, body } = await request('http://localhost:3000/foo')
+
+console.log('response received', statusCode) // response received 200
+
+for await (const data of body) {
+  console.log('data', data.toString('utf8')) // data foo
+}
+Copy CodeErrorCopied
+Example - Basic Proxy Request with local agent dispatcher
+import { ProxyAgent, request } from 'undici'
+
+const proxyAgent = new ProxyAgent('my.proxy.server')
+
+const {
+  statusCode,
+  body
+} = await request('http://localhost:3000/foo', { dispatcher: proxyAgent })
+
+console.log('response received', statusCode) // response received 200
+
+for await (const data of body) {
+  console.log('data', data.toString('utf8')) // data foo
+}
+Copy CodeErrorCopied
+Example - Basic Proxy Request with authentication
+import { setGlobalDispatcher, request, ProxyAgent } from 'undici';
+
+const proxyAgent = new ProxyAgent({
+  uri: 'my.proxy.server',
+  // token: 'Bearer xxxx'
+  token: `Basic ${Buffer.from('username:password').toString('base64')}`
+});
+setGlobalDispatcher(proxyAgent);
+
+const { statusCode, body } = await request('http://localhost:3000/foo');
+
+console.log('response received', statusCode); // response received 200
+
+for await (const data of body) {
+  console.log('data', data.toString('utf8')); // data foo
+}
+Copy CodeErrorCopied
+ProxyAgent.close()
+Closes the proxy agent and waits for registered pools and clients to also close before resolving.
+
+Returns: Promise<void>
+
+Example - clean up after tests are complete
+import { ProxyAgent, setGlobalDispatcher } from 'undici'
+
+const proxyAgent = new ProxyAgent('my.proxy.server')
+setGlobalDispatcher(proxyAgent)
+
+await proxyAgent.close()
+Copy CodeErrorCopied
+ProxyAgent.dispatch(options, handlers)
+Implements Agent.dispatch(options, handlers).
+
+ProxyAgent.request(options[, callback])
+See Dispatcher.request(options [, callback]).
+
+Example - ProxyAgent with Fetch
+This example demonstrates how to use fetch with a proxy via ProxyAgent. It is particularly useful for scenarios requiring proxy tunneling.
+
+import { ProxyAgent, fetch } from 'undici';
+
+// Define the ProxyAgent
+const proxyAgent = new ProxyAgent('http://localhost:8000');
+
+// Make a GET request through the proxy
+const response = await fetch('http://localhost:3000/foo', {
+  dispatcher: proxyAgent,
+  method: 'GET',
+});
+
+console.log('Response status:', response.status);
+console.log('Response data:', await response.text());
+Copy CodeErrorCopied
+Example - ProxyAgent with a Custom Proxy Server
+This example shows how to create a custom proxy server and use it with ProxyAgent.
+
+import * as http from 'node:http';
+import { createProxy } from 'proxy';
+import { ProxyAgent, fetch } from 'undici';
+
+// Create a proxy server
+const proxyServer = createProxy(http.createServer());
+proxyServer.listen(8000, () => {
+  console.log('Proxy server running on port 8000');
+});
+
+// Define and use the ProxyAgent
+const proxyAgent = new ProxyAgent('http://localhost:8000');
+
+const response = await fetch('http://example.com', {
+  dispatcher: proxyAgent,
+  method: 'GET',
+});
+
+console.log('Response status:', response.status);
+console.log('Response data:', await response.text());
+Copy CodeErrorCopied
+Example - ProxyAgent with HTTPS Tunneling
+This example demonstrates how to perform HTTPS tunneling using a proxy.
+
+import { ProxyAgent, fetch } from 'undici';
+
+// Define a ProxyAgent for HTTPS proxy
+const proxyAgent = new ProxyAgent('https://secure.proxy.server');
+
+// Make a request to an HTTPS endpoint via the proxy
+const response = await fetch('https://secure.endpoint.com/api/data', {
+  dispatcher: proxyAgent,
+  method: 'GET',
+});
+
+console.log('Response status:', response.status);
+console.log('Response data:', await response.json());
+Copy CodeErrorCopied
+Example - ProxyAgent as a Global Dispatcher
+ProxyAgent can be configured as a global dispatcher, making it available for all requests without explicitly passing it. This simplifies code and is useful when a single proxy configuration applies to all requests.
+
+import { ProxyAgent, setGlobalDispatcher, fetch } from 'undici';
+
+// Define and configure the ProxyAgent
+const proxyAgent = new ProxyAgent('http://localhost:8000');
+setGlobalDispatcher(proxyAgent);
+
+// Make requests without specifying the dispatcher
+const response = await fetch('http://example.com');
+console.log('Response status:', response.status);
+console.log('Response data:', await response.text());
+Copy CodeErrorCopied
+Search
+Node.js Undici
+Home
+new ProxyAgent([options])
+Parameter: ProxyAgentOptions
+ProxyAgent.close()
+ProxyAgent.dispatch(options, handlers)
+ProxyAgent.request(options[, callback])
+API
+Dispatcher
+Client
+H2CClient
+Pool
+BalancedPool
+RoundRobinPool
+Agent
+ProxyAgent
+Socks5Agent
+RetryAgent
+Connector
+Errors
+EventSource
+Fetch
+Global Installation
+Cookies
+MockClient
+MockPool
+MockAgent
+SnapshotAgent
+MockCallHistory
+MockCallHistoryLog
+MockErrors
+API Lifecycle
+Diagnostics Channel Support
+Debug
+WebSocket
+MIME Type Parsing
+CacheStorage
+Util
+RedirectHandler
+RetryHandler
+DiagnosticsChannel
+EnvHttpProxyAgent
+PoolStats
+Examples
+Undici Examples
+Best Practices
+Undici vs. Built-in Fetch
+Proxy
+Client Certificate
+Writing Tests
+Mocking Request
+Crawling
+
+Class: ProxyAgent
+Extends: undici.Dispatcher
+
+A Proxy Agent class that implements the Agent API. It allows the connection through proxy in a simple way.
+
+new ProxyAgent([options])
+Arguments:
+
+options ProxyAgentOptions (required) - It extends the Agent options.
+Returns: ProxyAgent
+
+Parameter: ProxyAgentOptions
+Extends: AgentOptions
+
+It ommits AgentOptions#connect.
+
+Note: When AgentOptions#connections is set, and different from 0, the non-standard proxy-connection header will be set to keep-alive in the request.
+
+uri string | URL (required) - The URI of the proxy server. This can be provided as a string, as an instance of the URL class, or as an object with a uri property of type string. If the uri is provided as a string or uri is an object with an uri property of type string, then it will be parsed into a URL object according to the WHATWG URL Specification. For detailed information on the parsing process and potential validation errors, please refer to the "Writing" section of the WHATWG URL Specification.
+token string (optional) - It can be passed by a string of token for authentication.
+auth string (deprecated) - Use token.
+clientFactory (origin: URL, opts: Object) => Dispatcher (optional) - Default: (origin, opts) => new Pool(origin, opts)
+requestTls BuildOptions (optional) - Options object passed when creating the underlying socket via the connector builder for the request. It extends from Client#ConnectOptions.
+proxyTls BuildOptions (optional) - Options object passed when creating the underlying socket via the connector builder for the proxy server. It extends from Client#ConnectOptions.
+proxyTunnel boolean (optional) - For connections involving secure protocols, Undici will always establish a tunnel via the HTTP2 CONNECT extension. If proxyTunnel is set to true, this will occur for unsecured proxy/endpoint connections as well. Currently, there is no way to facilitate HTTP1 IP tunneling as described in https://www.rfc-editor.org/rfc/rfc9484.html#name-http-11-request. If proxyTunnel is set to false (the default), ProxyAgent connections where both the Proxy and Endpoint are unsecured will issue all requests to the Proxy, and prefix the endpoint request path with the endpoint origin address.
+Examples:
+
+import { ProxyAgent } from 'undici'
+
+const proxyAgent = new ProxyAgent('my.proxy.server')
+// or
+const proxyAgent = new ProxyAgent(new URL('my.proxy.server'))
+// or
+const proxyAgent = new ProxyAgent({ uri: 'my.proxy.server' })
+// or
+const proxyAgent = new ProxyAgent({
+  uri: new URL('my.proxy.server'),
+  proxyTls: {
+    signal: AbortSignal.timeout(1000)
+  }
+})
+Copy CodeErrorCopied
+Example - Basic ProxyAgent instantiation
+This will instantiate the ProxyAgent. It will not do anything until registered as the agent to use with requests.
+
+import { ProxyAgent } from 'undici'
+
+const proxyAgent = new ProxyAgent('my.proxy.server')
+Copy CodeErrorCopied
+Example - Basic Proxy Request with global agent dispatcher
+import { setGlobalDispatcher, request, ProxyAgent } from 'undici'
+
+const proxyAgent = new ProxyAgent('my.proxy.server')
+setGlobalDispatcher(proxyAgent)
+
+const { statusCode, body } = await request('http://localhost:3000/foo')
+
+console.log('response received', statusCode) // response received 200
+
+for await (const data of body) {
+  console.log('data', data.toString('utf8')) // data foo
+}
+Copy CodeErrorCopied
+Example - Basic Proxy Request with local agent dispatcher
+import { ProxyAgent, request } from 'undici'
+
+const proxyAgent = new ProxyAgent('my.proxy.server')
+
+const {
+  statusCode,
+  body
+} = await request('http://localhost:3000/foo', { dispatcher: proxyAgent })
+
+console.log('response received', statusCode) // response received 200
+
+for await (const data of body) {
+  console.log('data', data.toString('utf8')) // data foo
+}
+Copy CodeErrorCopied
+Example - Basic Proxy Request with authentication
+import { setGlobalDispatcher, request, ProxyAgent } from 'undici';
+
+const proxyAgent = new ProxyAgent({
+  uri: 'my.proxy.server',
+  // token: 'Bearer xxxx'
+  token: `Basic ${Buffer.from('username:password').toString('base64')}`
+});
+setGlobalDispatcher(proxyAgent);
+
+const { statusCode, body } = await request('http://localhost:3000/foo');
+
+console.log('response received', statusCode); // response received 200
+
+for await (const data of body) {
+  console.log('data', data.toString('utf8')); // data foo
+}
+Copy CodeErrorCopied
+ProxyAgent.close()
+Closes the proxy agent and waits for registered pools and clients to also close before resolving.
+
+Returns: Promise<void>
+
+Example - clean up after tests are complete
+import { ProxyAgent, setGlobalDispatcher } from 'undici'
+
+const proxyAgent = new ProxyAgent('my.proxy.server')
+setGlobalDispatcher(proxyAgent)
+
+await proxyAgent.close()
+Copy CodeErrorCopied
+ProxyAgent.dispatch(options, handlers)
+Implements Agent.dispatch(options, handlers).
+
+ProxyAgent.request(options[, callback])
+See Dispatcher.request(options [, callback]).
+
+Example - ProxyAgent with Fetch
+This example demonstrates how to use fetch with a proxy via ProxyAgent. It is particularly useful for scenarios requiring proxy tunneling.
+
+import { ProxyAgent, fetch } from 'undici';
+
+// Define the ProxyAgent
+const proxyAgent = new ProxyAgent('http://localhost:8000');
+
+// Make a GET request through the proxy
+const response = await fetch('http://localhost:3000/foo', {
+  dispatcher: proxyAgent,
+  method: 'GET',
+});
+
+console.log('Response status:', response.status);
+console.log('Response data:', await response.text());
+Copy CodeErrorCopied
+Example - ProxyAgent with a Custom Proxy Server
+This example shows how to create a custom proxy server and use it with ProxyAgent.
+
+import * as http from 'node:http';
+import { createProxy } from 'proxy';
+import { ProxyAgent, fetch } from 'undici';
+
+// Create a proxy server
+const proxyServer = createProxy(http.createServer());
+proxyServer.listen(8000, () => {
+  console.log('Proxy server running on port 8000');
+});
+
+// Define and use the ProxyAgent
+const proxyAgent = new ProxyAgent('http://localhost:8000');
+
+const response = await fetch('http://example.com', {
+  dispatcher: proxyAgent,
+  method: 'GET',
+});
+
+console.log('Response status:', response.status);
+console.log('Response data:', await response.text());
+Copy CodeErrorCopied
+Example - ProxyAgent with HTTPS Tunneling
+This example demonstrates how to perform HTTPS tunneling using a proxy.
+
+import { ProxyAgent, fetch } from 'undici';
+
+// Define a ProxyAgent for HTTPS proxy
+const proxyAgent = new ProxyAgent('https://secure.proxy.server');
+
+// Make a request to an HTTPS endpoint via the proxy
+const response = await fetch('https://secure.endpoint.com/api/data', {
+  dispatcher: proxyAgent,
+  method: 'GET',
+});
+
+console.log('Response status:', response.status);
+console.log('Response data:', await response.json());
+Copy CodeErrorCopied
+Example - ProxyAgent as a Global Dispatcher
+ProxyAgent can be configured as a global dispatcher, making it available for all requests without explicitly passing it. This simplifies code and is useful when a single proxy configuration applies to all requests.
+
+import { ProxyAgent, setGlobalDispatcher, fetch } from 'undici';
+
+// Define and configure the ProxyAgent
+const proxyAgent = new ProxyAgent('http://localhost:8000');
+setGlobalDispatcher(proxyAgent);
+
+// Make requests without specifying the dispatcher
+const response = await fetch('http://example.com');
+console.log('Response status:', response.status);
+console.log('Response data:', await response.text());
+Copy CodeErrorCopied
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
