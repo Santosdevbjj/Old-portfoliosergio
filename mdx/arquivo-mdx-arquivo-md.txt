@@ -1,0 +1,4339 @@
+
+Tenho um repositório de artigos no GitHub 
+
+https://github.com/Santosdevbjj/myArticles
+
+Tenho arquivos .md. e arquivo .mdx
+
+os arquivos .md é exibido corretamente no meu portfólio 
+mas os arquivos .mdx nao consigo visualizar no meu 
+portfólio.
+
+No meu portfólio é exibida uma lista de todos os
+arquivos do meu repositório de artigos.
+para o usuário escolher qual quer ler
+
+sao exibidos corretamente para escolha do usuário 
+todos os arquivos .md e todos os arquivos .mdx
+
+
+o arquivos .md abre perfeitamente para leitura.
+
+Mas os arquivos .mdx apos clicar para abrir nao
+abrem.
+
+
+aparece a mensagem:
+
+
+
+ia-artigos
+sinergia ia expertise humanax
+Explore este artigo sobre ia-artigos localizado em seu repositório oficial.
+
+Artigo Técnico
+Ler mais.   
+Não Encontrado
+O recurso que você procura não existe ou foi movido.
+
+Verifique a URL ou retorne à página inicial.
+
+Tentar novamente.          
+
+
+
+
+
+
+
+
+POR favor revise todos os arquivos com base na documentação oficial de 2026
+
+
+
+
+
+
+Todos os arquivos estão de acordo com o typescript 6.0.2 e next.js 16.2.2 e React 19 
+E node 24 e tailwindcss versão 4.2?
+
+
+São multilingues português inglês e espanhol da Espanha e espanhol da Argentina e espanhol do México?
+
+
+São totalmente responsivos?
+
+
+
+
+
+
+Revise o arquivo src/app/[lang]/artigos/page.tsx
+
+E me entregue o arquivo completo e corrigido.
+
+
+O ARQUIVO src/app/[lang]/artigos/page.tsx
+
+Está com esse conteúdo:
+
+
+/**
+ * src/app/[lang]/artigos/page.tsx
+ * Stack: Next.js 16.2.2, React 19, TS 6.0.2, Tailwind 4.2
+ * Status: INTEGRADO E MULTILÍNGUE
+ */
+import { getArticlesWithRetry } from "@/lib/github/service";
+import { ArticleCard } from "@/components/ArticleCard";
+import MdxLayout from "@/components/mdx-layout";
+import { getServerDictionary } from "@/lib/getServerDictionary";
+import { headers } from "next/headers";
+import type { Locale } from "@/types/dictionary";
+import type { GitHubItem } from "@/lib/github/types";
+import { normalizeLocale } from "@/dictionaries/locales";
+
+interface PageProps {
+  params: Promise<{ lang: string }>;
+}
+
+export default async function ArticlesListPage({ params }: PageProps) {
+  // Consome params e headers para garantir dynamic rendering no Next 16.2
+  const resolvedParams = await params;
+  await headers();
+  
+  const lang = normalizeLocale(resolvedParams.lang) as Locale;
+  
+  const [allArticles, dict] = await Promise.all([
+    getArticlesWithRetry(),
+    getServerDictionary(lang)
+  ]);
+
+  // Agrupamento por categoria extraída do path do GitHub
+  const categories = allArticles.reduce((acc, art) => {
+    const catName = art.category || "geral";
+    if (!acc[catName]) acc[catName] = [];
+    acc[catName].push(art);
+    return acc;
+  }, {} as Record<string, GitHubItem[]>);
+
+  // Lógica visual para o título (Ex: "Artigos Técnicos" -> "Artigos" + "Técnicos" em azul)
+  const titleParts = dict.articles.title.split(' ');
+  const firstWord = titleParts[0];
+  const restOfTitle = titleParts.slice(1).join(' ');
+
+  return (
+    <MdxLayout lang={lang} dict={dict}>
+      <div className="not-prose max-w-7xl mx-auto px-4 py-12 md:py-24">
+        <header className="mb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+          <h1 className="text-6xl md:text-9xl font-black tracking-tighter uppercase italic text-zinc-900 dark:text-white leading-[0.8]">
+            {firstWord}<br />
+            <span className="text-blue-600 dark:text-blue-500">{restOfTitle}</span>
+          </h1>
+          <div className="h-2 w-24 bg-blue-600 mt-10 rounded-full shadow-[0_0_30px_rgba(37,99,235,0.4)]" />
+        </header>
+
+        <div className="space-y-32">
+          {Object.entries(categories).map(([category, articles]) => (
+            <section key={category} className="scroll-mt-20">
+              <div className="flex items-center gap-6 mb-12">
+                <h2 className="text-sm font-black uppercase tracking-[0.3em] text-blue-600 dark:text-blue-400">
+                  {/* Tradução amigável da categoria */}
+                  {category.replace(/-/g, ' ')}
+                </h2>
+                <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+                {articles.map((article) => (
+                  <ArticleCard key={article.path} article={article} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+
+        {allArticles.length === 0 && (
+          <div className="py-40 text-center opacity-50">
+            <p className="text-xl font-medium">{dict.states?.empty || "Nenhum artigo encontrado."}</p>
+          </div>
+        )}
+
+        <footer className="mt-40 pt-20 border-t border-zinc-100 dark:border-zinc-900 flex flex-col items-center">
+          <img src="/images/trofeus-vencedor-dio.png" alt="Winner Badge" className="h-28 w-auto mb-6" />
+          <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-zinc-400">Technical Excellence 2025</p>
+        </footer>
+      </div>
+    </MdxLayout>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Revise o arquivo src/app/[lang]/artigos/[...slug]/page.tsx
+
+
+E me entregue o arquivo completo e corrigido
+
+
+O ARQUIVO src/app/[lang]/artigos/[...slug]/page.tsx
+
+
+Está com esse conteúdo:
+
+
+/**
+ * src/app/[lang]/artigos/[...slug]/page.tsx
+ * Stack: Next.js 16.2.2, React 19, TS 6.0.2, Tailwind 4.2, Node 24
+ * Status: CORRIGIDO (EmptyGenerateStaticParamsError & TS Strict)
+ */
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { headers } from "next/headers";
+
+import type { Locale } from "@/types/dictionary";
+import MdxLayout from "@/components/mdx-layout";
+import ShareArticle from "@/components/ShareArticle";
+import { getArticlesWithRetry } from "@/lib/github/service";
+import { getServerDictionary } from "@/lib/getServerDictionary";
+import { normalizeLocale, SUPPORTED_LOCALES } from "@/dictionaries/locales";
+
+interface PageProps {
+  params: Promise<{ slug: string[]; lang: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lang, slug } = await params;
+  const lastPart = slug[slug.length - 1] ?? "artigo";
+  const siteUrl = "https://portfoliosantossergio.vercel.app";
+  
+  const ogImage = `${siteUrl}/api/og/article?lang=${lang}&slug=${encodeURIComponent(slug.join("/"))}`;
+
+  return {
+    title: `${lastPart.replace(/-/g, " ").toUpperCase()} | SÉRGIO SANTOS`,
+    description: `Artigo técnico sobre engenharia de software e ciência de dados.`,
+    openGraph: {
+      url: `${siteUrl}/${lang}/artigos/${slug.join("/")}`,
+      images: [{ url: ogImage, width: 1200, height: 630 }],
+      type: "article",
+    },
+    twitter: { card: "summary_large_image", images: [ogImage] },
+  };
+}
+
+/**
+ * SOLUÇÃO PARA O ERRO: EmptyGenerateStaticParamsError
+ * No Next.js 16.2.2, se a API falhar ou estiver vazia no build, 
+ * precisamos retornar ao menos um objeto para evitar quebra do build.
+ */
+export async function generateStaticParams() {
+  try {
+    const articles = await getArticlesWithRetry();
+    
+    // Fallback: Se não houver artigos, gera um slug 'index' para cada idioma 
+    // apenas para satisfazer a validação de build-time do Next.js 16.
+    if (!articles || articles.length === 0) {
+      return SUPPORTED_LOCALES.map((locale) => ({ 
+        lang: locale, 
+        slug: ["index"] 
+      }));
+    }
+
+    return articles.flatMap((art) => {
+      const cleanSlug = art.path
+        .replace(/^artigos\//, "")
+        .replace(/\.(md|mdx)$/, "")
+        .split("/");
+      
+      return SUPPORTED_LOCALES.map((locale) => ({ 
+        lang: locale, 
+        slug: cleanSlug 
+      }));
+    });
+  } catch (error) {
+    console.warn("[Build] Falha ao gerar params estáticos, usando fallback.");
+    return SUPPORTED_LOCALES.map((locale) => ({ 
+      lang: locale, 
+      slug: ["error-fallback"] 
+    }));
+  }
+}
+
+export default async function ArtigoDetalhePage({ params }: PageProps) {
+  // 1. Aguarda params e consome headers para garantir contexto dinâmico no Node 24
+  const resolvedParams = await params;
+  await headers(); 
+
+  const { slug, lang: rawLang } = resolvedParams;
+  const lang = normalizeLocale(rawLang) as Locale;
+  const dict = await getServerDictionary(lang);
+
+  // 2. Construção da URL do GitHub
+  const pathStr = slug.join("/");
+  if (pathStr === "index" || pathStr === "error-fallback") return notFound();
+
+  const fileName = pathStr.endsWith('.md') || pathStr.endsWith('.mdx') ? pathStr : `${pathStr}.md`;
+  const url = `https://raw.githubusercontent.com/Santosdevbjj/myArticles/main/artigos/${fileName}`;
+  
+  // 3. Fetch com Cache Revalidate (ISR)
+  const res = await fetch(url, { next: { revalidate: 3600 } });
+  if (!res.ok) return notFound();
+  
+  const content = await res.text();
+  
+  // 4. Extração de metadados via Regex (compatível com TS 6.0.2)
+  const match = content.match(/^#\s+(.*)$/m);
+  const articleTitle: string = match?.[1]?.trim() ?? slug[slug.length - 1]?.replace(/-/g, " ") ?? "Artigo";
+
+  return (
+    <MdxLayout lang={lang} dict={dict}>
+      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-12 md:py-24 px-4 transition-all">
+        <article className="max-w-4xl mx-auto">
+          
+          <header className="mb-20 animate-in fade-in slide-in-from-top-4 duration-1000">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="h-px w-8 bg-blue-600" />
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600 dark:text-blue-400">
+                {dict.articles.publishedAt} Technical Writing • 2026
+              </span>
+            </div>
+            
+            <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-zinc-900 dark:text-white leading-tight mb-10">
+              {articleTitle}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-6 text-zinc-500 font-bold text-[11px] uppercase tracking-widest">
+              <span className="px-3 py-1 bg-zinc-200 dark:bg-zinc-800 rounded-full text-zinc-600 dark:text-zinc-400">
+                {lang}
+              </span>
+              <div className="w-1.5 h-1.5 rounded-full bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.5)]" />
+              <span>Verified Content</span>
+            </div>
+          </header>
+
+          {/* Renderização de Markdown com Tailwind 4.2 Typography */}
+          <div className="prose prose-zinc dark:prose-invert max-w-none 
+            prose-headings:font-black prose-headings:tracking-tighter
+            prose-a:text-blue-600 dark:prose-a:text-blue-400 
+            prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-zinc-800
+            prose-img:rounded-3xl prose-img:shadow-2xl transition-colors">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {content}
+            </ReactMarkdown>
+          </div>
+          
+          <footer className="mt-32 pt-16 border-t border-zinc-200 dark:border-zinc-900">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-10">
+              <ShareArticle title={articleTitle} dict={dict} lang={lang} />
+              
+              <div className="flex flex-wrap justify-center gap-4">
+                <a 
+                  href={`/pdf/cv-sergio-santos-${lang}.pdf`} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-xl active:scale-95"
+                >
+                  {dict.contact.cvLabel} ({lang})
+                </a>
+              </div>
+            </div>
+
+            <div className="mt-24 flex flex-col items-center opacity-30 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+              <img src="/images/trofeus-vencedor-dio.png" alt="Award Winner" className="h-16 mb-4" />
+              <p className="text-[9px] font-bold uppercase tracking-[0.3em]">Excellence in Technology</p>
+            </div>
+          </footer>
+        </article>
+      </div>
+    </MdxLayout>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Revise o arquivo src/components/mdx-layout.tsx
+
+
+E me entregue o arquivo completo e corrigido.
+
+
+
+O ARQUIVO src/components/mdx-layout.tsx
+
+Está com esse conteúdo:
+
+
+'use client';
+
+import Link from "next/link";
+import { useMemo } from "react";
+import TableOfContents from "./TableOfContents";
+import ShareArticle from "./ShareArticle";
+import type { Dictionary, Locale } from "@/types/dictionary";
+
+/**
+ * MDX LAYOUT COMPONENT - SÉRGIO SANTOS PORTFOLIO
+ * -----------------------------------------------------------------------------
+ * ✔ Next.js 16.2: App Router & Client Optimization
+ * ✔ React 19: UseMemo para cálculos de tradução de alto desempenho
+ * ✔ TypeScript 6.0: Strict Null Checks & Index Signature Safety
+ * ✔ Tailwind 4.2: Typography Engine com suporte a Dark Mode Oklch
+ */
+
+interface MdxLayoutProps {
+  readonly children: React.ReactNode;
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+}
+
+export default function MdxLayout({ children, lang, dict }: MdxLayoutProps) {
+  
+  /**
+   * TS 6.0 SAFETY:
+   * Resolvemos o acesso ao dicionário de SEO garantindo que a chave 'articles'
+   * seja tratada de forma segura para evitar o erro de 'possibly undefined'.
+   */
+  const articlesTitle = useMemo(() => {
+    const pageSeo = dict.seo.pages?.["articles"];
+    return pageSeo?.title ?? dict.articles.title ?? "Artigos";
+  }, [dict]);
+
+  /**
+   * GRAMÁTICA DINÂMICA (I18N):
+   * Constrói a label de retorno baseada no idioma detectado (PT, EN, ES variações).
+   */
+  const backLabel = useMemo(() => {
+    const action = dict.states.emptyProjects.cta; // "Voltar"
+    
+    if (lang.startsWith('pt')) return `${action} para ${articlesTitle}`;
+    if (lang.startsWith('en')) return `${action} to ${articlesTitle}`;
+    // Fallback para es-ES, es-AR, es-MX
+    return `${action} a ${articlesTitle}`;
+  }, [lang, dict, articlesTitle]);
+
+  // Título dinâmico para o componente de compartilhamento
+  const shareTitle = dict.articles.items[0]?.title ?? articlesTitle;
+
+  return (
+    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-24 pb-20 selection:bg-blue-500/30 transition-colors duration-500">
+      <div className="container mx-auto px-4 sm:px-6 max-w-7xl flex flex-col lg:flex-row gap-8 lg:gap-12">
+        
+        {/* COLUNA PRINCIPAL: ARTIGO */}
+        <article className="flex-1 max-w-4xl w-full order-2 lg:order-1">
+          
+          {/* NAVEGAÇÃO SUPERIOR */}
+          <nav className="mb-10 animate-in fade-in slide-in-from-left-4 duration-700" aria-label="Breadcrumb">
+            <Link 
+              href={`/${lang}/artigos`} 
+              className="group inline-flex items-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition-all duration-300"
+            >
+              <span className="mr-3 flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 dark:border-slate-800 group-hover:border-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all shadow-sm">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
+                </svg>
+              </span>
+              {backLabel}
+            </Link>
+          </nav>
+
+          {/* MOTOR DE TIPOGRAFIA - TAILWIND 4.2 */}
+          <div className="prose prose-slate dark:prose-invert lg:prose-xl 
+            max-w-none
+            prose-headings:font-black prose-headings:tracking-tighter
+            prose-h1:text-4xl md:text-5xl lg:text-7xl prose-h1:mb-8 prose-h1:leading-tight
+            prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:font-bold prose-a:no-underline hover:prose-a:underline
+            prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:bg-blue-50/50 dark:prose-blockquote:bg-blue-900/10 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic
+            prose-code:text-blue-700 dark:prose-code:text-blue-300 prose-code:bg-blue-500/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none
+            prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800 prose-pre:shadow-2xl prose-pre:rounded-3xl
+            prose-img:rounded-3xl prose-img:shadow-2xl prose-img:border dark:prose-img:border-slate-800">
+            {children}
+          </div>
+
+          {/* COMPARTILHAMENTO AO FINAL DO CONTEÚDO */}
+          <div className="mt-16 pt-10 border-t border-slate-200 dark:border-slate-800">
+            <ShareArticle 
+              title={shareTitle} 
+              dict={dict} 
+              lang={lang} 
+            />
+          </div>
+        </article>
+
+        {/* SIDEBAR: SUMÁRIO E INFO DO AUTOR */}
+        <aside className="lg:w-80 w-full order-1 lg:order-2">
+          <div className="lg:sticky lg:top-32 space-y-8">
+            
+            {/* Componente de Tabela de Conteúdos */}
+            <TableOfContents dict={dict} />
+            
+            {/* CARD DO AUTOR (Contextual para Cientista de Dados) */}
+            <div className="hidden lg:block p-8 rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-premium transition-all hover:border-blue-500/40">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 mb-4">
+                {dict.meta.author}
+              </h4>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                {dict.hero.headline}
+              </p>
+              
+              <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800/50">
+                <p className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                  {dict.about.stats.automation}
+                </p>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Revise o arquivo src/components/ShareArticle.tsx
+
+E me entregue o arquivo completo e corrigido.
+
+
+O ARQUIVO src/components/ShareArticle.tsx
+
+
+Está com esse conteúdo:
+
+
+"use client";
+
+import { useEffect, useState, useMemo } from "react";
+import type { Dictionary, Locale } from "@/types/dictionary";
+
+/**
+ * SHARE ARTICLE COMPONENT - SÉRGIO SANTOS PORTFOLIO
+ * -----------------------------------------------------------------------------
+ * ✔ Next.js 16.2: Client-side URL hydration safety
+ * ✔ React 19: useMemo para lógica de tradução regionalizada
+ * ✔ TS 6.0: Verificação de prefixo de Locale (PT, EN, ES)
+ * ✔ Multilíngue: Suporte PT-BR, EN-US, ES-ES, ES-AR, ES-MX
+ */
+
+interface ShareArticleProps {
+  readonly title: string;
+  readonly dict: Dictionary;
+  readonly lang: Locale;
+}
+
+export default function ShareArticle({ title, dict, lang }: ShareArticleProps) {
+  const [shareUrl, setShareUrl] = useState<string>("");
+
+  // Garante que a URL seja capturada apenas no navegador (Client Side)
+  useEffect(() => {
+    setShareUrl(window.location.href);
+  }, []);
+
+  /**
+   * LÓGICA DE TRADUÇÃO REGIONALIZADA (I18N)
+   * Abrange Português, Inglês e as variações de Espanhol (Espanha, Argentina e México)
+   */
+  const labels = useMemo(() => {
+    const isPt = lang.startsWith("pt");
+    const isEn = lang.startsWith("en");
+    const isEs = lang.startsWith("es");
+
+    return {
+      question: isPt 
+        ? "Gostou do conteúdo?" 
+        : isEn 
+          ? "Enjoyed the content?" 
+          : isEs 
+            ? "¿Te gustó el contenido?" // Espanhol (Universal)
+            : "Gostou do conteúdo?", // Fallback
+      button: isPt 
+        ? "Compartilhar no LinkedIn" 
+        : isEn 
+          ? "Share on LinkedIn" 
+          : isEs 
+            ? "Compartir en LinkedIn" // Espanhol (Universal)
+            : "Compartilhar no LinkedIn"
+    };
+  }, [lang]);
+
+  const linkedinUrl = useMemo(() => {
+    return `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+  }, [shareUrl]);
+
+  return (
+    <section className="mt-16 pt-10 border-t border-slate-200 dark:border-slate-800/60 not-prose">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+        
+        {/* TEXTO INFORMATIVO */}
+        <div className="space-y-2">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.25em] text-blue-600 dark:text-blue-400">
+            {labels.question}
+          </h3>
+          <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 font-medium max-w-md">
+            {dict.contact.subtitle}
+          </p>
+        </div>
+
+        {/* BOTÃO DE COMPARTILHAMENTO */}
+        <a
+          href={linkedinUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${labels.button}: ${title}`}
+          className="group relative inline-flex items-center justify-center gap-4 bg-[#0077b5] hover:bg-[#005582] text-white px-8 py-4 rounded-[1.25rem] font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-xl shadow-blue-500/10 hover:shadow-blue-600/20"
+        >
+          {/* ÍCONE LINKEDIN */}
+          <svg 
+            className="w-5 h-5 fill-current transition-transform duration-500 group-hover:rotate-[360deg]" 
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+          </svg>
+          
+          <span className="text-sm md:text-base tracking-tight">
+            {labels.button}
+          </span>
+
+          {/* EFEITO DE GLOW DISCRETO NO HOVER */}
+          <div className="absolute inset-0 rounded-[1.25rem] bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
+        </a>
+      </div>
+    </section>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Revise o arquivo src/components/TableOfContents.tsx
+
+E me entregue o arquivo completo e corrigido.
+
+
+
+O ARQUIVO src/components/TableOfContents.tsx
+
+
+Está com esse conteúdo:
+
+
+
+"use client";
+
+import { useEffect, useState, useMemo } from "react";
+import type { Dictionary } from "@/types/dictionary";
+
+/**
+ * TABLE OF CONTENTS COMPONENT - SÉRGIO SANTOS PORTFOLIO
+ * -----------------------------------------------------------------------------
+ * ✔ Stack: React 19, TS 6.0, Tailwind 4.2, Next.js 16.2
+ * ✔ Performance: Intersection Observer com otimização de CPU
+ * ✔ Responsividade: Accordion Móvel e Sidebar Desktop Sticky
+ */
+
+interface Heading {
+  id: string;
+  text: string;
+  level: number;
+}
+
+interface TableOfContentsProps {
+  readonly dict: Dictionary;
+}
+
+export default function TableOfContents({ dict }: TableOfContentsProps) {
+  const [headings, setHeadings] = useState<Heading[]>([]);
+  const [activeId, setActiveId] = useState<string>("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  /**
+   * RESOLUÇÃO DE TIPAGEM TS 6.0:
+   * Acesso seguro ao SeoDictionary para evitar erros de build 'possibly undefined'.
+   */
+  const tocTitle = useMemo(() => {
+    return dict.seo.pages?.["articles"]?.title ?? dict.articles.title;
+  }, [dict]);
+
+  useEffect(() => {
+    // Busca dentro do elemento 'article' injetado pelo MDX
+    const article = document.querySelector("article");
+    if (!article) return;
+
+    // Mapeamento de H2 e H3 para o sumário
+    const elements = Array.from(article.querySelectorAll("h2, h3")).map((elem) => {
+      const text = elem.textContent || "";
+      
+      // Slugify: Normalização robusta de IDs para compatibilidade com links
+      const id = elem.id || text.toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/[^\w-]/g, "");
+      
+      if (!elem.id) elem.id = id;
+      
+      return { 
+        id, 
+        text, 
+        level: Number(elem.tagName.charAt(1)) 
+      };
+    });
+
+    setHeadings(elements);
+
+    // Observador de interseção para destacar a seção atual no scroll
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+          }
+        });
+      },
+      { 
+        rootMargin: "-80px 0% -70% 0%", // Ajustado para compensar o Header fixo
+        threshold: 1.0 
+      }
+    );
+
+    article.querySelectorAll("h2, h3").forEach((h) => observer.observe(h));
+    
+    return () => observer.disconnect();
+  }, []);
+
+  // Não renderiza nada se o artigo não tiver subtítulos
+  if (headings.length === 0) return null;
+
+  return (
+    <nav 
+      className="w-full lg:w-72 flex flex-col"
+      aria-label={dict.common.navigation}
+    >
+      {/* VERSÃO MOBILE: Accordion Premium */}
+      <div className="lg:hidden mb-6">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          aria-expanded={isOpen}
+          className="flex items-center justify-between w-full p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-all active:scale-[0.98]"
+        >
+          <div className="flex flex-col items-start text-left">
+            <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">
+              {tocTitle}
+            </span>
+            <span className="text-xs font-bold text-slate-500 truncate max-w-[200px]">
+              {headings.find(h => h.id === activeId)?.text || dict.states.loading}
+            </span>
+          </div>
+          <div className={`p-2 rounded-full bg-slate-50 dark:bg-slate-800 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+            <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </button>
+      </div>
+
+      {/* LISTAGEM DE TÓPICOS: Sticky em LG+ */}
+      <div 
+        className={`
+          ${isOpen ? 'max-h-[1000px] opacity-100 mb-8' : 'max-h-0 opacity-0 lg:max-h-none lg:opacity-100'} 
+          overflow-hidden lg:block transition-all duration-500 ease-in-out
+          lg:border-l lg:border-slate-200 lg:dark:border-slate-800 lg:pl-6
+        `}
+      >
+        <h4 className="hidden lg:block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 mb-6">
+          {tocTitle}
+        </h4>
+        
+        <ul className="space-y-4">
+          {headings.map((h) => (
+            <li 
+              key={h.id} 
+              style={{ paddingLeft: h.level > 2 ? `${(h.level - 2) * 12}px` : '0px' }}
+              className="group relative"
+            >
+              <a 
+                href={`#${h.id}`}
+                onClick={() => setIsOpen(false)}
+                className={`
+                  text-sm font-bold transition-all duration-300 block leading-snug
+                  ${activeId === h.id 
+                    ? "text-blue-600 dark:text-blue-400 translate-x-1" 
+                    : "text-slate-400 hover:text-slate-900 dark:text-slate-500 dark:hover:text-slate-300"
+                  }
+                `}
+              >
+                {/* Indicador de Seção Ativa */}
+                {activeId === h.id && (
+                  <span className="absolute -left-6 top-1/2 -translate-y-1/2 w-1 h-4 rounded-full bg-blue-600 animate-in fade-in zoom-in lg:-left-6.5" />
+                )}
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Revise o arquivo src/components/ArticleCard.tsx
+
+E me entregue o arquivo completo e corrigido.
+
+
+
+
+O ARQUIVO src/components/ArticleCard.tsx
+
+
+Está com esse conteúdo:
+
+
+
+/**
+ * src/components/ArticleCard.tsx
+ * Componente de UI moderno com Tailwind 4.2 e React 19.
+ * Corrigido para conformidade estrita com index signature do TS 6.
+ */
+
+import type { GitHubItem } from "@/lib/github/types";
+import { BookOpen, Calendar, ChevronRight } from "lucide-react";
+
+interface ArticleCardProps {
+  article: GitHubItem;
+}
+
+// Mapeamento de cores baseado nas categorias do GitHub
+// Usamos Record<string, string> para permitir categorias dinâmicas
+const categoryStyles: Record<string, string> = {
+  react: "bg-blue-500/10 text-blue-600 border-blue-200 dark:border-blue-500/30",
+  autoconhecimento: "bg-emerald-500/10 text-emerald-600 border-emerald-200 dark:border-emerald-500/30",
+  geral: "bg-slate-500/10 text-slate-600 border-slate-200 dark:border-slate-500/30",
+  // Fallback para novas categorias
+  fallback: "bg-purple-500/10 text-purple-600 border-purple-200 dark:border-purple-500/30",
+};
+
+export function ArticleCard({ article }: ArticleCardProps) {
+  // Normaliza a categoria para encontrar no mapa
+  const categoryKey = article.category.toLowerCase();
+  
+  /**
+   * CORREÇÃO TS 6: 
+   * Acessamos via ['key'] para satisfazer a regra de index signature.
+   * Mudamos o nome de 'default' para 'fallback' para evitar confusão com palavra reservada,
+   * embora o acesso via colchetes ['default'] também funcionaria.
+   */
+  const badgeStyle = categoryStyles[categoryKey] || categoryStyles['fallback'];
+
+  return (
+    <div className="group relative flex flex-col justify-between p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-300 hover:shadow-xl hover:shadow-zinc-500/5 hover:-translate-y-1">
+      
+      {/* Header do Card */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <span className={`px-3 py-1 text-xs font-semibold uppercase tracking-wider border rounded-full ${badgeStyle}`}>
+            {article.category}
+          </span>
+          <BookOpen className="w-4 h-4 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors" />
+        </div>
+
+        <h3 className="text-xl font-bold text-zinc-800 dark:text-zinc-100 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          {article.name.replace('.md', '').replace(/-/g, ' ')}
+        </h3>
+        
+        <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2">
+          Explore este artigo sobre {article.category} localizado em seu repositório oficial.
+        </p>
+      </div>
+
+      {/* Footer do Card */}
+      <div className="mt-6 flex items-center justify-between border-t border-zinc-100 dark:border-zinc-800 pt-4">
+        <div className="flex items-center text-zinc-400 text-xs">
+          <Calendar className="w-3.5 h-3.5 mr-1" />
+          <span>Artigo Técnico</span>
+        </div>
+        
+        <a 
+          href={`/artigos/${article.category}/${article.name.replace('.md', '')}`}
+          className="flex items-center text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline underline-offset-4"
+        >
+          Ler mais
+          <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+        </a>
+      </div>
+    </div>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Revise o arquivo src/mdx-components.tsx
+
+E me entregue o arquivo completo e corrigido.
+
+
+
+O ARQUIVO src/mdx-components.tsx
+
+Está com esse conteúdo:
+
+
+import type { MDXComponents } from 'mdx/types'
+
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    // Permite estilizar títulos, links, etc.
+    h1: ({ children }) => <h1 className="text-4xl font-bold my-4">{children}</h1>,
+    h2: ({ children }) => <h2 className="text-3xl font-semibold my-3">{children}</h2>,
+    p: ({ children }) => <p className="text-base leading-7 my-2">{children}</p>,
+    ...components,
+  }
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Análise junto também com o arquivo 
+
+src/lib/github/service.ts
+
+QUE TEM ESSE CONTEÚDO:
+
+
+/**
+ * src/lib/github/service.ts
+ * Versão Resiliente (v2026) - Otimizada para CI&T
+ * STATUS: CORRIGIDO (TypeScript Strict Mode Fixed)
+ * STACK: Next.js 16.2.2, React 19, TS 6.0.2, Node 24
+ */
+import { cache } from "react";
+import { headers } from "next/headers";
+import type { GitHubItem, GitHubRawItem } from "./types";
+
+// Tenta ler de ambas as variáveis possíveis para máxima compatibilidade no Deploy
+const GITHUB_TOKEN = (process.env["GITHUB_ACCESS_TOKEN"] || process.env["GITHUB_TOKEN"])?.trim();
+
+const OWNER = "Santosdevbjj";
+const REPO = "myArticles";
+const BASE_URL = `https://api.github.com/repos/${OWNER}/${REPO}/contents/artigos`;
+
+/**
+ * Busca artigos de forma recursiva. 
+ * Esta abordagem garante que todos os arquivos em subpastas sejam encontrados.
+ */
+async function fetchRecursive(url: string): Promise<GitHubItem[]> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+  try {
+    const res = await fetch(url, {
+      headers: {
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "Portfolio-Sergio-Santos-v2026",
+        ...(GITHUB_TOKEN && { "Authorization": `Bearer ${GITHUB_TOKEN}` })
+      },
+      signal: controller.signal,
+      next: { revalidate: 3600 } 
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!res.ok) {
+      console.error(`[GitHub Service] Erro ${res.status} em ${url}`);
+      throw new Error(`GH_ERROR_${res.status}`);
+    }
+
+    const items = (await res.json()) as GitHubRawItem[];
+    if (!Array.isArray(items)) return [];
+
+    const results = await Promise.all(items.map(async (item): Promise<GitHubItem[]> => {
+      // 1. Se for diretório, entra nele (Recursão)
+      if (item.type === 'dir') {
+        return fetchRecursive(item.url);
+      }
+
+      // 2. Filtra arquivos: .md ou .mdx (Ignora README)
+      const isMarkdown = item.name.endsWith('.md') || item.name.endsWith('.mdx');
+      const isNotReadme = !item.name.toLowerCase().includes('readme');
+
+      if (isMarkdown && isNotReadme) {
+        const pathParts = item.path.split('/');
+        
+        // CORREÇÃO TS: Garantindo que categoryName seja sempre string (fallback para 'geral')
+        const categoryName: string = pathParts.length > 2 
+          ? (pathParts[pathParts.length - 2] ?? 'geral') 
+          : 'geral';
+
+        return [{
+          name: item.name,
+          path: item.path,
+          url: item.url,
+          type: 'file' as const, // Força o literal 'file' para bater com a Interface
+          download_url: item.download_url,
+          category: categoryName
+        }];
+      }
+
+      return [];
+    }));
+
+    return results.flat();
+
+  } catch (err: any) {
+    clearTimeout(timeoutId);
+    console.error(`[GitHub Service] Falha ao buscar em ${url}:`, err.message);
+    throw err;
+  }
+}
+
+/**
+ * Função principal com retry e cache do React 19
+ */
+export const getArticlesWithRetry = cache(async (retries = 2): Promise<GitHubItem[]> => {
+  try {
+    // Força comportamento dinâmico para evitar cache estático antigo no build
+    try { await headers(); } catch { /* Ignore build-time */ }
+
+    const articles = await fetchRecursive(BASE_URL);
+    console.log(`[GitHub Service] Sucesso: ${articles.length} artigos encontrados.`);
+    return articles;
+
+  } catch (error: any) {
+    if (retries > 0) {
+      console.log(`[GitHub Service] Tentando novamente... (${retries} restantes)`);
+      await new Promise(r => setTimeout(r, 2000));
+      return getArticlesWithRetry(retries - 1);
+    }
+
+    console.error("[GitHub Service] Falha crítica após todas as tentativas.");
+    return [];
+  }
+}); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Análise junto também com o arquivo 
+
+src/lib/github/types.ts
+
+
+
+O ARQUIVO src/lib/github/types.ts
+
+TEM ESSE CONTEÚDO:
+
+
+/**
+ * src/lib/github/types.ts
+ * Tipagens para o ecossistema GitHub API v2026
+ */
+
+export interface GitHubItem {
+  name: string;
+  path: string;
+  url: string;
+  type: 'file' | 'dir';
+  download_url: string | null;
+  category: string; 
+}
+
+// Representa o item bruto vindo da API de Trees
+export interface GitHubRawTreeItem {
+  path?: string;
+  mode?: string;
+  type?: string;
+  sha?: string;
+  size?: number;
+  url?: string;
+}
+
+// Para compatibilidade com outras partes do código
+export interface GitHubRawItem {
+  name: string;
+  path: string;
+  url: string;
+  type: string;
+  download_url: string | null;
+  sha: string;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Análise junto também com o arquivo 
+
+src/dictionaries/pt-BR.json
+
+
+QUE TEM ESSE CONTEÚDO:
+
+{
+  "meta": {
+    "version": "1.0.1",
+    "locale": "pt-BR",
+    "direction": "ltr",
+    "lastUpdated": "2026-03-08T21:00:00Z",
+    "author": "Sérgio Santos",
+    "source": "manual",
+    "contentVersion": "2026.03.08",
+    "contentHash": "i18n-ptbr-2026-03-08",
+    "sourceType": "curated-manual",
+    "description": "Portfólio de Sérgio Santos: Especialista em Ciência de Dados, IA e Engenharia de Software com foco em Sistemas Críticos e Missão Crítica. Veja projetos e artigos técnicos."
+  },
+
+  "hero": {
+    "greeting": "Disponível para Projetos Críticos",
+    "title": "Cientista de Dados",
+    "subtitle": "Dados e Resiliência",
+    "headline": "Especialista em transformar infraestruturas complexas em sistemas de alta disponibilidade e pipelines de dados escaláveis.",
+    "ctaPrimary": "Ver Projetos"
+  },
+
+  "construction": {
+    "badge": "Análise de Risco & IA",
+    "title": "Previsão de Riscos em Construção Civil",
+    "description": "Desenvolvimento de modelos preditivos para identificar gargalos operacionais e riscos estruturais em grandes obras, utilizando redes neurais e análise de séries temporais.",
+    "techStack": ["Python", "TensorFlow", "Azure Data Factory", "Power BI"],
+    "viewProject": "Explorar Solução",
+    "metrics": {
+      "accuracy": "94%",
+      "label": "Precisão do Modelo"
+    }
+  },
+
+  "about": {
+    "title": "Sobre Mim",
+    "differentialTitle": "Engenharia de Dados com Foco em Missão Crítica",
+    "description": "Cientista de Dados com base sólida em sistemas críticos bancários e foco em transformar dados em decisões, redução de custos e eficiência operacional.",
+    "differentialContent": "Atuei por mais de 15 anos no Banco Bradesco em ambientes regulados de missão crítica. Atualmente direciono minha atuação para Ciência de Dados e IA.",
+    "highlights": [
+      "15+ anos em Bancos",
+      "Especialista Cloud",
+      "Data Science & IA"
+    ],
+    "stats": {
+      "experienceValue": "+15",
+      "experienceLabel": "Anos de experiência em sistemas de missão crítica no setor bancário,",
+      "availabilityValue": "99.9%",
+      "availabilityLabel": "Uptime",
+      "automation": "Sistemas 100% Automatizados"
+    }
+  },
+
+  "contact": {
+    "title": "Vamos Conversar?",
+    "subtitle": "Busco oportunidades em projetos de governança e modernização.",
+    "cta": "Enviar Email",
+    "emailLabel": "Copiar Email",
+    "cvLabel": "Ver CV",
+    "linkedinLabel": "LinkedIn",
+    "ctaTitle": "Vamos construir algo juntos?",
+    "buttonText": "Entrar em Contato →"
+  },
+
+  "experience": {
+    "title": "Experiência Profissional",
+    "emptyLabel": "Nenhuma experiência encontrada",
+    "items": [
+      {
+        "company": "Consultor Autônomo / Transição",
+        "period": "2008 - Atual",
+        "role": "Especialista em Sistemas Críticos",
+        "description": "Arquitetura e manutenção de pipelines de dados e infraestrutura resiliente."
+      }
+    ]
+  },
+
+  "articles": {
+    "title": "Artigos Técnicos",
+    "mediumProfile": "Ver perfil no Medium",
+    "readMore": "Ler artigo completo",
+    "publishedAt": "Publicado em",
+    "bestOfMonth": "Destaque do Mês",
+    "awardWinner": "Artigo Premiado",
+    "items": [
+      {
+        "title": "A Era dos Dados em Sistemas Críticos",
+        "description": "Como a governança de dados transforma sistemas legados em ativos estratégicos.",
+        "date": "2025",
+        "category": "Data Strategy",
+        "isAward": true,
+        "link": "https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
+      }
+    ]
+  },
+
+  "projects": {
+    "title": "Projetos e Soluções",
+    "featuredLabel": "Destaque Técnico",
+    "firstLabel": "Desafio e Arquitetura",
+    "impactLabel": "Impacto e Resultado",
+    "problem": "Problema",
+    "solution": "Solução",
+    "viewProject": "Repositório GitHub",
+    "viewDemo": "Visualizar Demo",
+    "viewAll": "Ver Todos",
+
+    "portfolio": {
+      "all": "Todos",
+      "viewProject": "Ver Projeto"
+    },
+
+    "categories": {
+      "Data Engineering": { "labelKey": "Engenharia de Dados" },
+      "Cloud & Infrastructure": { "labelKey": "Nuvem e Infraestrutura" },
+      "Data Science": { "labelKey": "Ciência de Dados" },
+      "Data Analytics": { "labelKey": "Análise de Dados" },
+      "Outros": { "labelKey": "Outros Projetos" },
+
+      "dataScience": { "labelKey": "Ciência de Dados" },
+      "cloud": { "labelKey": "Cloud & Databricks" },
+      "graphs": { "labelKey": "Análise de Grafos (Neo4J)" },
+      "analysis": { "labelKey": "Análise de Dados & Power BI" },
+      "excel": { "labelKey": "Excel e Modelagem de Dados" },
+      "database": { "labelKey": "Banco de Dados & SQL" },
+
+      "dev": { "labelKey": "Desenvolvimento de Software" },
+      "security": { "labelKey": "Cibersegurança" },
+
+      "html": { "labelKey": "HTML" },
+      "css": { "labelKey": "CSS" },
+      "javascript": { "labelKey": "JavaScript" },
+      "typescript": { "labelKey": "TypeScript" },
+      "next": { "labelKey": "Next.js" },
+      "node": { "labelKey": "Node.js" },
+      "react": { "labelKey": "React" },
+      "articles": { "labelKey": "Artigos Técnicos" }
+    },
+
+    "featuredProjects": []
+  },
+
+  "common": {
+    "navigation": "Navegação principal",
+    "role": "Cientista de Dados | Python | SQL | Azure",
+    "footer": "© 2026 Sérgio Santos. Todos os direitos reservados.",
+    "rights": "Todos os direitos reservados",
+    "builtWith": "Desenvolvido com Next.js 16.2.0 & TypeScript 6",
+    "loading": "Carregando...",
+    "error": "Algo deu errado.",
+    "socialLinks": "Abrir perfil de {platform}",
+    "skipToContent": "Pular para o conteúdo",
+    "languageSwitcher": "Alterar idioma",
+    "email": "santossergiorealbjj@outlook.com",
+
+    "nav": {
+      "about": "Sobre",
+      "experience": "Experiência",
+      "projects": "Projetos",
+      "articles": "Artigos",
+      "contact": "Contato"
+    },
+
+    "theme": {
+      "light": "Claro",
+      "dark": "Escuro",
+      "system": "Sistema"
+    },
+
+    "externalLinks": {
+      "linkedin": "https://www.linkedin.com/in/santossergioluiz",
+      "github": "https://github.com/Santosdevbjj",
+      "medium": "https://medium.com/@sergiosantosluiz",
+      "email": "mailto:santossergiorealbjj@outlook.com"
+    }
+  },
+
+  "intl": {
+    "locale": "pt-BR",
+    "fallbackLocale": "pt",
+    "currency": "BRL",
+    "timezone": "America/Sao_Paulo",
+    "unitDisplay": "short",
+    "numberFormat": "pt-BR"
+  },
+
+  "states": {
+    "loading": "Carregando...",
+    "empty": "Sem dados.",
+    "error": "Erro ao carregar.",
+    "emptyProjects": {
+      "title": "Nenhum projeto",
+      "description": "Em breve.",
+      "cta": "Voltar"
+    },
+    "emptyExperience": "Sem registros.",
+    "errorArticles": "Erro nos artigos."
+  },
+
+  "cookie": {
+    "title": "Cookies",
+    "description": "Melhoramos sua experiência.",
+    "necessary": "Necessários",
+    "alwaysActive": "Ativo",
+    "analytics": "Analíticos",
+    "acceptAll": "Aceitar",
+    "savePreferences": "Salvar"
+  },
+
+  "seo": {
+    "siteName": "Sérgio Santos | Portfolio",
+    "title": "Cientista de Dados e Sistemas Criticos",
+    "description": "Especialista em Ciência de Dados, IA e Engenharia de Software com foco em Sistemas Críticos e Missão Crítica. Veja projetos e artigos técnicos.",
+    "keywords": [
+      "Ciência de Dados",
+      "Data Science",
+      "Machine Learning",
+      "ETL",
+      "Cloud Computing",
+      "Azure",
+      "Python"
+    ]
+  },
+
+  "metrics": {
+    "availability": "99,5%",
+    "availabilityNormalized": {
+      "value": 99.5,
+      "unit": "%"
+    }
+  },
+
+  "resume": {
+    "selectLanguage": "Selecionar Idioma",
+    "languages": {
+      "pt-BR": "Português",
+      "en-US": "Inglês",
+      "es-ES": "Espanhol",
+      "es-AR": "Espanhol (AR)",
+      "es-MX": "Espanhol (MX)"
+    }
+  },
+
+  "menu": {
+    "open": "Abrir menu",
+    "close": "Fechar"
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+Análise junto também com o arquivo src/dictionaries/locales.ts
+
+QUE TEM QUE TEM 
+
+
+
+
+// src/dictionaries/locales.ts
+
+/**
+ * Lista oficial de locales suportados.
+ */
+export const SUPPORTED_LOCALES = [
+  "pt-BR",
+  "en-US",
+  "es-ES",
+  "es-AR",
+  "es-MX",
+] as const;
+
+export const locales = SUPPORTED_LOCALES;
+
+export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+
+export const DEFAULT_LOCALE: SupportedLocale = "pt-BR";
+
+/**
+ * Verifica se a string é um locale suportado.
+ */
+export function isValidLocale(
+  locale: string,
+): locale is SupportedLocale {
+  return SUPPORTED_LOCALES.includes(
+    locale as SupportedLocale,
+  );
+}
+
+/**
+ * Normaliza qualquer entrada para um locale suportado.
+ *
+ * ✔ Case insensitive
+ * ✔ Aceita pt-br, pt_BR
+ * ✔ Aceita pt, en, es
+ * ✔ Nunca retorna null
+ * ✔ Sempre retorna SupportedLocale
+ */
+export function normalizeLocale(
+  input?: string | null,
+): SupportedLocale {
+  if (!input) return DEFAULT_LOCALE;
+
+  const cleaned = input.trim().replace(/_/g, "-").toLowerCase();
+
+  // ISO base
+  if (cleaned === "pt") return "pt-BR";
+  if (cleaned === "en") return "en-US";
+  if (cleaned === "es") return "es-ES";
+
+  // Formato xx-YY
+  const dashIndex = cleaned.indexOf("-");
+
+  if (dashIndex > 0) {
+    const lang = cleaned.slice(0, dashIndex);
+    const region = cleaned.slice(dashIndex + 1);
+
+    if (lang.length === 2 && region.length === 2) {
+      const formatted = `${lang}-${region.toUpperCase()}`;
+
+      if (isValidLocale(formatted)) {
+        return formatted;
+      }
+    }
+  }
+
+  return DEFAULT_LOCALE;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Análise junto também com o arquivo 
+
+src/types/dictionary.ts
+
+
+QUE TEM ESSE CONTEÚDO:
+
+
+// src/types/dictionary.ts
+
+import type { SupportedLocale } from "@/dictionaries/locales";
+
+export type Locale = SupportedLocale;
+
+/* ================= META ================= */
+export interface DictionaryMeta {
+  version: string;
+  locale: Locale;
+  direction: "ltr" | "rtl";
+  lastUpdated: string;
+  author: string;
+  source?: string;
+  contentVersion?: string;
+  contentHash?: string;
+  sourceType?: string;
+  description: string;
+}
+
+/* ================= HERO ================= */
+export interface HeroDictionary {
+  greeting: string;
+  title: string;
+  subtitle: string;
+  headline: string;
+  ctaPrimary: string;
+}
+
+/* ================= CONSTRUCTION ================= */
+export interface ConstructionDictionary {
+  badge: string;
+  title: string;
+  description: string;
+  techStack: string[];
+  viewProject: string;
+  metrics: {
+    accuracy: string;
+    label: string;
+  };
+}
+
+/* ================= ABOUT ================= */
+export interface AboutDictionary {
+  title: string;
+  differentialTitle: string;
+  description: string;
+  differentialContent: string;
+  highlights: string[];
+  stats: {
+    experienceValue: string;
+    experienceLabel: string;
+    availabilityValue: string;
+    availabilityLabel: string;
+    automation: string;
+  };
+}
+
+/* ================= CONTACT ================= */
+export interface ContactDictionary {
+  title: string;
+  subtitle: string;
+  cta: string;
+  emailLabel: string;
+  cvLabel: string;
+  linkedinLabel: string;
+  ctaTitle?: string;
+  buttonText?: string;
+}
+
+/* ================= EXPERIENCE ================= */
+export interface ExperienceItem {
+  company: string;
+  period: string;
+  role: string;
+  description: string;
+}
+
+export interface ExperienceDictionary {
+  title: string;
+  items: ExperienceItem[];
+  emptyLabel: string;
+}
+
+/* ================= ARTICLES ================= */
+export interface ArticleItem {
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+  isAward: boolean;
+  link: string;
+}
+
+export interface ArticlesSectionDictionary {
+  title: string;
+  mediumProfile: string;
+  readMore: string;
+  publishedAt: string;
+  bestOfMonth: string;
+  awardWinner: string;
+  items: ArticleItem[];
+}
+
+/* ================= PROJECTS ================= */
+export interface CategoryDetail {
+  labelKey: string;
+}
+
+/**
+ * 🔥 MANTIDO + FLEXÍVEL (SEM QUEBRAR O ANTIGO)
+ */
+export interface ProjectCategories {
+  "Data Engineering": CategoryDetail;
+  "Cloud & Infrastructure": CategoryDetail;
+  "Data Science": CategoryDetail;
+  "Data Analytics": CategoryDetail;
+  "Outros": CategoryDetail;
+
+  dataScience: CategoryDetail;
+  cloud: CategoryDetail;
+  graphs: CategoryDetail;
+  analysis: CategoryDetail;
+  excel: CategoryDetail;
+  database: CategoryDetail;
+  dev: CategoryDetail;
+  security: CategoryDetail;
+
+  html: CategoryDetail;
+  css: CategoryDetail;
+  javascript: CategoryDetail;
+  typescript: CategoryDetail;
+  next: CategoryDetail;
+  node: CategoryDetail;
+  react: CategoryDetail;
+
+  articles: CategoryDetail;
+
+  /**
+   * 🔥 mantém compatibilidade com ES-ES
+   */
+  [key: string]: CategoryDetail;
+}
+
+export interface ProjectItem {
+  id: string | number;
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+  category: string;
+  github?: string;
+  homepage?: string;
+}
+
+export interface ProjectsSectionDictionary {
+  title: string;
+  featuredLabel: string;
+  firstLabel: string;
+  impactLabel: string;
+  problem: string;
+  solution: string;
+  viewProject: string;
+  viewDemo: string;
+  viewAll: string;
+  portfolio: {
+    all: string;
+    viewProject: string;
+  };
+  categories: ProjectCategories;
+  featuredProjects: ProjectItem[];
+}
+
+/* ================= COMMON ================= */
+export interface CommonDictionary {
+  navigation: string;
+  role: string;
+  footer: string;
+  rights: string;
+  builtWith: string;
+  loading: string;
+  error: string;
+  socialLinks: string;
+  skipToContent: string;
+  languageSwitcher: string;
+  email: string;
+
+  nav: {
+    about: string;
+    experience: string;
+    projects: string;
+    articles: string;
+    contact: string;
+  };
+
+  theme: {
+    light: string;
+    dark: string;
+    system: string;
+  };
+
+  /**
+   * 🔥 VOLTOU A SER OBRIGATÓRIO (como era antes)
+   */
+  errorBoundary: {
+    title: string;
+    description: string;
+    actions: {
+      retry: string;
+      home: string;
+    };
+  };
+
+  notFound: {
+    title: string;
+    description: string;
+    button: string;
+  };
+
+  externalLinks: {
+    linkedin: string;
+    github: string;
+    medium: string;
+    email: string;
+  };
+
+  /**
+   * 🔥 CRÍTICO — obrigatório
+   */
+  menu: {
+    open: string;
+    close: string;
+    aria: {
+      open: string;
+      close: string;
+    };
+  };
+}
+
+/* ================= STATES ================= */
+export interface StateDictionary {
+  loading: string;
+  empty: string;
+  error: string;
+  emptyProjects: {
+    title: string;
+    description: string;
+    cta: string;
+  };
+  emptyExperience: string;
+  errorArticles: string;
+}
+
+/* ================= INTL ================= */
+export interface IntlDictionary {
+  locale: Locale;
+  fallbackLocale: string;
+  currency: string;
+  timezone: string;
+  unitDisplay: string;
+  numberFormat: string;
+}
+
+/* ================= COOKIE ================= */
+export interface CookieDictionary {
+  title: string;
+  description: string;
+  necessary: string;
+  alwaysActive: string;
+  analytics: string;
+  acceptAll: string;
+  savePreferences: string;
+}
+
+/* ================= SEO ================= */
+export interface SeoDictionary {
+  siteName: string;
+  title: string;
+  description: string;
+  keywords: string[];
+
+  /**
+   * 🔥 voltou a ser obrigatório
+   */
+  pages: {
+    [key: string]: {
+      title: string;
+      description: string;
+    };
+  };
+}
+
+/* ================= METRICS ================= */
+export interface MetricsDictionary {
+  availability: string;
+  availabilityNormalized: {
+    value: number;
+    unit: string;
+  };
+}
+
+/* ================= RESUME ================= */
+export interface ResumeDictionary {
+  selectLanguage: string;
+  languages: Record<string, string>;
+}
+
+/* ================= ROOT ================= */
+export interface Dictionary {
+  meta: DictionaryMeta;
+  hero: HeroDictionary;
+
+  /**
+   * 🔥 NOVO - Seção de Projetos de Construção Civil / IA
+   */
+  construction: ConstructionDictionary;
+
+  about: AboutDictionary;
+  contact: ContactDictionary;
+  experience: ExperienceDictionary;
+  articles: ArticlesSectionDictionary;
+  projects: ProjectsSectionDictionary;
+  common: CommonDictionary;
+  intl: IntlDictionary;
+  states: StateDictionary;
+  cookie: CookieDictionary;
+  seo: SeoDictionary;
+  metrics: MetricsDictionary;
+
+  /**
+   * 🔥 NOVO (não quebra nada)
+   */
+  resume: ResumeDictionary;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+A DOCUMENTAÇÃO OFICIAL
+
+
+
+
+
+
+em 4 de abril de 2026 no Vercel com typescript 6.0.2 e next.js 16.2.2 e React 19 e Node 24 e tailwindcss 4.2 como trabalhar e exibir corretamente arquivos .MDX e quais bibliotecas instalar
+
+
++7
+Em 4 de abril de 2026, com Next.js 16.2.2 (App Router), React 19, TypeScript 6.0.2 e Tailwind CSS 4.2, a melhor forma de trabalhar com MDX é utilizando a biblioteca oficial
+@next/mdx, que integra o MDX diretamente no sistema de roteamento do Next.js, permitindo que arquivos .mdx funcionem como páginas. 
+Aqui está o guia completo para configuração e uso:
+1. Bibliotecas a Instalar
+Execute o seguinte comando no terminal para instalar as dependências necessárias para compilar o MDX e estilizá-lo com Tailwind: 
+bash
+npm install @next/mdx @mdx-js/loader @mdx-js/react @types/mdx @tailwindcss/postcss
+Use o código com cuidado.
+2. Configuração (next.config.ts)
+Atualize seu arquivo de configuração do Next.js para reconhecer arquivos MDX e integrar com o Tailwind CSS 4. 
+typescript
+import type { NextConfig } from "next";
+import createMDX from "@next/mdx";
+
+const nextConfig: NextConfig = {
+  // Configuração necessária para páginas MDX
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+};
+
+const withMDX = createMDX({
+  // Adicione remark/rehype plugins aqui se necessário
+});
+
+export default withMDX(nextConfig);
+Use o código com cuidado.
+3. Configuração do Tailwind CSS 4.2
+Tailwind v4 funciona com PostCSS. Certifique-se de que seu postcss.config.mjs está configurado para V4. 
+javascript
+// postcss.config.mjs
+export default {
+  plugins: {
+    '@tailwindcss/postcss': {},
+  },
+};
+Use o código com cuidado.
+4. Definindo Estilos (Componentes MDX)
+Para garantir que as tags Markdown (<h1>, <p>, etc.) recebam estilos Tailwind, crie o arquivo mdx-components.tsx na raiz do projeto. 
+tsx
+// mdx-components.tsx
+import type { MDXComponents } from 'mdx/types'
+
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    // Exemplo de estilização usando Tailwind 4
+    h1: ({ children }) => <h1 className="text-4xl font-bold text-gray-900">{children}</h1>,
+    p: ({ children }) => <p className="text-base text-gray-700 mt-4">{children}</p>,
+    ...components,
+  }
+}
+Use o código com cuidado.
+5. Como Criar e Exibir Arquivos MDX
+Com @next/mdx, você pode colocar arquivos .mdx dentro da pasta app para criar rotas automáticas. 
+Exemplo: app/post/page.mdx
+mdx
+# Bem-vindo ao meu Post
+
+Este é um arquivo MDX com Tailwind CSS 4 e React 19.
+
+- Módulo 1
+- Módulo 2
+
+<div className="p-4 bg-blue-100 rounded">
+  Componente React dentro do MDX!
+</div>
+Use o código com cuidado.
+Dicas para 2026:
+Performance: A Vercel recomenda o uso de mdx-components.tsx para garantir que os componentes sejam pré-compilados eficientemente.
+React 19: O MDX compila para componentes React, beneficiando-se das melhorias de renderização do React 19.
+Turbopack: Com o Next.js 16.2+, o Turbopack está mais estável para desenvolvimento rápido com MDX. 
+
+12:33
+MDX with Next.js App Router
+
+
+YouTube·leerob
+File-system conventions: mdx-components.js
+29 de jul. de 2025 — Last updated April 2, 2026. The mdx-components. js|tsx file is required to use @next/mdx with App Router and will not work without it. Additionally, you can use...
+
+Next.js
+
+Discover MDX in Next.js: Perfect Integration of ...
+17 de fev. de 2025 — In turn, we need to create a file named mdx-components. tsx (or . js) at the root of our project. This file will be used to define global components that you ca...
+
+Medium
+
+Tailwind CSS v4 Migration Guide - DEV Community
+5 de jan. de 2026 — Step 1: Update Dependencies. Remove old Tailwind packages and install v4: # Remove v3 packages npm uninstall tailwindcss postcss autoprefixer # Install v4 npm i...
+
+DEV Community
+
+
+4m
+Next.js MDX is pretty awesome
+
+
+YouTube·Web Dev Cody
+Next.js by Vercel - The React Framework
+Flexible rendering and caching options, including Incremental Static Regeneration (ISR), on a per-page level. Next.js 16. The power of full-stack to the fronten...
+
+Next.js
+
+Building a Modern Blog with MDX and Next.js 16
+9 de jan. de 2026 — Developer-Friendly: Write content in familiar markdown syntax. Component Reusability: Use your existing React components within content. Type Safety: Leverage T...
+
+www.mdxblog.io
+Next.js 16.2
+18 de mar. de 2026 — Posted by. Jimmy Lai@feedthejim. Next. js 16.2 includes performance improvements, better debugging, improvements for Agents, and over 200 Turbopack fixes and im...
+
+Next.js
+
+Posts | Blogging with MDX in Next.js - Jonah Grimes
+7 de jan. de 2024 — There were three main choices through which I could accomplish this. These were contentlayer, next-mdx-remote, and @next/mdx. Both contentlayer and next-mdx-rem...
+
+www.nerdynarwhal.com
+
+
+
+
+
+
+
+https://nextjs.org/docs/app/api-reference/file-conventions/mdx-components
+
+
+
+
+
+Skip to content
+
+App RouterGuidesMDX
+How to use markdown and MDX in Next.js
+Last updated April 2, 2026
+Markdown is a lightweight markup language used to format text. It allows you to write using plain text syntax and convert it to structurally valid HTML. It's commonly used for writing content on websites and blogs.
+
+You write...
+
+I **love** using [Next.js](https://nextjs.org/)
+Output:
+
+<p>I <strong>love</strong> using <a href="https://nextjs.org/">Next.js</a></p>
+MDX is a superset of markdown that lets you write JSX directly in your markdown files. It is a powerful way to add dynamic interactivity and embed React components within your content.
+
+Next.js can support both local MDX content inside your application, as well as remote MDX files fetched dynamically on the server. The Next.js plugin handles transforming markdown and React components into HTML, including support for usage in Server Components (the default in App Router).
+
+Good to know: View the Portfolio Starter Kit template for a complete working example.
+
+Install dependencies
+The @next/mdx package, and related packages, are used to configure Next.js so it can process markdown and MDX. It sources data from local files, allowing you to create pages with a .md or .mdx extension, directly in your /pages or /app directory.
+
+Install these packages to render MDX with Next.js:
+
+Terminal
+pnpm add @next/mdx @mdx-js/loader @mdx-js/react @types/mdx
+Configure next.config.mjs
+Update the next.config.mjs file at your project's root to configure it to use MDX:
+
+next.config.mjs
+import createMDX from '@next/mdx'
+ 
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Configure `pageExtensions` to include markdown and MDX files
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  // Optionally, add any other Next.js config below
+}
+ 
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+})
+ 
+// Merge MDX config with Next.js config
+export default withMDX(nextConfig)
+This allows .mdx files to act as pages, routes, or imports in your application.
+
+Handling .md files
+By default, next/mdx only compiles files with the .mdx extension. To handle .md files with webpack, update the extension option:
+
+next.config.mjs
+const withMDX = createMDX({
+  extension: /\.(md|mdx)$/,
+})
+Add an mdx-components.tsx file
+Create an mdx-components.tsx (or .js) file in the root of your project to define global MDX Components. For example, at the same level as pages or app, or inside src if applicable.
+
+mdx-components.tsx
+TypeScript
+import type { MDXComponents } from 'mdx/types'
+ 
+const components: MDXComponents = {}
+ 
+export function useMDXComponents(): MDXComponents {
+  return components
+}
+Good to know:
+
+mdx-components.tsx is required to use @next/mdx with App Router and will not work without it.
+Learn more about the mdx-components.tsx file convention.
+Learn how to use custom styles and components.
+Rendering MDX
+You can render MDX using Next.js's file based routing or by importing MDX files into other pages.
+
+Using file based routing
+When using file based routing, you can use MDX pages like any other page.
+
+In App Router apps, that includes being able to use metadata.
+
+Create a new MDX page within the /app directory:
+
+  my-project
+  ├── app
+  │   └── mdx-page
+  │       └── page.(mdx/md)
+  |── mdx-components.(tsx/js)
+  └── package.json
+You can use MDX in these files, and even import React components, directly inside your MDX page:
+
+import { MyComponent } from 'my-component'
+ 
+# Welcome to my MDX page!
+ 
+This is some **bold** and _italics_ text.
+ 
+This is a list in markdown:
+ 
+- One
+- Two
+- Three
+ 
+Checkout my React component:
+ 
+<MyComponent />
+Navigating to the /mdx-page route should display your rendered MDX page.
+
+Using imports
+Create a new page within the /app directory and an MDX file wherever you'd like:
+
+  .
+  ├── app/
+  │   └── mdx-page/
+  │       └── page.(tsx/js)
+  ├── markdown/
+  │   └── welcome.(mdx/md)
+  ├── mdx-components.(tsx/js)
+  └── package.json
+You can use MDX in these files, and even import React components, directly inside your MDX page:
+
+Import the MDX file inside the page to display the content:
+
+app/mdx-page/page.tsx
+TypeScript
+import Welcome from '@/markdown/welcome.mdx'
+ 
+export default function Page() {
+  return <Welcome />
+}
+Navigating to the /mdx-page route should display your rendered MDX page.
+
+Using dynamic imports
+You can import dynamic MDX components instead of using filesystem routing for MDX files.
+
+For example, you can have a dynamic route segment which loads MDX components from a separate directory:
+
+Route segments for dynamic MDX components
+generateStaticParams can be used to prerender the provided routes. By marking dynamicParams as false, accessing a route not defined in generateStaticParams will 404.
+
+app/blog/[slug]/page.tsx
+TypeScript
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
+  const { default: Post } = await import(`@/content/${slug}.mdx`)
+ 
+  return <Post />
+}
+ 
+export function generateStaticParams() {
+  return [{ slug: 'welcome' }, { slug: 'about' }]
+}
+ 
+export const dynamicParams = false
+Good to know: Ensure you specify the .mdx file extension in your import. While it is not required to use module path aliases (e.g., @/content), it does simplify your import path.
+
+Using custom styles and components
+Markdown, when rendered, maps to native HTML elements. For example, writing the following markdown:
+
+## This is a heading
+ 
+This is a list in markdown:
+ 
+- One
+- Two
+- Three
+Generates the following HTML:
+
+<h2>This is a heading</h2>
+ 
+<p>This is a list in markdown:</p>
+ 
+<ul>
+  <li>One</li>
+  <li>Two</li>
+  <li>Three</li>
+</ul>
+To style your markdown, you can provide custom components that map to the generated HTML elements. Styles and components can be implemented globally, locally, and with shared layouts.
+
+Global styles and components
+Adding styles and components in mdx-components.tsx will affect all MDX files in your application.
+
+mdx-components.tsx
+TypeScript
+import type { MDXComponents } from 'mdx/types'
+import Image, { ImageProps } from 'next/image'
+ 
+// This file allows you to provide custom React components
+// to be used in MDX files. You can import and use any
+// React component you want, including inline styles,
+// components from other libraries, and more.
+ 
+const components = {
+  // Allows customizing built-in components, e.g. to add styling.
+  h1: ({ children }) => (
+    <h1 style={{ color: 'red', fontSize: '48px' }}>{children}</h1>
+  ),
+  img: (props) => (
+    <Image
+      sizes="100vw"
+      style={{ width: '100%', height: 'auto' }}
+      {...(props as ImageProps)}
+    />
+  ),
+} satisfies MDXComponents
+ 
+export function useMDXComponents(): MDXComponents {
+  return components
+}
+Local styles and components
+You can apply local styles and components to specific pages by passing them into imported MDX components. These will merge with and override global styles and components.
+
+app/mdx-page/page.tsx
+TypeScript
+import Welcome from '@/markdown/welcome.mdx'
+ 
+function CustomH1({ children }) {
+  return <h1 style={{ color: 'blue', fontSize: '100px' }}>{children}</h1>
+}
+ 
+const overrideComponents = {
+  h1: CustomH1,
+}
+ 
+export default function Page() {
+  return <Welcome components={overrideComponents} />
+}
+Shared layouts
+To share a layout across MDX pages, you can use the built-in layouts support with the App Router.
+
+app/mdx-page/layout.tsx
+TypeScript
+export default function MdxLayout({ children }: { children: React.ReactNode }) {
+  // Create any shared layout or styles here
+  return <div style={{ color: 'blue' }}>{children}</div>
+}
+Using Tailwind typography plugin
+If you are using Tailwind to style your application, using the @tailwindcss/typography plugin will allow you to reuse your Tailwind configuration and styles in your markdown files.
+
+The plugin adds a set of prose classes that can be used to add typographic styles to content blocks that come from sources, like markdown.
+
+Install Tailwind typography and use with shared layouts to add the prose you want.
+
+app/mdx-page/layout.tsx
+TypeScript
+export default function MdxLayout({ children }: { children: React.ReactNode }) {
+  // Create any shared layout or styles here
+  return (
+    <div className="prose prose-headings:mt-8 prose-headings:font-semibold prose-headings:text-black prose-h1:text-5xl prose-h2:text-4xl prose-h3:text-3xl prose-h4:text-2xl prose-h5:text-xl prose-h6:text-lg dark:prose-headings:text-white">
+      {children}
+    </div>
+  )
+}
+Frontmatter
+Frontmatter is a YAML like key/value pairing that can be used to store data about a page. @next/mdx does not support frontmatter by default, though there are many solutions for adding frontmatter to your MDX content, such as:
+
+remark-frontmatter
+remark-mdx-frontmatter
+gray-matter
+@next/mdx does allow you to use exports like any other JavaScript component:
+
+Metadata can now be referenced outside of the MDX file:
+
+app/blog/page.tsx
+TypeScript
+import BlogPost, { metadata } from '@/content/blog-post.mdx'
+ 
+export default function Page() {
+  console.log('metadata: ', metadata)
+  //=> { author: 'John Doe' }
+  return <BlogPost />
+}
+A common use case for this is when you want to iterate over a collection of MDX and extract data. For example, creating a blog index page from all blog posts. You can use packages like Node's fs module or globby to read a directory of posts and extract the metadata.
+
+Good to know:
+
+Using fs, globby, etc. can only be used server-side.
+View the Portfolio Starter Kit template for a complete working example.
+remark and rehype Plugins
+You can optionally provide remark and rehype plugins to transform the MDX content.
+
+For example, you can use remark-gfm to support GitHub Flavored Markdown.
+
+Since the remark and rehype ecosystem is ESM only, you'll need to use next.config.mjs or next.config.ts as the configuration file.
+
+next.config.mjs
+import remarkGfm from 'remark-gfm'
+import createMDX from '@next/mdx'
+ 
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Allow .mdx extensions for files
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  // Optionally, add any other Next.js config below
+}
+ 
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [],
+  },
+})
+ 
+// Combine MDX and Next.js config
+export default withMDX(nextConfig)
+Using Plugins with Turbopack
+To use plugins with Turbopack, upgrade to the latest @next/mdx and specify plugin names using a string:
+
+next.config.mjs
+import createMDX from '@next/mdx'
+ 
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+}
+ 
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [
+      // Without options
+      'remark-gfm',
+      // With options
+      ['remark-toc', { heading: 'The Table' }],
+    ],
+    rehypePlugins: [
+      // Without options
+      'rehype-slug',
+      // With options
+      ['rehype-katex', { strict: true, throwOnError: true }],
+    ],
+  },
+})
+ 
+export default withMDX(nextConfig)
+Good to know:
+
+remark and rehype plugins without serializable options cannot be used yet with Turbopack, because JavaScript functions can't be passed to Rust.
+
+Deep Dive: How do you transform markdown into HTML?
+React does not natively understand markdown. The markdown plaintext needs to first be transformed into HTML. This can be accomplished with remark and rehype.
+
+remark is an ecosystem of tools around markdown. rehype is the same, but for HTML. For example, the following code snippet transforms markdown into HTML:
+
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeSanitize from 'rehype-sanitize'
+import rehypeStringify from 'rehype-stringify'
+ 
+main()
+ 
+async function main() {
+  const file = await unified()
+    .use(remarkParse) // Convert into markdown AST
+    .use(remarkRehype) // Transform to HTML AST
+    .use(rehypeSanitize) // Sanitize HTML input
+    .use(rehypeStringify) // Convert AST into serialized HTML
+    .process('Hello, Next.js!')
+ 
+  console.log(String(file)) // <p>Hello, Next.js!</p>
+}
+The remark and rehype ecosystem contains plugins for syntax highlighting, linking headings, generating a table of contents, and more.
+
+When using @next/mdx as shown above, you do not need to use remark or rehype directly, as it is handled for you. We're describing it here for a deeper understanding of what the @next/mdx package is doing underneath.
+
+Using the Rust-based MDX compiler (experimental)
+Next.js supports a new MDX compiler written in Rust. This compiler is still experimental and is not recommended for production use. To use the new compiler, you need to configure next.config.js when you pass it to withMDX:
+
+next.config.js
+module.exports = withMDX({
+  experimental: {
+    mdxRs: true,
+  },
+})
+mdxRs also accepts an object to configure how to transform mdx files.
+
+next.config.js
+module.exports = withMDX({
+  experimental: {
+    mdxRs: {
+      jsxRuntime?: string            // Custom jsx runtime
+      jsxImportSource?: string       // Custom jsx import source,
+      mdxType?: 'gfm' | 'commonmark' // Configure what kind of mdx syntax will be used to parse & transform
+    },
+  },
+})
+Helpful Links
+MDX
+@next/mdx
+remark
+rehype
+Markdoc
+Previous
+Next.js MCP Server
+Next
+Memory Usage
+Was this helpful?
+
+supported.
+
+
+
+Resources
+DocsSupport PolicyLearnShowcaseBlogTeamAnalyticsNext.js ConfPreviewsEvals
+More
+Next.js CommerceContact SalesCommunityGitHubReleasesTelemetryGovernanceEcosystem Working Group
+About Vercel
+Next.js + VercelOpen Source SoftwareGitHubBlueskyX
+Legal
+Privacy PolicyCookie Preferences
+Subscribe to our newsletter
+Stay updated on new releases and features, guides, and case studies.
+
+Subscribe
+© 2026 Vercel, Inc.
+
+Guides: MDX | Next.js
+
+
+
+
+https://nextjs.org/docs/app/api-reference/file-conventions/mdx-components
+
+
+
+
+Skip to content
+
+API ReferenceFile-system conventionsmdx-components.js
+mdx-components.js
+Last updated April 2, 2026
+The mdx-components.js|tsx file is required to use @next/mdx with App Router and will not work without it. Additionally, you can use it to customize styles.
+
+Use the file mdx-components.tsx (or .js) in the root of your project to define MDX Components. For example, at the same level as pages or app, or inside src if applicable.
+
+mdx-components.tsx
+TypeScript
+import type { MDXComponents } from 'mdx/types'
+ 
+const components: MDXComponents = {}
+ 
+export function useMDXComponents(): MDXComponents {
+  return components
+}
+Exports
+useMDXComponents function
+The file must export a single function named useMDXComponents. This function does not accept any arguments.
+
+mdx-components.tsx
+TypeScript
+import type { MDXComponents } from 'mdx/types'
+ 
+const components: MDXComponents = {}
+ 
+export function useMDXComponents(): MDXComponents {
+  return components
+}
+Version History
+Version	Changes
+v13.1.2	MDX Components added
+Learn more about MDX Components
+MDX
+Learn how to configure MDX and use it in your Next.js apps.
+Previous
+loading.js
+Next
+not-found.js
+Was this helpful?
+
+supported.
+
+
+
+Resources
+DocsSupport PolicyLearnShowcaseBlogTeamAnalyticsNext.js ConfPreviewsEvals
+More
+Next.js CommerceContact SalesCommunityGitHubReleasesTelemetryGovernanceEcosystem Working Group
+About Vercel
+Next.js + VercelOpen Source SoftwareGitHubBlueskyX
+Legal
+Privacy PolicyCookie Preferences
+Subscribe to our newsletter
+Stay updated on new releases and features, guides, and case studies.
+
+Subscribe
+© 2026 Vercel, Inc.
+
+File-system conventions: mdx-components.js | Next.js
+
+
+
+
+
+https://nextjs.org/docs/app/api-reference/file-conventions/mdx-components
+
+
+Skip to content
+
+API ReferenceFile-system conventionsmdx-components.js
+mdx-components.js
+Last updated April 2, 2026
+The mdx-components.js|tsx file is required to use @next/mdx with App Router and will not work without it. Additionally, you can use it to customize styles.
+
+Use the file mdx-components.tsx (or .js) in the root of your project to define MDX Components. For example, at the same level as pages or app, or inside src if applicable.
+
+mdx-components.tsx
+TypeScript
+import type { MDXComponents } from 'mdx/types'
+ 
+const components: MDXComponents = {}
+ 
+export function useMDXComponents(): MDXComponents {
+  return components
+}
+Exports
+useMDXComponents function
+The file must export a single function named useMDXComponents. This function does not accept any arguments.
+
+mdx-components.tsx
+TypeScript
+import type { MDXComponents } from 'mdx/types'
+ 
+const components: MDXComponents = {}
+ 
+export function useMDXComponents(): MDXComponents {
+  return components
+}
+Version History
+Version	Changes
+v13.1.2	MDX Components added
+Learn more about MDX Components
+MDX
+Learn how to configure MDX and use it in your Next.js apps.
+Previous
+loading.js
+Next
+not-found.js
+Was this helpful?
+
+supported.
+
+
+
+Resources
+DocsSupport PolicyLearnShowcaseBlogTeamAnalyticsNext.js ConfPreviewsEvals
+More
+Next.js CommerceContact SalesCommunityGitHubReleasesTelemetryGovernanceEcosystem Working Group
+About Vercel
+Next.js + VercelOpen Source SoftwareGitHubBlueskyX
+Legal
+Privacy PolicyCookie Preferences
+Subscribe to our newsletter
+Stay updated on new releases and features, guides, and case studies.
+
+Subscribe
+© 2026 Vercel, Inc.
+
+File-system conventions: mdx-components.js | Next.js
+
+
+
+
+
+
+
+
+https://www.npmjs.com/package/remark-rehype
+
+
+
+skip to:contentpackage searchsign in
+Pro
+Teams
+Pricing
+Documentation
+npm
+remark-rehype
+TypeScript icon, indicating that this package has built-in type declarations
+11.1.2 • Public • Published a year ago
+remark-rehype
+Build Coverage Downloads Size
+
+remark plugin that turns markdown into HTML to support rehype.
+
+Contents
+What is this?
+When should I use this?
+Install
+Use
+API
+defaultFootnoteBackContent(referenceIndex, rereferenceIndex)
+defaultFootnoteBackLabel(referenceIndex, rereferenceIndex)
+defaultHandlers
+unified().use(remarkRehype[, destination][, options])
+Options
+Examples
+Example: supporting HTML in markdown naïvely
+Example: supporting HTML in markdown properly
+Example: footnotes in languages other than English
+HTML
+CSS
+Syntax tree
+Types
+Compatibility
+Security
+Related
+Contribute
+License
+What is this?
+This package is a unified (remark) plugin that switches from remark (the markdown ecosystem) to rehype (the HTML ecosystem). It does this by transforming the current markdown (mdast) syntax tree into an HTML (hast) syntax tree. remark plugins deal with mdast and rehype plugins deal with hast, so plugins used after remark-rehype have to be rehype plugins.
+
+The reason that there are different ecosystems for markdown and HTML is that turning markdown into HTML is, while frequently needed, not the only purpose of markdown. Checking (linting) and formatting markdown are also common use cases for remark and markdown. There are several aspects of markdown that do not translate 1-to-1 to HTML. In some cases markdown contains more information than HTML: for example, there are several ways to add a link in markdown (as in, autolinks: <https://url>, resource links: [label](url), and reference links with definitions: [label][id] and [id]: url). In other cases HTML contains more information than markdown: there are many tags, which add new meaning (semantics), available in HTML that aren’t available in markdown. If there was just one AST, it would be quite hard to perform the tasks that several remark and rehype plugins currently do.
+
+When should I use this?
+This project is useful when you want to turn markdown to HTML. It opens up a whole new ecosystem with tons of plugins to do all kinds of things. You can minify HTML, format HTML, make sure it’s safe, highlight code, add metadata, and a lot more.
+
+A different plugin, rehype-raw, adds support for raw HTML written inside markdown. This is a separate plugin because supporting HTML inside markdown is a heavy task (performance and bundle size) and not always needed. To use both together, you also have to configure remark-rehype with allowDangerousHtml: true and then use rehype-raw.
+
+The rehype plugin rehype-remark does the inverse of this plugin. It turns HTML into markdown.
+
+If you don’t use plugins and want to access syntax trees, you can use mdast-util-to-hast.
+
+Install
+This package is ESM only. In Node.js (version 16+), install with npm:
+
+npm install remark-rehype
+In Deno with esm.sh:
+
+import remarkRehype from 'https://esm.sh/remark-rehype@11'
+In browsers with esm.sh:
+
+<script type="module">
+  import remarkRehype from 'https://esm.sh/remark-rehype@11?bundle'
+</script>
+Use
+Say our document example.md contains:
+
+# Pluto
+
+**Pluto** (minor-planet designation: **134340 Pluto**) is a
+[dwarf planet](https://en.wikipedia.org/wiki/Dwarf_planet) in the
+[Kuiper belt](https://en.wikipedia.org/wiki/Kuiper_belt).
+…and our module example.js contains:
+
+import rehypeDocument from 'rehype-document'
+import rehypeFormat from 'rehype-format'
+import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {read} from 'to-vfile'
+import {unified} from 'unified'
+import {reporter} from 'vfile-reporter'
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkRehype)
+  .use(rehypeDocument)
+  .use(rehypeFormat)
+  .use(rehypeStringify)
+  .process(await read('example.md'))
+
+console.error(reporter(file))
+console.log(String(file))
+…then running node example.js yields:
+
+example.md: no issues found
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>example</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+  </head>
+  <body>
+    <h1>Pluto</h1>
+    <p>
+      <strong>Pluto</strong> (minor-planet designation: <strong>134340 Pluto</strong>) is a
+      <a href="https://en.wikipedia.org/wiki/Dwarf_planet">dwarf planet</a> in the
+      <a href="https://en.wikipedia.org/wiki/Kuiper_belt">Kuiper belt</a>.
+    </p>
+  </body>
+</html>
+API
+This package exports the identifiers defaultFootnoteBackContent, defaultFootnoteBackLabel, and defaultHandlers. The default export is remarkRehype.
+
+defaultFootnoteBackContent(referenceIndex, rereferenceIndex)
+See defaultFootnoteBackContent from mdast-util-to-hast.
+
+defaultFootnoteBackLabel(referenceIndex, rereferenceIndex)
+See defaultFootnoteBackLabel from mdast-util-to-hast.
+
+defaultHandlers
+See defaultHandlers from mdast-util-to-hast.
+
+unified().use(remarkRehype[, destination][, options])
+Turn markdown into HTML.
+
+Parameters
+destination (Processor, optional) — processor
+options (Options, optional) — configuration
+Returns
+Transform (Transformer).
+
+Notes
+Signature
+if a processor is given, runs the (rehype) plugins used on it with a hast tree, then discards the result (bridge mode)
+otherwise, returns a hast tree, the plugins used after remarkRehype are rehype plugins (mutate mode)
+👉 Note: it’s highly unlikely that you want to pass a processor.
+
+HTML
+Raw HTML is available in mdast as html nodes and can be embedded in hast as semistandard raw nodes. Most plugins ignore raw nodes but two notable ones don’t:
+
+rehype-stringify also has an option allowDangerousHtml which will output the raw HTML; this is typically discouraged as noted by the option name but is useful if you completely trust authors
+rehype-raw can handle the raw embedded HTML strings by parsing them into standard hast nodes (element, text, etc); This is a heavy task as it needs a full HTML parser, but it is the only way to support untrusted content
+Footnotes
+Many options supported here relate to footnotes. Footnotes are not specified by CommonMark, which we follow by default. They are supported by GitHub, so footnotes can be enabled in markdown with remark-gfm.
+
+The options footnoteBackLabel and footnoteLabel define natural language that explains footnotes, which is hidden for sighted users but shown to assistive technology. When your page is not in English, you must define translated values.
+
+Back references use ARIA attributes, but the section label itself uses a heading that is hidden with an sr-only class. To show it to sighted users, define different attributes in footnoteLabelProperties.
+
+Clobbering
+Footnotes introduces a problem, as it links footnote calls to footnote definitions on the page through id attributes generated from user content, which results in DOM clobbering.
+
+DOM clobbering is this:
+
+<p id=x></p>
+<script>alert(x) // `x` now refers to the DOM `p#x` element</script>
+Elements by their ID are made available by browsers on the window object, which is a security risk. Using a prefix solves this problem.
+
+More information on how to handle clobbering and the prefix is explained in Example: headings (DOM clobbering) in rehype-sanitize.
+
+Unknown nodes
+Unknown nodes are nodes with a type that isn’t in handlers or passThrough. The default behavior for unknown nodes is:
+
+when the node has a value (and doesn’t have data.hName, data.hProperties, or data.hChildren, see later), create a hast text node
+otherwise, create a <div> element (which could be changed with data.hName), with its children mapped from mdast to hast as well
+This behavior can be changed by passing an unknownHandler.
+
+Options
+Configuration (TypeScript type).
+
+Fields
+allowDangerousHtml (boolean, default: false) — whether to persist raw HTML in markdown in the hast tree
+clobberPrefix (string, default: 'user-content-') — prefix to use before the id property on footnotes to prevent them from clobbering
+footnoteBackContent (FootnoteBackContentTemplate from mdast-util-to-hast or string, default: defaultFootnoteBackContent from mdast-util-to-hast) — content of the backreference back to references
+footnoteBackLabel (FootnoteBackLabelTemplate from mdast-util-to-hast or string, default: defaultFootnoteBackLabel from mdast-util-to-hast) — label to describe the backreference back to references
+footnoteLabel (string, default: 'Footnotes') — label to use for the footnotes section (affects screen readers)
+footnoteLabelProperties (Properties from @types/hast, default: {className: ['sr-only']}) — properties to use on the footnote label (note that id: 'footnote-label' is always added as footnote calls use it with aria-describedby to provide an accessible label)
+footnoteLabelTagName (string, default: h2) — tag name to use for the footnote label
+handlers (Handlers from mdast-util-to-hast, optional) — extra handlers for nodes
+passThrough (Array<Nodes['type']>, optional) — list of custom mdast node types to pass through (keep) in hast (note that the node itself is passed, but eventual children are transformed)
+unknownHandler (Handler from mdast-util-to-hast, optional) — handle all unknown nodes
+Examples
+Example: supporting HTML in markdown naïvely
+If you completely trust the authors of the input markdown and want to allow them to write HTML inside markdown, you can pass allowDangerousHtml to remark-rehype and rehype-stringify:
+
+import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkRehype, {allowDangerousHtml: true})
+  .use(rehypeStringify, {allowDangerousHtml: true})
+  .process('<a href="/wiki/Dysnomia_(moon)" onclick="alert(1)">Dysnomia</a>')
+
+console.log(String(file))
+Yields:
+
+<p><a href="/wiki/Dysnomia_(moon)" onclick="alert(1)">Dysnomia</a></p>
+⚠️ Danger: observe that the XSS attack through onclick is present.
+
+Example: supporting HTML in markdown properly
+If you do not trust the authors of the input markdown, or if you want to make sure that rehype plugins can see HTML embedded in markdown, use rehype-raw. The following example passes allowDangerousHtml to remark-rehype, then turns the raw embedded HTML into proper HTML nodes with rehype-raw, and finally sanitizes the HTML by only allowing safe things with rehype-sanitize:
+
+import rehypeSanitize from 'rehype-sanitize'
+import rehypeStringify from 'rehype-stringify'
+import rehypeRaw from 'rehype-raw'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkRehype, {allowDangerousHtml: true})
+  .use(rehypeRaw)
+  .use(rehypeSanitize)
+  .use(rehypeStringify)
+  .process('<a href="/wiki/Dysnomia_(moon)" onclick="alert(1)">Dysnomia</a>')
+
+console.log(String(file))
+Running that code yields:
+
+<p><a href="/wiki/Dysnomia_(moon)">Dysnomia</a></p>
+⚠️ Danger: observe that the XSS attack through onclick is not present.
+
+Example: footnotes in languages other than English
+If you know that the markdown is authored in a language other than English, and you’re using remark-gfm to match how GitHub renders markdown, and you know that footnotes are (or can?) be used, you should translate the labels associated with them.
+
+Let’s first set the stage:
+
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import remarkGfm from 'remark-gfm'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
+
+const doc = `
+Ceres ist nach der römischen Göttin des Ackerbaus benannt;
+ihr astronomisches Symbol ist daher eine stilisierte Sichel: ⚳.[^nasa-2015]
+
+[^nasa-2015]: JPL/NASA:
+    [*What is a Dwarf Planet?*](https://www.jpl.nasa.gov/infographics/what-is-a-dwarf-planet)
+    In: Jet Propulsion Laboratory.
+    22. April 2015,
+    abgerufen am 19. Januar 2022 (englisch).
+`
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  .use(remarkRehype)
+  .use(rehypeStringify)
+  .process(doc)
+
+console.log(String(file))
+Yields:
+
+<p>Ceres ist nach der römischen Göttin des Ackerbaus benannt;
+ihr astronomisches Symbol ist daher eine stilisierte Sichel: ⚳.<sup><a href="#user-content-fn-nasa-2015" id="user-content-fnref-nasa-2015" data-footnote-ref aria-describedby="footnote-label">1</a></sup></p>
+<section data-footnotes class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
+<ol>
+<li id="user-content-fn-nasa-2015">
+<p>JPL/NASA:
+<a href="https://www.jpl.nasa.gov/infographics/what-is-a-dwarf-planet"><em>What is a Dwarf Planet?</em></a>
+In: Jet Propulsion Laboratory.
+22. April 2015,
+abgerufen am 19. Januar 2022 (englisch). <a href="#user-content-fnref-nasa-2015" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+This is a mix of English and German that isn’t very accessible, such as that screen readers can’t handle it nicely. Let’s say our program does know that the markdown is in German. In that case, it’s important to translate and define the labels relating to footnotes so that screen reader users can properly pronounce the page:
+
+@@ -18,7 +18,16 @@ ihr astronomisches Symbol ist daher eine stilisierte Sichel: ⚳.[^nasa-2015]
+ const file = await unified()
+   .use(remarkParse)
+   .use(remarkGfm)
+-  .use(remarkRehype)
++  .use(remarkRehype, {
++    footnoteBackLabel(referenceIndex, rereferenceIndex) {
++      return (
++        'Hochspringen nach: ' +
++        (referenceIndex + 1) +
++        (rereferenceIndex > 1 ? '-' + rereferenceIndex : '')
++      )
++    },
++    footnoteLabel: 'Fußnoten'
++  })
+   .use(rehypeStringify)
+   .process(doc)
+Running the code with the above patch applied, yields:
+
+@@ -1,13 +1,13 @@
+ <p>Ceres ist nach der römischen Göttin des Ackerbaus benannt;
+ ihr astronomisches Symbol ist daher eine stilisierte Sichel: ⚳.<sup><a href="#user-content-fn-nasa-2015" id="user-content-fnref-nasa-2015" data-footnote-ref aria-describedby="footnote-label">1</a></sup></p>
+-<section data-footnotes class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
++<section data-footnotes class="footnotes"><h2 class="sr-only" id="footnote-label">Fußnoten</h2>
+ <ol>
+ <li id="user-content-fn-nasa-2015">
+ <p>JPL/NASA:
+ <a href="https://www.jpl.nasa.gov/infographics/what-is-a-dwarf-planet"><em>What is a Dwarf Planet?</em></a>
+ In: Jet Propulsion Laboratory.
+ 22. April 2015,
+-abgerufen am 19. Januar 2022 (englisch). <a href="#user-content-fnref-nasa-2015" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
++abgerufen am 19. Januar 2022 (englisch). <a href="#user-content-fnref-nasa-2015" data-footnote-backref="" aria-label="Hochspringen nach: 1" class="data-footnote-backref">↩</a></p>
+ </li>
+ </ol>
+ </section>
+HTML
+See Algorithm in mdast-util-to-hast for info on how mdast (markdown) nodes are transformed to hast (HTML).
+
+CSS
+Assuming you know how to use (semantic) HTML and CSS, then it should generally be straightforward to style the HTML produced by this plugin. With CSS, you can get creative and style the results as you please.
+
+Some semistandard features, notably GFMs tasklists and footnotes, generate HTML that be unintuitive, as it matches exactly what GitHub produces for their website. There is a project, sindresorhus/github-markdown-css, that exposes the stylesheet that GitHub uses for rendered markdown, which might either be inspirational for more complex features, or can be used as-is to exactly match how GitHub styles rendered markdown.
+
+The following CSS is needed to make footnotes look a bit like GitHub:
+
+/* Style the footnotes section. */
+.footnotes {
+  font-size: smaller;
+  color: #8b949e;
+  border-top: 1px solid #30363d;
+}
+
+/* Hide the section label for visual users. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  word-wrap: normal;
+  border: 0;
+}
+
+/* Place `[` and `]` around footnote calls. */
+[data-footnote-ref]::before {
+  content: '[';
+}
+
+[data-footnote-ref]::after {
+  content: ']';
+}
+Syntax tree
+This projects turns mdast (markdown) into hast (HTML).
+
+It extends mdast by supporting data fields on mdast nodes to specify how they should be transformed. See Fields on nodes in mdast-util-to-hast for info on how these fields work.
+
+It extends hast by using a semistandard raw nodes for raw HTML. See the HTML note above for more info.
+
+Types
+This package is fully typed with TypeScript. It exports the types Options.
+
+The types of mdast-util-to-hast can be referenced to register data fields with @types/mdast and Raw nodes with @types/hast.
+
+/**
+ * @import {Root as HastRoot} from 'hast'
+ * @import {Root as MdastRoot} from 'mdast'
+ * @import {} from 'mdast-util-to-hast'
+ */
+
+import {visit} from 'unist-util-visit'
+
+const mdastNode = /** @type {MdastRoot} */ ({/* … */})
+console.log(mdastNode.data?.hName) // Typed as `string | undefined`.
+
+const hastNode = /** @type {HastRoot} */ ({/* … */})
+
+visit(hastNode, function (node) {
+  // `node` can now be `raw`.
+})
+Compatibility
+Projects maintained by the unified collective are compatible with maintained versions of Node.js.
+
+When we cut a new major release, we drop support for unmaintained versions of Node. This means we try to keep the current release line, remark-rehype@11, compatible with Node.js 16.
+
+This plugin works with unified version 6+, remark-parse version 3+ (used in remark version 7), and rehype-stringify version 3+ (used in rehype version 5).
+
+Security
+Use of remark-rehype can open you up to a cross-site scripting (XSS) attack. Embedded hast properties (hName, hProperties, hChildren) in mdast, custom handlers, and the allowDangerousHtml option all provide openings. Use rehype-sanitize to make the tree safe.
+
+Related
+rehype-raw — rehype plugin to parse the tree again and support raw nodes
+rehype-sanitize — rehype plugin to sanitize HTML
+rehype-remark — rehype plugin to turn HTML into markdown
+rehype-retext — rehype plugin to support retext
+remark-retext — remark plugin to support retext
+Contribute
+See contributing.md in remarkjs/.github for ways to get started. See support.md for ways to get help.
+
+This project has a code of conduct. By interacting with this repository, organization, or community you agree to abide by its terms.
+
+License
+MIT © Titus Wormer
+
+Readme
+Keywords
+hast
+html
+markdown
+mdast
+plugin
+rehype-plugin
+rehype
+remark-plugin
+remark
+unified
+Package Sidebar
+Install
+npm i remark-rehype
+
+Repository
+github.com/remarkjs/remark-rehype
+
+Homepage
+github.com/remarkjs/remark-rehype#readme
+
+Fund this package
+Weekly Downloads
+20.976.637
+
+Version
+11.1.2
+
+License
+MIT
+
+Unpacked Size
+48.3 kB
+
+Total Files
+9
+
+Issues
+0
+
+Pull Requests
+0
+
+Last publish
+a year ago
+
+Collaborators
+johno
+wooorm
+remcohaszing
+Analyze security with SocketCheck bundle sizeView package healthExplore dependencies
+Report malware
+Footer
+Support
+Help
+Advisories
+Status
+Contact npm
+Company
+About
+Blog
+Press
+Terms & Policies
+Policies
+Terms of Use
+Code of Conduct
+Privacy
+Viewing remark-rehype version 11.1.2
+
+
+
+
+
+
+
+
+
+
+https://www.npmjs.com/package/rehype-slug
+
+
+skip to:contentpackage searchsign in
+Pro
+Teams
+Pricing
+Documentation
+npm
+rehype-slug
+TypeScript icon, indicating that this package has built-in type declarations
+6.0.0 • Public • Published 3 years ago
+rehype-slug
+Build Coverage Downloads Size Sponsors Backers Chat
+
+rehype plugin to add ids to headings.
+
+Contents
+What is this?
+When should I use this?
+Install
+Use
+API
+unified().use(rehypeSlug[, options])
+Options
+Types
+Compatibility
+Security
+Related
+Contribute
+License
+What is this?
+This package is a unified (rehype) plugin to add ids to headings. It looks for headings (so <h1> through <h6>) that do not yet have ids and adds id attributes to them based on the text they contain. The algorithm that does this is github-slugger, which matches how GitHub works.
+
+unified is a project that transforms content with abstract syntax trees (ASTs). rehype adds support for HTML to unified. hast is the HTML AST that rehype uses. This is a rehype plugin that adds ids to headings in the AST.
+
+When should I use this?
+This plugin is useful when you have relatively long documents and you want to be able to link to particular sections.
+
+A different plugin, rehype-autolink-headings, adds links to these headings back to themselves, which is useful as it lets users more easily link to particular sections.
+
+Install
+This package is ESM only. In Node.js (version 16+), install with npm:
+
+npm install rehype-slug
+In Deno with esm.sh:
+
+import rehypeSlug from 'https://esm.sh/rehype-slug@6'
+In browsers with esm.sh:
+
+<script type="module">
+  import rehypeSlug from 'https://esm.sh/rehype-slug@6?bundle'
+</script>
+Use
+Say we have the following file example.html:
+
+<h1 id=some-id>Lorem ipsum</h1>
+<h2>Dolor sit amet 😪</h2>
+<h3>consectetur &amp; adipisicing</h3>
+<h4>elit</h4>
+<h5>elit</h5>
+…and our module example.js looks as follows:
+
+import {read} from 'to-vfile'
+import {rehype} from 'rehype'
+import rehypeSlug from 'rehype-slug'
+
+const file = await rehype()
+  .data('settings', {fragment: true})
+  .use(rehypeSlug)
+  .process(await read('example.html'))
+
+console.log(String(file))
+…then running node example.js yields:
+
+<h1 id="some-id">Lorem ipsum</h1>
+<h2 id="dolor-sit-amet-">Dolor sit amet 😪</h2>
+<h3 id="consectetur--adipisicing">consectetur &#x26; adipisicing</h3>
+<h4 id="elit">elit</h4>
+<h5 id="elit-1">elit</h5>
+API
+This package exports no identifiers. The default export is rehypeSlug.
+
+unified().use(rehypeSlug[, options])
+Add ids to headings.
+
+Parameters
+options (Options, optional) — configuration
+Returns
+Transform (Transformer).
+
+Options
+Configuration (TypeScript type).
+
+Fields
+prefix (string, default: '') — prefix to add in front of ids
+Types
+This package is fully typed with TypeScript. It exports the additional type Options.
+
+Compatibility
+Projects maintained by the unified collective are compatible with maintained versions of Node.js.
+
+When we cut a new major release, we drop support for unmaintained versions of Node. This means we try to keep the current release line, rehype-slug@^6, compatible with Node.js 16.
+
+This plugin works with rehype-parse version 1+, rehype-stringify version 1+, rehype version 1+, and unified version 4+.
+
+Security
+Use of rehype-slug can open you up to a cross-site scripting (XSS) attack as it sets id attributes on headings, which causes what is known as “DOM clobbering”. Please use rehype-sanitize and see its Example: headings (DOM clobbering) for information on how to properly solve it.
+
+Related
+rehype-autolink-headings — add links to headings with IDs back to themselves
+Contribute
+See contributing.md in rehypejs/.github for ways to get started. See support.md for ways to get help.
+
+This project has a code of conduct. By interacting with this repository, organization, or community you agree to abide by its terms.
+
+License
+MIT © Titus Wormer
+
+Readme
+Keywords
+heading
+html
+id
+plugin
+rehype
+rehype-plugin
+slug
+unified
+Package Sidebar
+Install
+npm i rehype-slug
+
+Repository
+github.com/rehypejs/rehype-slug
+
+Homepage
+github.com/rehypejs/rehype-slug#readme
+
+Fund this package
+Weekly Downloads
+1.921.541
+
+Version
+6.0.0
+
+License
+MIT
+
+Unpacked Size
+11.5 kB
+
+Total Files
+7
+
+Issues
+0
+
+Pull Requests
+0
+
+Last publish
+3 years ago
+
+Collaborators
+remcohaszing
+wooorm
+kmck
+Analyze security with SocketCheck bundle sizeView package healthExplore dependencies
+Report malware
+Footer
+Support
+Help
+Advisories
+Status
+Contact npm
+Company
+About
+Blog
+Press
+Terms & Policies
+Policies
+Terms of Use
+Code of Conduct
+Privacy
+Viewing rehype-slug version 6.0.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+em 4 de abril de 2026 no vercel com typescript 6.0.2 e next.js 16.2.2 e react 19 e node 24 e tailwindcss 4.2 como trabalhar e exibir corretamente arquivos .md e quais bibliotecas instalar
+
+
++3
+Em abril de 2026, com a stack tecnológica Next.js 16.2 (App Router) e React 19, a melhor abordagem para trabalhar com arquivos
+.md (Markdown) é utilizar o suporte nativo ao MDX (@next/mdx) ou bibliotecas de renderização dinâmica no lado do servidor, garantindo performance e tipagem segura.
+Abaixo estão as recomendações de bibliotecas e o fluxo de trabalho. 
+1. Bibliotecas para Instalar (via npm/pnpm/yarn)
+Para renderizar Markdown com segurança e estilizá-lo com Tailwind CSS 4.2:
+bash
+# Para processar markdown/mdx no Next.js (nativo)
+npm install @next/mdx @mdx-js/loader @mdx-js/react
+
+# Para converter markdown em elementos React (alternativa dinâmica)
+npm install react-markdown remark-gfm
+
+# Para estilizar o conteúdo Markdown (essencial)
+npm install @tailwindcss/typography
+Use o código com cuidado.
+2. Configuração do Ambiente (Next.js 16.2 + TS)
+A. Configurar o next.config.ts 
+O Next.js 16.2 facilita o uso de MDX nativo. Configure o next.config.ts (ou .js) para reconhecer arquivos .md e .mdx.
+typescript
+import createMDX from '@next/mdx';
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  // Adicione md e mdx às extensões de página
+  pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
+};
+
+const withMDX = createMDX({
+  // Adicione remark/rehype plugins aqui se necessário
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+});
+
+export default withMDX(nextConfig);
+Use o código com cuidado.
+B. Configurar o tailwind.config.ts (v4.x)
+Adicione o plugin de tipografia para estilizar o markdown automaticamente com a classe prose. 
+typescript
+import type { Config } from 'tailwindcss';
+import typography from '@tailwindcss/typography';
+
+export default {
+  content: ['./app/**/*.{ts,tsx,md,mdx}', './components/**/*.{ts,tsx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [typography],
+} satisfies Config;
+Use o código com cuidado.
+3. Como Trabalhar e Exibir os Arquivos
+A. Exibindo arquivos Markdown como Rotas (/app)
+Com a configuração acima, você pode criar um arquivo meu-post.md (ou .mdx) diretamente dentro da estrutura app/.
+markdown
+// app/blog/meu-post.md
+export const metadata = {
+  title: 'Meu Post',
+};
+
+# Olá Mundo
+Este é um post em Markdown usando Tailwind v4.
+Use o código com cuidado.
+O Next.js 16.2 tratará app/blog/meu-post.md como uma rota /blog/meu-post.
+B. Estilizando com Tailwind Typography
+No seu componente de layout ou na página que exibe o Markdown, aplique a classe prose (do @tailwindcss/typography). 
+tsx
+// app/blog/meu-post.mdx (o next.js renderiza automaticamente)
+export default function Layout({ children }) {
+  return (
+    <article className="prose lg:prose-xl mx-auto p-4">
+      {children}
+    </article>
+  );
+}
+Use o código com cuidado.
+C. Lendo e Renderizando Markdown Localmente (getFiles)
+Para blogs, geralmente os arquivos ficam em uma pasta /posts. Use fs (file system) no servidor (Server Components) para ler os arquivos e react-markdown para exibi-los. 
+tsx
+// app/posts/[slug]/page.tsx
+import fs from 'fs';
+import path from 'path';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
+async function getPost(slug: string) {
+  const filePath = path.join(process.cwd(), 'posts', `${slug}.md`);
+  const content = fs.readFileSync(filePath, 'utf8');
+  return content;
+}
+
+export default async function PostPage({ params }: { params: { slug: string } }) {
+  const content = await getPost(params.slug);
+
+  return (
+    <article className="prose mx-auto">
+      <Markdown remarkPlugins={[remarkGfm]}>
+        {content}
+      </Markdown>
+    </article>
+  );
+}
+Use o código com cuidado.
+Resumo para 2026
+Melhor opção: @next/mdx para rotas de conteúdo nativas.
+Estilização: @tailwindcss/typography é obrigatório para um visual profissional sem esforço.
+Performance: A renderização ocorre no servidor (RSC) com Next 16.2, garantindo que o JS do Markdown não vá para o cliente. 
+
+0:43
+How to Render Markdown in React.js #reactjs ...
+
+
+YouTube·Coding in Flow
+
+4m
+Styling Markdown and CMS Content with ...
+
+
+YouTube·Tailwind Labs
+Guides: MDX - Next.js
+2 de abr. de 2026 — Last updated April 2, 2026. Markdown is a lightweight markup language used to format text. It allows you to write using plain text syntax and convert it to stru...
+
+Next.js
+
+How to add markdown to a Next.js project - DEV Community
+23 de mai. de 2025 — js. You will need to add the mdx imports to your next. config. ts file. It should look something like this: import remarkGfm from "remark-gfm";    import createMDX...
+
+DEV Community
+
+GitHub Markdown styling for TailwindCSS : r/webdev
+7 de mai. de 2025 — I was frustrated with the default styles of tailwindcss/typography, so I created a plugin that ports GitHub's beautiful Markdown styling to Tailwind CSS. The pl...
+
+
+
+
+
+
+
+https://nextjs.org/docs/app/guides/mdx
+
+
+Skip to content
+
+App RouterGuidesMDX
+How to use markdown and MDX in Next.js
+Last updated April 2, 2026
+Markdown is a lightweight markup language used to format text. It allows you to write using plain text syntax and convert it to structurally valid HTML. It's commonly used for writing content on websites and blogs.
+
+You write...
+
+I **love** using [Next.js](https://nextjs.org/)
+Output:
+
+<p>I <strong>love</strong> using <a href="https://nextjs.org/">Next.js</a></p>
+MDX is a superset of markdown that lets you write JSX directly in your markdown files. It is a powerful way to add dynamic interactivity and embed React components within your content.
+
+Next.js can support both local MDX content inside your application, as well as remote MDX files fetched dynamically on the server. The Next.js plugin handles transforming markdown and React components into HTML, including support for usage in Server Components (the default in App Router).
+
+Good to know: View the Portfolio Starter Kit template for a complete working example.
+
+Install dependencies
+The @next/mdx package, and related packages, are used to configure Next.js so it can process markdown and MDX. It sources data from local files, allowing you to create pages with a .md or .mdx extension, directly in your /pages or /app directory.
+
+Install these packages to render MDX with Next.js:
+
+Terminal
+pnpm add @next/mdx @mdx-js/loader @mdx-js/react @types/mdx
+Configure next.config.mjs
+Update the next.config.mjs file at your project's root to configure it to use MDX:
+
+next.config.mjs
+import createMDX from '@next/mdx'
+ 
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Configure `pageExtensions` to include markdown and MDX files
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  // Optionally, add any other Next.js config below
+}
+ 
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+})
+ 
+// Merge MDX config with Next.js config
+export default withMDX(nextConfig)
+This allows .mdx files to act as pages, routes, or imports in your application.
+
+Handling .md files
+By default, next/mdx only compiles files with the .mdx extension. To handle .md files with webpack, update the extension option:
+
+next.config.mjs
+const withMDX = createMDX({
+  extension: /\.(md|mdx)$/,
+})
+Add an mdx-components.tsx file
+Create an mdx-components.tsx (or .js) file in the root of your project to define global MDX Components. For example, at the same level as pages or app, or inside src if applicable.
+
+mdx-components.tsx
+TypeScript
+import type { MDXComponents } from 'mdx/types'
+ 
+const components: MDXComponents = {}
+ 
+export function useMDXComponents(): MDXComponents {
+  return components
+}
+Good to know:
+
+mdx-components.tsx is required to use @next/mdx with App Router and will not work without it.
+Learn more about the mdx-components.tsx file convention.
+Learn how to use custom styles and components.
+Rendering MDX
+You can render MDX using Next.js's file based routing or by importing MDX files into other pages.
+
+Using file based routing
+When using file based routing, you can use MDX pages like any other page.
+
+In App Router apps, that includes being able to use metadata.
+
+Create a new MDX page within the /app directory:
+
+  my-project
+  ├── app
+  │   └── mdx-page
+  │       └── page.(mdx/md)
+  |── mdx-components.(tsx/js)
+  └── package.json
+You can use MDX in these files, and even import React components, directly inside your MDX page:
+
+import { MyComponent } from 'my-component'
+ 
+# Welcome to my MDX page!
+ 
+This is some **bold** and _italics_ text.
+ 
+This is a list in markdown:
+ 
+- One
+- Two
+- Three
+ 
+Checkout my React component:
+ 
+<MyComponent />
+Navigating to the /mdx-page route should display your rendered MDX page.
+
+Using imports
+Create a new page within the /app directory and an MDX file wherever you'd like:
+
+  .
+  ├── app/
+  │   └── mdx-page/
+  │       └── page.(tsx/js)
+  ├── markdown/
+  │   └── welcome.(mdx/md)
+  ├── mdx-components.(tsx/js)
+  └── package.json
+You can use MDX in these files, and even import React components, directly inside your MDX page:
+
+Import the MDX file inside the page to display the content:
+
+app/mdx-page/page.tsx
+TypeScript
+import Welcome from '@/markdown/welcome.mdx'
+ 
+export default function Page() {
+  return <Welcome />
+}
+Navigating to the /mdx-page route should display your rendered MDX page.
+
+Using dynamic imports
+You can import dynamic MDX components instead of using filesystem routing for MDX files.
+
+For example, you can have a dynamic route segment which loads MDX components from a separate directory:
+
+Route segments for dynamic MDX components
+generateStaticParams can be used to prerender the provided routes. By marking dynamicParams as false, accessing a route not defined in generateStaticParams will 404.
+
+app/blog/[slug]/page.tsx
+TypeScript
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
+  const { default: Post } = await import(`@/content/${slug}.mdx`)
+ 
+  return <Post />
+}
+ 
+export function generateStaticParams() {
+  return [{ slug: 'welcome' }, { slug: 'about' }]
+}
+ 
+export const dynamicParams = false
+Good to know: Ensure you specify the .mdx file extension in your import. While it is not required to use module path aliases (e.g., @/content), it does simplify your import path.
+
+Using custom styles and components
+Markdown, when rendered, maps to native HTML elements. For example, writing the following markdown:
+
+## This is a heading
+ 
+This is a list in markdown:
+ 
+- One
+- Two
+- Three
+Generates the following HTML:
+
+<h2>This is a heading</h2>
+ 
+<p>This is a list in markdown:</p>
+ 
+<ul>
+  <li>One</li>
+  <li>Two</li>
+  <li>Three</li>
+</ul>
+To style your markdown, you can provide custom components that map to the generated HTML elements. Styles and components can be implemented globally, locally, and with shared layouts.
+
+Global styles and components
+Adding styles and components in mdx-components.tsx will affect all MDX files in your application.
+
+mdx-components.tsx
+TypeScript
+import type { MDXComponents } from 'mdx/types'
+import Image, { ImageProps } from 'next/image'
+ 
+// This file allows you to provide custom React components
+// to be used in MDX files. You can import and use any
+// React component you want, including inline styles,
+// components from other libraries, and more.
+ 
+const components = {
+  // Allows customizing built-in components, e.g. to add styling.
+  h1: ({ children }) => (
+    <h1 style={{ color: 'red', fontSize: '48px' }}>{children}</h1>
+  ),
+  img: (props) => (
+    <Image
+      sizes="100vw"
+      style={{ width: '100%', height: 'auto' }}
+      {...(props as ImageProps)}
+    />
+  ),
+} satisfies MDXComponents
+ 
+export function useMDXComponents(): MDXComponents {
+  return components
+}
+Local styles and components
+You can apply local styles and components to specific pages by passing them into imported MDX components. These will merge with and override global styles and components.
+
+app/mdx-page/page.tsx
+TypeScript
+import Welcome from '@/markdown/welcome.mdx'
+ 
+function CustomH1({ children }) {
+  return <h1 style={{ color: 'blue', fontSize: '100px' }}>{children}</h1>
+}
+ 
+const overrideComponents = {
+  h1: CustomH1,
+}
+ 
+export default function Page() {
+  return <Welcome components={overrideComponents} />
+}
+Shared layouts
+To share a layout across MDX pages, you can use the built-in layouts support with the App Router.
+
+app/mdx-page/layout.tsx
+TypeScript
+export default function MdxLayout({ children }: { children: React.ReactNode }) {
+  // Create any shared layout or styles here
+  return <div style={{ color: 'blue' }}>{children}</div>
+}
+Using Tailwind typography plugin
+If you are using Tailwind to style your application, using the @tailwindcss/typography plugin will allow you to reuse your Tailwind configuration and styles in your markdown files.
+
+The plugin adds a set of prose classes that can be used to add typographic styles to content blocks that come from sources, like markdown.
+
+Install Tailwind typography and use with shared layouts to add the prose you want.
+
+app/mdx-page/layout.tsx
+TypeScript
+export default function MdxLayout({ children }: { children: React.ReactNode }) {
+  // Create any shared layout or styles here
+  return (
+    <div className="prose prose-headings:mt-8 prose-headings:font-semibold prose-headings:text-black prose-h1:text-5xl prose-h2:text-4xl prose-h3:text-3xl prose-h4:text-2xl prose-h5:text-xl prose-h6:text-lg dark:prose-headings:text-white">
+      {children}
+    </div>
+  )
+}
+Frontmatter
+Frontmatter is a YAML like key/value pairing that can be used to store data about a page. @next/mdx does not support frontmatter by default, though there are many solutions for adding frontmatter to your MDX content, such as:
+
+remark-frontmatter
+remark-mdx-frontmatter
+gray-matter
+@next/mdx does allow you to use exports like any other JavaScript component:
+
+Metadata can now be referenced outside of the MDX file:
+
+app/blog/page.tsx
+TypeScript
+import BlogPost, { metadata } from '@/content/blog-post.mdx'
+ 
+export default function Page() {
+  console.log('metadata: ', metadata)
+  //=> { author: 'John Doe' }
+  return <BlogPost />
+}
+A common use case for this is when you want to iterate over a collection of MDX and extract data. For example, creating a blog index page from all blog posts. You can use packages like Node's fs module or globby to read a directory of posts and extract the metadata.
+
+Good to know:
+
+Using fs, globby, etc. can only be used server-side.
+View the Portfolio Starter Kit template for a complete working example.
+remark and rehype Plugins
+You can optionally provide remark and rehype plugins to transform the MDX content.
+
+For example, you can use remark-gfm to support GitHub Flavored Markdown.
+
+Since the remark and rehype ecosystem is ESM only, you'll need to use next.config.mjs or next.config.ts as the configuration file.
+
+next.config.mjs
+import remarkGfm from 'remark-gfm'
+import createMDX from '@next/mdx'
+ 
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Allow .mdx extensions for files
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  // Optionally, add any other Next.js config below
+}
+ 
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [],
+  },
+})
+ 
+// Combine MDX and Next.js config
+export default withMDX(nextConfig)
+Using Plugins with Turbopack
+To use plugins with Turbopack, upgrade to the latest @next/mdx and specify plugin names using a string:
+
+next.config.mjs
+import createMDX from '@next/mdx'
+ 
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+}
+ 
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [
+      // Without options
+      'remark-gfm',
+      // With options
+      ['remark-toc', { heading: 'The Table' }],
+    ],
+    rehypePlugins: [
+      // Without options
+      'rehype-slug',
+      // With options
+      ['rehype-katex', { strict: true, throwOnError: true }],
+    ],
+  },
+})
+ 
+export default withMDX(nextConfig)
+Good to know:
+
+remark and rehype plugins without serializable options cannot be used yet with Turbopack, because JavaScript functions can't be passed to Rust.
+
+Deep Dive: How do you transform markdown into HTML?
+React does not natively understand markdown. The markdown plaintext needs to first be transformed into HTML. This can be accomplished with remark and rehype.
+
+remark is an ecosystem of tools around markdown. rehype is the same, but for HTML. For example, the following code snippet transforms markdown into HTML:
+
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeSanitize from 'rehype-sanitize'
+import rehypeStringify from 'rehype-stringify'
+ 
+main()
+ 
+async function main() {
+  const file = await unified()
+    .use(remarkParse) // Convert into markdown AST
+    .use(remarkRehype) // Transform to HTML AST
+    .use(rehypeSanitize) // Sanitize HTML input
+    .use(rehypeStringify) // Convert AST into serialized HTML
+    .process('Hello, Next.js!')
+ 
+  console.log(String(file)) // <p>Hello, Next.js!</p>
+}
+The remark and rehype ecosystem contains plugins for syntax highlighting, linking headings, generating a table of contents, and more.
+
+When using @next/mdx as shown above, you do not need to use remark or rehype directly, as it is handled for you. We're describing it here for a deeper understanding of what the @next/mdx package is doing underneath.
+
+Using the Rust-based MDX compiler (experimental)
+Next.js supports a new MDX compiler written in Rust. This compiler is still experimental and is not recommended for production use. To use the new compiler, you need to configure next.config.js when you pass it to withMDX:
+
+next.config.js
+module.exports = withMDX({
+  experimental: {
+    mdxRs: true,
+  },
+})
+mdxRs also accepts an object to configure how to transform mdx files.
+
+next.config.js
+module.exports = withMDX({
+  experimental: {
+    mdxRs: {
+      jsxRuntime?: string            // Custom jsx runtime
+      jsxImportSource?: string       // Custom jsx import source,
+      mdxType?: 'gfm' | 'commonmark' // Configure what kind of mdx syntax will be used to parse & transform
+    },
+  },
+})
+Helpful Links
+MDX
+@next/mdx
+remark
+rehype
+Markdoc
+Previous
+Next.js MCP Server
+Next
+Memory Usage
+Was this helpful?
+
+supported.
+
+
+
+Resources
+DocsSupport PolicyLearnShowcaseBlogTeamAnalyticsNext.js ConfPreviewsEvals
+More
+Next.js CommerceContact SalesCommunityGitHubReleasesTelemetryGovernanceEcosystem Working Group
+About Vercel
+Next.js + VercelOpen Source SoftwareGitHubBlueskyX
+Legal
+Privacy PolicyCookie Preferences
+Subscribe to our newsletter
+Stay updated on new releases and features, guides, and case studies.
+
+Subscribe
+© 2026 Vercel, Inc.
+
+
+
+
+
+
+
+
+
+https://dev.to/christopher_posada_76c4d0/how-to-add-markdown-to-a-nextjs-project-2bmf
+
+
+
+⇣
+Pull down to refresh
+Skip to content
+DEV Community
+Create account
+Cover image for How to add markdown to a Next.js project
+Christopher Posada
+Christopher Posada
+Posted on 23 de mai. de 2025
+
+How to add markdown to a Next.js project
+#markdown #nextjs #react #typescript
+Markdown
+Markdown is a standardised way of writing documents to include formatting like headers, italics, bold, list, links, etc.
+
+Normally, there is not a mechanism within frameworks to directly translate markdown into rendered HTML. This guide may help you add this functionality to a Next.js project should you wish, like us, to add blogs to your site.
+
+Markdown itself is a lightweight markup language. You won't normally see the untranslated raw code, unless you are perhaps a Content Creator. You will normally see the rendered HTML result in a browser.
+
+An example of markdown might look like this:
+
+## This is a header
+
+**This is bold**
+
+_And this is italic_
+
+[I am a link](https://futools.online)
+
+- [ ] Task List Item 1
+- [ ] Task List Item 2
+- [ ] Task List Item 3
+Which will render to this:
+
+-----start example-----
+
+This is a header
+This is bold
+
+And this is italic
+
+I am a link
+
+[ ] Task List Item 1
+[ ] Task List Item 2
+[ ] Task List Item 3
+-----end example-----
+
+We have created an example page.mdx file, written using just markdown. It demonstrates a variety of markdown syntax.
+
+To see it, just click Show me all the markdown.
+
+If you are familiar with markdown you may have noticed we have tweaked our rendering of markdown, so it may look slightly different from what you are use to, but the basics are still the same as other markdown renderings.
+
+For more information and a thorough guide on markdown, we recommend visiting the Markdown Guide page.
+
+What you will need to know
+This article assumes the reader is a developer that knows their way around Markdown, TypeScript, React.js, and [Next.js] https://nextjs.org/). Familiarity with Tailwind-css would also be useful.
+
+For this guide it is advised to use Next.js version 15 upwards and React.js version 18 upwards. We can not ensure that your installation will work properly if you don't use this configuration.
+
+We have also assumed that you are using the App Router configuration for Next.
+
+Installation
+You will need to install the @next/mdx package, and related packages, with this install command:
+
+npm install @next/mdx @mdx-js/loader @mdx-js/react @types/mdx
+Also, it may help to read the Next.js guide: How to use markdown and MDX in Next.js to understand more.
+
+We chose to install the remark-gfm plugin. So that we could support the GitHub Flavored Markdown Spec. This allows for autolink literals, footnotes, strikethrough, tables, task lists.
+
+This is optional. To add remark-gfm use the install command:
+
+npm install remark-gfm
+Next.js
+You will need to add the mdx imports to your next.config.ts file. It should look something like this:
+
+import remarkGfm from "remark-gfm";
+import createMDX from "@next/mdx";
+
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  // Configure `pageExtensions` to include markdown and MDX files
+  pageExtensions: ["md", "mdx", "ts", "tsx"],
+};
+
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+  extension: /\.(md|mdx)$/,
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [],
+  },
+});
+
+// Merge MDX config with Next.js config
+export default withMDX(nextConfig);
+If you do not wish to use the 'remark-gfm' dependencies, just remove the line: import remarkGfm from "remark-gfm"; and the options property block.
+
+MDX Component
+You will need to create a mdx-component.tsx file. This will need to be in the root folder, i.e. the same level as your /app folder. In the case of futools, we have the /app folder as a subfolder of the /src folder, which is becoming the standard.
+
+For a better understanding, it may be helpful to read the How to use markdown and MDX in Next.js - Add an mdx-components.tsx file section.
+
+A mdx-component.tsx file looks something like this at the bare minimum:
+
+import type { MDXComponents } from "mdx/types";
+
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    ...components,
+  };
+}
+However, you may want to spruce it up so your final translated markdown doesn't look so bland.
+
+The mdx-components.tsx file used at futools looks something like this (we have removed some code to avoid confusion):
+
+import type { MDXComponents } from "mdx/types";
+import { ComponentPropsWithoutRef } from "react";
+import Link from "next/link";
+
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    h1: ({ children, ...props }: ComponentPropsWithoutRef<"h1">) => (
+      <h1 className="mb-2 mt-5" {...props}>
+        {children}
+      </h1>
+    ),
+    h2: ({ children, ...props }: ComponentPropsWithoutRef<"h2">) => (
+      <h2 className="mb-2 mt-5" {...props}>
+        {children}
+      </h2>
+    ),
+    h3: ({ children, ...props }: ComponentPropsWithoutRef<"h3">) => (
+      <h3 className="mb-2 mt-5" {...props}>
+        {children}
+      </h3>
+    ),
+    h4: ({ children, ...props }: ComponentPropsWithoutRef<"h4">) => (
+      <h4 className="mb-2 mt-5" {...props}>
+        {children}
+      </h4>
+    ),
+    h5: ({ children, ...props }: ComponentPropsWithoutRef<"h5">) => (
+      <h5 className="mb-2 mt-5" {...props}>
+        {children}
+      </h5>
+    ),
+    h6: ({ children, ...props }: ComponentPropsWithoutRef<"h6">) => (
+      <h6 className="mb-2 mt-5" {...props}>
+        {children}
+      </h6>
+    ),
+    p: (props: ComponentPropsWithoutRef<"p">) => (
+      <p className="mb-2 leading-snug" {...props} />
+    ),
+    ol: (props: ComponentPropsWithoutRef<"ol">) => (
+      <ol
+        className="space-y-1"
+        style={{
+          listStyleType: "revert",
+          listStyle: "revert",
+          padding: "revert",
+        }}
+        {...props}
+      />
+    ),
+    ul: (props: ComponentPropsWithoutRef<"ul">) => {
+      if (props.className === "contains-task-list") {
+        return <ul className="space-y-1" {...props} />;
+      }
+
+      return (
+        <ul
+          className="space-y-1"
+          style={{
+            listStyleType: "revert",
+            listStyle: "revert",
+            padding: "revert",
+          }}
+          {...props}
+        />
+      );
+    },
+    a: ({ href, children, ...props }: ComponentPropsWithoutRef<"a">) => {
+      const className = " inline-link";
+      if (href?.startsWith("/")) {
+        return (
+          <Link href={href} className={className} {...props}>
+            {children}
+          </Link>
+        );
+      }
+      if (href?.startsWith("#")) {
+        return (
+          <a href={href} className={className} {...props}>
+            {children}
+          </a>
+        );
+      }
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={className}
+          {...props}
+        >
+          {children}
+        </a>
+      );
+    },
+    table: ({ children, ...props }: ComponentPropsWithoutRef<"table">) => (
+      <span>
+        <table {...props}>{children}</table>
+      </span>
+    ),
+    tr: ({ children, ...props }: ComponentPropsWithoutRef<"tr">) => (
+      <tr
+        {...props}
+        className="odd:bg-white even:bg-gray-100 odd:dark:bg-gray-900 even:dark:bg-gray-800"
+      >
+        {children}
+      </tr>
+    ),
+    th: ({ children, ...props }: ComponentPropsWithoutRef<"th">) => (
+      <th
+        {...props}
+        className="border border-gray-300 p-2 dark:border-gray-700"
+      >
+        {children}
+      </th>
+    ),
+    td: ({ children, ...props }: ComponentPropsWithoutRef<"td">) => (
+      <td
+        {...props}
+        className="border border-gray-300 p-2 dark:border-gray-700"
+      >
+        {children}
+      </td>
+    ),
+    blockquote: (props: ComponentPropsWithoutRef<"blockquote">) => (
+      <blockquote
+        className={
+          "ml-[0.075em] border-l-4 " +
+          "border-gray-300 pl-4 text-gray-700 dark:border-zinc-600 dark:text-zinc-300"
+        }
+        {...props}
+      />
+    ),
+    pre: ({ children, ...props }: ComponentPropsWithoutRef<"pre">) => (
+      <pre {...props} className="mb-2">
+        {children}
+      </pre>
+    ),
+    ...components,
+  };
+}
+As you can see, for each tag you can override the default and render the HTML as you desire.
+
+Tailwind
+If you are using tailwind-css, you may need to add the new mdx-component.tsx file path to your tailwind.config.ts file so tailwind can compile it accordingly.
+
+The tailwind.config.ts file used at futools looks something like this (again, code has been removed to avoid confusion):
+
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  content: [
+    "./src/mdx-components.tsx",
+  ],
+};
+
+export default config;
+My First Markdown Page
+Now you should be good to go. Now you can add a page.md or page.mdx file somewhere under your /app folder.
+
+For example, you could make a 'mdx-test' folder: /app/mdx-test and add a file called: page.md with this content:
+
+## This is a header
+
+**This is bold**
+
+_And this is italic_
+
+[I am a link](https://futools.online)
+
+- [ ] Task List Item 1
+- [ ] Task List Item 2
+- [ ] Task List Item 3
+Now goto your site to something like `http://locolhost/mdx-test' to see your rendered markdown page (we don't know your setup so this URL is just a guess 🙂).
+
+Conclusion
+The Next.js team and many others have done a lot to make adding markdown much easier, but as you can see there is still a bit of technical shenanigans needed.
+
+We hope you enjoyed this article. We will try to keep you informed and entertained.
+
+Please come back again and get blogging!
+
+profile
+MongoDB
+Promoted
+Scale globally with MongoDB Atlas. Try free.
+
+Scale globally with MongoDB Atlas. Try free.
+MongoDB Atlas is the global, multi-cloud database for modern apps trusted by developers and enterprises to build, scale, and run cutting-edge applications, with automated scaling, built-in security, and 125+ cloud regions.
+
+Learn More
+
+Top comments (0)
+Subscribe
+pic
+Code of Conduct • Report abuse
+profile
+The DEV Team
+Promoted
+Notion image
+
+Your mandate is to build the most impressive system or process using Notion MCP.
+Running through March 29, the Notion MCP Challenge welcomes you to centralize your workflow with AI-powered docs, projects, and notes. Scale side hustles or empires with "human-in-the-loop" systems that run globally without ever hitting snooze!
+
+See more 👀
+
+ Christopher Posada
+Born in London 1971 Frontend, Backend, and/or Full-Stack developer, with 20+ years’ experience
+Location
+UK
+Pronouns
+He/him
+Joined
+29 de ago. de 2024
+Trending on DEV Community
+FrancisTRᴅᴇᴠ (っ◔◡◔)っ profile image
+What is your WPM (Words per Minute)? #1
+#discuss #watercooler #challenge #community
+Ryan Swift profile image
+3 Takeaways from All Things AI: 80/20 Rule, Non-Deterministic Humans, and Why We're Still Early
+#ai #discuss #mlh #opensource
+Hadil Ben Abdallah profile image
+How a Payment Problem Unexpectedly Changed My Career Path in Tech
+#devchallenge #wecoded #dei #career
+profile
+MongoDB
+Promoted
+Build gen AI apps that run anywhere with MongoDB Atlas
+
+Build gen AI apps that run anywhere with MongoDB Atlas
+MongoDB Atlas bundles vector search and a flexible document model so developers can build, scale, and run gen AI apps without juggling multiple databases. From LLM to semantic search, Atlas streamlines AI architecture. Start free today.
+
+Start Free
+
+💎 DEV Diamond Sponsors
+
+Thank you to our Diamond Sponsors for supporting the DEV Community
+
+Google AI - Official AI Model and Platform Partner
+Google AI is the official AI Model and Platform Partner of DEV
+
+ Neon - Official Database Partner
+Neon is the official database partner of DEV
+
+ Algolia - Official Search Partner
+Algolia is the official search partner of DEV
+
+DEV Community — A space to discuss and keep up software development and manage your software career
+
+Home
+DEV++
+Videos
+DEV Education Tracks
+DEV Challenges
+DEV Help
+Advertise on DEV
+Organization Accounts
+DEV Showcase
+About
+Contact
+Free Postgres Database
+Forem Shop
+MLH
+Code of Conduct.  
+Privacy Policy
+Terms of Use
+Built on Forem — the open source software that powers DEV and other inclusive communities.
+
+Made with love and Ruby on Rails. DEV Community © 2016 - 2026.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
