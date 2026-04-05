@@ -4317,6 +4317,121 @@ Made with love and Ruby on Rails. DEV Community © 2016 - 2026.
 
 
 
+MEUS CURRÍCULOS VITAE, NAS NOVAS PASTAS E NOMES CORRETOS.
+
+Estão em português, inglês e espanhol da Espanha, e espanhol da Argentina, e espanhol do México.
+
+
+
+public/pdf/cv-sergio-santos-pt-BR.pdf
+
+public/pdf/cv-sergio-santos-en-US.pdf
+
+public/pdf/cv-sergio-santos-es-ES.pdf
+
+public/pdf/cv-sergio-santos-es-AR.pdf
+
+public/pdf/cv-sergio-santos-es-MX.pdf
+
+
+
+MINHAS OGIMAGE 
+Estão em português inglês, e espanhol da Espanha, e espanhol da Argentina, e espanhol do México.
+
+
+public/og/og-image-pt-BR.png
+
+
+public/og/og-image-es-MX.png
+
+
+public/og/og-image-es-ES.png
+
+
+public/og/og-image-es-AR.png
+
+
+public/og/og-image-en-US.png
+
+
+
+
+IMAGENS PARA OS MEUS ARTIGOS PUBLICADOS
+NO MEU PORTFÓLIO: AQUI COLOCAREI VÁRIAS IMAGENS .PNG PARA ILUSTRAR MEUS ARTIGOS:
+public/artigos/og-resiliencia-em-Front-end.png
+
+
+E também a imagem para os artigos que ainda não tem imagem personalizada:
+
+public/artigos/og-image-pt-BR.png
+
+
+
+
+
+MEUS ÍCONS 
+
+
+public/icons/apple-icon.png
+
+
+public/icons/apple-touch-icon.png
+
+
+public/icons/favicon.ico
+
+
+public/icons/icon.png
+
+
+public/icons/icon.svg
+
+
+
+
+
+
+
+MINHAS IMAGES
+
+
+MINHA FOTO:
+
+public/images/sergio-santos-profile.png
+
+
+
+
+TROFEUS DE MELHOR ARTIGO DA 35° edição da competição de artigos da DIO.
+E troféu de melhor artigo do mês de setembro de 2025:
+
+public/images/trofeus-vencedor-dio.png
+
+
+
+
+O ENDEREÇO DO MEU PORTFÓLIO NO VERCEL.
+
+O meu portfólio é multilingue está em  português, inglês e espanhol da Espanha, e espanhol da Argentina, e espanhol do México
+
+
+https://portfoliosantossergio.vercel.app/pt-BR
+
+https://portfoliosantossergio.vercel.app/en-US
+
+https://portfoliosantossergio.vercel.app/es-ES
+
+https://portfoliosantossergio.vercel.app/es-AR
+
+https://portfoliosantossergio.vercel.app/es-MX
+
+
+
+
+
+
+
+
 
 
 
