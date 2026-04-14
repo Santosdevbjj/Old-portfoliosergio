@@ -1,4 +1,3 @@
-
 Por favor reescreva o readme.md do meu projeto meu novo portfólio no Github, seguindo as regras de Meigarom Lopes e Luiz Café:
 
 https://github.com/Santosdevbjj/portfoliosantossergio
@@ -4872,6 +4871,3431 @@ function resolveLabel(segment: string, dict: Dictionary): string {
     .replace(/-/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/pt-BR.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "meta": {
+    "version": "1.0.1",
+    "locale": "pt-BR",
+    "direction": "ltr",
+    "lastUpdated": "2026-03-08T21:00:00Z",
+    "author": "Sérgio Santos",
+    "source": "manual",
+    "contentVersion": "2026.03.08",
+    "contentHash": "i18n-ptbr-2026-03-08",
+    "sourceType": "curated-manual",
+    "description": "Portfólio de Sérgio Santos: Especialista em Ciência de Dados, IA e Engenharia de Software com foco em Sistemas Críticos e Missão Crítica. Veja projetos e artigos técnicos."
+  },
+
+  "hero": {
+    "greeting": "Disponível para Projetos Críticos",
+    "title": "Cientista de Dados",
+    "subtitle": "Dados e Resiliência",
+    "headline": "Especialista em transformar infraestruturas complexas em sistemas de alta disponibilidade e pipelines de dados escaláveis.",
+    "ctaPrimary": "Ver Projetos"
+  },
+
+  "construction": {
+    "badge": "Análise de Risco & IA",
+    "title": "Previsão de Riscos em Construção Civil",
+    "description": "Desenvolvimento de modelos preditivos para identificar gargalos operacionais e riscos estruturais em grandes obras, utilizando redes neurais e análise de séries temporais.",
+    "techStack": ["Python", "TensorFlow", "Azure Data Factory", "Power BI"],
+    "viewProject": "Explorar Solução",
+    "metrics": {
+      "accuracy": "94%",
+      "label": "Precisão do Modelo"
+    }
+  },
+
+  "about": {
+    "title": "Sobre Mim",
+    "differentialTitle": "Engenharia de Dados com Foco em Missão Crítica",
+    "description": "Cientista de Dados com base sólida em sistemas críticos bancários e foco em transformar dados em decisões, redução de custos e eficiência operacional.",
+    "differentialContent": "Atuei por mais de 15 anos no Banco Bradesco em ambientes regulados de missão crítica. Atualmente direciono minha atuação para Ciência de Dados e IA.",
+    "highlights": [
+      "15+ anos em Bancos",
+      "Especialista Cloud",
+      "Data Science & IA"
+    ],
+    "stats": {
+      "experienceValue": "+15",
+      "experienceLabel": "Anos de experiência em sistemas de missão crítica no setor bancário,",
+      "availabilityValue": "99.9%",
+      "availabilityLabel": "Uptime",
+      "automation": "Sistemas 100% Automatizados"
+    }
+  },
+
+  "contact": {
+    "title": "Vamos Conversar?",
+    "subtitle": "Busco oportunidades em projetos de governança e modernização.",
+    "cta": "Enviar Email",
+    "emailLabel": "Copiar Email",
+    "cvLabel": "Ver CV",
+    "linkedinLabel": "LinkedIn",
+    "ctaTitle": "Vamos construir algo juntos?",
+    "buttonText": "Entrar em Contato →"
+  },
+
+  "experience": {
+    "title": "Experiência Profissional",
+    "emptyLabel": "Nenhuma experiência encontrada",
+    "items": [
+      {
+        "company": "Consultor Autônomo / Transição",
+        "period": "2008 - Atual",
+        "role": "Especialista em Sistemas Críticos",
+        "description": "Arquitetura e manutenção de pipelines de dados e infraestrutura resiliente."
+      }
+    ]
+  },
+
+  "articles": {
+    "title": "Artigos Técnicos",
+    "mediumProfile": "Ver perfil no Medium",
+    "readMore": "Ler artigo completo",
+    "publishedAt": "Publicado em",
+    "bestOfMonth": "Destaque do Mês",
+    "awardWinner": "Artigo Premiado",
+    "items": [
+      {
+        "title": "A Era dos Dados em Sistemas Críticos",
+        "description": "Como a governança de dados transforma sistemas legados em ativos estratégicos.",
+        "date": "2025",
+        "category": "Data Strategy",
+        "isAward": true,
+        "link": "https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
+      }
+    ]
+  },
+
+  "projects": {
+    "title": "Projetos e Soluções",
+    "featuredLabel": "Destaque Técnico",
+    "firstLabel": "Desafio e Arquitetura",
+    "impactLabel": "Impacto e Resultado",
+    "problem": "Problema",
+    "solution": "Solução",
+    "viewProject": "Repositório GitHub",
+    "viewDemo": "Visualizar Demo",
+    "viewAll": "Ver Todos",
+
+    "portfolio": {
+      "all": "Todos",
+      "viewProject": "Ver Projeto"
+    },
+
+    "categories": {
+      "Data Engineering": { "labelKey": "Engenharia de Dados" },
+      "Cloud & Infrastructure": { "labelKey": "Nuvem e Infraestrutura" },
+      "Data Science": { "labelKey": "Ciência de Dados" },
+      "Data Analytics": { "labelKey": "Análise de Dados" },
+      "Outros": { "labelKey": "Outros Projetos" },
+
+      "dataScience": { "labelKey": "Ciência de Dados" },
+      "cloud": { "labelKey": "Cloud & Databricks" },
+      "graphs": { "labelKey": "Análise de Grafos (Neo4J)" },
+      "analysis": { "labelKey": "Análise de Dados & Power BI" },
+      "excel": { "labelKey": "Excel e Modelagem de Dados" },
+      "database": { "labelKey": "Banco de Dados & SQL" },
+
+      "dev": { "labelKey": "Desenvolvimento de Software" },
+      "security": { "labelKey": "Cibersegurança" },
+
+      "html": { "labelKey": "HTML" },
+      "css": { "labelKey": "CSS" },
+      "javascript": { "labelKey": "JavaScript" },
+      "typescript": { "labelKey": "TypeScript" },
+      "next": { "labelKey": "Next.js" },
+      "node": { "labelKey": "Node.js" },
+      "react": { "labelKey": "React" },
+      "articles": { "labelKey": "Artigos Técnicos" }
+    },
+
+    "featuredProjects": []
+  },
+
+  "common": {
+    "navigation": "Navegação principal",
+    "role": "Cientista de Dados | Python | SQL | Azure",
+    "footer": "© 2026 Sérgio Santos. Todos os direitos reservados.",
+    "rights": "Todos os direitos reservados",
+    "builtWith": "Desenvolvido com Next.js 16.2.2 & TypeScript 6.0.2",
+    "loading": "Carregando...",
+    "error": "Algo deu errado.",
+    "socialLinks": "Abrir perfil de {platform}",
+    "skipToContent": "Pular para o conteúdo",
+    "languageSwitcher": "Alterar idioma",
+    "email": "santossergiorealbjj@outlook.com",
+
+    "nav": {
+      "about": "Sobre",
+      "experience": "Experiência",
+      "projects": "Projetos",
+      "articles": "Artigos",
+      "contact": "Contato"
+    },
+
+    "theme": {
+      "light": "Claro",
+      "dark": "Escuro",
+      "system": "Sistema"
+    },
+
+    "externalLinks": {
+      "linkedin": "https://www.linkedin.com/in/santossergioluiz",
+      "github": "https://github.com/Santosdevbjj",
+      "medium": "https://medium.com/@sergiosantosluiz",
+      "email": "mailto:santossergiorealbjj@outlook.com"
+    }
+  },
+
+  "intl": {
+    "locale": "pt-BR",
+    "fallbackLocale": "pt",
+    "currency": "BRL",
+    "timezone": "America/Sao_Paulo",
+    "unitDisplay": "short",
+    "numberFormat": "pt-BR"
+  },
+
+  "states": {
+    "loading": "Carregando...",
+    "empty": "Sem dados.",
+    "error": "Erro ao carregar.",
+    "emptyProjects": {
+      "title": "Nenhum projeto",
+      "description": "Em breve.",
+      "cta": "Voltar"
+    },
+    "emptyExperience": "Sem registros.",
+    "errorArticles": "Erro nos artigos."
+  },
+
+  "cookie": {
+    "title": "Cookies",
+    "description": "Melhoramos sua experiência.",
+    "necessary": "Necessários",
+    "alwaysActive": "Ativo",
+    "analytics": "Analíticos",
+    "acceptAll": "Aceitar",
+    "rejectAll": "Recusar",
+    "savePreferences": "Salvar"
+  },
+
+  "seo": {
+    "siteName": "Sérgio Santos | Portfolio",
+    "title": "Cientista de Dados e Sistemas Criticos",
+    "description": "Especialista em Ciência de Dados, IA e Engenharia de Software com foco em Sistemas Críticos e Missão Crítica. Veja projetos e artigos técnicos.",
+    "keywords": [
+      "Ciência de Dados",
+      "Data Science",
+      "Machine Learning",
+      "ETL",
+      "Cloud Computing",
+      "Azure",
+      "Python"
+    ]
+  },
+
+  "metrics": {
+    "availability": "99,5%",
+    "availabilityNormalized": {
+      "value": 99.5,
+      "unit": "%"
+    }
+  },
+
+  "resume": {
+    "selectLanguage": "Selecionar Idioma",
+    "languages": {
+      "pt-BR": "Português",
+      "en-US": "Inglês",
+      "es-ES": "Espanhol",
+      "es-AR": "Espanhol (AR)",
+      "es-MX": "Espanhol (MX)"
+    }
+  },
+
+  "menu": {
+    "open": "Abrir menu",
+    "close": "Fechar"
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/en-US.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "meta": {
+    "version": "1.0.1",
+    "locale": "en-US",
+    "direction": "ltr",
+    "lastUpdated": "2026-03-08T21:00:00Z",
+    "author": "Sérgio Santos",
+    "source": "manual",
+    "contentVersion": "2026.03.08",
+    "contentHash": "i18n-enus-2026-03-08",
+    "sourceType": "curated-manual",
+    "description": "Sérgio Santos Portfolio: Data Scientist, AI, and Software Engineer specialist focusing on Critical Systems and Mission Critical. View projects and technical articles."
+  },
+
+  "hero": {
+    "greeting": "Available for Critical Projects",
+    "title": "Data Scientist",
+    "subtitle": "Data and Resilience",
+    "headline": "Specialist in transforming complex infrastructures into high-availability systems and scalable data pipelines.",
+    "ctaPrimary": "View Projects"
+  },
+
+  "construction": {
+    "badge": "Risk Analysis & AI",
+    "title": "Risk Forecasting in Civil Construction",
+    "description": "Development of predictive models to identify operational bottlenecks and structural risks in large-scale projects, using neural networks and time-series analysis.",
+    "techStack": ["Python", "TensorFlow", "Azure Data Factory", "Power BI"],
+    "viewProject": "Explore Solution",
+    "metrics": {
+      "accuracy": "94%",
+      "label": "Model Accuracy"
+    }
+  },
+
+  "about": {
+    "title": "About Me",
+    "differentialTitle": "Data Engineering with Mission Critical Focus",
+    "description": "Data Scientist with a solid background in banking critical systems, focused on transforming data into decisions, cost reduction, and operational efficiency.",
+    "differentialContent": "I worked for over 15 years at Banco Bradesco in regulated mission-critical environments. Currently, I direct my career towards Data Science and AI.",
+    "highlights": [
+      "15+ years in Banking",
+      "Cloud Specialist",
+      "Data Science & AI"
+    ],
+    "stats": {
+      "experienceValue": "+15",
+      "experienceLabel": "Years",
+      "availabilityValue": "99.9%",
+      "availabilityLabel": "Uptime",
+      "automation": "100% Automated Systems"
+    }
+  },
+
+  "contact": {
+    "title": "Let's Talk?",
+    "subtitle": "Seeking opportunities in governance and modernization projects.",
+    "cta": "Send Email",
+    "emailLabel": "Copy Email",
+    "cvLabel": "View CV",
+    "linkedinLabel": "LinkedIn",
+    "ctaTitle": "Let's build something together?",
+    "buttonText": "Get in Touch →"
+  },
+
+  "experience": {
+    "title": "Professional Experience",
+    "emptyLabel": "No experience found",
+    "items": [
+      {
+        "company": "Freelance Consultant / Transition",
+        "period": "2008 - Present",
+        "role": "Critical Systems Specialist",
+        "description": "Architecture and maintenance of data pipelines and resilient infrastructure."
+      }
+    ]
+  },
+
+  "articles": {
+    "title": "Technical Articles",
+    "mediumProfile": "View Medium profile",
+    "readMore": "Read full article",
+    "publishedAt": "Published on",
+    "bestOfMonth": "Highlight of the Month",
+    "awardWinner": "Award-Winning Article",
+    "items": [
+      {
+        "title": "The Era of Data in Critical Systems",
+        "description": "How data governance transforms legacy systems into strategic assets.",
+        "date": "2025",
+        "category": "Data Strategy",
+        "isAward": true,
+        "link": "https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
+      }
+    ]
+  },
+
+  "projects": {
+    "title": "Projects and Solutions",
+    "featuredLabel": "Technical Highlight",
+    "firstLabel": "Challenge and Architecture",
+    "impactLabel": "Impact and Result",
+    "problem": "Problem",
+    "solution": "Solution",
+    "viewProject": "GitHub Repository",
+    "viewDemo": "View Demo",
+    "viewAll": "View All",
+
+    "portfolio": {
+      "all": "All",
+      "viewProject": "View Project"
+    },
+
+    "categories": {
+      "Data Engineering": { "labelKey": "Data Engineering" },
+      "Cloud & Infrastructure": { "labelKey": "Cloud & Infrastructure" },
+      "Data Science": { "labelKey": "Data Science" },
+      "Data Analytics": { "labelKey": "Data Analytics" },
+      "Outros": { "labelKey": "Other Projects" },
+
+      "dataScience": { "labelKey": "Data Science" },
+      "cloud": { "labelKey": "Cloud & Databricks" },
+      "graphs": { "labelKey": "Graph Analysis (Neo4J)" },
+      "analysis": { "labelKey": "Data Analysis & Power BI" },
+      "excel": { "labelKey": "Excel and Data Modeling" },
+      "database": { "labelKey": "Database & SQL" },
+
+      "dev": { "labelKey": "Software Development" },
+      "security": { "labelKey": "Cybersecurity" },
+
+      "html": { "labelKey": "HTML" },
+      "css": { "labelKey": "CSS" },
+      "javascript": { "labelKey": "JavaScript" },
+      "typescript": { "labelKey": "TypeScript" },
+      "next": { "labelKey": "Next.js" },
+      "node": { "labelKey": "Node.js" },
+      "react": { "labelKey": "React" },
+      "articles": { "labelKey": "Technical Articles" }
+    },
+
+    "featuredProjects": []
+  },
+
+  "common": {
+    "navigation": "Main navigation",
+    "role": "Data Scientist | Python | SQL | Azure",
+    "footer": "© 2026 Sérgio Santos. All rights reserved.",
+    "rights": "All rights reserved",
+    "builtWith": "Built with Next.js 16.2.2 & TypeScript 6.0.2",
+    "loading": "Loading...",
+    "error": "Something went wrong.",
+    "socialLinks": "Open {platform} profile",
+    "skipToContent": "Skip to content",
+    "languageSwitcher": "Change language",
+    "email": "santossergiorealbjj@outlook.com",
+
+    "nav": {
+      "about": "About",
+      "experience": "Experience",
+      "projects": "Projects",
+      "articles": "Articles",
+      "contact": "Contact"
+    },
+
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+
+    "externalLinks": {
+      "linkedin": "https://www.linkedin.com/in/santossergioluiz",
+      "github": "https://github.com/Santosdevbjj",
+      "medium": "https://medium.com/@sergiosantosluiz",
+      "email": "mailto:santossergiorealbjj@outlook.com"
+    }
+  },
+
+  "intl": {
+    "locale": "en-US",
+    "fallbackLocale": "en",
+    "currency": "USD",
+    "timezone": "UTC",
+    "unitDisplay": "short",
+    "numberFormat": "en-US"
+  },
+
+  "states": {
+    "loading": "Loading...",
+    "empty": "No data.",
+    "error": "Error loading.",
+    "emptyProjects": {
+      "title": "No projects",
+      "description": "Coming soon.",
+      "cta": "Back"
+    },
+    "emptyExperience": "No records.",
+    "errorArticles": "Error in articles."
+  },
+
+  "cookie": {
+    "title": "Cookies",
+    "description": "We improve your experience.",
+    "necessary": "Necessary",
+    "alwaysActive": "Active",
+    "analytics": "Analytics",
+    "acceptAll": "Accept All",
+    "rejectAll": "Reject",
+    "savePreferences": "Save"
+  },
+
+  "seo": {
+    "siteName": "Sérgio Santos | Portfolio",
+    "title": "Data Scientist and Critical Systems",
+    "description": "Data Scientist, AI, and Software Engineer specialist focusing on Critical Systems and Mission Critical. View projects and technical articles.",
+    "keywords": [
+      "Data Science",
+      "Machine Learning",
+      "ETL",
+      "Cloud Computing",
+      "Azure",
+      "Python"
+    ]
+  },
+
+  "metrics": {
+    "availability": "99.5%",
+    "availabilityNormalized": {
+      "value": 99.5,
+      "unit": "%"
+    }
+  },
+
+  "resume": {
+    "selectLanguage": "Select Language",
+    "languages": {
+      "pt-BR": "Portuguese",
+      "en-US": "English",
+      "es-ES": "Spanish",
+      "es-AR": "Spanish (AR)",
+      "es-MX": "Spanish (MX)"
+    }
+  },
+
+  "menu": {
+    "open": "Open menu",
+    "close": "Close"
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/es-AR.json
+
+TEM ESSE CONTEÚDO 
+
+{
+  "meta": {
+    "version": "1.0.1",
+    "locale": "es-AR",
+    "direction": "ltr",
+    "lastUpdated": "2026-03-08T21:00:00Z",
+    "author": "Sérgio Santos",
+    "source": "manual",
+    "contentVersion": "2026.03.08",
+    "contentHash": "i18n-esar-2026-03-08",
+    "sourceType": "curated-manual",
+    "description": "Portafolio de Sérgio Santos: Especialista en Ciencia de Datos, IA e Ingeniería de Software con foco en Sistemas Críticos y Misión Crítica. Vea proyectos y artículos técnicos."
+  },
+
+  "hero": {
+    "greeting": "Disponible para Proyectos Críticos",
+    "title": "Científico de Datos",
+    "subtitle": "Datos y Resiliencia",
+    "headline": "Especialista en transformar infraestructuras complejas en sistemas de alta disponibilidad y pipelines de datos escalables.",
+    "ctaPrimary": "Ver Proyectos"
+  },
+
+  "construction": {
+    "badge": "Análisis de Riesgo e IA",
+    "title": "Predicción de Riesgos en Construcción Civil",
+    "description": "Desarrollo de modelos predictivos para identificar cuellos de botella operativos y riesgos estructurales en grandes obras, utilizando redes neuronales y análisis de series temporales.",
+    "techStack": ["Python", "TensorFlow", "Azure Data Factory", "Power BI"],
+    "viewProject": "Explorar Solución",
+    "metrics": {
+      "accuracy": "94%",
+      "label": "Precisión del Modelo"
+    }
+  },
+
+  "about": {
+    "title": "Sobre Mí",
+    "differentialTitle": "Ingeniería de Datos con Foco en Misión Crítica",
+    "description": "Científico de Datos con base sólida en sistemas críticos bancarios y foco en transformar datos en decisiones, reducción de costos y eficiencia operativa.",
+    "differentialContent": "Me desempeñé por más de 15 años en el Banco Bradesco en entornos regulados de misión crítica. Actualmente direcciono mi carrera hacia la Ciencia de Datos e IA.",
+    "highlights": [
+      "15+ años en Bancos",
+      "Especialista Cloud",
+      "Data Science & IA"
+    ],
+    "stats": {
+      "experienceValue": "+15",
+      "experienceLabel": "Años",
+      "availabilityValue": "99.9%",
+      "availabilityLabel": "Uptime",
+      "automation": "Sistemas 100% Automatizados"
+    }
+  },
+
+  "contact": {
+    "title": "¿Hablamos?",
+    "subtitle": "Busco oportunidades en proyectos de gobernanza y modernización.",
+    "cta": "Enviar Email",
+    "emailLabel": "Copiar Email",
+    "cvLabel": "Ver CV",
+    "linkedinLabel": "LinkedIn",
+    "ctaTitle": "¿Construimos algo juntos?",
+    "buttonText": "Contactar →"
+  },
+
+  "experience": {
+    "title": "Experiencia Profesional",
+    "emptyLabel": "No se encontró experiencia",
+    "items": [
+      {
+        "company": "Consultor Autónomo / Transición",
+        "period": "2008 - Actualidad",
+        "role": "Especialista en Sistemas Críticos",
+        "description": "Arquitectura y mantenimiento de pipelines de datos e infraestructura resiliente."
+      }
+    ]
+  },
+
+  "articles": {
+    "title": "Artículos Técnicos",
+    "mediumProfile": "Ver perfil en Medium",
+    "readMore": "Leer artículo completo",
+    "publishedAt": "Publicado el",
+    "bestOfMonth": "Destacado del Mes",
+    "awardWinner": "Artículo Premiado",
+    "items": [
+      {
+        "title": "La Era de los Datos en Sistemas Críticos",
+        "description": "Cómo la gobernanza de datos transforma sistemas legados en activos estratégicos.",
+        "date": "2025",
+        "category": "Data Strategy",
+        "isAward": true,
+        "link": "https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
+      }
+    ]
+  },
+
+  "projects": {
+    "title": "Proyectos y Soluciones",
+    "featuredLabel": "Destacado Técnico",
+    "firstLabel": "Desafío y Arquitectura",
+    "impactLabel": "Impacto y Resultado",
+    "problem": "Problema",
+    "solution": "Solución",
+    "viewProject": "Repositorio GitHub",
+    "viewDemo": "Visualizar Demo",
+    "viewAll": "Ver Todos",
+
+    "portfolio": {
+      "all": "Todos",
+      "viewProject": "Ver Proyecto"
+    },
+
+    "categories": {
+      "Data Engineering": { "labelKey": "Ingeniería de Datos" },
+      "Cloud & Infrastructure": { "labelKey": "Nube e Infraestructura" },
+      "Data Science": { "labelKey": "Ciencia de Datos" },
+      "Data Analytics": { "labelKey": "Análisis de Datos" },
+      "Outros": { "labelKey": "Otros Proyectos" },
+
+      "dataScience": { "labelKey": "Ciencia de Datos" },
+      "cloud": { "labelKey": "Cloud & Databricks" },
+      "graphs": { "labelKey": "Análisis de Grafos (Neo4J)" },
+      "analysis": { "labelKey": "Análisis de Datos & Power BI" },
+      "excel": { "labelKey": "Excel y Modelado de Datos" },
+      "database": { "labelKey": "Base de Datos & SQL" },
+
+      "dev": { "labelKey": "Desarrollo de Software" },
+      "security": { "labelKey": "Ciberseguridad" },
+
+      "html": { "labelKey": "HTML" },
+      "css": { "labelKey": "CSS" },
+      "javascript": { "labelKey": "JavaScript" },
+      "typescript": { "labelKey": "TypeScript" },
+      "next": { "labelKey": "Next.js" },
+      "node": { "labelKey": "Node.js" },
+      "react": { "labelKey": "React" },
+      "articles": { "labelKey": "Artículos Técnicos" }
+    },
+
+    "featuredProjects": []
+  },
+
+  "common": {
+    "navigation": "Navegación principal",
+    "role": "Científico de Datos | Python | SQL | Azure",
+    "footer": "© 2026 Sérgio Santos. Todos los derechos reservados.",
+    "rights": "Todos los derechos reservados",
+    "builtWith": "Desarrollado con Next.js 16.2.2 & TypeScript 6.0.2",
+    "loading": "Cargando...",
+    "error": "Algo salió mal.",
+    "socialLinks": "Abrir perfil de {platform}",
+    "skipToContent": "Saltar al contenido",
+    "languageSwitcher": "Cambiar idioma",
+    "email": "santossergiorealbjj@outlook.com",
+
+    "nav": {
+      "about": "Sobre mí",
+      "experience": "Experiencia",
+      "projects": "Proyectos",
+      "articles": "Artículos",
+      "contact": "Contacto"
+    },
+
+    "theme": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    },
+
+    "externalLinks": {
+      "linkedin": "https://www.linkedin.com/in/santossergioluiz",
+      "github": "https://github.com/Santosdevbjj",
+      "medium": "https://medium.com/@sergiosantosluiz",
+      "email": "mailto:santossergiorealbjj@outlook.com"
+    }
+  },
+
+  "intl": {
+    "locale": "es-AR",
+    "fallbackLocale": "es",
+    "currency": "ARS",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "unitDisplay": "short",
+    "numberFormat": "es-AR"
+  },
+
+  "states": {
+    "loading": "Cargando...",
+    "empty": "Sin datos.",
+    "error": "Error al cargar.",
+    "emptyProjects": {
+      "title": "Sin proyectos",
+      "description": "Próximamente.",
+      "cta": "Volver"
+    },
+    "emptyExperience": "Sin registros.",
+    "errorArticles": "Error en los artículos."
+  },
+
+  "cookie": {
+    "title": "Cookies",
+    "description": "Mejoramos tu experiencia.",
+    "necessary": "Necesarias",
+    "alwaysActive": "Activo",
+    "analytics": "Analíticas",
+    "acceptAll": "Aceptar",
+    "rejectAll": "Rechazar",
+    "savePreferences": "Guardar"
+  },
+
+  "seo": {
+    "siteName": "Sérgio Santos | Portafolio",
+    "title": "Científico de Datos y Sistemas Críticos",
+    "description": "Especialista en Ciencia de Datos, IA e Ingeniería de Software con foco en Sistemas Críticos y Misión Crítica. Vea proyectos y artículos técnicos.",
+    "keywords": [
+      "Ciencia de Datos",
+      "Data Science",
+      "Machine Learning",
+      "ETL",
+      "Cloud Computing",
+      "Azure",
+      "Python"
+    ]
+  },
+
+  "metrics": {
+    "availability": "99,5%",
+    "availabilityNormalized": {
+      "value": 99.5,
+      "unit": "%"
+    }
+  },
+
+  "resume": {
+    "selectLanguage": "Seleccionar Idioma",
+    "languages": {
+      "pt-BR": "Portugués",
+      "en-US": "Inglés",
+      "es-ES": "Español",
+      "es-AR": "Español (AR)",
+      "es-MX": "Español (MX)"
+    }
+  },
+
+  "menu": {
+    "open": "Abrir menú",
+    "close": "Cerrar"
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/es-ES.json
+
+tem esse conteúdo 
+
+{
+  "meta": {
+    "version": "1.0.1",
+    "locale": "es-ES",
+    "direction": "ltr",
+    "lastUpdated": "2026-03-08T21:00:00Z",
+    "author": "Sérgio Santos",
+    "source": "manual",
+    "contentVersion": "2026.03.08",
+    "contentHash": "i18n-eses-2026-03-08",
+    "sourceType": "curated-manual",
+    "description": "Portafolio de Sérgio Santos: Especialista en Ciencia de Datos, IA e Ingeniería de Software con enfoque en Sistemas Críticos y Misión Crítica. Vea proyectos y artículos técnicos."
+  },
+
+  "hero": {
+    "greeting": "Disponible para Proyectos Críticos",
+    "title": "Científico de Datos",
+    "subtitle": "Datos y Resiliencia",
+    "headline": "Especialista en transformar infraestructuras complejas en sistemas de alta disponibilidad y pipelines de datos escalables.",
+    "ctaPrimary": "Ver Proyectos"
+  },
+
+  "construction": {
+    "badge": "Análisis de Riesgo e IA",
+    "title": "Predicción de Riesgos en Construcción Civil",
+    "description": "Desarrollo de modelos predictivos para identificar cuellos de botella operativos y riesgos estructurales en grandes obras, utilizando redes neuronales y análisis de series temporales.",
+    "techStack": ["Python", "TensorFlow", "Azure Data Factory", "Power BI"],
+    "viewProject": "Explorar Solución",
+    "metrics": {
+      "accuracy": "94%",
+      "label": "Precisión del Modelo"
+    }
+  },
+
+  "about": {
+    "title": "Sobre Mí",
+    "differentialTitle": "Ingeniería de Datos con Enfoque en Misión Crítica",
+    "description": "Científico de Datos con una sólida base en sistemas críticos bancarios y enfoque en transformar datos en decisiones, reducción de costes y eficiencia operativa.",
+    "differentialContent": "Trabajé durante más de 15 años en Banco Bradesco en entornos regulados de misión crítica. Actualmente dirijo mi carrera hacia la Ciencia de Datos e IA.",
+    "highlights": [
+      "15+ años en Banca",
+      "Especialista Cloud",
+      "Data Science & IA"
+    ],
+    "stats": {
+      "experienceValue": "+15",
+      "experienceLabel": "Años",
+      "availabilityValue": "99.9%",
+      "availabilityLabel": "Uptime",
+      "automation": "Sistemas 100% Automatizados"
+    }
+  },
+
+  "contact": {
+    "title": "¿Hablamos?",
+    "subtitle": "Busco oportunidades en proyectos de gobernanza y modernización.",
+    "cta": "Enviar Correo",
+    "emailLabel": "Copiar Correo",
+    "cvLabel": "Ver CV",
+    "linkedinLabel": "LinkedIn",
+    "ctaTitle": "¿Construimos algo juntos?",
+    "buttonText": "Contactar →"
+  },
+
+  "experience": {
+    "title": "Experiencia Profesional",
+    "emptyLabel": "No se ha encontrado experiencia",
+    "items": [
+      {
+        "company": "Consultor Autónomo / Transición",
+        "period": "2008 - Actualidad",
+        "role": "Especialista en Sistemas Críticos",
+        "description": "Arquitectura y mantenimiento de pipelines de datos e infraestructura resiliente."
+      }
+    ]
+  },
+
+  "articles": {
+    "title": "Artículos Técnicos",
+    "mediumProfile": "Ver perfil en Medium",
+    "readMore": "Leer artículo completo",
+    "publishedAt": "Publicado el",
+    "bestOfMonth": "Destacado del Mes",
+    "awardWinner": "Artículo Premiado",
+    "items": [
+      {
+        "title": "La Era de los Datos en Sistemas Críticos",
+        "description": "Cómo la gobernanza de datos transforma sistemas heredados en activos estratégicos.",
+        "date": "2025",
+        "category": "Data Strategy",
+        "isAward": true,
+        "link": "https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
+      }
+    ]
+  },
+
+  "projects": {
+    "title": "Proyectos y Soluciones",
+    "featuredLabel": "Destacado Técnico",
+    "firstLabel": "Desafío y Arquitectura",
+    "impactLabel": "Impacto y Resultado",
+    "problem": "Problema",
+    "solution": "Solución",
+    "viewProject": "Repositorio GitHub",
+    "viewDemo": "Visualizar Demo",
+    "viewAll": "Ver Todos",
+
+    "portfolio": {
+      "all": "Todos",
+      "viewProject": "Ver Proyecto"
+    },
+
+    "categories": {
+      "Data Engineering": { "labelKey": "Ingeniería de Datos" },
+      "Cloud & Infrastructure": { "labelKey": "Nube e Infraestructura" },
+      "Data Science": { "labelKey": "Ciencia de Datos" },
+      "Data Analytics": { "labelKey": "Análisis de Datos" },
+      "Outros": { "labelKey": "Otros Proyectos" },
+
+      "dataScience": { "labelKey": "Ciencia de Datos" },
+      "cloud": { "labelKey": "Cloud & Databricks" },
+      "graphs": { "labelKey": "Análisis de Grafos (Neo4J)" },
+      "analysis": { "labelKey": "Análisis de Datos y Power BI" },
+      "excel": { "labelKey": "Excel y Modelado de Datos" },
+      "database": { "labelKey": "Base de Datos y SQL" },
+
+      "dev": { "labelKey": "Desarrollo de Software" },
+      "security": { "labelKey": "Ciberseguridad" },
+
+      "html": { "labelKey": "HTML" },
+      "css": { "labelKey": "CSS" },
+      "javascript": { "labelKey": "JavaScript" },
+      "typescript": { "labelKey": "TypeScript" },
+      "next": { "labelKey": "Next.js" },
+      "node": { "labelKey": "Node.js" },
+      "react": { "labelKey": "React" },
+      "articles": { "labelKey": "Artículos Técnicos" }
+    },
+
+    "featuredProjects": []
+  },
+
+  "common": {
+    "navigation": "Navegación principal",
+    "role": "Científico de Datos | Python | SQL | Azure",
+    "footer": "© 2026 Sérgio Santos. Todos los derechos reservados.",
+    "rights": "Todos los derechos reservados",
+    "builtWith": "Desarrollado con Next.js 16.2.2 & TypeScript 6.0.2",
+    "loading": "Cargando...",
+    "error": "Algo ha salido mal.",
+    "socialLinks": "Abrir perfil de {platform}",
+    "skipToContent": "Saltar al contenido",
+    "languageSwitcher": "Cambiar idioma",
+    "email": "santossergiorealbjj@outlook.com",
+
+    "nav": {
+      "about": "Sobre mí",
+      "experience": "Experiencia",
+      "projects": "Proyectos",
+      "articles": "Artículos",
+      "contact": "Contacto"
+    },
+
+    "theme": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    },
+
+    "externalLinks": {
+      "linkedin": "https://www.linkedin.com/in/santossergioluiz",
+      "github": "https://github.com/Santosdevbjj",
+      "medium": "https://medium.com/@sergiosantosluiz",
+      "email": "mailto:santossergiorealbjj@outlook.com"
+    }
+  },
+
+  "intl": {
+    "locale": "es-ES",
+    "fallbackLocale": "es",
+    "currency": "EUR",
+    "timezone": "Europe/Madrid",
+    "unitDisplay": "short",
+    "numberFormat": "es-ES"
+  },
+
+  "states": {
+    "loading": "Cargando...",
+    "empty": "Sin datos.",
+    "error": "Error al cargar.",
+    "emptyProjects": {
+      "title": "Sin proyectos",
+      "description": "Próximamente.",
+      "cta": "Volver"
+    },
+    "emptyExperience": "Sin registros.",
+    "errorArticles": "Error en los artículos."
+  },
+
+  "cookie": {
+    "title": "Cookies",
+    "description": "Mejoramos tu experiencia.",
+    "necessary": "Necesarias",
+    "alwaysActive": "Activo",
+    "analytics": "Analíticas",
+    "acceptAll": "Aceptar",
+    "rejectAll": "Rechazar",
+    "savePreferences": "Guardar"
+  },
+
+  "seo": {
+    "siteName": "Sérgio Santos | Portafolio",
+    "title": "Científico de Datos y Sistemas Críticos",
+    "description": "Especialista en Ciencia de Datos, IA e Ingeniería de Software con enfoque en Sistemas Críticos y Misión Crítica. Vea proyectos y artículos técnicos.",
+    "keywords": [
+      "Ciencia de Datos",
+      "Data Science",
+      "Machine Learning",
+      "ETL",
+      "Cloud Computing",
+      "Azure",
+      "Python"
+    ]
+  },
+
+  "metrics": {
+    "availability": "99,5%",
+    "availabilityNormalized": {
+      "value": 99.5,
+      "unit": "%"
+    }
+  },
+
+  "resume": {
+    "selectLanguage": "Seleccionar Idioma",
+    "languages": {
+      "pt-BR": "Portugués",
+      "en-US": "Inglés",
+      "es-ES": "Español",
+      "es-AR": "Español (AR)",
+      "es-MX": "Español (MX)"
+    }
+  },
+
+  "menu": {
+    "open": "Abrir menú",
+    "close": "Cerrar"
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/es-MX.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "meta": {
+    "version": "1.0.1",
+    "locale": "es-MX",
+    "direction": "ltr",
+    "lastUpdated": "2026-03-08T21:00:00Z",
+    "author": "Sérgio Santos",
+    "source": "manual",
+    "contentVersion": "2026.03.08",
+    "contentHash": "i18n-esmx-2026-03-08",
+    "sourceType": "curated-manual",
+    "description": "Portafolio de Sérgio Santos: Especialista en Ciencia de Datos, IA e Ingeniería de Software con enfoque en Sistemas Críticos y Misión Crítica. Vea proyectos y artículos técnicos."
+  },
+
+  "hero": {
+    "greeting": "Disponible para Proyectos Críticos",
+    "title": "Científico de Datos",
+    "subtitle": "Datos y Resiliencia",
+    "headline": "Especialista en transformar infraestructuras complejas en sistemas de alta disponibilidad y pipelines de datos escalables.",
+    "ctaPrimary": "Ver Proyectos"
+  },
+
+  "construction": {
+    "badge": "Análisis de Riesgo e IA",
+    "title": "Predicción de Riesgos en Construcción Civil",
+    "description": "Desarrollo de modelos predictivos para identificar cuellos de botella operativos y riesgos estructurales en grandes obras, utilizando redes neuronales y análisis de series temporales.",
+    "techStack": ["Python", "TensorFlow", "Azure Data Factory", "Power BI"],
+    "viewProject": "Explorar Solución",
+    "metrics": {
+      "accuracy": "94%",
+      "label": "Precisión del Modelo"
+    }
+  },
+
+  "about": {
+    "title": "Sobre Mí",
+    "differentialTitle": "Ingeniería de Datos con Enfoque en Misión Crítica",
+    "description": "Científico de Datos con base sólida en sistemas críticos bancarios y enfoque en transformar datos en decisiones, reducción de costos y eficiencia operativa.",
+    "differentialContent": "Me desempeñé por más de 15 años en el Banco Bradesco en entornos regulados de misión crítica. Actualmente dirijo mi carrera hacia la Ciencia de Datos e IA.",
+    "highlights": [
+      "15+ años en Banca",
+      "Especialista Cloud",
+      "Data Science & IA"
+    ],
+    "stats": {
+      "experienceValue": "+15",
+      "experienceLabel": "Años",
+      "availabilityValue": "99.9%",
+      "availabilityLabel": "Uptime",
+      "automation": "Sistemas 100% Automatizados"
+    }
+  },
+
+  "contact": {
+    "title": "¿Hablamos?",
+    "subtitle": "Busco oportunidades en proyectos de gobernanza y modernización.",
+    "cta": "Enviar Email",
+    "emailLabel": "Copiar Email",
+    "cvLabel": "Ver CV",
+    "linkedinLabel": "LinkedIn",
+    "ctaTitle": "¿Construimos algo juntos?",
+    "buttonText": "Contactar →"
+  },
+
+  "experience": {
+    "title": "Experiencia Profesional",
+    "emptyLabel": "No se encontró experiencia",
+    "items": [
+      {
+        "company": "Consultor Autónomo / Transición",
+        "period": "2008 - Actualidad",
+        "role": "Especialista en Sistemas Críticos",
+        "description": "Arquitectura y mantenimiento de pipelines de datos e infraestructura resiliente."
+      }
+    ]
+  },
+
+  "articles": {
+    "title": "Artículos Técnicos",
+    "mediumProfile": "Ver perfil en Medium",
+    "readMore": "Leer artículo completo",
+    "publishedAt": "Publicado el",
+    "bestOfMonth": "Destacado del Mes",
+    "awardWinner": "Artículo Premiado",
+    "items": [
+      {
+        "title": "La Era de los Datos en Sistemas Críticos",
+        "description": "Cómo la gobernanza de datos transforma sistemas legados en activos estratégicos.",
+        "date": "2025",
+        "category": "Data Strategy",
+        "isAward": true,
+        "link": "https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e"
+      }
+    ]
+  },
+
+  "projects": {
+    "title": "Proyectos y Soluciones",
+    "featuredLabel": "Destacado Técnico",
+    "firstLabel": "Desafío y Arquitectura",
+    "impactLabel": "Impacto y Resultado",
+    "problem": "Problema",
+    "solution": "Solución",
+    "viewProject": "Repositorio GitHub",
+    "viewDemo": "Visualizar Demo",
+    "viewAll": "Ver Todos",
+
+    "portfolio": {
+      "all": "Todos",
+      "viewProject": "Ver Proyecto"
+    },
+
+    "categories": {
+      "Data Engineering": { "labelKey": "Ingeniería de Datos" },
+      "Cloud & Infrastructure": { "labelKey": "Nube e Infraestructura" },
+      "Data Science": { "labelKey": "Ciencia de Datos" },
+      "Data Analytics": { "labelKey": "Análisis de Datos" },
+      "Outros": { "labelKey": "Otros Proyectos" },
+
+      "dataScience": { "labelKey": "Ciencia de Datos" },
+      "cloud": { "labelKey": "Cloud & Databricks" },
+      "graphs": { "labelKey": "Análisis de Grafos (Neo4J)" },
+      "analysis": { "labelKey": "Análisis de Datos & Power BI" },
+      "excel": { "labelKey": "Excel y Modelado de Datos" },
+      "database": { "labelKey": "Base de Datos & SQL" },
+
+      "dev": { "labelKey": "Desarrollo de Software" },
+      "security": { "labelKey": "Ciberseguridad" },
+
+      "html": { "labelKey": "HTML" },
+      "css": { "labelKey": "CSS" },
+      "javascript": { "labelKey": "JavaScript" },
+      "typescript": { "labelKey": "TypeScript" },
+      "next": { "labelKey": "Next.js" },
+      "node": { "labelKey": "Node.js" },
+      "react": { "labelKey": "React" },
+      "articles": { "labelKey": "Artículos Técnicos" }
+    },
+
+    "featuredProjects": []
+  },
+
+  "common": {
+    "navigation": "Navegación principal",
+    "role": "Científico de Datos | Python | SQL | Azure",
+    "footer": "© 2026 Sérgio Santos. Todos los derechos reservados.",
+    "rights": "Todos los derechos reservados",
+    "builtWith": "Desarrollado con Next.js 16.2.2 & TypeScript 6.0.2",
+    "loading": "Cargando...",
+    "error": "Algo salió mal.",
+    "socialLinks": "Abrir perfil de {platform}",
+    "skipToContent": "Saltar al contenido",
+    "languageSwitcher": "Cambiar idioma",
+    "email": "santossergiorealbjj@outlook.com",
+
+    "nav": {
+      "about": "Sobre mí",
+      "experience": "Experiencia",
+      "projects": "Proyectos",
+      "articles": "Artículos",
+      "contact": "Contacto"
+    },
+
+    "theme": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    },
+
+    "externalLinks": {
+      "linkedin": "https://www.linkedin.com/in/santossergioluiz",
+      "github": "https://github.com/Santosdevbjj",
+      "medium": "https://medium.com/@sergiosantosluiz",
+      "email": "mailto:santossergiorealbjj@outlook.com"
+    }
+  },
+
+  "intl": {
+    "locale": "es-MX",
+    "fallbackLocale": "es",
+    "currency": "MXN",
+    "timezone": "America/Mexico_City",
+    "unitDisplay": "short",
+    "numberFormat": "es-MX"
+  },
+
+  "states": {
+    "loading": "Cargando...",
+    "empty": "Sin datos.",
+    "error": "Error al cargar.",
+    "emptyProjects": {
+      "title": "Sin proyectos",
+      "description": "Próximamente.",
+      "cta": "Volver"
+    },
+    "emptyExperience": "Sin registros.",
+    "errorArticles": "Error en los artículos."
+  },
+
+  "cookie": {
+    "title": "Cookies",
+    "description": "Mejoramos tu experiencia.",
+    "necessary": "Necesarias",
+    "alwaysActive": "Activo",
+    "analytics": "Analíticas",
+    "acceptAll": "Aceptar",
+    "rejectAll": "Rechazar",
+    "savePreferences": "Guardar"
+  },
+
+  "seo": {
+    "siteName": "Sérgio Santos | Portafolio",
+    "title": "Científico de Datos y Sistemas Críticos",
+    "description": "Especialista en Ciencia de Datos, IA e Ingeniería de Software con enfoque en Sistemas Críticos y Misión Crítica. Vea proyectos y artículos técnicos.",
+    "keywords": [
+      "Ciencia de Datos",
+      "Data Science",
+      "Machine Learning",
+      "ETL",
+      "Cloud Computing",
+      "Azure",
+      "Python"
+    ]
+  },
+
+  "metrics": {
+    "availability": "99,5%",
+    "availabilityNormalized": {
+      "value": 99.5,
+      "unit": "%"
+    }
+  },
+
+  "resume": {
+    "selectLanguage": "Seleccionar Idioma",
+    "languages": {
+      "pt-BR": "Portugués",
+      "en-US": "Inglés",
+      "es-ES": "Español",
+      "es-AR": "Español (AR)",
+      "es-MX": "Español (MX)"
+    }
+  },
+
+  "menu": {
+    "open": "Abrir menú",
+    "close": "Cerrar"
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/index.ts
+
+TEM ESSE CONTEÚDO 
+
+
+// src/dictionaries/index.ts
+import "server-only";
+
+import type { Dictionary, CommonDictionary } from "@/types/dictionary";
+import {
+  DEFAULT_LOCALE,
+  normalizeLocale,
+  type SupportedLocale,
+} from "./locales";
+
+/**
+ * Normaliza COMMON
+ */
+function normalizeCommon(common: any): CommonDictionary {
+  return {
+    navigation: common?.navigation ?? "",
+    role: common?.role ?? "",
+    footer: common?.footer ?? "",
+    rights: common?.rights ?? "",
+    builtWith: common?.builtWith ?? "",
+    loading: common?.loading ?? "Loading...",
+    error: common?.error ?? "Error",
+    socialLinks: common?.socialLinks ?? "",
+    skipToContent: common?.skipToContent ?? "",
+    languageSwitcher: common?.languageSwitcher ?? "",
+    email: common?.email ?? "",
+
+    nav: common?.nav ?? {
+      about: "",
+      experience: "",
+      projects: "",
+      articles: "",
+      contact: "",
+    },
+
+    theme: common?.theme ?? {
+      light: "Light",
+      dark: "Dark",
+      system: "System",
+    },
+
+    externalLinks: common?.externalLinks ?? {},
+
+    errorBoundary: common?.errorBoundary ?? {
+      title: "Error",
+      description: "Unexpected error",
+      actions: {
+        retry: "Retry",
+        home: "Home",
+      },
+    },
+
+    notFound: common?.notFound ?? {
+      title: "Page not found",
+      description: "The requested page does not exist.",
+      button: "Back",
+    },
+
+    menu: common?.menu ?? {
+      open: "Open menu",
+      close: "Close menu",
+      aria: {
+        open: "Open navigation menu",
+        close: "Close navigation menu",
+      },
+    },
+  };
+}
+
+/**
+ * Normaliza SEO (diferença entre idiomas)
+ */
+function normalizeSEO(seo: any) {
+  return {
+    siteName: seo?.siteName ?? "",
+    title: seo?.title ?? "",
+    description: seo?.description ?? "",
+    keywords: seo?.keywords ?? [],
+    pages: seo?.pages ?? {
+      home: { title: "", description: "" },
+      projects: { title: "", description: "" },
+      articles: { title: "", description: "" },
+    },
+  };
+}
+
+/**
+ * Normaliza ARTICLES
+ */
+function normalizeArticles(articles: any) {
+  return {
+    title: articles?.title ?? "",
+    mediumProfile: articles?.mediumProfile ?? "",
+    readMore: articles?.readMore ?? "",
+    publishedAt: articles?.publishedAt ?? "",
+    bestOfMonth: articles?.bestOfMonth ?? "",
+    awardWinner: articles?.awardWinner ?? "",
+    items: articles?.items ?? [],
+  };
+}
+
+/**
+ * Normaliza PROJECTS
+ */
+function normalizeProjects(projects: any) {
+  return {
+    title: projects?.title ?? "",
+    featuredLabel: projects?.featuredLabel ?? "",
+    firstLabel: projects?.firstLabel ?? "",
+    impactLabel: projects?.impactLabel ?? "",
+    problem: projects?.problem ?? "",
+    solution: projects?.solution ?? "",
+    viewProject: projects?.viewProject ?? "",
+    viewDemo: projects?.viewDemo ?? "",
+    viewAll: projects?.viewAll ?? "",
+    portfolio: projects?.portfolio ?? {
+      all: "",
+      viewProject: "",
+    },
+    categories: projects?.categories ?? {},
+    featuredProjects: projects?.featuredProjects ?? [],
+  };
+}
+
+/**
+ * Normaliza RESUME (novo campo crítico)
+ */
+function normalizeResume(resume: any) {
+  return {
+    selectLanguage: resume?.selectLanguage ?? "",
+    languages: resume?.languages ?? {},
+  };
+}
+
+/**
+ * Normaliza o dicionário completo
+ */
+function normalizeDictionary(raw: any): Dictionary {
+  return {
+    ...raw,
+
+    hero: raw?.hero ?? {},
+    about: raw?.about ?? {},
+    contact: raw?.contact ?? {},
+    experience: raw?.experience ?? { items: [] },
+
+    articles: normalizeArticles(raw?.articles),
+    projects: normalizeProjects(raw?.projects),
+    seo: normalizeSEO(raw?.seo),
+    resume: normalizeResume(raw?.resume),
+
+    common: normalizeCommon(raw?.common),
+    states: raw?.states ?? {},
+    cookie: raw?.cookie ?? {},
+    intl: raw?.intl ?? {},
+    metrics: raw?.metrics ?? {},
+  } as Dictionary;
+}
+
+/**
+ * Loader tipado
+ */
+type DictionaryLoader = () => Promise<Dictionary>;
+
+const loaders: Record<SupportedLocale, DictionaryLoader> = {
+  "pt-BR": async () =>
+    normalizeDictionary((await import("./pt-BR.json")).default),
+
+  "en-US": async () =>
+    normalizeDictionary((await import("./en-US.json")).default),
+
+  "es-ES": async () =>
+    normalizeDictionary((await import("./es-ES.json")).default),
+
+  "es-AR": async () =>
+    normalizeDictionary((await import("./es-AR.json")).default),
+
+  "es-MX": async () =>
+    normalizeDictionary((await import("./es-MX.json")).default),
+};
+
+/**
+ * API principal
+ */
+export async function getDictionary(
+  locale?: string | null,
+): Promise<Dictionary> {
+  const normalized = normalizeLocale(locale);
+
+  const loader =
+    loaders[normalized] ?? loaders[DEFAULT_LOCALE];
+
+  return loader();
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/labels.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "pt-BR": {
+    "home": "Início",
+    "back": "Voltar",
+    "retry": "Tentar novamente",
+    "close": "Fechar",
+    "open": "Abrir",
+    "breadcrumb_root": "Início"
+  },
+  "en-US": {
+    "home": "Home",
+    "back": "Back",
+    "retry": "Try again",
+    "close": "Close",
+    "open": "Open",
+    "breadcrumb_root": "Home"
+  },
+  "es-ES": {
+    "home": "Inicio",
+    "back": "Volver",
+    "retry": "Intentar de nuevo",
+    "close": "Cerrar",
+    "open": "Abrir",
+    "breadcrumb_root": "Inicio"
+  },
+  "es-AR": {
+    "home": "Inicio",
+    "back": "Volver",
+    "retry": "Intentar nuevamente",
+    "close": "Cerrar",
+    "open": "Abrir",
+    "breadcrumb_root": "Inicio"
+  },
+  "es-MX": {
+    "home": "Inicio",
+    "back": "Volver",
+    "retry": "Intentar de nuevo",
+    "close": "Cerrar",
+    "open": "Abrir",
+    "breadcrumb_root": "Inicio"
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/locales.ts
+
+TEM ESSE CONTEÚDO 
+
+
+
+// src/dictionaries/locales.ts
+
+/**
+ * Lista oficial de locales suportados.
+ */
+export const SUPPORTED_LOCALES = [
+  "pt-BR",
+  "en-US",
+  "es-ES",
+  "es-AR",
+  "es-MX",
+] as const;
+
+export const locales = SUPPORTED_LOCALES;
+
+export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+
+export const DEFAULT_LOCALE: SupportedLocale = "pt-BR";
+
+/**
+ * Verifica se a string é um locale suportado.
+ */
+export function isValidLocale(
+  locale: string,
+): locale is SupportedLocale {
+  return SUPPORTED_LOCALES.includes(
+    locale as SupportedLocale,
+  );
+}
+
+/**
+ * Normaliza qualquer entrada para um locale suportado.
+ *
+ * ✔ Case insensitive
+ * ✔ Aceita pt-br, pt_BR
+ * ✔ Aceita pt, en, es
+ * ✔ Nunca retorna null
+ * ✔ Sempre retorna SupportedLocale
+ */
+export function normalizeLocale(
+  input?: string | null,
+): SupportedLocale {
+  if (!input) return DEFAULT_LOCALE;
+
+  const cleaned = input.trim().replace(/_/g, "-").toLowerCase();
+
+  // ISO base
+  if (cleaned === "pt") return "pt-BR";
+  if (cleaned === "en") return "en-US";
+  if (cleaned === "es") return "es-ES";
+
+  // Formato xx-YY
+  const dashIndex = cleaned.indexOf("-");
+
+  if (dashIndex > 0) {
+    const lang = cleaned.slice(0, dashIndex);
+    const region = cleaned.slice(dashIndex + 1);
+
+    if (lang.length === 2 && region.length === 2) {
+      const formatted = `${lang}-${region.toUpperCase()}`;
+
+      if (isValidLocale(formatted)) {
+        return formatted;
+      }
+    }
+  }
+
+  return DEFAULT_LOCALE;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/validate-i18n.ts
+
+TEM ESSE CONTEÚDO 
+
+
+import fs from 'fs';
+import path from 'path';
+
+// Configurações
+const DICTIONARY_DIR = path.join(process.cwd(), 'src/dictionaries');
+const MASTER_LOCALE = 'pt-BR.json';
+const LOCALES_TO_CHECK = ['en-US.json', 'es-ES.json', 'es-AR.json', 'es-MX.json'];
+
+function getKeys(obj: any, prefix = ''): string[] {
+  return Object.keys(obj).reduce((res: string[], el) => {
+    const name = prefix ? `${prefix}.${el}` : el;
+    if (typeof obj[el] === 'object' && obj[el] !== null && !Array.isArray(obj[el])) {
+      res.push(...getKeys(obj[el], name));
+    } else {
+      res.push(name);
+    }
+    return res;
+  }, []);
+}
+
+function validate() {
+  console.log(`\x1b[34m🔍 Iniciando validação de dicionários (Master: ${MASTER_LOCALE})...\x1b[0m\n`);
+
+  const masterPath = path.join(DICTIONARY_DIR, MASTER_LOCALE);
+  if (!fs.existsSync(masterPath)) {
+    console.error(`❌ Arquivo mestre não encontrado em: ${masterPath}`);
+    process.exit(1);
+  }
+
+  const masterData = JSON.parse(fs.readFileSync(masterPath, 'utf-8'));
+  const masterKeys = getKeys(masterData);
+
+  let hasErrors = false;
+
+  LOCALES_TO_CHECK.forEach((file) => {
+    const filePath = path.join(DICTIONARY_DIR, file);
+    if (!fs.existsSync(filePath)) {
+      console.warn(`⚠️  Aviso: Arquivo ${file} não encontrado. Pulando...`);
+      return;
+    }
+
+    const currentData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    const currentKeys = new Set(getKeys(currentData));
+
+    const missing = masterKeys.filter((key) => !currentKeys.has(key));
+
+    if (missing.length > 0) {
+      hasErrors = true;
+      console.log(`\x1b[31m❌ ${file} está incompleto:\x1b[0m`);
+      missing.forEach((m) => console.log(`   - Faltando chave: ${m}`));
+    } else {
+      console.log(`\x1b[32m✅ ${file} está 100% sincronizado.\x1b[0m`);
+    }
+  });
+
+  if (!hasErrors) {
+    console.log(`\n\x1b[32m✨ Todos os dicionários estão consistentes!\x1b[0m`);
+  } else {
+    console.log(`\n\x1b[31m🚨 Foram encontrados problemas de tradução.\x1b[0m`);
+    process.exit(1);
+  }
+}
+
+validate(); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/validateAllLocales.ts
+
+
+TEM ESSE CONTEÚDO 
+
+
+// src/dictionaries/validateAllLocales.ts
+
+import ptBR from "./pt-BR.json";
+import enUS from "./en-US.json";
+import esES from "./es-ES.json";
+import esAR from "./es-AR.json";
+import esMX from "./es-MX.json";
+
+import { validateCrossLocale } from "./validateCrossLocale";
+
+import type { Dictionary } from "@/types/dictionary";
+
+/**
+ * Estrutura mínima usada apenas para validação estrutural.
+ * Não exige campos adicionados pelo normalizeDictionary.
+ */
+type RawDictionary = Partial<Dictionary> & {
+  [key: string]: unknown;
+};
+
+/**
+ * Valida a consistência estrutural entre todos os dicionários.
+ *
+ * ✔ Compatível com Next.js 16
+ * ✔ Compatível com TypeScript strict
+ * ✔ Não quebra build no Vercel
+ * ✔ Valida apenas estrutura real do JSON
+ */
+export function validateAllLocales(): void {
+  const base = ptBR as unknown as RawDictionary;
+
+  const targets: Array<{
+    data: RawDictionary;
+    code: string;
+  }> = [
+    { data: enUS as unknown as RawDictionary, code: "en-US" },
+    { data: esES as unknown as RawDictionary, code: "es-ES" },
+    { data: esAR as unknown as RawDictionary, code: "es-AR" },
+    { data: esMX as unknown as RawDictionary, code: "es-MX" },
+  ];
+
+  const errors: string[] = [];
+
+  for (const target of targets) {
+    errors.push(
+      ...validateCrossLocale(
+        base as Dictionary,
+        target.data as Dictionary,
+        "pt-BR",
+        target.code,
+      ),
+    );
+  }
+
+  if (errors.length > 0) {
+    console.error("\n❌ i18n validation failed (Alignment Errors):\n");
+
+    for (const err of errors) {
+      console.error(`  - ${err}`);
+    }
+
+    /**
+     * Em produção o build deve falhar
+     * para evitar deploy com dicionários inconsistentes
+     */
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        "i18n validation failed: locale structure mismatch",
+      );
+    }
+  } else {
+    if (process.env.NODE_ENV !== "production") {
+      console.log(
+        "✅ i18n dictionaries are fully aligned (5 locales).",
+      );
+    }
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/validateCrossLocale.ts
+
+TEM ESSE CONTEÚDO 
+
+
+// src/dictionaries/validateCrossLocale.ts
+
+import type { Dictionary } from "@/types/dictionary";
+
+/**
+ * Extrai todos os caminhos (dot notation) de um objeto.
+ *
+ * Exemplo:
+ * common.errorBoundary.actions.retry
+ *
+ * ✔ Ignora arrays
+ * ✔ Seguro para TypeScript strict
+ * ✔ Evita loops em objetos circulares
+ * ✔ Não usa any
+ */
+function getAllPaths(
+  obj: unknown,
+  prefix = "",
+  visited = new WeakSet<object>()
+): string[] {
+  if (!obj || typeof obj !== "object") {
+    return [];
+  }
+
+  if (visited.has(obj as object)) {
+    return [];
+  }
+
+  visited.add(obj as object);
+
+  const record = obj as Record<string, unknown>;
+
+  const paths: string[] = [];
+
+  for (const [key, value] of Object.entries(record)) {
+    const path = prefix ? `${prefix}.${key}` : key;
+
+    if (
+      value &&
+      typeof value === "object" &&
+      !Array.isArray(value)
+    ) {
+      paths.push(...getAllPaths(value, path, visited));
+    } else {
+      paths.push(path);
+    }
+  }
+
+  return paths;
+}
+
+/**
+ * Compara dois dicionários e retorna inconsistências:
+ *
+ * - Chaves faltantes no target
+ * - Chaves extras no target
+ *
+ * ✔ Seguro para uso em build
+ * ✔ Não depende de runtime do Next.js
+ * ✔ Compatível com JSON importado via App Router
+ * ✔ Determinístico para CI/CD
+ */
+export function validateCrossLocale(
+  base: Dictionary,
+  target: Dictionary,
+  baseName: string,
+  targetName: string
+): string[] {
+  const basePaths = new Set(getAllPaths(base));
+  const targetPaths = new Set(getAllPaths(target));
+
+  const missingInTarget = [...basePaths]
+    .filter((path) => !targetPaths.has(path))
+    .sort();
+
+  const extraInTarget = [...targetPaths]
+    .filter((path) => !basePaths.has(path))
+    .sort();
+
+  const errors: string[] = [];
+
+  if (missingInTarget.length > 0) {
+    errors.push(
+      `[${targetName}] Missing keys present in ${baseName}:\n    ${missingInTarget.join(
+        "\n    "
+      )}`
+    );
+  }
+
+  if (extraInTarget.length > 0) {
+    errors.push(
+      `[${targetName}] Extra keys not present in ${baseName}:\n    ${extraInTarget.join(
+        "\n    "
+      )}`
+    );
+  }
+
+  return errors;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/validator.ts
+
+TEM ESSE CONTEÚDO 
+
+
+// src/dictionaries/validator.ts
+
+import type { Dictionary } from "@/types/dictionary";
+
+type ValidationResult = {
+  valid: boolean;
+  errors: string[];
+};
+
+export function validateDictionary(dictionary: Dictionary): ValidationResult {
+  const errors: string[] = [];
+
+  /* =========================================================
+     Helper seguro para validar strings
+  ========================================================== */
+
+  const isString = (value: unknown): value is string =>
+    typeof value === "string" && value.trim().length > 0;
+
+  /* =========================================================
+     Helper: Validação de SEO
+  ========================================================== */
+
+  const validateSeo = (seo: Dictionary["seo"] | undefined): void => {
+    if (!seo) {
+      errors.push("Missing seo section");
+      return;
+    }
+
+    if (!isString(seo.siteName)) {
+      errors.push("Missing seo.siteName");
+    }
+
+    if (!Array.isArray(seo.keywords)) {
+      errors.push("seo.keywords must be an array");
+    }
+
+    const requiredPages: Array<keyof Dictionary["seo"]["pages"]> = [
+      "home",
+      "projects",
+      "articles",
+    ];
+
+    requiredPages.forEach((page) => {
+      const pageData = seo.pages?.[page];
+
+      if (!pageData) {
+        errors.push(`Missing seo.pages.${page}`);
+        return;
+      }
+
+      if (!isString(pageData.title)) {
+        errors.push(`Missing seo.pages.${page}.title`);
+      }
+
+      if (!isString(pageData.description)) {
+        errors.push(`Missing seo.pages.${page}.description`);
+      }
+    });
+  };
+
+  /* =========================================================
+     1. Meta & Internacionalização
+  ========================================================== */
+
+  if (!dictionary.meta) {
+    errors.push("Missing meta section");
+  } else {
+    if (!isString(dictionary.meta.locale)) {
+      errors.push("Missing meta.locale");
+    }
+
+    if (!isString(dictionary.meta.version)) {
+      errors.push("Missing meta.version");
+    }
+  }
+
+  if (!dictionary.intl) {
+    errors.push("Missing intl section");
+  } else {
+    if (!isString(dictionary.intl.currency)) {
+      errors.push("Missing intl.currency");
+    }
+  }
+
+  /* =========================================================
+     2. SEO
+  ========================================================== */
+
+  validateSeo(dictionary.seo);
+
+  /* =========================================================
+     3. Hero
+  ========================================================== */
+
+  if (!dictionary.hero) {
+    errors.push("Missing hero section");
+  } else {
+    if (!isString(dictionary.hero.title)) {
+      errors.push("Missing hero.title");
+    }
+
+    if (!isString(dictionary.hero.ctaPrimary)) {
+      errors.push("Missing hero.ctaPrimary");
+    }
+  }
+
+  /* =========================================================
+     4. Experience
+  ========================================================== */
+
+  if (!dictionary.experience) {
+    errors.push("Missing experience section");
+  } else {
+    if (!isString(dictionary.experience.title)) {
+      errors.push("Missing experience.title");
+    }
+
+    const items = dictionary.experience.items;
+
+    if (!Array.isArray(items) || items.length === 0) {
+      errors.push("experience.items must be a non-empty array");
+    } else {
+      items.forEach((item, index) => {
+        if (!isString(item.company)) {
+          errors.push(`Missing experience.items[${index}].company`);
+        }
+
+        if (!isString(item.role)) {
+          errors.push(`Missing experience.items[${index}].role`);
+        }
+      });
+    }
+  }
+
+  /* =========================================================
+     5. Articles
+  ========================================================== */
+
+  if (!dictionary.articles) {
+    errors.push("Missing articles section");
+  } else {
+    if (!isString(dictionary.articles.title)) {
+      errors.push("Missing articles.title");
+    }
+
+    const items = dictionary.articles.items;
+
+    if (!Array.isArray(items)) {
+      errors.push("articles.items must be an array");
+    } else {
+      items.forEach((article, index) => {
+        if (!isString(article.title)) {
+          errors.push(`Missing articles.items[${index}].title`);
+        }
+
+        if (!isString(article.link)) {
+          errors.push(`Missing articles.items[${index}].link`);
+        }
+
+        if (typeof article.isAward !== "boolean") {
+          errors.push(
+            `articles.items[${index}].isAward must be a boolean`,
+          );
+        }
+      });
+    }
+  }
+
+  /* =========================================================
+     6. Projects
+  ========================================================== */
+
+  if (!dictionary.projects) {
+    errors.push("Missing projects section");
+  } else {
+    if (!dictionary.projects.categories) {
+      errors.push("Missing projects.categories section");
+    }
+  }
+
+  /* =========================================================
+     7. Contact & Error Boundary
+  ========================================================== */
+
+  if (!dictionary.contact?.cta) {
+    errors.push("Missing contact.cta");
+  }
+
+  if (!dictionary.common?.errorBoundary?.actions?.retry) {
+    errors.push("Missing common.errorBoundary.actions.retry");
+  }
+
+  /* =========================================================
+     8. UI States
+  ========================================================== */
+
+  if (!dictionary.states?.emptyProjects?.title) {
+    errors.push("Missing states.emptyProjects.title");
+  }
+
+  /* =========================================================
+     9. Metrics (Normalização)
+  ========================================================== */
+
+  const normalized = dictionary.metrics?.availabilityNormalized;
+
+  if (normalized) {
+    if (typeof normalized.value !== "number") {
+      errors.push(
+        "metrics.availabilityNormalized.value must be a number",
+      );
+    }
+
+    if (normalized.unit !== "%") {
+      errors.push(
+        "metrics.availabilityNormalized.unit must be '%'",
+      );
+    }
+  }
+
+  /* =========================================================
+     Resultado final
+  ========================================================== */
+
+  return {
+    valid: errors.length === 0,
+    errors: errors.sort(),
+  };
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/errors/pt-BR.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "InternalServerError": {
+    "title": "Erro Interno",
+    "message": "Um erro inesperado aconteceu em nossos servidores.",
+    "action": "Informe o ID do erro ao suporte técnico."
+  },
+  "NotFoundError": {
+    "title": "Não Encontrado",
+    "message": "O recurso que você procura não existe ou foi movido.",
+    "action": "Verifique a URL ou retorne à página inicial."
+  },
+  "ValidationError": {
+    "title": "Erro de Validação",
+    "message": "Os dados enviados são inválidos ou estão incompletos.",
+    "action": "Revise os campos destacados e tente novamente."
+  },
+  "UnauthorizedError": {
+    "title": "Não Autenticado",
+    "message": "Sua sessão expirou ou você não está logado.",
+    "action": "Por favor, faça login para acessar esta área."
+  },
+  "ForbiddenError": {
+    "title": "Acesso Negado",
+    "message": "Você não tem permissão para realizar esta ação.",
+    "action": "Contate o administrador se acreditar que isso é um erro."
+  },
+  "TooManyRequestsError": {
+    "title": "Muitas Requisições",
+    "message": "Você atingiu o limite de tentativas temporário.",
+    "action": "Aguarde alguns minutos antes de tentar novamente."
+  },
+  "UnprocessableEntityError": {
+    "title": "Operação Inválida",
+    "message": "Não foi possível processar as instruções enviadas.",
+    "action": "Verifique a lógica dos dados e tente novamente."
+  },
+  "MethodNotAllowedError": {
+    "title": "Método Não Permitido",
+    "message": "A requisição HTTP utilizada não é suportada.",
+    "action": "Utilize um método válido (GET, POST, etc)."
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/errors/en-US.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "InternalServerError": {
+    "title": "Internal Error",
+    "message": "An unexpected error occurred on our servers.",
+    "action": "Provide the error ID to technical support."
+  },
+  "NotFoundError": {
+    "title": "Not Found",
+    "message": "The resource you are looking for does not exist or has been moved.",
+    "action": "Check the URL or return to the home page."
+  },
+  "ValidationError": {
+    "title": "Validation Error",
+    "message": "The submitted data is invalid or incomplete.",
+    "action": "Review the highlighted fields and try again."
+  },
+  "UnauthorizedError": {
+    "title": "Unauthorized",
+    "message": "Your session has expired or you are not logged in.",
+    "action": "Please log in to access this area."
+  },
+  "ForbiddenError": {
+    "title": "Access Denied",
+    "message": "You do not have permission to perform this action.",
+    "action": "Contact the administrator if you believe this is an error."
+  },
+  "TooManyRequestsError": {
+    "title": "Too Many Requests",
+    "message": "You have reached the temporary attempt limit.",
+    "action": "Wait a few minutes before trying again."
+  },
+  "UnprocessableEntityError": {
+    "title": "Invalid Operation",
+    "message": "The submitted instructions could not be processed.",
+    "action": "Check the data logic and try again."
+  },
+  "MethodNotAllowedError": {
+    "title": "Method Not Allowed",
+    "message": "The HTTP request method used is not supported.",
+    "action": "Use a valid method (GET, POST, etc.)."
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/errors/es-AR.json
+
+TEM ESSE CONTEÚDO 
+
+{
+  "InternalServerError": {
+    "title": "Error Interno",
+    "message": "Ocurrió un error inesperado en nuestros servidores.",
+    "action": "Informe el ID del error al soporte técnico."
+  },
+  "NotFoundError": {
+    "title": "No Encontrado",
+    "message": "El recurso que busca no existe o fue movido.",
+    "action": "Verifique la URL o vuelva a la página principal."
+  },
+  "ValidationError": {
+    "title": "Error de Validación",
+    "message": "Los datos enviados son inválidos o están incompletos.",
+    "action": "Revise los campos marcados e intente nuevamente."
+  },
+  "UnauthorizedError": {
+    "title": "No Autenticado",
+    "message": "Su sesión expiró o no inició sesión.",
+    "action": "Por favor, inicie sesión para acceder a esta área."
+  },
+  "ForbiddenError": {
+    "title": "Acceso Denegado",
+    "message": "No tiene permiso para realizar esta acción.",
+    "action": "Contacte al administrador si cree que esto es un error."
+  },
+  "TooManyRequestsError": {
+    "title": "Demasiadas Solicitudes",
+    "message": "Alcanzó el límite temporal de intentos.",
+    "action": "Espere unos minutos antes de intentarlo de nuevo."
+  },
+  "UnprocessableEntityError": {
+    "title": "Operación Inválida",
+    "message": "No se pudo procesar las instrucciones enviadas.",
+    "action": "Verifique la lógica de los datos e intente nuevamente."
+  },
+  "MethodNotAllowedError": {
+    "title": "Método No Permitido",
+    "message": "La solicitud HTTP utilizada no está soportada.",
+    "action": "Utilice un método válido (GET, POST, etc.)."
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/errors/es-ES.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "InternalServerError": {
+    "title": "Error Interno",
+    "message": "Se produjo un error inesperado en nuestros servidores.",
+    "action": "Informe el ID del error al soporte técnico."
+  },
+  "NotFoundError": {
+    "title": "No Encontrado",
+    "message": "El recurso que busca no existe o ha sido movido.",
+    "action": "Verifique la URL o vuelva a la página de inicio."
+  },
+  "ValidationError": {
+    "title": "Error de Validación",
+    "message": "Los datos enviados son inválidos o están incompletos.",
+    "action": "Revise los campos destacados e inténtelo de nuevo."
+  },
+  "UnauthorizedError": {
+    "title": "No Autenticado",
+    "message": "Su sesión ha expirado o no ha iniciado sesión.",
+    "action": "Por favor, inicie sesión para acceder a esta área."
+  },
+  "ForbiddenError": {
+    "title": "Acceso Denegado",
+    "message": "No tiene permiso para realizar esta acción.",
+    "action": "Contacte con el administrador si cree que esto es un error."
+  },
+  "TooManyRequestsError": {
+    "title": "Demasiadas Solicitudes",
+    "message": "Ha alcanzado el límite temporal de intentos.",
+    "action": "Espere unos minutos antes de intentarlo de nuevo."
+  },
+  "UnprocessableEntityError": {
+    "title": "Operación Inválida",
+    "message": "No fue posible procesar las instrucciones enviadas.",
+    "action": "Verifique la lógica de los datos e inténtelo de nuevo."
+  },
+  "MethodNotAllowedError": {
+    "title": "Método No Permitido",
+    "message": "La solicitud HTTP utilizada no está soportada.",
+    "action": "Utilice un método válido (GET, POST, etc.)."
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/dictionaries/errors/es-MX.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "InternalServerError": {
+    "title": "Error Interno",
+    "message": "Ocurrió un error inesperado en nuestros servidores.",
+    "action": "Informe el ID del error al soporte técnico."
+  },
+  "NotFoundError": {
+    "title": "No Encontrado",
+    "message": "El recurso que busca no existe o fue movido.",
+    "action": "Verifique la URL o regrese a la página principal."
+  },
+  "ValidationError": {
+    "title": "Error de Validación",
+    "message": "Los datos enviados son inválidos o están incompletos.",
+    "action": "Revise los campos resaltados e intente nuevamente."
+  },
+  "UnauthorizedError": {
+    "title": "No Autenticado",
+    "message": "Su sesión expiró o no ha iniciado sesión.",
+    "action": "Por favor, inicie sesión para acceder a esta área."
+  },
+  "ForbiddenError": {
+    "title": "Acceso Denegado",
+    "message": "No tiene permiso para realizar esta acción.",
+    "action": "Contacte al administrador si considera que esto es un error."
+  },
+  "TooManyRequestsError": {
+    "title": "Demasiadas Solicitudes",
+    "message": "Ha alcanzado el límite temporal de intentos.",
+    "action": "Espere unos minutos antes de intentarlo de nuevo."
+  },
+  "UnprocessableEntityError": {
+    "title": "Operación Inválida",
+    "message": "No fue posible procesar las instrucciones enviadas.",
+    "action": "Verifique la lógica de los datos e intente nuevamente."
+  },
+  "MethodNotAllowedError": {
+    "title": "Método No Permitido",
+    "message": "La solicitud HTTP utilizada no está soportada.",
+    "action": "Utilice un método válido (GET, POST, etc.)."
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/types/dictionary.ts
+
+TEM ESSE CONTEÚDO 
+
+
+// src/types/dictionary.ts
+
+import type { SupportedLocale } from "@/dictionaries/locales";
+
+export type Locale = SupportedLocale;
+
+/* ================= META ================= */
+export interface DictionaryMeta {
+  version: string;
+  locale: Locale;
+  direction: "ltr" | "rtl";
+  lastUpdated: string;
+  author: string;
+  source?: string;
+  contentVersion?: string;
+  contentHash?: string;
+  sourceType?: string;
+  description: string;
+}
+
+/* ================= HERO ================= */
+export interface HeroDictionary {
+  greeting: string;
+  title: string;
+  subtitle: string;
+  headline: string;
+  ctaPrimary: string;
+}
+
+/* ================= CONSTRUCTION ================= */
+export interface ConstructionDictionary {
+  badge: string;
+  title: string;
+  description: string;
+  techStack: string[];
+  viewProject: string;
+  metrics: {
+    accuracy: string;
+    label: string;
+  };
+}
+
+/* ================= ABOUT ================= */
+export interface AboutDictionary {
+  title: string;
+  differentialTitle: string;
+  description: string;
+  differentialContent: string;
+  highlights: string[];
+  stats: {
+    experienceValue: string;
+    experienceLabel: string;
+    availabilityValue: string;
+    availabilityLabel: string;
+    automation: string;
+  };
+}
+
+/* ================= CONTACT ================= */
+export interface ContactDictionary {
+  title: string;
+  subtitle: string;
+  cta: string;
+  emailLabel: string;
+  cvLabel: string;
+  linkedinLabel: string;
+  ctaTitle?: string;
+  buttonText?: string;
+}
+
+/* ================= EXPERIENCE ================= */
+export interface ExperienceItem {
+  company: string;
+  period: string;
+  role: string;
+  description: string;
+}
+
+export interface ExperienceDictionary {
+  title: string;
+  items: ExperienceItem[];
+  emptyLabel: string;
+}
+
+/* ================= ARTICLES ================= */
+export interface ArticleItem {
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+  isAward: boolean;
+  link: string;
+}
+
+export interface ArticlesSectionDictionary {
+  title: string;
+  mediumProfile: string;
+  readMore: string;
+  publishedAt: string;
+  bestOfMonth: string;
+  awardWinner: string;
+  items: ArticleItem[];
+}
+
+/* ================= PROJECTS ================= */
+export interface CategoryDetail {
+  labelKey: string;
+}
+
+/**
+ * 🔥 MANTIDO + FLEXÍVEL (SEM QUEBRAR O ANTIGO)
+ */
+export interface ProjectCategories {
+  "Data Engineering": CategoryDetail;
+  "Cloud & Infrastructure": CategoryDetail;
+  "Data Science": CategoryDetail;
+  "Data Analytics": CategoryDetail;
+  "Outros": CategoryDetail;
+
+  dataScience: CategoryDetail;
+  cloud: CategoryDetail;
+  graphs: CategoryDetail;
+  analysis: CategoryDetail;
+  excel: CategoryDetail;
+  database: CategoryDetail;
+  dev: CategoryDetail;
+  security: CategoryDetail;
+
+  html: CategoryDetail;
+  css: CategoryDetail;
+  javascript: CategoryDetail;
+  typescript: CategoryDetail;
+  next: CategoryDetail;
+  node: CategoryDetail;
+  react: CategoryDetail;
+
+  articles: CategoryDetail;
+
+  /**
+   * 🔥 mantém compatibilidade com ES-ES
+   */
+  [key: string]: CategoryDetail;
+}
+
+export interface ProjectItem {
+  id: string | number;
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+  category: string;
+  github?: string;
+  homepage?: string;
+}
+
+export interface ProjectsSectionDictionary {
+  title: string;
+  featuredLabel: string;
+  firstLabel: string;
+  impactLabel: string;
+  problem: string;
+  solution: string;
+  viewProject: string;
+  viewDemo: string;
+  viewAll: string;
+  portfolio: {
+    all: string;
+    viewProject: string;
+  };
+  categories: ProjectCategories;
+  featuredProjects: ProjectItem[];
+}
+
+/* ================= COMMON ================= */
+export interface CommonDictionary {
+  navigation: string;
+  role: string;
+  footer: string;
+  rights: string;
+  builtWith: string;
+  loading: string;
+  error: string;
+  socialLinks: string;
+  skipToContent: string;
+  languageSwitcher: string;
+  email: string;
+
+  nav: {
+    about: string;
+    experience: string;
+    projects: string;
+    articles: string;
+    contact: string;
+  };
+
+  theme: {
+    light: string;
+    dark: string;
+    system: string;
+  };
+
+  /**
+   * 🔥 VOLTOU A SER OBRIGATÓRIO (como era antes)
+   */
+  errorBoundary: {
+    title: string;
+    description: string;
+    actions: {
+      retry: string;
+      home: string;
+    };
+  };
+
+  notFound: {
+    title: string;
+    description: string;
+    button: string;
+  };
+
+  externalLinks: {
+    linkedin: string;
+    github: string;
+    medium: string;
+    email: string;
+  };
+
+  /**
+   * 🔥 CRÍTICO — obrigatório
+   */
+  menu: {
+    open: string;
+    close: string;
+    aria: {
+      open: string;
+      close: string;
+    };
+  };
+}
+
+/* ================= STATES ================= */
+export interface StateDictionary {
+  loading: string;
+  empty: string;
+  error: string;
+  emptyProjects: {
+    title: string;
+    description: string;
+    cta: string;
+  };
+  emptyExperience: string;
+  errorArticles: string;
+}
+
+/* ================= INTL ================= */
+export interface IntlDictionary {
+  locale: Locale;
+  fallbackLocale: string;
+  currency: string;
+  timezone: string;
+  unitDisplay: string;
+  numberFormat: string;
+}
+
+/* ================= COOKIE ================= */
+export interface CookieDictionary {
+  title: string;
+  description: string;
+  necessary: string;
+  alwaysActive: string;
+  analytics: string;
+  acceptAll: string;
+  rejectAll : string;
+  savePreferences: string;
+}
+
+/* ================= SEO ================= */
+export interface SeoDictionary {
+  siteName: string;
+  title: string;
+  description: string;
+  keywords: string[];
+
+  /**
+   * 🔥 voltou a ser obrigatório
+   */
+  pages: {
+    [key: string]: {
+      title: string;
+      description: string;
+    };
+  };
+}
+
+/* ================= METRICS ================= */
+export interface MetricsDictionary {
+  availability: string;
+  availabilityNormalized: {
+    value: number;
+    unit: string;
+  };
+}
+
+/* ================= RESUME ================= */
+export interface ResumeDictionary {
+  selectLanguage: string;
+  languages: Record<string, string>;
+}
+
+/* ================= ROOT ================= */
+export interface Dictionary {
+  meta: DictionaryMeta;
+  hero: HeroDictionary;
+
+  /**
+   * 🔥 NOVO - Seção de Projetos de Construção Civil / IA
+   */
+  construction: ConstructionDictionary;
+
+  about: AboutDictionary;
+  contact: ContactDictionary;
+  experience: ExperienceDictionary;
+  articles: ArticlesSectionDictionary;
+  projects: ProjectsSectionDictionary;
+  common: CommonDictionary;
+  intl: IntlDictionary;
+  states: StateDictionary;
+  cookie: CookieDictionary;
+  seo: SeoDictionary;
+  metrics: MetricsDictionary;
+
+  /**
+   * 🔥 NOVO (não quebra nada)
+   */
+  resume: ResumeDictionary;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/types/error-dictionary.ts
+
+TEM ESSE CONTEÚDO 
+
+
+export interface ErrorDetail {
+  readonly title: string;
+  readonly message: string;
+  readonly action: string;
+}
+
+export interface ErrorDictionary {
+  readonly InternalServerError: ErrorDetail;
+  readonly NotFoundError: ErrorDetail;
+  readonly ValidationError: ErrorDetail;
+  readonly UnauthorizedError: ErrorDetail;
+  readonly ForbiddenError: ErrorDetail;
+  readonly TooManyRequestsError: ErrorDetail;
+  readonly UnprocessableEntityError: ErrorDetail;
+  readonly MethodNotAllowedError: ErrorDetail;
+}
+
+export type ErrorKey = keyof ErrorDictionary;  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/types/additional-modules.d.ts
+
+TEM ESSE CONTEÚDO 
+
+
+// src/types/additional-modules.d.ts
+declare module "*.css" {
+  const content: any;
+  export default content;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/types/cookies.ts
+
+TEM ESSE CONTEÚDO 
+
+
+// src/types/cookies.ts
+
+export type CookieConsent = {
+  necessary: true;
+  analytics: boolean;
+  date: string;
+  version: string;
+
+  /**
+   * 🔒 Auditoria (não sensível, permitido por GDPR)
+   */
+  userAgent?: string;
+  locale?: string;
+}; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/types/github.ts
+
+TEM ESSE CONTEÚDO 
+
+
+// src/types/github.ts
+
+/**
+ * Estrutura mínima de um repositório retornado pela API do GitHub
+ * usada pelo serviço de portfólio.
+ */
+export interface GitHubRepo {
+  id: number
+
+  name: string
+
+  description: string | null
+
+  html_url: string
+
+  homepage: string | null
+
+  /**
+   * Topics podem vir undefined dependendo da API.
+   */
+  topics?: readonly string[]
+
+  /**
+   * Necessário para filtrar forks.
+   */
+  fork: boolean
+
+  owner: {
+    login: string
+  }
+}
+
+/**
+ * Estrutura final consumida pelos componentes React.
+ */
+export interface ProcessedProject {
+  id: number
+
+  /**
+   * Nome formatado para UI
+   */
+  name: string
+
+  /**
+   * URL do repositório
+   */
+  url: string
+
+  /**
+   * URL da aplicação online
+   */
+  liveUrl: string | null
+
+  /**
+   * Estrutura narrativa usada no portfólio
+   */
+  problem: string
+
+  solution: string
+
+  impact: string
+
+  /**
+   * Flags de destaque
+   */
+  isFeatured: boolean
+
+  isHead: boolean
+
+  /**
+   * Categoria principal
+   */
+  category: string
+
+  /**
+   * Tecnologias detectadas via topics
+   */
+  technologies: string[]
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/types/gtag.d.ts
+
+TEM ESSE CONTEÚDO 
+
+
+
+// src/types/gtag.d.ts
+export {};
+
+declare global {
+  interface Window {
+    dataLayer?: unknown[];
+    gtag?: (
+      command: 'config' | 'event' | 'consent' | 'js',
+      targetId: string | Date,
+      params?: Record<string, unknown>
+    ) => void;
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/types/i18n.d.ts
+
+
+TEM ESSE CONTEÚDO 
+
+// src/types/i18n.d.ts
+
+import { 
+  Locale as LocaleType, 
+  Dictionary as DictionaryType 
+} from "./dictionary";
+
+/**
+ * Tornamos os tipos disponíveis globalmente no projeto 
+ * para satisfazer o rigor do TS 6.0 sem precisar de imports em todo lugar.
+ */
+declare global {
+  type Locale = LocaleType;
+  type Dictionary = DictionaryType;
+
+  // Tipos auxiliares consistentes com seus dicionários
+  interface I18nParams {
+    params: {
+      lang: Locale;
+    };
+  }
+}
+
+export {}; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/types/project.ts
+
+// src/types/project.ts
+
+import type { ProcessedProject } from "./github";
+
+/**
+ * Este arquivo agora serve como um alias para os tipos processados do GitHub.
+ * Isso evita que você precise alterar os imports em todos os componentes.
+ * * ✔ Corrigido: 'import type' para compatibilidade com verbatimModuleSyntax
+ * ✔ TS 6 Strict Compliant
+ */
+
+export type Project = ProcessedProject;
+
+/**
+ * Status para controle de exibição na UI
+ */
+export type ProjectStatus = "active" | "archived" | "draft";
+
+/**
+ * SEO localizado
+ */
+export interface ProjectSEO {
+  title: string;
+  description: string;
+  keywords?: string[];
+}  
+
+
+
+
+
+
+
+
+
 
 
 
