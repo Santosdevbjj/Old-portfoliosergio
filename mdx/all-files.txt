@@ -1,0 +1,4900 @@
+
+Por favor reescreva o readme.md do meu projeto meu novo portfólio no Github, seguindo as regras de Meigarom Lopes e Luiz Café:
+
+https://github.com/Santosdevbjj/portfoliosantossergio
+
+O meu novo portfólio foi desenvolvido em typescript 6.0.2, e next.js 16.2.3 e React 19.2.5 e Node 24 e tailwindcss versão 4.2
+
+O meu novo portfólio no vercel é multilingue, está em português, inglês e espanhol da Espanha, e espanhol da Argentina, e espanhol do México.
+
+O meu novo portfólio no vercel é totalmente responsivo.
+
+
+O meu novo portfólio está no Vercel:
+
+https://portfoliosantossergio.vercel.app
+
+
+Atualmente o readme.md está com esse conteúdo:
+
+
+## 📊 Sérgio Santos | Data Science & Critical Systems Specialist 
+
+
+
+Este projeto foi desenvolvido utilizando TypeScript 6.0 (Bridge Release), garantindo compatibilidade total com o futuro compilador nativo (Project Corsa). Foram adotadas práticas de Strict Mode padrão, remoção de Namespaces legados e configuração de módulos ESNext para garantir performance de compilação 10x superior com o novo tsgo CLI.
+
+
+
+
+**1. Problema de Negócio (Motivação)**
+
+No cenário atual de tecnologia e dados, a visibilidade de um profissional sênior não pode depender apenas de uma lista de competências. 
+
+
+O mercado exige que a autoridade técnica seja acompanhada de transparência, contexto e governança.
+
+
+Este projeto foi construído para eliminar a "caixa preta" do portfólio tradicional. Ele serve como uma plataforma de auditoria onde recrutadores e especialistas técnicos podem validar simultaneamente meu raciocínio lógico, minhas decisões arquiteturais e minha capacidade de entregar soluções que resolvem problemas reais de negócio.
+
+**2. Contexto Profissional**
+
+Com uma trajetória de mais de 20 anos em sistemas críticos (setor bancário), este portfólio consolida minha transição para a Ciência de Dados, utilizando uma infraestrutura que suporta:
+
+ * Exibição Dinâmica: Projetos de IA/ML integrados em tempo real via GitHub API.
+ * Alcance Global: Interface multilingue (Português, Inglês, Espanhol).
+ * Rigor Enterprise: Segurança ativa com patching contra vulnerabilidades críticas de 2026.
+
+**3. Premissas da Solução**
+Para garantir a integridade e a experiência do usuário, adotei as seguintes premissas de engenharia:
+
+ * Performance: Carregamento em menos de 1s (LCP otimizado) para retenção de audiência.
+ * Segurança Nativa: Implementação rigorosa do patch de integridade CVE-2025-66478.
+ * Acessibilidade: Conformidade com normas WCAG e SEO internacional para indexação global.
+   
+ * Eficiência de Dados: Uso de ISR (Incremental Static Regeneration) para atualizar projetos sem sobrecarregar APIs externas.
+
+   
+4. Decisões Técnicas e Stack
+A arquitetura foi escolhida para refletir o que há de mais moderno e escalável no mercado corporativo:
+
+
+ * Next.js 16.2.3 (App Router): Renderização híbrida para máxima performance.
+ * TypeScript 6.0 : Tipagem estrita para garantir estabilidade em sistemas de dados.
+ * Tailwind CSS & Framer Motion: Interface responsiva focada em legibilidade e fluidez.
+ * Node.js 24 LTS: Backend robusto utilizando a versão mais estável do ecossistema.
+ * Intl (Native): Gerenciamento de idiomas sem dependências desnecessárias, priorizando a leveza do bundle.
+
+**5. Estratégia da Solução (Passo a Passo)**
+
+Seguindo um framework estruturado de engenharia:
+ * Pipeline de Dados: Consumo e tratamento de dados da API do GitHub para componentes React.
+ * Governança: Implementação de Linting (ESLint) e Formatação (Prettier) para código limpo.
+ * Segurança Cibernética: Configuração de cabeçalhos de proteção (HSTS, CSP) via vercel.json.
+ * Narrativa Multilingue: Estruturação de dicionários dinâmicos para consistência entre idiomas.
+ * Otimização de SEO: Tags dinâmicas e sitemap automático para visibilidade em buscadores.
+
+**6. Insights e Diferenciais Técnicos**
+
+ * Resiliência: Sistema de cache inteligente que mantém o site funcional mesmo em instabilidades de serviços externos.
+ * Mobile-First & PWA: Totalmente instalável como aplicativo, otimizando o acesso em qualquer dispositivo.
+ * Auditoria: Documentação técnica comentada diretamente no código, facilitando a revisão por pares.
+
+**7. Business Performance (Valor Entrega)**
+
+Um projeto técnico só tem valor se comunica resultados. Este portfólio entrega:
+ * Comunicação Assertiva: Explica não apenas "o que foi feito", mas "por que foi feito" e "qual o impacto".
+ * Confiabilidade: Demonstra atualização constante com patches de segurança e tecnologias de ponta.
+
+   
+ * Visão Estratégica: Transforma o código em uma narrativa de resolução de problemas.
+
+**8. Como Executar o Projeto**
+ 
+ * Clone o repositório: git clone https://github.com/seu-usuario/portfolio.git
+ * Instale as dependências: npm install
+ * Configure o .env.local com seu GITHUB_TOKEN.
+ * Inicie em desenvolvimento: npm run dev
+ * Gere o build de produção: npm run build
+
+**9. Próximos Passos**
+ * [ ] Dashboard integrado para métricas de performance de modelos de ML.
+
+       
+ * [ ] Seção de artigos técnicos sobre Engenharia de Dados em sistemas críticos.
+ * [ ] Implementação de testes E2E para garantir integridade contínua.
+• Ferramentas são meios; a resolução de problemas e a entrega de valor são os fins.
+
+
+## 🚀 Modernização & Segurança (Janeiro 2026)
+
+Este projeto foi totalmente migrado para o **Next.js 16.2.3**, operando no ambiente **Node.js 24.x (LTS)**. A atualização não visou apenas performance, mas a blindagem total contra as vulnerabilidades críticas reportadas no ecossistema React/Next.js no final de 2025.
+
+### 🛡️ Implementações de Segurança Máxima
+- **Patch React2Shell (CVE-2025-66478):** Migração obrigatória para o motor estável do Next.js 16 para mitigar riscos de Execução Remota de Código (RCE) em Server Components.
+- **CSP Hardened (Content Security Policy):** Implementação de políticas de segurança de nível bancário, bloqueando `unsafe-eval` e restringindo `frame-ancestors` para prevenir ataques de Clickjacking e XSS.
+- **Async Dynamic APIs:** Refatoração completa de Layouts e Pages para o novo padrão assíncrono do Next.js 16, garantindo integridade de tipos e segurança no tratamento de parâmetros de rota.
+
+### ⚡ Performance & Arquitetura
+- **Turbopack Stable:** Utilização do novo compilador Rust nativo para builds 70% mais rápidos e maior estabilidade em produção.
+- **Cache Components:** Ativação da nova arquitetura de cache da v16 (`cacheComponents: true`), substituindo flags experimentais antigas por um modelo de revalidação granular e eficiente.
+- **Model Context Protocol (MCP):** Integração de servidores MCP (`next-devtools-mcp` e `typescript-analyzer`) para diagnóstico assistido por IA e análise estática de tipos em tempo real durante o desenvolvimento.
+
+### 🛠️ Stack Técnica Atualizada
+- **Core:** Next.js 16.2.3 + React 19.2.5
+- **Runtime:** Node.js 24.x (Krypton LTS)
+- **Linter/Tooling:** ESLint 10.0.0 (Flat Config ready) + TypeScript 6.0.2
+- **Infras:** Vercel (Edge-ready configuration)
+
+
+
+---
+
+
+**Contato:**
+
+
+[![Portfólio Sérgio Santos](https://img.shields.io/badge/Portfólio-Sérgio_Santos-111827?style=for-the-badge&logo=githubpages&logoColor=00eaff)](https://portfoliosantossergio.vercel.app)
+[![LinkedIn Sérgio Santos](https://img.shields.io/badge/LinkedIn-Sérgio_Santos-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/santossergioluiz)   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O PROJETO É COMPOSTO PELOS SEGUINTES ARQUIVOS:
+
+
+O ARQUIVO package.json
+
+TEM esse conteúdo 
+
+
+{
+  "name": "portfolio-sergio-santos",
+  "version": "13.1.1",
+  "private": true,
+  "author": "Sérgio Santos",
+  "description": "Portfólio de Engenharia de Dados - Next.js 16.2, React 19 & Tailwind v4.2",
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "next dev --turbo",
+    "build": "next build",
+    "build:fast": "next build --no-lint",
+    "start": "next start",  
+    "lint": "next lint",
+    "type-check": "tsc --noEmit --project tsconfig.json",
+    "i18n:validate": "tsx src/dictionaries/validate-i18n.ts",
+    "clean": "rm -rf .next node_modules package-lock.json && npm install",
+    "analyze": "ANALYZE=true next build"
+  },
+  "dependencies": {
+    "next": "16.2.3",
+    "react": "19.2.5",
+    "react-dom": "19.2.5",
+    "@heroicons/react": "^2.2.0",
+    "next-intl": "^4.8.3",
+    "next-themes": "0.4.6",
+    "@octokit/auth-token": "^6.0.0",
+    "@octokit/core": "^7.0.6",
+    "@octokit/plugin-paginate-rest": "^14.0.0",
+    "@octokit/oauth-app": "^8.0.3",
+    "@octokit/plugin-paginate-graphql": "^6.0.0",
+    "@octokit/plugin-rest-endpoint-methods": "^17.0.0",
+    "@octokit/plugin-retry": "^8.0.3",
+    "@octokit/plugin-throttling": "^11.0.3",
+    "@octokit/request-error": "^7.0.2",
+    "@octokit/types": "^16.0.0",
+    "@octokit/webhooks": "^14.0.0",
+    "@octokit/rest": "^22.0.1",
+    "@react-pdf/renderer": "^4.3.2",
+    "@upstash/vector": "^1.2.3",
+    "react-pdf": "^10.4.1",
+    "@vercel/og": "^0.11.1",
+    "@lucide/angular": "^1.7.0",
+    "@lucide/astro": "^1.3.0",
+    "@lucide/svelte": "^1.3.0",
+    "@lucide/vue": "^1.7.0",
+    "lucide": "^1.3.0",
+    "lucide-preact": "^1.3.0",
+    "lucide-react": "^1.7.0",
+    "lucide-solid": "^1.3.0",
+    "lucide-static": "^1.3.0",
+    "@vercel/build-utils": "^13.12.2",
+    "@vercel/routing-utils": "^6.1.1",
+    "js-cookie": "^3.0.5",
+    "framer-motion": "12.34.0",
+    "tailwindcss": "4.2.1",
+    "postcss": "8.5.8",
+    "clsx": "2.1.1",
+    "tailwind-merge": "3.4.0",
+    "class-variance-authority": "0.7.1",
+    "sharp": "^0.34.5",
+    "octokit": "^5.0.5",
+    "openai": "^6.33.0",
+    "react-pdf": "^10.4.1",
+    "rehype-slug": "^6.0.0",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
+    "remark-rehype": "^11.1.2",
+    "react-markdown": "^10.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.2",
+    "@octokit/tsconfig": "^4.0.0",
+    "@types/node": "24.0.0",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@types/js-cookie": "^3.0.6",
+    "ajv": "^8.18.0",
+    "@next/mdx": "16.2.2",
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "next-mdx-remote": "^6.0.0",
+    "gray-matter": "^4.0.3",
+    "@tailwindcss/cli": "4.2.2",
+    "@tailwindcss/postcss": "4.2.2",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/mdx": "^2.0.13",
+    "eslint": "10.0.0",
+    "eslint-config-next": "16.2.0",
+    "typescript-eslint": "^8.24.0",
+    "prettier": "^3.5.0",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "@trivago/prettier-plugin-sort-imports": "^5.0.0",
+    "tsx": "^4.21.0",
+    "shiki": "^3.23.0",
+    "rehype-autolink-headings": "^7.1.0",
+    "rehype-pretty-code": "^0.14.1",
+    "rehype-sanitize": "^6.0.0",
+    "remark-gfm": "^4.0.1",
+    "@vercel/next-browser": "latest"
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO postcss.config.mjs 
+
+TEM esse conteúdo 
+
+
+/** @type {import('postcss-load-config').Config} */
+const config = {
+  plugins: {
+    // Na v4, este plugin gerencia tudo: detecção de arquivos, 
+    // processamento de variáveis CSS e autoprefixer.
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO tailwind.config.ts
+
+TEM esse conteúdo 
+
+
+// tailwind.config.ts
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  // O darkMode 'class' permite que o prose-invert funcione
+  // quando você alternar o tema do sistema
+  darkMode: 'class',
+  
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx,mdx}" // Garante que o src/ seja scaneado
+  ],
+  
+  theme: {
+    extend: {
+      // Aqui você pode adicionar personalizações extras para o 'prose' se desejar
+    },
+  },
+  
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
+}
+
+export default config 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO tsconfig.json
+
+TEM esse conteúdo 
+
+
+{ 
+  "extends": "@octokit/tsconfig",
+  "compilerOptions": {
+    /* --- MOTOR NATIVO TS 6.0.2 (PONTE PARA O COMPILADOR GO) --- */
+    "target": "ES2025",
+    "lib": ["dom", "esnext"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "jsx": "preserve",
+    
+    /* --- COMPLIANCE NEXT.JS 16.2 & TURBOPACK (RUST) --- */
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": false,
+    "skipLibCheck": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "noUncheckedSideEffectImports": true,
+
+    /* --- RIGOR DE NÍVEL PRINCIPAL ENGINEER --- */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "useUnknownInCatchVariables": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": true,
+    "allowUnreachableCode": false,
+
+    /* --- INTEROP & SECURITY --- */
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* --- PERFORMANCE & CACHE --- */
+    "tsBuildInfoFile": "node_modules/.cache/tsconfig.tsbuildinfo",
+    "types": ["node"],
+
+    "paths": {
+      "@/*": ["./src/*"],
+      "#/*": ["./src/*"]
+    },
+
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    /* Ajustado conforme exigência do compilador Next.js 16.2 no log de erro */
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "src/**/*",
+    "next.config.ts",
+    "postcss.config.ts"
+  ],
+
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out",
+    "dist",
+    "build"
+  ]
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO  vercel.json
+
+TEM esse conteúdo 
+
+
+{
+  "redirects": [
+    {
+      "source": "/pt-BR/pt",
+      "destination": "/pt-BR",
+      "permanent": true
+    },
+    {
+      "source": "/en-US/en",
+      "destination": "/en-US",
+      "permanent": true
+    },
+    {
+      "source": "/es-ES/es",
+      "destination": "/es-ES",
+      "permanent": true
+    },
+    {
+      "source": "/es-AR/es",
+      "destination": "/es-AR",
+      "permanent": true
+    },
+    {
+      "source": "/es-MX/es",
+      "destination": "/es-MX",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/pdf/(.*).pdf",
+      "headers": [
+        { "key": "Content-Disposition", "value": "inline" },
+        { "key": "Content-Type", "value": "application/pdf" },
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
+    },
+    {
+      "source": "/(og|artigos|images|icons)/(.*).(png|jpg|jpeg|svg|ico)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "index, follow" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" }
+      ]
+    }
+  ]
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO next.config.ts
+
+TEM esse conteúdo 
+
+
+import type { NextConfig } from "next";
+
+/**
+ * NEXT.JS 16.2.0 CONFIGURATION - SERGIO SANTOS PORTFOLIO (MARCH 2026)
+ * -----------------------------------------------------------------------------
+ * ✔ TS 6.0.2 Compliance
+ * ✔ Turbopack Native Engine
+ * ✔ Multilingual Asset Optimization (PDF/OG/Icons)
+ */
+
+const nextConfig: NextConfig = {
+  transpilePackages: ['lucide-react'],
+  reactStrictMode: true,
+  poweredByHeader: false,
+  compress: true,
+  reactCompiler: true, 
+  typedRoutes: true,
+  
+  // ESTABILIZADO NA 16.2: Substitui o antigo 'experimental.ppr'
+  cacheComponents: true,
+
+  // NOVO NA 16.2: Logs inteligentes e encaminhamento do Browser para o Terminal de IA
+  logging: {
+    fetches: { fullUrl: true },
+  },
+
+  experimental: {
+    // Melhoria de scroll baseada no comportamento nativo do browser (React Fragment Refs)
+    appNewScrollHandler: true,
+    // Agrupa prefetch de segmentos em um único request (Otimização de Latência 2026)
+    prefetchInlining: true,
+    // Segurança: Impede que objetos sensíveis do server vazem para o client
+    taint: true,
+    
+    serverComponentsExternalPackages: [
+      "octokit", 
+      "@octokit/core", 
+      "sharp", 
+      "gray-matter",
+      "@microsoft/applicationinsights-web",
+      "react-pdf" 
+    ],
+    optimizePackageImports: [
+      "lucide-react",
+      "framer-motion",
+      "clsx",
+      "tailwind-merge",
+      "date-fns"
+    ],
+  },
+
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    // 16.2 otimizou o escalonamento de imagens pequenas para ícones
+    imageSizes: [16, 32, 48, 64, 96, 128],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    minimumCacheTTL: 14400, // 4 horas de cache persistente
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    remotePatterns: [
+      { protocol: 'https', hostname: 'avatars.githubusercontent.com' },
+      { protocol: 'https', hostname: '**.githubusercontent.com' },
+      { protocol: 'https', hostname: '**.medium.com' }
+    ],
+  },
+
+  // CONFIGURAÇÃO TURBOPACK NATIVA (Sincronizada com o tsconfig.json)
+  turbopack: {
+    resolveAlias: {
+      // Resolve conflitos do PDF.js/Canvas no ambiente Rust do Turbopack
+      'canvas': './src/lib/empty.ts',
+    },
+    // Filtra warnings ruidosos de bibliotecas antigas (Novo na 16.2)
+    ignoreIssue: [
+      { path: '**/node_modules/react-pdf/**', title: 'Module not found' }
+    ]
+  },
+
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' }
+        ],
+      },
+      // ESTRUTURA MULTILINGUE: CVs (pt-BR, en-US, es-ES, es-AR, es-MX)
+      {
+        source: '/pdf/cv-sergio-santos-:lang(pt-BR|en-US|es-ES|es-AR|es-MX).pdf',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'Content-Type', value: 'application/pdf' },
+          { key: 'Content-Disposition', value: 'inline' }
+        ],
+      },
+      // ESTRUTURA MULTILINGUE: OG Images (Redes Sociais)
+      {
+        source: '/og/og-image-:lang(pt-BR|en-US|es-ES|es-AR|es-MX).png',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }
+        ],
+      },
+      // CACHE PARA ATIVOS DE ARTIGOS E ÍCONES (Imutáveis por 1 ano)
+      {
+        source: '/(artigos|icons|images)/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }
+        ],
+      }
+    ];
+  },
+};
+
+export default nextConfig; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO next.config.mjs
+
+TEM esse conteúdo 
+
+
+// @ts-check
+import createMDX from '@next/mdx'
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // 1. Extensões de Página para Suporte a Artigos MDX e Código TS
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+
+  // 2. Estabilização Next.js 16.2: PPR agora é 'cacheComponents'
+  cacheComponents: true,
+
+  // 3. AI-Assisted: Logs do Browser encaminhados para o terminal de desenvolvimento
+  logging: {
+    fetches: { fullUrl: true },
+    // @ts-ignore - Propriedade estável na 16.2 para integração com Agents
+    browserToTerminal: true, 
+  },
+
+  // 4. Configuração do Turbopack (Engine Rust nativa da 16.2)
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
+      },
+    },
+    // Ignora avisos ruidosos de bibliotecas de PDF no terminal
+    ignoreIssue: [
+      { path: '**/node_modules/react-pdf/**', title: 'Module not found' },
+      { path: '**/node_modules/pdfjs-dist/**', title: 'Critical dependency' }
+    ]
+  },
+
+  // 5. Otimização de Imagens (Fotos, Troféus DIO e GitHub)
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    remotePatterns: [
+      { 
+        protocol: 'https', 
+        hostname: 'raw.githubusercontent.com', 
+        pathname: '/Santosdevbjj/**' 
+      },
+      { 
+        protocol: 'https', 
+        hostname: 'avatars.githubusercontent.com', 
+        pathname: '/**' 
+      },
+      { 
+        protocol: 'https', 
+        hostname: '**.githubusercontent.com' 
+      },
+    ],
+    dangerouslyAllowSVG: true,
+    // Aumentado para 4h para melhorar o cache de ativos estáticos da DIO/GitHub
+    minimumCacheTTL: 14400, 
+  },
+
+  // 6. Suporte Nativo para Pacotes Externos (Node.js 24+)
+  // Na 16.2, isso garante que o Sharp e o PDF.js funcionem fora do bundle do client
+  serverExternalPackages: [
+    'pdfjs-dist', 
+    'canvas', 
+    'sharp', 
+    'react-pdf', 
+    'gray-matter',
+    'octokit'
+  ],
+
+  // 7. Configurações Experimentais Refinadas de 2026
+  experimental: {
+    mdxRs: true, // MDX escrito em Rust para velocidade extrema
+    taint: true, // Proteção contra vazamento de dados do servidor
+    appNewScrollHandler: true, // Novo sistema de foco e scroll nativo
+    prefetchInlining: true, // Agrupa prefetches para reduzir requests em redes móveis
+  },
+
+  // 8. Segurança e Cache de Assets (Multilíngue: PT, EN, ES-ES, ES-AR, ES-MX)
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' }
+        ],
+      },
+      // Cache Imutável para os Currículos e Imagens de Redes Sociais
+      {
+        source: '/(pdf|og|images|icons|artigos)/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }
+        ],
+      },
+      // Headers específicos para garantir que os PDFs abram corretamente no browser
+      {
+        source: '/pdf/:path*.pdf',
+        headers: [
+          { key: 'Content-Type', value: 'application/pdf' },
+          { key: 'Content-Disposition', value: 'inline' }
+        ],
+      }
+    ];
+  },
+}
+
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+})
+
+export default withMDX(nextConfig) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO mcp-env.js
+
+TEM esse conteúdo 
+
+#!/usr/bin/env node
+const { spawn } = require("child_process");
+const net = require("net");
+const fs = require("fs");
+const path = require("path");
+
+/**
+ * MCP ENVIRONMENT HELPER - NEXT.JS 16.2.0 (MARCH 2026)
+ * -----------------------------------------------------------------------------
+ * ✔ Suporte nativo ao Turbopack (Next 16.2)
+ * ✔ Verificador de Assets (PDFs e OG Images nos 5 idiomas)
+ * ✔ Encaminhamento de logs para Agentes de IA
+ */
+
+async function detectPort(host = "127.0.0.1", defaultPort = 3000) {
+  return new Promise((resolve) => {
+    const server = net.createServer();
+    server.once("error", () => resolve(defaultPort + 1));
+    server.once("listening", () => {
+      server.close(() => resolve(defaultPort));
+    });
+    server.listen(defaultPort, host);
+  });
+}
+
+// Validação dos Assets Multilíngues (Sergio Santos Portfolio)
+function validatePortfolioAssets() {
+  const locales = ["pt-BR", "en-US", "es-ES", "es-AR", "es-MX"];
+  const missing = [];
+
+  locales.forEach(lang => {
+    const pdfPath = path.join(process.cwd(), "public/pdf", `cv-sergio-santos-${lang}.pdf`);
+    const ogPath = path.join(process.cwd(), "public/og", `og-image-${lang}.png`);
+    
+    if (!fs.existsSync(pdfPath)) missing.push(`📄 PDF: ${lang}`);
+    if (!fs.existsSync(ogPath)) missing.push(`🖼️ OG: ${lang}`);
+  });
+
+  if (missing.length > 0) {
+    process.stderr.write(`\x1b[33m⚠️  Assets Faltantes:\x1b[0m\n${missing.join("\n")}\n`);
+  } else {
+    process.stderr.write(`\x1b[32m✅ Assets Multilíngues: Todos os 10 arquivos detectados.\x1b[0m\n`);
+  }
+}
+
+(async () => {
+  const host = process.env.NEXT_DEV_SERVER_HOST || "127.0.0.1";
+  const port = await detectPort(host, parseInt(process.env.NEXT_DEV_SERVER_PORT || "3000"));
+
+  // Configurações específicas para Next.js 16.2 + Turbopack
+  const env = {
+    ...process.env,
+    NEXT_DEV_SERVER_HOST: host,
+    NEXT_DEV_SERVER_PORT: port.toString(),
+    NEXT_DEV_SERVER_URL: `http://${host}:${port}`,
+    NODE_ENV: "development",
+    NEXT_TURBO: "1", // Ativa otimizações do Turbopack no MCP
+    NEXT_DEBUG_PPR: "1" // Debug do Partial Prerendering
+  };
+
+  validatePortfolioAssets();
+
+  process.stderr.write(`\x1b[34m🚀 MCP Engine: Sergio Santos Portfolio @ ${env.NEXT_DEV_SERVER_URL}\x1b[0m\n`);
+
+  // Usando o novo inspetor oficial para Agentes de IA (v16.2)
+  const child = spawn("npx", ["-y", "@vercel/next-browser", "serve"], {
+    env,
+    stdio: "inherit",
+    shell: true
+  });
+
+  child.on("exit", (code) => process.exit(code || 0));
+  
+  // Encerramento limpo para evitar processos órfãos no Node 24
+  process.on("SIGINT", () => {
+    child.kill("SIGINT");
+    process.exit();
+  });
+})(); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO eslint.config.js
+
+TEM esse conteúdo 
+
+import nextConfig from 'eslint-config-next/core-web-vitals';
+import nextTs from 'eslint-config-next/typescript';
+import prettier from 'eslint-config-prettier';
+import tseslint from 'typescript-eslint';
+
+/**
+ * ESLint Flat Config - Portfólio Sérgio Santos (v16.2.0 Ready)
+ * -----------------------------------------------------------------------------
+ * ✔ Suporte a ESLint 9+ e Flat Config nativo
+ * ✔ Regras de Proteção para Next.js 16 (Async Context)
+ * ✔ TypeScript 6.0 Strict Mode
+ */
+export default tseslint.config(
+  // 1. Ignorar arquivos de build e assets estáticos (PDFs/OG/Icons/Images)
+  {
+    ignores: [
+      '.next/**',
+      'node_modules/**',
+      'out/**',
+      'build/**',
+      'dist/**',
+      'public/**', // Ignora PDFs e OG Images para performance do linter
+      '**/*.d.ts',
+      'next-env.d.ts',
+      '.github/**',
+    ],
+  },
+
+  // 2. Base do Next.js e TypeScript
+  ...tseslint.configs.recommended,
+  ...nextConfig,
+  ...nextTs,
+
+  // 3. Regras customizadas para o ecossistema Next.js 16.2
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      /* --- PROTEÇÃO NEXT.JS 16.2 (CRÍTICO) --- */
+      // Impede o uso de params/searchParams sem await (Mudança obrigatória da v16)
+      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/await-thenable': 'error',
+      '@next/next/no-async-client-component': 'error',
+      '@next/next/no-img-element': 'error', // Força o uso de next/image para sua foto e troféus
+
+      /* --- TYPESCRIPT 6.0 & REGRAS DE IA --- */
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+      ],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { 
+          argsIgnorePattern: '^_', 
+          varsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_' 
+        }
+      ],
+      '@typescript-eslint/no-deprecated': 'warn', // Alerta sobre APIs obsoletas do React 19
+      
+      /* --- RESILIÊNCIA & QUALIDADE --- */
+      'no-console': ['warn', { allow: ['error', 'warn', 'info'] }],
+      'eqeqeq': ['error', 'always', { null: 'ignore' }],
+      'prefer-const': 'error',
+      'no-debugger': 'error',
+
+      /* --- AJUSTES DE FLEXIBILIDADE --- */
+      // Permitido para lidar com dicionários multilingues complexos (Dicionários de tradução)
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
+
+  // 4. Prettier (Sempre por último para evitar conflitos de formatação)
+  prettier
+); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO AGENTS.md
+
+TEM esse conteúdo 
+
+
+# Next.js: ALWAYS read docs before coding
+Before any Next.js work, find and read the relevant doc in `node_modules/next/dist/docs/`.
+Your training data is outdated — the docs are the source of truth for Version 16.2.0+.
+
+## Project Context
+- **Framework**: Next.js 16.2.0 (App Router)
+- **Bundler**: Turbopack (Default)
+- **PPR Status**: Enabled via `cacheComponents: true`
+- **AI Debugging**: Browser logs forwarded to terminal via `logging.browserToTerminal: true`
+## Sergio Santos Portfolio - Custom Rules
+- **Assets**: Multilingual PDFs are in `public/pdf/cv-sergio-santos-[lang].pdf`
+- **OG Images**: Multilingual PNGs are in `public/og/og-image-[lang].png`
+- **Supported Locales**: pt-BR, en-US, es-ES, es-AR, es-MX. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO .prettierrc.json
+
+TEM esse conteúdo 
+
+
+{
+  "semi": true,
+  "singleQuote": true,
+  "jsxSingleQuote": false,
+  "trailingComma": "all",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "singleAttributePerLine": true,
+  "embeddedLanguageFormatting": "auto",
+  "proseWrap": "preserve",
+  "htmlWhitespaceSensitivity": "css",
+
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+
+  "// Import Sorting": "Prioriza React 19, Next 16.2 e Dicionários Multilíngues",
+  "importOrder": [
+    "^(react/(.*)$)|^(react$)",
+    "^(next/(.*)$)|^(next$)",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^@/dictionaries/(.*)$",
+    "^@/types/(.*)$",
+    "^@/config/(.*)$",
+    "^@/lib/(.*)$",
+    "^@/hooks/(.*)$",
+    "^@/components/(.*)$",
+    "^@/styles/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+
+  "// Tailwind Config": "Otimizado para Tailwind v4.2 e funções de junção de classes",
+  "tailwindAttributes": ["className", "class", "tw"],
+  "tailwindFunctions": ["clsx", "twMerge", "twJoin", "cn", "cva"],
+  "tailwindConfig": "./tailwind.config.ts",
+
+  "overrides": [
+    {
+      "files": ["src/app/api/**/*", "src/app/**/og.*"],
+      "options": {
+        "printWidth": 120,
+        "bracketSameLine": true,
+        "singleAttributePerLine": false
+      }
+    },
+    {
+      "files": ["*.json", "*.jsonc", ".prettierrc"],
+      "options": {
+        "parser": "json",
+        "singleQuote": false
+      }
+    },
+    {
+      "// Proteção de Assets": "Garante que o linter não toque em referências binárias",
+      "files": ["public/**/*", "**/*.pdf", "**/*.png"],
+      "options": {
+        "requirePragma": true
+      }
+    }
+  ]
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO .prettierignore
+
+TEM esse conteúdo 
+
+
+# --- Next.js 16.2 & Turbopack (CRÍTICO) ---
+.next
+# Ignora especificamente os novos logs e travas de processos de IA
+.next/dev/lock
+.next/dev/logs
+.next/types
+node_modules
+dist
+build
+out
+.vercel
+
+# --- Logs, Testes e Cache ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+.turbo
+coverage
+.nyc_output
+
+# --- Infraestrutura e Ferramentas ---
+.husky
+.vscode
+.mcp.json
+mcp-env.js
+.npmrc
+.env*
+next-env.d.ts
+*.tsbuildinfo
+
+# --- Assets Estáticos (Binários e Otimizados) ---
+# Ignora currículos e imagens OG para evitar corrupção de metadados
+public/pdf/*.pdf
+public/og/*.png
+public/icons/
+public/images/
+**/*.min.js
+**/*.min.css
+**/*.svg
+
+# --- Engenharia de Dados (Arquivos pesados) ---
+*.csv
+*.parquet
+*.sqlite
+*.db
+*.jsonl
+
+# --- Documentação e Configurações de Texto ---
+.prettierignore
+.stylelintignore
+.editorconfig
+LICENSE
+*.md
+# Não formatar o AGENTS.md pois ele tem marcações específicas para a IA
+AGENTS.md
+
+# --- Python & Backend Helpers ---
+.venv
+__pycache__
+.ipynb_checkpoints 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO .npmrc
+
+TEM esse conteúdo 
+
+legacy-peer-deps=true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO .mcp.json
+
+TEM esse conteúdo 
+
+
+{
+  "mcpServers": {
+    "next-agent-devtools": {
+      "description": "Next.js 16.2 Official Agent Inspector (next-browser)",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@vercel/next-browser",
+        "serve"
+      ],
+      "env": {
+        "NODE_ENV": "development",
+        "NEXT_DEBUG_PPR": "true"
+      }
+    },
+    "typescript-analyzer": {
+      "description": "TypeScript 6.0 Strict Analyzer",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-typescript",
+        "--project",
+        "tsconfig.json"
+      ]
+    },
+    "portfolio-assets-helper": {
+      "description": "Validador de Assets (PDFs, OGs e Dicionários)",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "./src/dictionaries",
+        "./public/pdf",
+        "./public/og"
+      ]
+    },
+    "github-portfolio-sync": {
+      "description": "Sincronização de metadados do GitHub",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_TOKEN_HERE"
+      }
+    }
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO .gitignore
+
+
+TEM esse conteúdo 
+
+
+# =====================================================
+# DEPENDÊNCIAS — Node.js / NPM / Bun
+# =====================================================
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+
+# =====================================================
+# NEXT.JS 16.2 + TURBOPACK (NOVIDADES)
+# =====================================================
+.next/
+# IMPORTANTE: Mantemos o cache para acelerar builds na Vercel/CI
+!.next/cache/
+
+# NOVO NA 16.2: Arquivos de controle de agentes e logs de dev
+.next/dev/lock
+.next/dev/logs/
+.next/types
+.next/trace
+
+out/
+build/
+dist/
+.vercel/
+
+# TypeScript 6.0 Incremental & Metadata
+*.tsbuildinfo
+next-env.d.ts
+.next/server-reference-manifest.json
+
+# =====================================================
+# VARIÁVEIS DE AMBIENTE — SEGURANÇA MÁXIMA
+# =====================================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+!.env.example
+
+# Credenciais e Chaves
+.azure/
+.aws/
+*.pem
+*.key
+*.pub
+
+# =====================================================
+# LOGS E CACHE DE FERRAMENTAS
+# =====================================================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.log
+.cache/
+.turbo/
+.eslintcache
+.stylelintcache
+coverage/
+.nyc_output/
+
+# =====================================================
+# ASSETS DO PORTFÓLIO (PROTEÇÃO)
+# =====================================================
+# Garantimos que os binários oficiais sejam enviados, 
+# mas ignoramos arquivos temporários de edição.
+public/pdf/*.tmp
+public/pdf/*.bak
+public/og/*.tmp
+*.crdownload
+
+# =====================================================
+# SISTEMA OPERACIONAL E IDEs
+# =====================================================
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+.idea/
+*.swp
+*.swo
+
+# =====================================================
+# ENGENHARIA DE DADOS (Python/SQL/Parquet)
+# =====================================================
+# Ignora datasets pesados que devem estar no DVC ou Cloud Storage
+*.csv
+*.xlsx
+*.parquet
+*.sqlite
+*.db
+*.jsonl
+
+# Python (Venv & Notebooks)
+.venv/
+env/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+.python-version
+
+# =====================================================
+# TEMPORÁRIOS E BACKUPS
+# =====================================================
+*.tmp
+*.temp
+*.bak
+*.old
+*.patch 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO  .env.example
+
+TEM esse conteúdo 
+
+# ============================================================================
+# CONFIGURAÇÕES DE AMBIENTE — PORTFÓLIO SÉRGIO SANTOS
+# ============================================================================
+# 📌 Instruções:
+# 1. Copie este arquivo para: .env.local
+# 2. Preencha os valores reais
+# 3. NUNCA versionar .env.local no GitHub
+# ============================================================================
+# Projeto: Next.js 16 + App Router + Vercel + i18n (pt/en/es)
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# GITHUB — CONFIGURAÇÕES DE INTEGRAÇÃO
+# ----------------------------------------------------------------------------
+
+# Nome de usuário do GitHub
+# Usado para buscar automaticamente os repositórios públicos do portfólio
+NEXT_PUBLIC_GITHUB_USERNAME=Santosdevbjj
+
+# GitHub Personal Access Token (SERVER-SIDE ONLY)
+# ----------------------------------------------------------------------------
+# ⚠️ NÃO use o prefixo NEXT_PUBLIC
+# ⚠️ Este token NÃO deve ser exposto ao navegador
+#
+# Gere em:
+# GitHub → Settings → Developer Settings → Personal Access Tokens
+# Tipo recomendado: Fine-grained token
+# Permissões mínimas:
+# - Contents: Read-only
+#
+# Benefício:
+# - Evita rate limit (60 req/h sem token → 5.000 req/h com token)
+#
+GITHUB_ACCESS_TOKEN=seu_token_aqui
+
+# ----------------------------------------------------------------------------
+# APLICAÇÃO — CONFIGURAÇÕES GERAIS
+# ----------------------------------------------------------------------------
+
+# URL base do site
+# Usada para:
+# - OpenGraph (og:image)
+# - SEO metadata
+# - Canonical URLs
+#
+# Exemplos:
+# Local:      http://localhost:3000
+# Preview:    https://seu-projeto-git-branch.vercel.app
+# Produção:   https://portfoliosantossergio.vercel.app
+#
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# ----------------------------------------------------------------------------
+# ANALYTICS — OPCIONAL
+# ----------------------------------------------------------------------------
+
+# Google Analytics (GA4)
+# Descomente apenas se for utilizar
+# NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO .editorconfig
+
+TEM esse conteúdo 
+
+
+# EditorConfig: Padronização Universal de Código
+# Projeto: Portfolio Sérgio Santos
+# Mantém consistência entre IDEs e previne diffs desnecessários no Git
+
+root = true
+
+# ======================================================
+# Configuração global (default)
+# ======================================================
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# ======================================================
+# Markdown e MDX (preservar espaços finais para <br>)
+# ======================================================
+[*.{md,mdx}]
+trim_trailing_whitespace = false
+indent_size = 2
+
+# ======================================================
+# Python e SQL (PEP8 e legibilidade)
+# ======================================================
+[*.{py,sql}]
+indent_style = space
+indent_size = 4
+
+# ======================================================
+# Jupyter Notebooks (JSON – não modificar trailing whitespace)
+# ======================================================
+[*.ipynb]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = false
+
+# ======================================================
+# Desenvolvimento Web Moderno
+# Next.js, React, TypeScript, CSS, Tailwind, Infra YAML
+# ======================================================
+[*.{js,jsx,ts,tsx,cjs,mjs,cts,mts,css,scss,html,yml,yaml,toml}]
+indent_style = space
+indent_size = 2
+
+# ======================================================
+# Arquivos estruturados (JSON, XML, WebManifest, Configs)
+# ======================================================
+[*.{json,xml,webmanifest}]
+indent_style = space
+indent_size = 2
+
+# ======================================================
+# Variáveis de ambiente (.env)
+# ======================================================
+[*.env*]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = false
+
+# ======================================================
+# Shell Scripts (sh, bash, zsh)
+# Escolha consciente: spaces + 4 para legibilidade
+# ======================================================
+[*.{sh,bash,zsh}]
+indent_style = space
+indent_size = 4
+
+[Dockerfile]
+indent_style = space
+indent_size = 4
+
+# ======================================================
+# Makefiles (exigem TAB real)
+# ======================================================
+[Makefile]
+indent_style = tab
+indent_size = 4
+
+# ======================================================
+# Dados brutos e logs (não remover whitespace)
+# ======================================================
+[*.{csv,log}]
+trim_trailing_whitespace = false
+insert_final_newline = false
+
+# ======================================================
+# Lockfiles (preservar newline final)
+# ======================================================
+[*.lock]
+trim_trailing_whitespace = false
+insert_final_newline = true
+
+# ======================================================
+# Arquivos binários e assets (não modificar)
+# ======================================================
+[*.{png,jpg,jpeg,gif,webp,svg,ico,pdf,woff,woff2}]
+insert_final_newline = false
+trim_trailing_whitespace = false 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO .github/renovate.json
+
+TEM esse conteúdo 
+
+
+{
+  "extends": [
+    "github>octokit/.github"
+  ]
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO .vscode/extensions.json
+
+TEM esse conteúdo 
+
+{
+  "recommendations": [
+    // ======================================================
+    // Next.js / React / TypeScript
+    // ======================================================
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+
+    // ======================================================
+    // Tailwind CSS (DX completo)
+    // ======================================================
+    "bradlc.vscode-tailwindcss",
+
+    // ======================================================
+    // UI / UX / Acessibilidade
+    // ======================================================
+    "deque-systems.vscode-axe-linter",
+
+    // ======================================================
+    // Git / Produtividade
+    // ======================================================
+    "eamodio.gitlens",
+
+    // ======================================================
+    // Markdown / MDX / Docs
+    // ======================================================
+    "davidanson.vscode-markdownlint",
+
+    // ======================================================
+    // Infra / Config / Qualidade
+    // ======================================================
+    "editorconfig.editorconfig",
+
+    // ======================================================
+    // Ícones e Visual (opcional, mas recomendado)
+    // ======================================================
+    "pkief.material-icon-theme"
+  ],
+
+  "unwantedRecommendations": [
+    // ======================================================
+    // Evita conflitos com Prettier / ESLint
+    // ======================================================
+    "hookyqr.beautify",
+    "esbenp.prettier-vscode-eslint"
+  ]
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO .vscode/settings.json
+
+TEM esse conteúdo 
+
+
+{
+  // ======================================================
+  // Formatação Geral
+  // ======================================================
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // ======================================================
+  // ESLint (Flat Config - Next.js 16)
+  // ======================================================
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.useFlatConfig": true,
+  "eslint.experimental.useFlatConfig": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // ======================================================
+  // Prettier
+  // ======================================================
+  "prettier.requireConfig": true,
+  "prettier.useEditorConfig": true,
+
+  // ======================================================
+  // Tailwind CSS DX
+  // ======================================================
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "tailwindCSS.classAttributes": ["class", "className"],
+  "tailwindCSS.experimental.classRegex": [
+    "(clsx|cn|twMerge)\\(([^)]*)\\)"
+  ],
+
+  // ======================================================
+  // Controle por Linguagem
+  // ======================================================
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // ======================================================
+  // Arquivos sensíveis (não formatar automaticamente)
+  // ======================================================
+  "[dotenv]": {
+    "editor.formatOnSave": false
+  },
+  "[csv]": {
+    "editor.formatOnSave": false
+  },
+  "[log]": {
+    "editor.formatOnSave": false
+  },
+
+  // ======================================================
+  // Integração TypeScript + Next.js
+  // ======================================================
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.format.enable": false,
+  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  // ======================================================
+  // Integração React / JS
+  // ======================================================
+  "javascript.suggest.autoImports": true,
+  "typescript.suggest.autoImports": true
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/artigos/og-image-generica.png
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/artigos/og-resiliencia-em-Front-end.png
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/icons/apple-icon.png
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/icons/apple-touch-icon.png
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/icons/favicon.ico
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/icons/icon.png
+
+
+
+
+
+
+
+O ARQUIVO public/icons/icon.svg
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/images/sergio-santos-profile.png
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/images/trofeus-vencedor-dio.png
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/og/og-image-pt-BR.png
+
+
+
+
+
+
+
+
+O ARQUIVO public/og/og-image-en-US.png
+
+
+
+
+
+O ARQUIVO public/og/og-image-es-AR.png
+
+
+
+
+
+
+
+
+O ARQUIVO public/og/og-image-es-ES.png
+
+
+
+
+
+
+O ARQUIVO public/og/og-image-es-MX.png
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/pdf/cv-sergio-santos-pt-BR.pdf
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/pdf/cv-sergio-santos-en-US.pdf
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/pdf/cv-sergio-santos-es-AR.pdf
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/pdf/cv-sergio-santos-es-ES.pdf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO public/pdf/cv-sergio-santos-es-MX.pdf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO tests/i18n.schema.spec.ts
+
+TEM esse conteúdo 
+
+
+import type { Dictionary } from "../src/types/dictionary";
+
+import ptBR from "../src/dictionaries/pt-BR.json";
+import enUS from "../src/dictionaries/en-US.json";
+import esES from "../src/dictionaries/es-ES.json";
+import esAR from "../src/dictionaries/es-AR.json";
+import esMX from "../src/dictionaries/es-MX.json";
+
+/**
+ * Locale base usado como referência
+ */
+const baseLocale = "pt-BR";
+
+const dictionaries: Record<string, Dictionary> = {
+  "pt-BR": ptBR as Dictionary,
+  "en-US": enUS as Dictionary,
+  "es-ES": esES as Dictionary,
+  "es-AR": esAR as Dictionary,
+  "es-MX": esMX as Dictionary,
+};
+
+/**
+ * Regex para detectar placeholders
+ * Ex:
+ * {name}
+ * {count}
+ * {articleId}
+ */
+const PLACEHOLDER_REGEX = /\{(.*?)\}/g;
+
+/**
+ * Extrai placeholders de uma string
+ */
+function extractPlaceholders(text: string): string[] {
+  const matches = [...text.matchAll(PLACEHOLDER_REGEX)];
+  return matches.map((m) => m[1]).sort();
+}
+
+/**
+ * Percorre o dicionário recursivamente
+ * e coleta todas strings
+ */
+function walkDictionary(
+  obj: any,
+  path: string[] = [],
+  collector: Record<string, string> = {}
+) {
+  if (typeof obj === "string") {
+    collector[path.join(".")] = obj;
+    return collector;
+  }
+
+  if (Array.isArray(obj)) {
+    obj.forEach((item, index) => {
+      walkDictionary(item, [...path, String(index)], collector);
+    });
+    return collector;
+  }
+
+  if (typeof obj === "object" && obj !== null) {
+    Object.entries(obj).forEach(([key, value]) => {
+      walkDictionary(value, [...path, key], collector);
+    });
+  }
+
+  return collector;
+}
+
+/**
+ * Compara placeholders entre dois idiomas
+ */
+function comparePlaceholders(
+  base: Record<string, string>,
+  target: Record<string, string>,
+  baseLocale: string,
+  locale: string
+) {
+  const errors: string[] = [];
+
+  Object.entries(base).forEach(([key, baseValue]) => {
+    const targetValue = target[key];
+
+    if (!targetValue) return;
+
+    const baseVars = extractPlaceholders(baseValue);
+    const targetVars = extractPlaceholders(targetValue);
+
+    if (baseVars.join(",") !== targetVars.join(",")) {
+      errors.push(
+        `[${locale}] placeholder mismatch at "${key}" → ${baseLocale}: {${baseVars.join(
+          ", "
+        )}} vs ${locale}: {${targetVars.join(", ")}}`
+      );
+    }
+  });
+
+  return errors;
+}
+
+describe("i18n placeholder validation", () => {
+  const baseDictionary = walkDictionary(dictionaries[baseLocale]);
+
+  Object.entries(dictionaries).forEach(([locale, dictionary]) => {
+    if (locale === baseLocale) return;
+
+    it(`${locale} placeholders must match ${baseLocale}`, () => {
+      const targetDictionary = walkDictionary(dictionary);
+
+      const errors = comparePlaceholders(
+        baseDictionary,
+        targetDictionary,
+        baseLocale,
+        locale
+      );
+
+      if (errors.length > 0) {
+        console.error(`\n❌ Placeholder mismatch ${baseLocale} vs ${locale}\n`);
+        errors.forEach((err) => console.error(err));
+      }
+
+      expect(errors).toHaveLength(0);
+    });
+  });
+}); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO tests/i18n.spec.ts
+
+TEM esse conteúdo 
+
+
+import type { Dictionary } from "../src/types/dictionary";
+
+import { validateDictionary } from "../src/dictionaries/validator";
+import { validateCrossLocale } from "../src/dictionaries/validateCrossLocale";
+
+// Imports dos dicionários
+import ptBR from "../src/dictionaries/pt-BR.json";
+import enUS from "../src/dictionaries/en-US.json";
+import esES from "../src/dictionaries/es-ES.json";
+import esAR from "../src/dictionaries/es-AR.json";
+import esMX from "../src/dictionaries/es-MX.json";
+
+/**
+ * Base locale
+ * Usado como referência estrutural
+ */
+const baseLocale = "pt-BR";
+
+const dictionaries: Record<string, Dictionary> = {
+  "pt-BR": ptBR as Dictionary,
+  "en-US": enUS as Dictionary,
+  "es-ES": esES as Dictionary,
+  "es-AR": esAR as Dictionary,
+  "es-MX": esMX as Dictionary,
+};
+
+describe("i18n dictionaries validation", () => {
+  /**
+   * --------------------------------------------------------
+   * 1. Validação estrutural individual
+   * --------------------------------------------------------
+   * Garante que cada dicionário possui as seções obrigatórias
+   */
+  describe("individual dictionary validation", () => {
+    Object.entries(dictionaries).forEach(([locale, dictionary]) => {
+      it(`${locale} should pass schema validation`, () => {
+        const result = validateDictionary(dictionary);
+
+        if (!result.valid) {
+          console.error(`\n❌ Errors in ${locale} dictionary:\n`);
+          result.errors.forEach((err) => console.error(err));
+        }
+
+        expect(result.errors).toHaveLength(0);
+      });
+    });
+  });
+
+  /**
+   * --------------------------------------------------------
+   * 2. Validação cross-locale
+   * --------------------------------------------------------
+   * Garante que todos os idiomas possuem a mesma estrutura
+   */
+  describe("cross-locale structure consistency", () => {
+    const base = dictionaries[baseLocale];
+
+    Object.entries(dictionaries).forEach(([locale, dictionary]) => {
+      if (locale === baseLocale) return;
+
+      it(`${baseLocale} ↔ ${locale} should have identical structure`, () => {
+        const errors = validateCrossLocale(
+          base,
+          dictionary,
+          baseLocale,
+          locale
+        );
+
+        if (errors.length > 0) {
+          console.error(`\n❌ Structure mismatch ${baseLocale} vs ${locale}\n`);
+          errors.forEach((err) => console.error(err));
+        }
+
+        expect(errors).toHaveLength(0);
+      });
+    });
+  });
+}); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/ProxyClient.tsx
+
+TEM esse conteúdo
+
+
+'use client'
+
+import { notFound } from "next/navigation";
+import type { JSX } from "react";
+import type { Locale, Dictionary } from "@/types/dictionary";
+import type { ProjectDomain } from "@/domain/projects";
+
+import PageWrapper from "@/components/PageWrapper";
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import AboutSection from "@/components/AboutSection";
+import ExperienceSection from "@/components/ExperienceSection";
+import FeaturedProjectsSection from "@/components/featured/FeaturedProjectsSection";
+import ProjectSection from "@/components/ProjectSection";
+import FeaturedArticleSection from "@/components/FeaturedArticleSection";
+import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
+
+/**
+ * PROXY CLIENT COMPONENT - VERSÃO 2026
+ * -----------------------------------------------------------------------------
+ * ✔ Suporte: React 19, TS 6.0, Next.js 16 (Turbopack)
+ * ✔ Fix: Passagem da prop 'contact' para o Navbar (Resolução do erro de Build)
+ * ✔ Fix: Validação estrita de locale
+ */
+
+interface ProxyClientProps {
+  readonly lang: Locale;
+  readonly initialProjects: readonly ProjectDomain[];
+  readonly dictionary: Dictionary;
+}
+
+export default function ProxyClient({
+  lang,
+  initialProjects,
+  dictionary,
+}: ProxyClientProps): JSX.Element {
+  
+  // 1. Validação de segurança dos dados do dicionário
+  if (!dictionary?.meta?.locale) {
+    notFound();
+  }
+
+  const locale = dictionary.meta.locale;
+
+  // 2. Garante que o conteúdo carregado corresponde à URL
+  if (locale !== lang) {
+    notFound();
+  }
+
+  return (
+    <PageWrapper common={dictionary.common}>
+      {/* CORREÇÃO CRÍTICA: 
+          Adicionado 'contact={dictionary.contact}' para satisfazer a interface NavbarProps 
+      */}
+      <Navbar 
+        lang={locale} 
+        common={dictionary.common} 
+        contact={dictionary.contact} 
+      />
+
+      <main 
+        id="main-content" 
+        className="relative flex w-full flex-col overflow-x-hidden bg-white antialiased dark:bg-[#020617]"
+      >
+        <HeroSection dictionary={dictionary} />
+        
+        <AboutSection dict={dictionary.about} lang={locale} />
+        
+        <ExperienceSection experience={dictionary.experience} />
+        
+        <FeaturedProjectsSection lang={locale} dict={dictionary} />
+        
+        <ProjectSection 
+          projects={initialProjects} 
+          lang={locale} 
+          dict={dictionary} 
+        />
+        
+        <FeaturedArticleSection 
+          articles={dictionary.articles} 
+          common={dictionary.common} 
+        />
+        
+        <ContactSection 
+          contact={dictionary.contact} 
+          common={dictionary.common} 
+          locale={locale} 
+        />
+      </main>
+
+      <Footer 
+        lang={locale} 
+        common={dictionary.common} 
+        contact={dictionary.contact} 
+        articles={dictionary.articles} 
+      />
+    </PageWrapper>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/env.ts
+
+Tem esse conteúdo 
+
+import { z } from "zod";
+
+/**
+ * SCHEMA DE VALIDAÇÃO DE AMBIENTE - NEXT.JS 16.2 + TS 6.0
+ * -----------------------------------------------------------------------------
+ * Alinhado com Node 24 e as novas regras de acesso a process.env.
+ */
+const envSchema = z.object({
+  NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+  NEXT_DEV_SERVER_HOST: z.string().default("localhost"),
+  NEXT_DEV_SERVER_PORT: z.coerce.number().default(3000),
+  
+  // URL Base do App - Otimizado para SEO e MetadataBase do Next 16
+  NEXT_PUBLIC_APP_URL: z.string().url().default("https://portfoliosantossergio.vercel.app"),
+  
+  // Token de segurança (exemplo para o GitHub Octokit)
+  GITHUB_TOKEN: z.string().optional(),
+});
+
+/**
+ * ACESSO SEGURO (TS 6.0 / NODE 24)
+ * Conforme o erro do log: acesso via ['CHAVE'] para satisfazer a index signature.
+ */
+const _env = envSchema.safeParse({
+  NODE_ENV: process.env['NODE_ENV'],
+  NEXT_DEV_SERVER_HOST: process.env['NEXT_DEV_SERVER_HOST'],
+  NEXT_DEV_SERVER_PORT: process.env['NEXT_DEV_SERVER_PORT'],
+  NEXT_PUBLIC_APP_URL: process.env['NEXT_PUBLIC_APP_URL'],
+  GITHUB_TOKEN: process.env['GITHUB_TOKEN'],
+});
+
+if (!_env.success) {
+  // Log detalhado para depuração no Vercel em tempo de build
+  console.error("❌ [ENV] Variáveis de ambiente inválidas:", JSON.stringify(_env.error.format(), null, 2));
+  
+  // Em produção, interrompemos o build para evitar deploy com erros de config
+  if (process.env['NODE_ENV'] === "production") {
+    throw new Error("Falha no build: Variáveis de ambiente obrigatórias não configuradas.");
+  }
+}
+
+// Exportação tipada e segura
+export const env = _env.success ? _env.data : ({} as z.infer<typeof envSchema>);
+
+/**
+ * FUNÇÃO HELPER: getBaseUrl
+ * Alinhada com as novas APIs de Metadata do Next.js 16.2 e React 19.
+ */
+export const getBaseUrl = () => {
+  // 1. Prioridade: Variável pública definida no Vercel
+  if (env.NEXT_PUBLIC_APP_URL) return env.NEXT_PUBLIC_APP_URL;
+  
+  // 2. Client-side: Usa caminhos relativos para evitar erros de CORS (React 19)
+  if (typeof window !== "undefined") return ""; 
+  
+  // 3. Fallback Local (Node 24 Server Side)
+  return `http://${env.NEXT_DEV_SERVER_HOST}:${env.NEXT_DEV_SERVER_PORT}`;
+}; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/i18n-config.ts
+
+TEM esse conteúdo 
+
+
+/**
+ * I18N CONFIG — FONTE ÚNICA DE VERDADE
+ * -----------------------------------------------------------------------------
+ * Sincronizado com: src/types/dictionary.ts e src/dictionaries/index.ts
+ */
+
+import type { Locale } from '@/types/dictionary';
+
+export const i18n = {
+  defaultLocale: 'pt-BR' as const,
+  /**
+   * Lista exaustiva baseada nos arquivos JSON e no tipo Locale.
+   * Manter em sincronia com src/types/dictionary.ts
+   */
+  locales: ['pt-BR', 'en-US', 'es-ES', 'es-AR', 'es-MX'] as const,
+} as const;
+
+/**
+ * Metadata por idioma para SEO e UI (Language Switcher)
+ */
+export const localeMetadata: Record<
+  Locale,
+  {
+    name: string;
+    label: string;
+    region: string;
+    flag: string;
+    hrefLang: string;
+    description: string;
+  }
+> = {
+  'pt-BR': {
+    name: 'Português',
+    label: 'PT',
+    region: 'pt-BR',
+    flag: '🇧🇷',
+    hrefLang: 'pt-BR',
+    description: 'Engenharia de Dados, Ciência de Dados, IA e Sistemas de Missão Crítica.',
+  },
+  'en-US': {
+    name: 'English',
+    label: 'EN',
+    region: 'en-US',
+    flag: '🇺🇸',
+    hrefLang: 'en-US',
+    description: 'Data Engineering, Data Science, AI, and Mission-Critical Systems.',
+  },
+  'es-ES': {
+    name: 'Español (España)',
+    label: 'ES',
+    region: 'es-ES',
+    flag: '🇪🇸',
+    hrefLang: 'es-ES',
+    description: 'Ingeniería de Datos, Ciencia de Datos, IA y Sistemas de Misión Crítica.',
+  },
+  'es-AR': {
+    name: 'Español (Argentina)',
+    label: 'AR',
+    region: 'es-AR',
+    flag: '🇦🇷',
+    hrefLang: 'es-AR',
+    description: 'Ingeniería de Datos, Ciencia de Datos, IA y Sistemas de Misión Crítica.',
+  },
+  'es-MX': {
+    name: 'Español (México)',
+    label: 'MX',
+    region: 'es-MX',
+    flag: '🇲🇽',
+    hrefLang: 'es-MX',
+    description: 'Ingeniería de Datos, Ciencia de Datos, IA y Sistemas de Misión Crítica.',
+  },
+};
+
+export const DEFAULT_HREFLANG = 'x-default';
+
+/**
+ * Validação segura de locale
+ * Verifica se uma string de rota é um locale suportado pela aplicação.
+ */
+export function isSupportedLocale(locale: string): locale is Locale {
+  return (i18n.locales as readonly string[]).includes(locale as Locale);
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/mdx-components.tsx
+
+TEM esse conteúdo 
+
+
+/**
+ * src/mdx-components.tsx
+ * Versão: Abril de 2026
+ * Stack: Next.js 16.2.2 | React 19 | TS 6.0.2 | Tailwind 4.2 | Node 24
+ * Correção: Filtragem rigorosa de props para Link (Incompatibilidade exata de tipos)
+ */
+import type { MDXComponents } from 'mdx/types';
+import Image from 'next/image';
+import type { ImageProps } from 'next/image';
+import Link from 'next/link';
+import { type ComponentPropsWithoutRef } from 'react';
+
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    // 1. Títulos Otimizados (Tailwind 4.2 Engine)
+    h1: ({ children, ...props }: ComponentPropsWithoutRef<'h1'>) => (
+      <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-zinc-900 dark:text-white mt-12 mb-6" {...props}>
+        {children}
+      </h1>
+    ),
+    h2: ({ children, ...props }: ComponentPropsWithoutRef<'h2'>) => (
+      <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 mt-10 mb-4" {...props}>
+        {children}
+      </h2>
+    ),
+
+    // 2. Parágrafos e Texto
+    p: ({ children, ...props }: ComponentPropsWithoutRef<'p'>) => (
+      <p className="text-base md:text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 mb-6" {...props}>
+        {children}
+      </p>
+    ),
+
+    // 3. Links (SOLUÇÃO DEFINITIVA PARA O ERRO DE TYPE CHECK)
+    a: ({ href, children, ...props }: ComponentPropsWithoutRef<'a'>) => {
+      const isInternal = href?.startsWith('/') || href?.startsWith('#');
+      const className = "font-medium text-blue-600 dark:text-blue-400 underline decoration-2 underline-offset-4 hover:text-blue-700 transition-colors";
+      
+      if (isInternal) {
+        /** * No TS 6.0.2, não podemos passar o spread {...props} diretamente para o Link 
+         * devido a incompatibilidades de eventos (onMouseEnter, onTouchStart, etc) sendo undefined.
+         * Extraímos apenas o essencial para o roteamento.
+         */
+        return (
+          <Link 
+            href={href as string} 
+            className={className}
+            title={props.title}
+            id={props.id}
+          >
+            {children}
+          </Link>
+        );
+      }
+
+      // Para links externos, a tag <a> normal aceita todas as props perfeitamente
+      return (
+        <a 
+          href={href} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className={className} 
+          {...props}
+        >
+          {children}
+        </a>
+      );
+    },
+
+    // 4. Imagens (Otimizadas para Turbopack)
+    img: (props) => (
+      <Image
+        sizes="100vw"
+        style={{ width: '100%', height: 'auto', borderRadius: '1rem' }}
+        className="my-10 shadow-2xl"
+        width={1200}
+        height={630}
+        {...(props as ImageProps)}
+        alt={props.alt || "Ilustração técnica"}
+      />
+    ),
+
+    // 5. Blocos de Código (Sintaxe Modernizada)
+    code: ({ children, ...props }: ComponentPropsWithoutRef<'code'>) => (
+      <code className="bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-sm font-mono text-pink-600 dark:text-pink-400" {...props}>
+        {children}
+      </code>
+    ),
+    pre: ({ children, ...props }: ComponentPropsWithoutRef<'pre'>) => (
+      <pre className="bg-zinc-950 text-zinc-100 p-6 rounded-2xl overflow-x-auto my-8 border border-zinc-800 shadow-xl" {...props}>
+        {children}
+      </pre>
+    ),
+
+    // 6. Listas e Blockquotes
+    ul: ({ children, ...props }: ComponentPropsWithoutRef<'ul'>) => (
+      <ul className="list-disc list-inside space-y-2 mb-6 text-zinc-600 dark:text-zinc-400" {...props}>
+        {children}
+      </ul>
+    ),
+    blockquote: ({ children, ...props }: ComponentPropsWithoutRef<'blockquote'>) => (
+      <blockquote className="border-l-4 border-blue-600 pl-6 italic my-10 text-zinc-500 dark:text-zinc-400" {...props}>
+        {children}
+      </blockquote>
+    ),
+
+    ...components,
+  };
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/proxy.ts
+
+TEM esse conteúdo 
+
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { SUPPORTED_LOCALES, DEFAULT_LOCALE } from "@/dictionaries/locales";
+
+export function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // 1. IGNORAR INTERNALIZAÇÃO DA VERCEL E NEXT
+  if (
+    pathname.startsWith('/_next') || 
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/_vercel') ||
+    pathname.includes('.') // Ignora qualquer ficheiro com extensão (pdf, png, etc)
+  ) {
+    return NextResponse.next();
+  }
+
+  // 2. CHECAR SE O LOCALE JÁ ESTÁ NA URL
+  const pathnameHasLocale = SUPPORTED_LOCALES.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+
+  if (pathnameHasLocale) return NextResponse.next();
+
+  // 3. REDIRECIONAMENTO DE RAIZ OU SEM LOCALE
+  // Usamos redirect (307) para garantir que o motor de renderização do Next.js 16 
+  // receba o parâmetro [lang] corretamente
+  const url = request.nextUrl.clone();
+  url.pathname = `/${DEFAULT_LOCALE}${pathname === '/' ? '' : pathname}`;
+  
+  return NextResponse.redirect(url);
+}
+
+export const config = {
+  // Matcher atualizado para syntax Next.js 16
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|resume-sitemap.xml|robots.txt|.*\\..*).*)',
+  ],
+}; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/analytics.ts
+
+TEM esse conteúdo 
+
+
+/**
+ * LIB: Analytics Unified Layer
+ * -----------------------------------------------------------------------------
+ * Seguro contra Hydration Errors.
+ * Compatível com Next.js 16 (App Router).
+ */
+
+import {
+  CONSENT_COOKIE_NAME,
+  DEFAULT_CONSENT,
+  getSafeConsent,
+  type ConsentPreferences,
+} from "@/lib/consent";
+
+export interface AnalyticsEvent {
+  readonly name: string;
+  readonly props?: Record<string, unknown>;
+}
+
+declare global {
+  interface Window {
+    gtag?: (
+      command: "event",
+      name: string,
+      params?: Record<string, unknown>,
+    ) => void;
+    plausible?: (
+      event: string,
+      options?: { props?: Record<string, unknown> },
+    ) => void;
+    posthog?: {
+      capture: (
+        event: string,
+        props?: Record<string, unknown>,
+      ) => void;
+    };
+  }
+}
+
+function readConsentFromCookie(): ConsentPreferences {
+  if (typeof window === "undefined") {
+    return DEFAULT_CONSENT;
+  }
+
+  try {
+    const match = document.cookie
+      .split("; ")
+      .find((row) =>
+        row.startsWith(`${CONSENT_COOKIE_NAME}=`),
+      );
+
+    if (!match) return DEFAULT_CONSENT;
+
+    const raw = decodeURIComponent(
+      match.split("=")[1] ?? "",
+    );
+
+    if (!raw) return DEFAULT_CONSENT;
+
+    const parsed = JSON.parse(raw);
+
+    return getSafeConsent(parsed);
+  } catch {
+    return DEFAULT_CONSENT;
+  }
+}
+
+export function track({
+  name,
+  props,
+}: AnalyticsEvent): void {
+  if (typeof window === "undefined") return;
+
+  try {
+    const consent = readConsentFromCookie();
+
+    if (!consent.analytics) return;
+
+    const eventProps = props ?? {};
+
+    if (typeof window.gtag === "function") {
+      window.gtag("event", name, eventProps);
+    }
+
+    if (typeof window.plausible === "function") {
+      window.plausible(name, { props: eventProps });
+    }
+
+    if (
+      window.posthog &&
+      typeof window.posthog.capture === "function"
+    ) {
+      window.posthog.capture(name, eventProps);
+    }
+  } catch {
+    // Tracking nunca derruba a aplicação
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/consent.ts
+
+TEM esse conteúdo 
+
+
+/**
+ * LIB: Consent Management (LGPD/GDPR)
+ * -----------------------------------------------------------------------------
+ * ✔ Next.js 16.2.0: Suporte a Cookies e Server/Client components.
+ * ✔ TypeScript 6.0: Correção de Index Signature Access.
+ * ✔ Node 24: Otimização de serialização determinística.
+ */
+
+export const CONSENT_VERSION = "v1";
+
+export const CONSENT_COOKIE_NAME =
+  `portfolio_consent_${CONSENT_VERSION}` as const;
+
+export interface ConsentPreferences {
+  readonly necessary: true;
+  readonly analytics: boolean;
+}
+
+export const DEFAULT_CONSENT: Readonly<ConsentPreferences> = Object.freeze({
+  necessary: true,
+  analytics: false,
+});
+
+/**
+ * CONFIGURAÇÕES DE COOKIE
+ * TS 6.0 exige acesso via colchetes para process.env
+ */
+export const CONSENT_COOKIE_OPTIONS = {
+  path: "/",
+  sameSite: "lax" as const,
+  httpOnly: false, // Precisa ser acessível via JS para GTM/Analytics
+  secure: process.env['NODE_ENV'] === "production",
+  maxAge: 60 * 60 * 24 * 365, // 1 ano
+} as const;
+
+/**
+ * TYPE GUARD SEGURO (TS 6.0 COMPLIANT)
+ * -----------------------------------------------------------------------------
+ * Resolve o erro de 'index signature' usando acesso via colchetes.
+ */
+export function isValidConsent(
+  value: unknown,
+): value is ConsentPreferences {
+  if (typeof value !== "object" || value === null) return false;
+
+  // Casting para Record para validação de chaves dinâmicas
+  const candidate = value as Record<string, unknown>;
+
+  // No TS 6.0, propriedades de Records devem ser acessadas com ['key']
+  return (
+    candidate['necessary'] === true &&
+    typeof candidate['analytics'] === "boolean"
+  );
+}
+
+/**
+ * RETORNA CONSENTIMENTO SEGURO
+ */
+export function getSafeConsent(
+  value: unknown,
+): ConsentPreferences {
+  return isValidConsent(value)
+    ? value
+    : DEFAULT_CONSENT;
+}
+
+/**
+ * SERIALIZAÇÃO DETERMINÍSTICA (Node 24 Optimized)
+ * Garante que o JSON no cookie seja válido e seguro contra caracteres especiais.
+ */
+export function serializeConsent(
+  preferences: ConsentPreferences,
+): string {
+  try {
+    return encodeURIComponent(JSON.stringify(preferences));
+  } catch (error) {
+    console.error("❌ [CONSENT] Erro ao serializar:", error);
+    return encodeURIComponent(JSON.stringify(DEFAULT_CONSENT));
+  }
+}
+
+/**
+ * PARSE DE CONSENTIMENTO
+ * Auxiliar para recuperar o estado do cookie no Next.js 16
+ */
+export function parseConsent(cookieValue: string | undefined): ConsentPreferences {
+  if (!cookieValue) return DEFAULT_CONSENT;
+  try {
+    const decoded = JSON.parse(decodeURIComponent(cookieValue));
+    return getSafeConsent(decoded);
+  } catch {
+    return DEFAULT_CONSENT;
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/getServerDictionary.ts
+
+TEM esse conteúdo 
+
+
+// src/lib/getServerDictionary.ts
+
+"use server";
+
+import { cache } from "react";
+
+import { getDictionary } from "@/dictionaries";
+import {
+  normalizeLocale,
+  DEFAULT_LOCALE,
+} from "@/dictionaries/locales";
+
+import type {
+  SupportedLocale,
+} from "@/dictionaries/locales";
+import type { Dictionary } from "@/types/dictionary";
+
+/**
+ * Carrega e cacheia o dicionário por locale.
+ *
+ * ✔ Server-only
+ * ✔ Compatível com Next.js 16
+ * ✔ Seguro contra runtime 500
+ * ✔ Nunca retorna undefined
+ */
+export const getServerDictionary = cache(
+  async (locale: string): Promise<Dictionary> => {
+    const safeLocale: SupportedLocale =
+      normalizeLocale(locale);
+
+    try {
+      return await getDictionary(safeLocale);
+    } catch (error) {
+      console.error(
+        "[getServerDictionary] Failed for locale:",
+        safeLocale,
+        error,
+      );
+
+      // Fallback seguro para evitar erro 500
+      if (safeLocale !== DEFAULT_LOCALE) {
+        return await getDictionary(DEFAULT_LOCALE);
+      }
+
+      throw error;
+    }
+  },
+); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/github-service.ts
+
+TEM esse conteúdo 
+
+
+// src/lib/github-service.ts
+
+import { CATEGORY_ORDER, TOPIC_TO_CATEGORY } from "@/config/categories"
+
+import type {
+  GitHubRepo,
+  ProcessedProject,
+} from "@/types/github"
+
+/**
+ * Normaliza tópicos do GitHub.
+ */
+function normalizeTopics(topics?: readonly string[]): string[] {
+  if (!topics) return []
+  return topics.map((t) => t.toLowerCase())
+}
+
+/**
+ * Processa repositórios do GitHub em projetos de portfólio.
+ */
+export function processRepositories(
+  repos: readonly GitHubRepo[],
+  username: string
+): ProcessedProject[] {
+  if (!Array.isArray(repos)) return []
+
+  const normalizedUsername = username.toLowerCase()
+
+  return repos
+    .filter((repo): repo is GitHubRepo => {
+      const topics = normalizeTopics(repo.topics)
+
+      const hasTag = topics.includes("portfolio")
+
+      const isNotFork = !repo.fork
+
+      const isMine =
+        repo.owner?.login?.toLowerCase() ===
+        normalizedUsername
+
+      return hasTag && isNotFork && isMine
+    })
+
+    .map((repo, index): ProcessedProject => {
+      const topics = normalizeTopics(repo.topics)
+
+      const descriptionParts =
+        repo.description?.split("|") ?? []
+
+      const problem =
+        descriptionParts[0]?.trim() ||
+        "Detalhamento técnico em desenvolvimento."
+
+      const solution =
+        descriptionParts[1]?.trim() ?? ""
+
+      const impact =
+        descriptionParts[2]?.trim() ?? ""
+
+      let category = "Outros"
+
+      const matchedCategories = topics
+        .map((topic) => TOPIC_TO_CATEGORY[topic])
+        .filter(
+          (c): c is string => Boolean(c)
+        )
+
+      if (matchedCategories.length > 0) {
+        matchedCategories.sort(
+          (a, b) =>
+            (CATEGORY_ORDER[a] ?? 99) -
+            (CATEGORY_ORDER[b] ?? 99)
+        )
+
+        category =
+          matchedCategories[0] ?? "Outros"
+      }
+
+      const controlTags = [
+        "portfolio",
+        "featured",
+        "destaque",
+        "primeiro",
+      ]
+
+      const isFeatured =
+        topics.includes("featured") ||
+        topics.includes("destaque")
+
+      const isHead = topics.includes("primeiro")
+
+      const technologies = topics.filter(
+        (topic) =>
+          !controlTags.includes(topic) &&
+          !TOPIC_TO_CATEGORY[topic]
+      )
+
+      return {
+        id: repo.id,
+
+        name: repo.name.replace(/-/g, " "),
+
+        url: repo.html_url,
+
+        liveUrl: repo.homepage ?? null,
+
+        problem,
+
+        solution,
+
+        impact,
+
+        isFeatured,
+
+        isHead,
+
+        category,
+
+        technologies,
+      }
+    })
+
+    .sort((a, b) => {
+      if (a.isHead && !b.isHead) return -1
+      if (!a.isHead && b.isHead) return 1
+
+      if (a.isFeatured && !b.isFeatured)
+        return -1
+      if (!a.isFeatured && b.isFeatured)
+        return 1
+
+      const orderA =
+        CATEGORY_ORDER[a.category] ?? 99
+
+      const orderB =
+        CATEGORY_ORDER[b.category] ?? 99
+
+      if (orderA !== orderB)
+        return orderA - orderB
+
+      return a.name.localeCompare(b.name)
+    })
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/github.ts
+
+Tem esse conteúdo 
+
+
+// src/lib/github.ts
+import { cache } from "react";
+import type { GitHubRepo } from "@/types/github";
+
+/**
+ * SERVIÇO GITHUB - PORTFÓLIO SÉRGIO SANTOS
+ * -----------------------------------------------------------------------------
+ * ✔ Next.js 16.2.0: Suporte a Turbopack e Cache Tags.
+ * ✔ React 19: Memoização de requisições via 'cache'.
+ * ✔ TypeScript 6.0: Acesso seguro a process.env via string literal.
+ * ✔ Node 24: Otimização de Fetch e processamento de texto bruto.
+ */
+
+const GITHUB_API = "https://api.github.com";
+const GITHUB_USER = "Santosdevbjj";
+const REPO = "myArticles";
+const BRANCH = "main";
+
+// URL para buscar o conteúdo bruto (RAW) dos arquivos Markdown
+const RAW_BASE_URL = `https://raw.githubusercontent.com/${GITHUB_USER}/${REPO}/${BRANCH}/artigos`;
+
+/**
+ * 1. SERVIÇO DE BUSCA DE CONTEÚDO (Para os Artigos)
+ * Busca o texto bruto (.md) de um artigo específico dentro do repositório.
+ */
+export async function getArticleContent(slugArray: string[]): Promise<string | null> {
+  // Converte o array ["ia-artigos", "meu-artigo"] em "ia-artigos/meu-artigo"
+  const fullPath = slugArray.join("/");
+  
+  try {
+    const res = await fetch(`${RAW_BASE_URL}/${fullPath}.md`, {
+      // Next.js 16.2.0 Cache: Revalidação de 1 hora com suporte a Invalidation Tags
+      next: { 
+        revalidate: 3600,
+        tags: [`article-${fullPath}`, 'all-articles']
+      },
+    });
+
+    if (!res.ok) {
+      if (res.status === 404) {
+        console.warn(`⚠️ Artigo não encontrado: ${fullPath}`);
+      }
+      return null;
+    }
+
+    return await res.text();
+  } catch (error) {
+    console.error("❌ Erro ao buscar conteúdo do artigo no GitHub:", error);
+    return null;
+  }
+}
+
+/**
+ * 2. SERVIÇO DE BUSCA DE REPOSITÓRIOS (Para o Portfólio)
+ * Otimizado para React 19 Server Components.
+ */
+export const getPortfolioRepos = cache(
+  async (username: string): Promise<GitHubRepo[]> => {
+    // CORREÇÃO TS 6: Acesso obrigatório via colchetes para Index Signatures
+    const token = process.env['GITHUB_TOKEN'];
+
+    try {
+      const res = await fetch(
+        `${GITHUB_API}/users/${username}/repos?per_page=100&type=owner&sort=updated`,
+        {
+          headers: {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+            // Node 24: Template strings seguras para Headers
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+          next: {
+            revalidate: 3600,
+            tags: ["github-repos"],
+          },
+        }
+      );
+
+      if (res.status === 403) {
+        console.warn("⚠️ GitHub API: Rate limit atingido ou token inválido.");
+        return [];
+      }
+
+      if (!res.ok) {
+        throw new Error(`GitHub API Error: ${res.status}`);
+      }
+
+      const data: GitHubRepo[] = await res.json();
+
+      // Filtra apenas repositórios originais (não forks)
+      // Node 24 Performance: .filter() otimizado para grandes arrays
+      return data.filter((repo: GitHubRepo) => !repo.fork);
+      
+    } catch (error) {
+      console.error("❌ Falha ao buscar repositórios do GitHub:", error);
+      return [];
+    }
+  }
+); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/locale-cookie.ts
+
+TEM esse conteúdo 
+
+
+/**
+ * LIB: Locale Cookie
+ * -----------------------------------------------------------------------------
+ * Persistência oficial do locale.
+ * Alinhado com dictionaries/locales (SSOT).
+ */
+
+import {
+  DEFAULT_LOCALE,
+  SUPPORTED_LOCALES,
+  type SupportedLocale,
+} from "@/dictionaries/locales";
+
+export const LOCALE_COOKIE = "NEXT_LOCALE" as const;
+
+export type { SupportedLocale };
+
+export const LOCALE_COOKIE_OPTIONS = {
+  path: "/",
+  sameSite: "lax" as const,
+  httpOnly: false,
+  secure: process.env.NODE_ENV === "production",
+  maxAge: 60 * 60 * 24 * 365,
+} as const;
+
+export function isValidLocale(
+  value: unknown,
+): value is SupportedLocale {
+  return (
+    typeof value === "string" &&
+    (SUPPORTED_LOCALES as readonly string[]).includes(value)
+  );
+}
+
+export function getSafeLocale(
+  value: unknown,
+  fallback: SupportedLocale = DEFAULT_LOCALE,
+): SupportedLocale {
+  return isValidLocale(value) ? value : fallback;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/logger.ts
+
+TEM esse conteúdo 
+
+
+import { BaseError } from "@/lib/errors";
+
+export const logger = {
+  error: (error: unknown) => {
+    const env =
+      process.env.NODE_ENV ?? "development";
+
+    if (error instanceof BaseError) {
+      const payload = {
+        level: "ERROR",
+        timestamp: new Date().toISOString(),
+        name: error.name,
+        message: error.message,
+        errorId: error.errorId,
+        env,
+      };
+
+      if (env === "development") {
+        console.error(payload);
+      } else {
+        console.log(JSON.stringify(payload));
+      }
+
+      return;
+    }
+
+    console.error(error);
+  },
+}; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/schema.ts 
+
+
+TEM esse conteúdo 
+
+
+
+/**
+ * LIB: JSON-LD Structured Data (SEO) - Sérgio Santos
+ * ✔ Integrado com os troféus da DIO e fotos oficiais.
+ */
+
+export const baseUrl = process.env['NEXT_PUBLIC_SITE_URL'] ?? "https://portfoliosantossergio.vercel.app";
+
+export function personSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Sérgio Santos",
+    url: baseUrl,
+    image: `${baseUrl}/images/sergio-santos-profile.png`,
+    jobTitle: "Cientista de Dados e Especialista em IA",
+    description: "Especialista em Ciência de Dados, IA Generativa e Sistemas de Missão Crítica.",
+    sameAs: [
+      "https://github.com/Santosdevbjj",
+      "https://www.linkedin.com/in/santossergioluiz",
+      "https://medium.com/@sergiosantosluiz",
+    ],
+    worksFor: {
+      "@type": "Organization",
+      name: "Sérgio Santos Consulting",
+    },
+    knowsAbout: ["Data Science", "Artificial Intelligence", "Critical Systems", "Next.js 16", "Python"]
+  };
+}
+
+export function websiteSchema(lang: string = "pt-BR") {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Sérgio Santos | Portfólio",
+    url: `${baseUrl}/${lang}`,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${baseUrl}/${lang}/search?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+
+export function articleSchema({
+  title,
+  description,
+  slug,
+  datePublished,
+  image,
+  lang = "pt-BR"
+}: {
+  title: string;
+  description: string;
+  slug: string;
+  datePublished: string;
+  image?: string;
+  lang?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    // Usa a imagem do troféu da DIO como fallback para artigos
+    image: image || `${baseUrl}/images/trofeus-vencedor-dio.png`,
+    author: {
+      "@type": "Person",
+      name: "Sérgio Santos",
+    },
+    datePublished,
+    publisher: {
+      "@type": "Organization",
+      name: "Sérgio Santos",
+      logo: {
+        "@type": "ImageObject",
+        url: `${baseUrl}/icons/icon.png`
+      }
+    },
+    url: `${baseUrl}/${lang}/artigos/${slug}`,
+  };
+}
+
+export function projectSchema({
+  name,
+  description,
+  repo,
+}: {
+  name: string;
+  description: string;
+  repo: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    name,
+    description,
+    codeRepository: repo,
+    programmingLanguage: ["Python", "TypeScript", "SQL"],
+    author: {
+      "@type": "Person",
+      name: "Sérgio Santos",
+    },
+  };
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/seo.ts
+
+Tem esse conteúdo 
+
+
+import type { Metadata } from "next";
+
+/**
+ * CONFIGURAÇÃO SEO - PORTFÓLIO SÉRGIO SANTOS
+ * ✔ Resolução de erro "Cópia sem página canônica" do Search Console.
+ */
+
+export const siteConfig = {
+  name: "Sérgio Santos",
+  title: "Sérgio Santos — Especialista em IA e Ciência de Dados",
+  description:
+    "Portfólio de Sérgio Santos — Engenheiro de Software especializado em IA Generativa, Next.js, Python e Arquiteturas de Missão Crítica.",
+  url: process.env['NEXT_PUBLIC_SITE_URL'] ?? "https://portfoliosantossergio.vercel.app",
+  author: "Sérgio Santos",
+  links: {
+    github: "https://github.com/Santosdevbjj",
+    linkedin: "https://www.linkedin.com/in/santossergioluiz",
+  },
+};
+
+export function absoluteUrl(path: string = "") {
+  const base = siteConfig.url.replace(/\/$/, "");
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${cleanPath}`;
+}
+
+interface MetadataProps {
+  title?: string;
+  description?: string;
+  path?: string; // Ex: "/artigos/meu-post"
+  image?: string;
+  lang?: "pt-BR" | "en-US" | "es-ES" | "es-AR" | "es-MX";
+}
+
+export function buildMetadata({
+  title,
+  description,
+  path = "",
+  image,
+  lang = "pt-BR",
+}: MetadataProps = {}): Metadata {
+  const metaTitle = title ? `${title} | ${siteConfig.name}` : siteConfig.title;
+  const metaDescription = description ?? siteConfig.description;
+
+  // Define a URL canônica correta: Base + Idioma + Caminho da página
+  // Isso remove o erro de "Cópia sem canônica"
+  const canonicalUrl = absoluteUrl(`/${lang}${path}`);
+  
+  // OG Image baseada no idioma ou imagem personalizada do artigo
+  const ogImagePath = image || `/og/og-image-${lang}.png`;
+
+  return {
+    title: metaTitle,
+    description: metaDescription,
+    metadataBase: new URL(siteConfig.url),
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        "pt-BR": absoluteUrl(`/pt-BR${path}`),
+        "en-US": absoluteUrl(`/en-US${path}`),
+        "es-ES": absoluteUrl(`/es-ES${path}`),
+        "es-AR": absoluteUrl(`/es-AR${path}`),
+        "es-MX": absoluteUrl(`/es-MX${path}`),
+        "x-default": absoluteUrl(`/pt-BR${path}`),
+      },
+    },
+    authors: [{ name: siteConfig.author }],
+    openGraph: {
+      type: "website",
+      locale: lang.replace("-", "_"),
+      url: canonicalUrl,
+      title: metaTitle,
+      description: metaDescription,
+      siteName: siteConfig.name,
+      images: [
+        {
+          url: absoluteUrl(ogImagePath),
+          width: 1200,
+          height: 630,
+          alt: metaTitle,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: metaTitle,
+      description: metaDescription,
+      images: [absoluteUrl(ogImagePath)],
+      creator: "@sergiosantos",
+    },
+    icons: {
+      icon: "/icons/favicon.ico",
+      shortcut: "/icons/icon.png",
+      apple: "/icons/apple-touch-icon.png",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+  };
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/errors/index.ts
+
+TEM esse conteúdo 
+
+
+import type { ErrorKey } from "@/types/error-dictionary";
+
+/* ============================================================
+   BASE ERROR PARAMS
+============================================================ */
+
+export interface BaseErrorParams {
+  readonly name: ErrorKey;
+  readonly message: string;
+  readonly statusCode?: number;
+  readonly errorId?: string;
+  readonly requestId?: string;
+  readonly context?: unknown;
+  readonly cause?: unknown;
+}
+
+/* ============================================================
+   BASE ERROR CLASS
+============================================================ */
+
+export class BaseError extends Error {
+  public override readonly name: ErrorKey;
+  public readonly statusCode: number;
+  public readonly errorId: string;
+  public readonly requestId?: string;
+  public readonly context?: unknown;
+
+  constructor(params: BaseErrorParams) {
+    super(params.message);
+
+    Object.setPrototypeOf(this, new.target.prototype);
+
+    this.name = params.name;
+    this.statusCode = params.statusCode ?? 500;
+    this.errorId = params.errorId ?? crypto.randomUUID();
+
+    // ✅ exactOptionalPropertyTypes-safe
+    if (params.requestId !== undefined) {
+      this.requestId = params.requestId;
+    }
+
+    if (params.context !== undefined) {
+      this.context = params.context;
+    }
+
+    if (params.cause !== undefined) {
+      this.cause = params.cause;
+    }
+  }
+}
+
+/* ============================================================
+   ERROR CLASSES
+============================================================ */
+
+export class InternalServerError extends BaseError {
+  constructor(message = "Internal Server Error") {
+    super({
+      name: "InternalServerError",
+      message,
+      statusCode: 500,
+    });
+  }
+}
+
+export class NotFoundError extends BaseError {
+  constructor(message = "Resource Not Found") {
+    super({
+      name: "NotFoundError",
+      message,
+      statusCode: 404,
+    });
+  }
+}
+
+export class ValidationError extends BaseError {
+  constructor(message = "Validation failed") {
+    super({
+      name: "ValidationError",
+      message,
+      statusCode: 400,
+    });
+  }
+}
+
+export class UnauthorizedError extends BaseError {
+  constructor(message = "Unauthorized") {
+    super({
+      name: "UnauthorizedError",
+      message,
+      statusCode: 401,
+    });
+  }
+}
+
+export class ForbiddenError extends BaseError {
+  constructor(message = "Forbidden") {
+    super({
+      name: "ForbiddenError",
+      message,
+      statusCode: 403,
+    });
+  }
+}
+
+export class TooManyRequestsError extends BaseError {
+  constructor(message = "Too Many Requests") {
+    super({
+      name: "TooManyRequestsError",
+      message,
+      statusCode: 429,
+    });
+  }
+}
+
+export class UnprocessableEntityError extends BaseError {
+  constructor(message = "Unprocessable Entity") {
+    super({
+      name: "UnprocessableEntityError",
+      message,
+      statusCode: 422,
+    });
+  }
+}
+
+export class MethodNotAllowedError extends BaseError {
+  constructor(message = "Method Not Allowed") {
+    super({
+      name: "MethodNotAllowedError",
+      message,
+      statusCode: 405,
+    });
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ O ARQUIVO src/lib/github/service.ts
+
+TEM esse conteúdo 
+
+
+/**
+ * src/lib/github/service.ts
+ * Versão Resiliente (v2026)
+ * STATUS: CORRIGIDO (TypeScript Strict Mode Fixed)
+ * STACK: Next.js 16.2.2, React 19, TS 6.0.2, Node 24
+ */
+import { cache } from "react";
+import { headers } from "next/headers";
+import type { GitHubItem, GitHubRawItem } from "./types";
+
+// Tenta ler de ambas as variáveis possíveis para máxima compatibilidade no Deploy
+const GITHUB_TOKEN = (process.env["GITHUB_ACCESS_TOKEN"] || process.env["GITHUB_TOKEN"])?.trim();
+
+const OWNER = "Santosdevbjj";
+const REPO = "myArticles";
+const BASE_URL = `https://api.github.com/repos/${OWNER}/${REPO}/contents/artigos`;
+
+/**
+ * Busca artigos de forma recursiva. 
+ * Esta abordagem garante que todos os arquivos em subpastas sejam encontrados.
+ */
+async function fetchRecursive(url: string): Promise<GitHubItem[]> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+  try {
+    const res = await fetch(url, {
+      headers: {
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "Portfolio-Sergio-Santos-v2026",
+        ...(GITHUB_TOKEN && { "Authorization": `Bearer ${GITHUB_TOKEN}` })
+      },
+      signal: controller.signal,
+      next: { revalidate: 3600 } 
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!res.ok) {
+      console.error(`[GitHub Service] Erro ${res.status} em ${url}`);
+      throw new Error(`GH_ERROR_${res.status}`);
+    }
+
+    const items = (await res.json()) as GitHubRawItem[];
+    if (!Array.isArray(items)) return [];
+
+    const results = await Promise.all(items.map(async (item): Promise<GitHubItem[]> => {
+      // 1. Se for diretório, entra nele (Recursão)
+      if (item.type === 'dir') {
+        return fetchRecursive(item.url);
+      }
+
+      // 2. Filtra arquivos: .md ou .mdx (Ignora README)
+      const isMarkdown = item.name.endsWith('.md') || item.name.endsWith('.mdx');
+      const isNotReadme = !item.name.toLowerCase().includes('readme');
+
+      if (isMarkdown && isNotReadme) {
+        const pathParts = item.path.split('/');
+        
+        // CORREÇÃO TS: Garantindo que categoryName seja sempre string (fallback para 'geral')
+        const categoryName: string = pathParts.length > 2 
+          ? (pathParts[pathParts.length - 2] ?? 'geral') 
+          : 'geral';
+
+        return [{
+          name: item.name,
+          path: item.path,
+          url: item.url,
+          type: 'file' as const, // Força o literal 'file' para bater com a Interface
+          download_url: item.download_url,
+          category: categoryName
+        }];
+      }
+
+      return [];
+    }));
+
+    return results.flat();
+
+  } catch (err: any) {
+    clearTimeout(timeoutId);
+    console.error(`[GitHub Service] Falha ao buscar em ${url}:`, err.message);
+    throw err;
+  }
+}
+
+/**
+ * Função principal com retry e cache do React 19
+ */
+export const getArticlesWithRetry = cache(async (retries = 2): Promise<GitHubItem[]> => {
+  try {
+    // Força comportamento dinâmico para evitar cache estático antigo no build
+    try { await headers(); } catch { /* Ignore build-time */ }
+
+    const articles = await fetchRecursive(BASE_URL);
+    console.log(`[GitHub Service] Sucesso: ${articles.length} artigos encontrados.`);
+    return articles;
+
+  } catch (error: any) {
+    if (retries > 0) {
+      console.log(`[GitHub Service] Tentando novamente... (${retries} restantes)`);
+      await new Promise(r => setTimeout(r, 2000));
+      return getArticlesWithRetry(retries - 1);
+    }
+
+    console.error("[GitHub Service] Falha crítica após todas as tentativas.");
+    return [];
+  }
+}); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/github/types.ts
+
+TEM esse conteúdo 
+
+/**
+ * src/lib/github/types.ts
+ * Tipagens para o ecossistema GitHub API v2026
+ */
+
+export interface GitHubItem {
+  name: string;
+  path: string;
+  url: string;
+  type: 'file' | 'dir';
+  download_url: string | null;
+  category: string; 
+}
+
+// Representa o item bruto vindo da API de Trees
+export interface GitHubRawTreeItem {
+  path?: string;
+  mode?: string;
+  type?: string;
+  sha?: string;
+  size?: number;
+  url?: string;
+}
+
+// Para compatibilidade com outras partes do código
+export interface GitHubRawItem {
+  name: string;
+  path: string;
+  url: string;
+  type: string;
+  download_url: string | null;
+  sha: string;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/http/handleApiError.ts
+
+
+TEM ESSE CONTEÚDO 
+
+
+// src/lib/http/handleApiError.ts
+
+import { NextRequest, NextResponse } from "next/server";
+import {
+  BaseError,
+  InternalServerError,
+} from "@/lib/errors";
+import { getErrorDictionary } from "@/dictionaries/errors";
+import {
+  isSupportedLocale,
+  type SupportedLocale,
+} from "@/lib/i18n/locale";
+import type {
+  ErrorKey,
+  ErrorDictionary,
+} from "@/types/error-dictionary";
+import { logger } from "@/lib/logger";
+
+/* ============================================================
+   LOCALE RESOLUTION
+============================================================ */
+
+function resolveLocale(
+  request?: NextRequest
+): SupportedLocale {
+  const header =
+    request?.headers
+      .get("accept-language")
+      ?.split(",")[0] ?? "pt-BR";
+
+  if (isSupportedLocale(header)) {
+    return header;
+  }
+
+  if (header.startsWith("en")) return "en-US";
+  if (header.startsWith("es")) return "es-ES";
+
+  return "pt-BR";
+}
+
+/* ============================================================
+   TYPE-SAFE ERROR KEY CHECK (TS 6 SAFE)
+============================================================ */
+
+function isErrorKey(
+  value: string,
+  dictionary: ErrorDictionary
+): value is ErrorKey {
+  return value in dictionary;
+}
+
+/* ============================================================
+   HANDLE API ERROR
+============================================================ */
+
+export function handleApiError(
+  error: unknown,
+  request?: NextRequest
+): NextResponse {
+  const err =
+    error instanceof BaseError
+      ? error
+      : new InternalServerError(
+          error instanceof Error
+            ? error.message
+            : "Unexpected error"
+        );
+
+  logger.error(err);
+
+  const locale = resolveLocale(request);
+  const dictionary = getErrorDictionary(locale);
+
+  const key: ErrorKey = isErrorKey(
+    err.name,
+    dictionary
+  )
+    ? err.name
+    : "InternalServerError";
+
+  const translation = dictionary[key];
+
+  return NextResponse.json(
+    {
+      error: {
+        name: key,
+        title: translation.title,
+        message:
+          err.message || translation.message,
+        action: translation.action,
+        errorId: err.errorId,
+      },
+    },
+    { status: err.statusCode }
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/i18n/locale.ts
+
+TEM esse conteúdo 
+
+
+export const SUPPORTED_LOCALES = [
+  "pt-BR",
+  "en-US",
+  "es-ES",
+  "es-AR",
+  "es-MX",
+] as const;
+
+export type SupportedLocale =
+  (typeof SUPPORTED_LOCALES)[number];
+
+export function isSupportedLocale(
+  value: string
+): value is SupportedLocale {
+  return SUPPORTED_LOCALES.includes(
+    value as SupportedLocale
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/i18n/locales.ts
+
+
+TEM esse conteúdo 
+
+
+
+
+/**
+ * i18n Locales Configuration - Versão 2026
+ * -----------------------------------------------------------------------------
+ * ✔ Suporte: Next.js 16.1.7, React 19, TS 6.0, Node 24
+ * ✔ Correção de Build: Tipagem estrita para o split de locale
+ */
+
+/**
+ * Lista oficial de locales suportados no sistema.
+ */
+export const SUPPORTED_LOCALES = [
+  "pt-BR",
+  "en-US",
+  "es-ES",
+  "es-AR",
+  "es-MX",
+] as const;
+
+export const locales = SUPPORTED_LOCALES;
+
+/**
+ * Tipagens baseadas na lista imutável acima.
+ */
+export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+export type Locale = SupportedLocale;
+
+/**
+ * Idioma padrão.
+ */
+export const DEFAULT_LOCALE: SupportedLocale = "pt-BR";
+
+/**
+ * Type Guard para validação de locale.
+ */
+export function isValidLocale(locale: string): locale is SupportedLocale {
+  return (SUPPORTED_LOCALES as readonly string[]).includes(locale);
+}
+
+/**
+ * Normaliza qualquer entrada para um locale suportado.
+ */
+export function normalizeLocale(input?: string | null): SupportedLocale {
+  if (!input) return DEFAULT_LOCALE;
+
+  const cleaned = input.trim().replace(/_/g, "-");
+  
+  const exactMatch = SUPPORTED_LOCALES.find(
+    (l) => l.toLowerCase() === cleaned.toLowerCase()
+  );
+  if (exactMatch) return exactMatch;
+
+  const base = cleaned.toLowerCase().split("-")[0] || "";
+  
+  switch (base) {
+    case "pt": return "pt-BR";
+    case "en": return "en-US";
+    case "es": return "es-ES";
+    default: return DEFAULT_LOCALE;
+  }
+}
+
+/**
+ * Helper para metadados SEO e acessibilidade (HTML lang attribute).
+ * Retorna apenas a parte da língua (ex: "pt", "en", "es").
+ * * FIX: Adicionado fallback e verificação para satisfazer o TS 6.0 Strict Mode.
+ */
+export function getLanguageCode(locale: SupportedLocale): string {
+  // Garantimos que se o split falhar por algum motivo bizarro, 
+  // ele retorna o primeiro segmento ou a string inteira.
+  const code = locale.split("-")[0];
+  return code ?? locale;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/resume/resumeContent.ts
+
+
+
+TEM esse conteúdo 
+
+
+/**
+ * LIB: Resume Content (SSO - Single Source of Truth)
+ * -----------------------------------------------------------------------------
+ * ✔ Next.js 16.2.0: Suporte a SEO programático e metadados dinâmicos.
+ * ✔ TypeScript 6.0: Acesso via colchetes para variáveis de ambiente.
+ * ✔ Node 24: Otimização de strings e constantes de mapeamento.
+ * ✔ Multilingue: PT-BR, EN-US, ES-ES, ES-AR, ES-MX.
+ */
+
+// CORREÇÃO TS 6: Acesso seguro ao index signature do process.env
+export const BASE_URL =
+  process.env['NEXT_PUBLIC_BASE_URL'] ||
+  "https://portfoliosantossergio.vercel.app";
+
+export const SUPPORTED_LANGS = [
+  "pt-BR",
+  "en-US",
+  "es-ES",
+  "es-AR",
+  "es-MX"
+] as const;
+
+export type Lang = typeof SUPPORTED_LANGS[number];
+
+export interface ResumeContent {
+  lang: Lang;
+  name: string;
+  title: string;
+  description: string;
+  skills: string[];
+  pdfUrl: string;
+  resumeUrl: string;
+  ogImage: string;
+  keywords: string[];
+}
+
+/**
+ * Utilitários de Resolução de Caminhos (Node 24 Optimized)
+ */
+const getPdfUrl = (lang: Lang) => `/pdf/cv-sergio-santos-${lang}.pdf`;
+
+const getResumeUrl = (lang: Lang) => `${BASE_URL}/${lang}/resume`;
+
+const getOgImage = (lang: Lang) => `${BASE_URL}/og/og-image-${lang}.png`;
+
+export const resumeContent: Record<Lang, ResumeContent> = {
+  "pt-BR": {
+    lang: "pt-BR",
+    name: "Sérgio Santos",
+    title: "Especialista em Ciência de Dados e Inteligência Artificial",
+    description:
+      "Currículo de Sérgio Santos, especialista em Data Science, IA generativa, Python, Java, Cloud e Arquitetura de Sistemas Críticos.",
+    skills: ["Python", "Machine Learning", "IA Generativa", "Cloud Azure", "Sistemas Críticos", "Node.js 24"],
+    pdfUrl: getPdfUrl("pt-BR"),
+    resumeUrl: getResumeUrl("pt-BR"),
+    ogImage: getOgImage("pt-BR"),
+    keywords: ["currículo cientista de dados", "engenheiro de IA", "sistemas de missão crítica", "portfólio data science"]
+  },
+
+  "en-US": {
+    lang: "en-US",
+    name: "Sergio Santos",
+    title: "Data Science and AI Specialist",
+    description:
+      "Resume of Sergio Santos, expert in Data Science, Generative AI, Python, Java, Cloud Computing and Critical Systems Architecture.",
+    skills: ["Python", "Machine Learning", "Generative AI", "Azure Cloud", "Critical Systems", "Node.js 24"],
+    pdfUrl: getPdfUrl("en-US"),
+    resumeUrl: getResumeUrl("en-US"),
+    ogImage: getOgImage("en-US"),
+    keywords: ["data scientist resume", "AI engineer CV", "critical systems architecture", "data science portfolio"]
+  },
+
+  "es-ES": {
+    lang: "es-ES",
+    name: "Sergio Santos",
+    title: "Especialista en Ciencia de Datos e Inteligencia Artificial",
+    description:
+      "Currículum de Sergio Santos, experto en Data Science, IA generativa, Python y arquitectura de sistemas críticos.",
+    skills: ["Python", "Machine Learning", "IA Generativa", "Azure", "Sistemas Críticos"],
+    pdfUrl: getPdfUrl("es-ES"),
+    resumeUrl: getResumeUrl("es-ES"),
+    ogImage: getOgImage("es-ES"),
+    keywords: ["currículum data scientist", "ingeniero IA", "sistemas críticos", "portafolio ciencia de datos"]
+  },
+
+  "es-AR": {
+    lang: "es-AR",
+    name: "Sergio Santos",
+    title: "Especialista en Ciencia de Datos e Inteligencia Artificial",
+    description:
+      "Currículum profesional de Sergio Santos, especialista en Data Science e IA para sistemas de alta disponibilidad.",
+    skills: ["Python", "Data Science", "IA Generativa", "Cloud Computing", "Arquitectura"],
+    pdfUrl: getPdfUrl("es-AR"),
+    resumeUrl: getResumeUrl("es-AR"),
+    ogImage: getOgImage("es-AR"),
+    keywords: ["curriculum data science", "ingeniero IA", "tecnología argentina", "portfolio ciencia de datos"]
+  },
+
+  "es-MX": {
+    lang: "es-MX",
+    name: "Sergio Santos",
+    title: "Especialista en Ciencia de Datos e Inteligencia Artificial",
+    description:
+      "Currículum profesional de Sergio Santos, especialista en Data Science e IA con enfoque en arquitectura escalable.",
+    skills: ["Python", "Ciencia de Datos", "IA Generativa", "Azure MX", "MLOps"],
+    pdfUrl: getPdfUrl("es-MX"),
+    resumeUrl: getResumeUrl("es-MX"),
+    ogImage: getOgImage("es-MX"),
+    keywords: ["curriculum data science", "ingeniero IA", "tecnología méxico", "portfolio ciencia de datos"]
+  }
+};
+
+/**
+ * Segurança de idioma (Type-Safe)
+ */
+export function getResumeContent(lang: string): ResumeContent {
+  const isSupported = SUPPORTED_LANGS.includes(lang as Lang);
+  return isSupported ? resumeContent[lang as Lang] : resumeContent["en-US"];
+}
+
+/**
+ * Utilitário para geração de Sitemaps e SEO Dinâmico (Next.js 16.2.0)
+ */
+export function getAllResumes(): ResumeContent[] {
+  return Object.values(resumeContent);
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/resume/resumePdfMap.ts
+
+
+
+TEM esse conteúdo 
+
+
+/**
+ * Resume PDF Mapping - Versão 2026
+ * -----------------------------------------------------------------------------
+ * ✔ Suporte: Next.js 16, React 19, TS 6.0, Node 24
+ * ✔ Objetivo: Mapear os arquivos físicos da pasta /public/pdf para os locales.
+ * ✔ Fix: Type-only import para compatibilidade com verbatimModuleSyntax.
+ */
+
+import { DEFAULT_LOCALE } from "@/dictionaries/locales";
+import type { SupportedLocale } from "@/dictionaries/locales";
+
+/**
+ * Mapeamento estrito dos caminhos dos arquivos PDF.
+ * Os arquivos devem estar localizados em: public/pdf/
+ */
+export const RESUME_PDF_MAP: Record<SupportedLocale, string> = {
+  "pt-BR": "/pdf/cv-sergio-santos-pt-BR.pdf",
+  "en-US": "/pdf/cv-sergio-santos-en-US.pdf",
+  "es-ES": "/pdf/cv-sergio-santos-es-ES.pdf",
+  "es-AR": "/pdf/cv-sergio-santos-es-AR.pdf",
+  "es-MX": "/pdf/cv-sergio-santos-es-MX.pdf",
+} as const;
+
+/**
+ * Retorna o caminho do PDF baseado no locale atual.
+ * @param locale - O idioma atual da página.
+ * @returns O caminho relativo para uso em componentes <Link> ou <a>.
+ */
+export function getResumePath(locale: string): string {
+  // Fazemos o cast seguro para SupportedLocale
+  const targetLocale = locale as SupportedLocale;
+  
+  // Retorna o mapeamento ou o fallback para o idioma padrão
+  return RESUME_PDF_MAP[targetLocale] || RESUME_PDF_MAP[DEFAULT_LOCALE];
+}
+
+/**
+ * Helper para forçar o download com o nome de arquivo amigável.
+ * Útil para o atributo 'download' de tags <a>.
+ */
+export function getResumeDownloadName(locale: string): string {
+  return `CV-Sergio-Santos-${locale}.pdf`;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/lib/seo/breadcrumbs.ts
+
+
+TEM esse conteúdo 
+
+
+
+
+// src/lib/seo/breadcrumbs.ts
+import type { Locale, Dictionary } from "@/types/dictionary";
+
+export interface BreadcrumbItem {
+  name: string;
+  item: string;
+}
+
+/**
+ * GERAÇÃO DE BREADCRUMBS MULTILÍNGUES (SEO OPTIMIZED)
+ * -----------------------------------------------------------------------------
+ * ✔ Next.js 16.2.0: Compatível com Turbopack e PPR.
+ * ✔ TypeScript 6.0: Acesso Type-Safe a chaves dinâmicas do dicionário.
+ * ✔ I18n: Suporte regional (PT-BR, EN-US, ES-ES, ES-AR, ES-MX).
+ * ✔ Node 24: Manipulação eficiente de strings e memória.
+ */
+export function generateBreadcrumbs(
+  pathname: string,
+  locale: Locale,
+  dict: Dictionary,
+  baseUrl: string
+): BreadcrumbItem[] {
+  // Normalização da URL base para evitar barras duplas
+  const normalizedBaseUrl = baseUrl.replace(/\/+$/, "");
+  
+  // Extração dos segmentos ignorando o prefixo do idioma
+  const segments = extractPathSegments(pathname, locale);
+  const breadcrumbs: BreadcrumbItem[] = [];
+
+  /**
+   * 1️⃣ HOME (RAIZ DO IDIOMA)
+   * Resolve o título da Home com fallbacks seguros para evitar 'undefined' no build.
+   */
+  const homeTitle = 
+    dict.seo.pages?.['home']?.title ?? 
+    dict.common?.nav?.about ?? 
+    (locale.startsWith('es') ? 'Inicio' : 'Home');
+
+  breadcrumbs.push({
+    name: homeTitle,
+    item: `${normalizedBaseUrl}/${locale}`,
+  });
+
+  /**
+   * 2️⃣ PROCESSAMENTO DE SEGMENTOS ACUMULATIVOS
+   */
+  let cumulativePath = `/${locale}`;
+
+  for (const segment of segments) {
+    const decodedSegment = decodeURIComponent(segment);
+    cumulativePath += `/${segment}`;
+
+    breadcrumbs.push({
+      name: resolveLabel(decodedSegment, dict),
+      item: `${normalizedBaseUrl}${cumulativePath}`,
+    });
+  }
+
+  return breadcrumbs;
+}
+
+/**
+ * Filtra o pathname para remover o locale e segmentos vazios.
+ */
+function extractPathSegments(pathname: string, locale: Locale): string[] {
+  return pathname
+    .split("/")
+    .filter(Boolean)
+    .filter((segment) => {
+      // Remove o locale exato (ex: pt-BR) ou o prefixo (ex: pt)
+      return segment !== locale && segment !== locale.split("-")[0];
+    });
+}
+
+/**
+ * RESOLUÇÃO DE LABEL (NOME AMIGÁVEL)
+ * Prioridade: SEO Pages -> Common Nav -> Formatado (Slug to Title)
+ */
+function resolveLabel(segment: string, dict: Dictionary): string {
+  const segmentLower = segment.toLowerCase();
+
+  // 1. Verificação no SEO Pages (Chaves específicas de página)
+  // TS 6.0: Verificamos a existência do objeto antes do acesso por índice
+  const seoPage = dict.seo.pages?.[segmentLower];
+  if (seoPage?.title) return seoPage.title;
+
+  // 2. Verificação no Mapeamento de Navegação (common.nav)
+  const nav = dict.common.nav;
+  
+  // Mapeamento direto de segmentos comuns para as chaves do dicionário
+  const navMap: Record<string, string> = {
+    'about': nav.about,
+    'experience': nav.experience,
+    'projects': nav.projects,
+    'articles': nav.articles,
+    'contact': nav.contact,
+    // Traduções de slugs comuns para português/espanhol
+    'sobre': nav.about,
+    'experiencia': nav.experience,
+    'proyectos': nav.projects,
+    'artigos': nav.articles,
+    'articulos': nav.articles,
+    'contato': nav.contact,
+    'contacto': nav.contact
+  };
+
+  if (navMap[segmentLower]) {
+    return navMap[segmentLower];
+  }
+
+  // 3. Fallback: Formatação de Slug (ex: "ia-construcao" -> "Ia Construcao")
+  // Node 24 utiliza regex otimizada para capitalização
+  return segment
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
