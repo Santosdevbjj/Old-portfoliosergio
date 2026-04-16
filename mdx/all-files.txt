@@ -4,7 +4,21 @@ https://github.com/Santosdevbjj/portfoliosantossergio
 
 O meu novo portfólio foi desenvolvido em typescript 6.0.2, e next.js 16.2.3 e React 19.2.5 e Node 24 e tailwindcss versão 4.2
 
-O meu novo portfólio no vercel é multilingue, está em português, inglês e espanhol da Espanha, e espanhol da Argentina, e espanhol do México.
+O meu novo portfólio no vercel é multilingue, está em português, inglês e espanhol da Espanha, e espanhol da Argentina, e espanhol do México:
+
+https://portfoliosantossergio.vercel.app/pt-BR
+
+https://portfoliosantossergio.vercel.app/en-US
+
+https://portfoliosantossergio.vercel.app/es-ES
+
+https://portfoliosantossergio.vercel.app/es-AR
+
+https://portfoliosantossergio.vercel.app/es-MX
+
+
+
+
 
 O meu novo portfólio no vercel é totalmente responsivo.
 
@@ -8297,6 +8311,6598 @@ export interface ProjectSEO {
 
 
 
+
+
+
+
+
+
+
+
+O ARQUIVO src/actions/user-actions.ts
+
+TEM ESSE CONTEÚDO 
+
+
+'use server';
+
+import { logger } from "@/lib/logger";
+import {
+  ValidationError,
+  InternalServerError,
+  BaseError,
+} from "@/lib/errors";
+import type { ErrorKey } from "@/types/error-dictionary";
+
+/**
+ * ESTADO DA AÇÃO - REACT 19 COMPLIANT
+ * -----------------------------------------------------------------------------
+ * ✔ Stack: Next.js 16.2.0, TS 6.0, Node 24
+ */
+export type UpdateProfileActionState =
+  | { success: true; message?: string }
+  | {
+      success: false;
+      error: {
+        name: ErrorKey;
+        message: string;
+        errorId: string;
+      };
+    }
+  | null;
+
+export async function updateProfileAction(
+  prevState: UpdateProfileActionState,
+  formData: FormData
+): Promise<UpdateProfileActionState> {
+  try {
+    // Node 24: Sanitização nativa de strings
+    const name = formData.get("name")?.toString().trim() ?? "";
+
+    // Validação de Negócio
+    if (!name || name.length < 3) {
+      // Lançamos o erro que mapeia para a chave 'ValidationError'
+      throw new ValidationError("Nome inválido no servidor.");
+    }
+
+    // Lógica de persistência aqui (ex: DB Update)
+    
+    return { 
+      success: true, 
+      message: "Success" // Opcional, a tradução real ocorre no Client
+    };
+
+  } catch (error: unknown) {
+    const err = error instanceof BaseError
+      ? error
+      : new InternalServerError(
+          error instanceof Error ? error.message : "Unexpected error"
+        );
+
+    // Logging centralizado no Servidor
+    logger.error({
+      id: err.errorId,
+      name: err.name,
+      message: err.message
+    });
+
+    return {
+      success: false,
+      error: {
+        name: err.name as ErrorKey, // Garante compatibilidade com o dicionário
+        message: err.message,
+        errorId: err.errorId,
+      },
+    };
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/config/categories.ts
+
+TEM ESSE CONTEÚDO 
+
+
+// src/config/categories.ts
+
+export const CATEGORY_ORDER: Record<string, number> = {
+
+  "Ciência de Dados": 1,
+  "Azure Databricks": 2,
+  "Neo4J": 3,
+  "Power BI e Análise de Dados": 4,
+  "Excel": 5,
+  "Banco de Dados": 6,
+  "Python": 7,
+  "C# / .NET": 8,
+  "Java": 9,
+  "Machine Learning": 10,
+  "Inteligência Artificial": 11,
+  "Amazon AWS": 12,
+  "Cibersegurança": 13,
+  "Lógica de Programação": 14,
+  "HTML": 15,
+  "CSS": 16,
+  "Javascript": 17,
+  "Typescript": 18,
+  "Next.js": 19,
+  "Node": 20,
+  "React": 21,
+  "Artigos Técnicos": 22,
+
+  "Outros": 99,
+};
+
+export const TOPIC_TO_CATEGORY: Record<string, string> = {
+
+  "data-science": "Ciência de Dados",
+  "ciencia-de-dados": "Ciência de Dados",
+
+  "databricks": "Azure Databricks",
+  "azure-databricks": "Azure Databricks",
+  "azure": "Azure Databricks",
+  "azure-cloud": "Azure Databricks",
+
+  "neo4j": "Neo4J",
+  "graph-analysis": "Neo4J",
+  "analise-de-grafos": "Neo4J",
+
+  "power-bi": "Power BI e Análise de Dados",
+  "data-analysis": "Power BI e Análise de Dados",
+  "analise-de-dados": "Power BI e Análise de Dados",
+
+  "excel": "Excel",
+
+  "sql": "Banco de Dados",
+  "database": "Banco de Dados",
+  "banco-de-dados": "Banco de Dados",
+
+  "python": "Python",
+
+  "dotnet": "C# / .NET",
+  "csharp": "C# / .NET",
+
+  "java": "Java",
+
+  "machine-learning": "Machine Learning",
+
+  "ia": "Inteligência Artificial",
+  "ai": "Inteligência Artificial",
+  "artificial-intelligence": "Inteligência Artificial",
+  "inteligencia-artificial": "Inteligência Artificial",
+
+  "amazon-aws": "Amazon AWS",
+  "aws": "Amazon AWS",
+
+  "cybersecurity": "Cibersegurança",
+  "ciberseguranca": "Cibersegurança",
+
+  "programming-logic": "Lógica de Programação",
+  "logica-de-programacao": "Lógica de Programação",
+
+  "html": "HTML",
+  "css": "CSS",
+  "javascript": "Javascript",
+  "typescript": "Typescript",
+
+  "next": "Next.js",
+  "nextjs": "Next.js",
+  "next.js": "Next.js",
+
+  "node": "Node",
+  "nodejs": "Node",
+
+  "react": "React",
+
+  "articles": "Artigos Técnicos",
+  "artigos": "Artigos Técnicos",
+  "artigos-tecnicos": "Artigos Técnicos",
+}; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/contexts/scroll-spy.client.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+
+'use client'
+
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+  type ReactNode,
+  type JSX
+} from 'react'
+import type { NavSection } from '@/domain/navigation'
+
+export type ActiveSection = NavSection | null
+
+interface ScrollSpyContextValue {
+  readonly activeSection: ActiveSection
+  readonly setActiveSection: (section: ActiveSection) => void
+  readonly resetActiveSection: () => void
+}
+
+const ScrollSpyContext = createContext<ScrollSpyContextValue | null>(null)
+
+interface ScrollSpyProviderProps {
+  readonly children: ReactNode
+}
+
+export function ScrollSpyProvider({ children }: ScrollSpyProviderProps): JSX.Element {
+  const [activeSection, setActiveSectionState] = useState<ActiveSection>(null)
+
+  const setActiveSection = useCallback((section: ActiveSection) => {
+    setActiveSectionState(prev => (prev === section ? prev : section))
+  }, [])
+
+  const resetActiveSection = useCallback(() => {
+    setActiveSectionState(null)
+  }, [])
+
+  const value = useMemo<ScrollSpyContextValue>(
+    () => ({ activeSection, setActiveSection, resetActiveSection }),
+    [activeSection, setActiveSection, resetActiveSection]
+  )
+
+  return (
+    <ScrollSpyContext.Provider value={value}>
+      {children}
+    </ScrollSpyContext.Provider>
+  )
+}
+
+export function useScrollSpy(): ScrollSpyContextValue {
+  const context = useContext(ScrollSpyContext)
+  if (!context) {
+    throw new Error('useScrollSpy must be used within a ScrollSpyProvider')
+  }
+  return context
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/domain/career.ts
+
+TEM ESSE CONTEÚDO 
+
+// src/domain/career.ts
+
+export enum CareerRole {
+  DATA_SPECIALIST = 'data_specialist',
+  SYSTEMS_EXPERT = 'systems_expert',
+  STRATEGIC_LEAD = 'strategic_lead',
+}
+
+export interface CareerExperience {
+  id: string;
+  company: string;
+  role: string;
+  period: string;
+  description: string;
+  // Achievements podem vir de uma lista complementar ou metadados
+  achievements?: string[]; 
+}   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/domain/navigation.ts
+
+TEM ESSE CONTEÚDO 
+
+// src/domain/navigation.ts
+
+/**
+ * Seções lógicas da navegação.
+ * NÃO dependem de idioma.
+ */
+export enum NavSection {
+  ABOUT = 'about',
+  EXPERIENCE = 'experience',
+  PROJECTS = 'projects',
+  ARTICLES = 'articles',
+  CONTACT = 'contact',
+}
+
+/**
+ * Ordem canônica das seções.
+ * Usada por Navbar, ScrollSpy e PageWrapper.
+ */
+export const NAV_SECTIONS: readonly NavSection[] = [
+  NavSection.ABOUT,
+  NavSection.EXPERIENCE,
+  NavSection.PROJECTS,
+  NavSection.ARTICLES,
+  NavSection.CONTACT,
+] as const;
+
+/**
+ * Mapeia cada seção para um hash HTML estável.
+ * ❗ Nunca deve ser traduzido.
+ * ❗ Nunca depende de i18n.
+ */
+export const NAV_HASH_MAP: Readonly<
+  Record<NavSection, `#${NavSection}`>
+> = {
+  [NavSection.ABOUT]: '#about',
+  [NavSection.EXPERIENCE]: '#experience',
+  [NavSection.PROJECTS]: '#projects',
+  [NavSection.ARTICLES]: '#articles',
+  [NavSection.CONTACT]: '#contact',
+} as const;
+
+/**
+ * Retorna o hash (#section)
+ */
+export const getNavHash = (
+  section: NavSection,
+): `#${NavSection}` => NAV_HASH_MAP[section];
+
+/**
+ * Retorna o ID puro da seção (sem #)
+ * Usado em <section id="..." />
+ */
+export const getSectionId = (
+  section: NavSection,
+): NavSection => section; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/domain/projects.ts
+
+TEM ESSE CONTEÚDO 
+
+
+// src/domain/projects.ts
+
+import type { ProjectCategories } from "@/types/dictionary";
+
+/**
+ * Core flags usados para lógica de portfólio
+ */
+export enum ProjectCoreTag {
+  PORTFOLIO = "portfolio",
+  FEATURED = "featured",
+  DESTAQUE = "destaque",
+  PRIMEIRO = "primeiro",
+}
+
+/**
+ * Tecnologias principais detectadas nos topics do GitHub
+ * A ORDEM DEFINE PRIORIDADE
+ */
+export enum ProjectTechnology {
+  DATA_SCIENCE = "data-science",
+  AZURE_DATABRICKS = "azure-databricks",
+  NEO4J = "neo4j",
+  POWER_BI = "power-bi",
+  EXCEL = "excel",
+  DATABASE = "database",
+  PYTHON = "python",
+  DOTNET = "dotnet",
+  JAVA = "java",
+  MACHINE_LEARNING = "machine-learning",
+  ARTIFICIAL_INTELLIGENCE = "artificial-intelligence",
+  AWS = "aws",
+  CYBERSECURITY = "cybersecurity",
+  PROGRAMMING_LOGIC = "programming-logic",
+  HTML = "html",
+  CSS = "css",
+  JAVASCRIPT = "javascript",
+  TYPESCRIPT = "typescript",
+  NEXT = "next",
+  NODE = "node",
+  REACT = "react",
+  ARTICLES = "articles",
+}
+
+/**
+ * Ordem oficial de tecnologias
+ */
+export const PROJECT_TECHNOLOGY_ORDER: readonly ProjectTechnology[] = [
+  ProjectTechnology.DATA_SCIENCE,
+  ProjectTechnology.AZURE_DATABRICKS,
+  ProjectTechnology.NEO4J,
+  ProjectTechnology.POWER_BI,
+  ProjectTechnology.EXCEL,
+  ProjectTechnology.DATABASE,
+  ProjectTechnology.PYTHON,
+  ProjectTechnology.DOTNET,
+  ProjectTechnology.JAVA,
+  ProjectTechnology.MACHINE_LEARNING,
+  ProjectTechnology.ARTIFICIAL_INTELLIGENCE,
+  ProjectTechnology.AWS,
+  ProjectTechnology.CYBERSECURITY,
+  ProjectTechnology.PROGRAMMING_LOGIC,
+  ProjectTechnology.HTML,
+  ProjectTechnology.CSS,
+  ProjectTechnology.JAVASCRIPT,
+  ProjectTechnology.TYPESCRIPT,
+  ProjectTechnology.NEXT,
+  ProjectTechnology.NODE,
+  ProjectTechnology.REACT,
+  ProjectTechnology.ARTICLES,
+];
+
+/**
+ * Estrutura de domínio
+ */
+export interface ProjectDomain {
+  readonly id: string;
+  readonly name: string;
+  readonly description: string;
+  readonly htmlUrl: string;
+  readonly homepage?: string | null;
+  readonly topics: readonly string[];
+
+  readonly technology: {
+    id: ProjectTechnology;
+    labelKey: keyof ProjectCategories;
+  };
+
+  readonly isPortfolio: boolean;
+  readonly isFeatured: boolean;
+  readonly isFirst: boolean;
+}
+
+/**
+ * Mapeia tecnologia -> chave do dictionary
+ */
+const TECHNOLOGY_CATEGORY_MAP: Record<
+  ProjectTechnology,
+  keyof ProjectCategories
+> = {
+  [ProjectTechnology.DATA_SCIENCE]: "dataScience",
+  [ProjectTechnology.AZURE_DATABRICKS]: "azureDatabricks",
+  [ProjectTechnology.NEO4J]: "graphs",
+  [ProjectTechnology.POWER_BI]: "analysis",
+  [ProjectTechnology.EXCEL]: "excel",
+  [ProjectTechnology.DATABASE]: "database",
+  [ProjectTechnology.PYTHON]: "python",
+  [ProjectTechnology.DOTNET]: "dotnet",
+  [ProjectTechnology.JAVA]: "java",
+  [ProjectTechnology.MACHINE_LEARNING]: "machineLearning",
+  [ProjectTechnology.ARTIFICIAL_INTELLIGENCE]: "ai",
+  [ProjectTechnology.AWS]: "aws",
+  [ProjectTechnology.CYBERSECURITY]: "security",
+  [ProjectTechnology.PROGRAMMING_LOGIC]: "logic",
+  [ProjectTechnology.HTML]: "html",
+  [ProjectTechnology.CSS]: "css",
+  [ProjectTechnology.JAVASCRIPT]: "javascript",
+  [ProjectTechnology.TYPESCRIPT]: "typescript",
+  [ProjectTechnology.NEXT]: "next",
+  [ProjectTechnology.NODE]: "node",
+  [ProjectTechnology.REACT]: "react",
+  [ProjectTechnology.ARTICLES]: "articles",
+};
+
+/**
+ * Aliases usados nos topics do GitHub
+ */
+const TECHNOLOGY_TOPIC_ALIASES: Record<ProjectTechnology, string[]> = {
+  [ProjectTechnology.DATA_SCIENCE]: [
+    "data-science",
+    "ciencia-de-dados",
+  ],
+
+  [ProjectTechnology.AZURE_DATABRICKS]: [
+    "databricks",
+    "azure-databricks",
+    "azure",
+    "azure-cloud",
+  ],
+
+  [ProjectTechnology.NEO4J]: [
+    "neo4j",
+    "graph-analysis",
+    "analise-de-grafos",
+  ],
+
+  [ProjectTechnology.POWER_BI]: [
+    "power-bi",
+    "data-analysis",
+    "analise-de-dados",
+  ],
+
+  [ProjectTechnology.EXCEL]: ["excel"],
+
+  [ProjectTechnology.DATABASE]: [
+    "database",
+    "banco-de-dados",
+    "sql",
+  ],
+
+  [ProjectTechnology.PYTHON]: ["python"],
+
+  [ProjectTechnology.DOTNET]: [
+    "dotnet",
+    "csharp",
+  ],
+
+  [ProjectTechnology.JAVA]: ["java"],
+
+  [ProjectTechnology.MACHINE_LEARNING]: [
+    "machine-learning",
+  ],
+
+  [ProjectTechnology.ARTIFICIAL_INTELLIGENCE]: [
+    "artificial-intelligence",
+    "inteligencia-artificial",
+    "ia",
+    "ai",
+  ],
+
+  [ProjectTechnology.AWS]: [
+    "aws",
+    "amazon-aws",
+  ],
+
+  [ProjectTechnology.CYBERSECURITY]: [
+    "cybersecurity",
+    "ciberseguranca",
+  ],
+
+  [ProjectTechnology.PROGRAMMING_LOGIC]: [
+    "programming-logic",
+    "logica-de-programacao",
+  ],
+
+  [ProjectTechnology.HTML]: ["html"],
+  [ProjectTechnology.CSS]: ["css"],
+  [ProjectTechnology.JAVASCRIPT]: ["javascript"],
+  [ProjectTechnology.TYPESCRIPT]: ["typescript"],
+
+  [ProjectTechnology.NEXT]: [
+    "next",
+    "nextjs",
+    "next.js",
+  ],
+
+  [ProjectTechnology.NODE]: [
+    "node",
+    "nodejs",
+  ],
+
+  [ProjectTechnology.REACT]: ["react"],
+
+  [ProjectTechnology.ARTICLES]: [
+    "articles",
+    "artigos",
+    "artigos-tecnicos",
+  ],
+};
+
+/**
+ * Normaliza topics
+ */
+const normalizeTopics = (topics: readonly string[]) =>
+  topics.map(t => t.toLowerCase().trim());
+
+/**
+ * Resolve tecnologia
+ */
+export const resolveProjectTechnology = (
+  topics: readonly string[],
+): ProjectDomain["technology"] => {
+
+  const normalized = normalizeTopics(topics);
+
+  const tech =
+    PROJECT_TECHNOLOGY_ORDER.find(technology =>
+      TECHNOLOGY_TOPIC_ALIASES[technology]?.some(alias =>
+        normalized.includes(alias),
+      ),
+    ) ?? ProjectTechnology.DATA_SCIENCE;
+
+  return {
+    id: tech,
+    labelKey:
+      TECHNOLOGY_CATEGORY_MAP[tech] ?? "dataScience",
+  };
+};
+
+/**
+ * Resolve flags
+ */
+export const resolveProjectFlags = (
+  topics: readonly string[],
+) => {
+
+  const normalized = normalizeTopics(topics);
+
+  return {
+    isPortfolio: normalized.includes(
+      ProjectCoreTag.PORTFOLIO,
+    ),
+
+    isFeatured:
+      normalized.includes(ProjectCoreTag.FEATURED) ||
+      normalized.includes(ProjectCoreTag.DESTAQUE),
+
+    isFirst: normalized.includes(
+      ProjectCoreTag.PRIMEIRO,
+    ),
+  };
+}; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/hooks/useScrollSpy.ts
+
+TEM esse conteúdo 
+
+
+'use client'
+
+import { useEffect, useState } from 'react'
+
+export function useScrollSpy(sectionIds: readonly string[], offset: number = 100): string | null {
+  const [activeId, setActiveId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id)
+          }
+        })
+      },
+      { rootMargin: `-${offset}px 0px -50% 0px`, threshold: 0.1 }
+    )
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+
+    return () => observer.disconnect()
+  }, [sectionIds, offset])
+
+  return activeId
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/mappers/projectMapper.ts
+
+TEM ESSE CONTEÚDO 
+
+// src/mappers/projectMapper.ts
+import type { GitHubRepo, ProcessedProject } from "@/types/github";
+import { processRepositories } from "@/lib/github-service";
+
+/**
+ * Este mapper agora é simplificado pois a lógica pesada 
+ * está no github-service.ts
+ */
+export function mapGitHubReposToProjects(
+  repos: GitHubRepo[],
+  username: string
+): ProcessedProject[] {
+  return processRepositories(repos, username);
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/messages/pt-BR.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "privacy": {
+    "title": "Política de Privacidade",
+    "description": "Este portfólio pessoal é mantido por Sergio Santos e tem como finalidade apresentar projetos, artigos e informações profissionais. A proteção da privacidade dos visitantes é tratada com seriedade e em conformidade com a Lei Geral de Proteção de Dados (LGPD – Lei nº 13.709/2018, Brasil) e com o Regulamento Geral de Proteção de Dados (GDPR – Regulamento (UE) 2016/679, União Europeia).",
+    
+    "dataCollection": {
+      "title": "1. Coleta e uso de dados",
+      "items": [
+        "Não coletamos intencionalmente dados pessoais identificáveis de forma automática.",
+        "Dados técnicos (como endereço IP, navegador e dispositivo) podem ser tratados de forma limitada para fins de segurança, desempenho e estatísticas, sem identificação direta do usuário.",
+        "Caso sejam utilizados serviços de terceiros (ex.: Google Analytics), os dados serão processados de forma agregada e anonimizada."
+      ],
+      "legalBasis": "Base legal para tratamento: consentimento do titular (Art. 7º, I, LGPD e Art. 6(1)(a) GDPR)."
+    },
+
+    "cookies": {
+      "title": "2. Cookies",
+      "items": [
+        "Cookies essenciais: utilizados apenas para garantir o funcionamento básico do site (ex.: idioma).",
+        "Cookies de análise: ativados somente mediante consentimento explícito.",
+        "O usuário pode gerenciar ou revogar suas preferências a qualquer momento."
+      ]
+    },
+
+    "dataSharing": {
+      "title": "3. Compartilhamento de dados",
+      "items": [
+        "Nenhum dado pessoal é vendido, alugado ou compartilhado para fins comerciais.",
+        "Integrações com serviços externos (GitHub, LinkedIn) seguem as políticas próprias dessas plataformas."
+      ]
+    },
+
+    "rights": {
+      "title": "4. Direitos dos titulares",
+      "items": [
+        "Confirmação da existência de tratamento de dados.",
+        "Acesso, correção ou exclusão de dados.",
+        "Revogação do consentimento."
+      ]
+    },
+
+    "security": {
+      "title": "5. Segurança",
+      "description": "Medidas técnicas e organizacionais são adotadas para proteger os dados contra acesso não autorizado."
+    },
+
+    "contact": {
+      "title": "6. Contato",
+      "description": "Para dúvidas ou solicitações, utilize o e-mail disponível na seção de contato."
+    },
+
+    "controller": "Controlador de dados: Sergio Santos."
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/messages/en-US.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "privacy": {
+    "title": "Privacy Policy",
+    "description": "This personal portfolio is maintained by Sergio Santos and aims to present professional projects and articles. We respect your privacy and comply with the Brazilian General Data Protection Law (LGPD – Law No. 13.709/2018) and the European General Data Protection Regulation (GDPR – Regulation (EU) 2016/679).",
+
+    "dataCollection": {
+      "title": "Data Collection",
+      "items": [
+        "We do not intentionally collect personally identifiable data.",
+        "Technical data (such as IP address, browser, or device) may be processed for security, performance, and analytics purposes without direct identification.",
+        "If third-party services (e.g., Google Analytics) are used, data is processed in an anonymized and aggregated manner."
+      ],
+      "legalBasis": "Processing is based on user consent (Article 6(1)(a) GDPR and LGPD Art. 7º, I)."
+    },
+
+    "cookies": {
+      "title": "Cookies",
+      "items": [
+        "Essential cookies: required for basic functionality (e.g., language settings).",
+        "Analytics cookies: only activated with explicit user consent.",
+        "You may manage or withdraw your preferences at any time."
+      ]
+    },
+
+    "dataSharing": {
+      "title": "Data Sharing",
+      "items": [
+        "No personal data is sold, rented, or shared for commercial purposes.",
+        "External services (GitHub, LinkedIn) are governed by their own policies."
+      ]
+    },
+
+    "rights": {
+      "title": "Your Rights",
+      "items": [
+        "Confirm whether your data is processed.",
+        "Request access, correction, or deletion.",
+        "Withdraw consent at any time."
+      ]
+    },
+
+    "ccpa": {
+      "title": "U.S. Privacy Rights (CCPA/CPRA)",
+      "description": "Under applicable U.S. laws, users may request that their personal data is not sold or shared. This website does not sell personal data."
+    },
+
+    "security": {
+      "title": "Security",
+      "description": "We apply appropriate technical and organizational measures to protect your data."
+    },
+
+    "contact": {
+      "title": "Contact",
+      "description": "For privacy-related inquiries, please use the contact information provided in this portfolio."
+    },
+
+    "controller": "Data Controller: Sergio Santos."
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/messages/es-AR.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "privacy": {
+    "title": "Política de Privacidad",
+    "description": "Este portafolio es administrado por Sergio Santos conforme a la Ley 25.326 y el GDPR.",
+
+    "dataCollection": {
+      "title": "Recopilación de datos",
+      "items": [
+        "No se recolectan datos personales de forma intencional.",
+        "Datos técnicos pueden usarse con fines estadísticos.",
+        "Servicios externos procesan datos de forma anónima."
+      ]
+    },
+
+    "cookies": {
+      "title": "Cookies",
+      "items": [
+        "Cookies necesarias para funcionamiento.",
+        "Cookies analíticas con consentimiento.",
+        "Podés modificar tus preferencias."
+      ]
+    },
+
+    "rights": {
+      "title": "Derechos",
+      "items": [
+        "Acceso, actualización o eliminación de datos.",
+        "Retiro del consentimiento."
+      ]
+    },
+
+    "contact": {
+      "title": "Contacto",
+      "description": "Consultas a través de la sección de contacto."
+    },
+
+    "controller": "Responsable: Sergio Santos."
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/messages/es-ES.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "privacy": {
+    "title": "Política de Privacidad",
+    "description": "Este portafolio es mantenido por Sergio Santos y cumple con el GDPR (Reglamento (UE) 2016/679).",
+
+    "dataCollection": {
+      "title": "Recopilación de datos",
+      "items": [
+        "No recopilamos intencionadamente datos personales identificables.",
+        "Datos técnicos pueden tratarse con fines de seguridad y rendimiento.",
+        "Servicios de terceros procesan datos de forma anonimizada."
+      ],
+      "legalBasis": "Base legal: consentimiento del usuario (Art. 6(1)(a) GDPR)."
+    },
+
+    "cookies": {
+      "title": "Cookies",
+      "items": [
+        "Cookies esenciales para funcionamiento.",
+        "Cookies analíticas solo con consentimiento.",
+        "Puedes revocar tu consentimiento en cualquier momento."
+      ]
+    },
+
+    "rights": {
+      "title": "Derechos",
+      "items": [
+        "Acceso, rectificación y supresión de datos.",
+        "Retirada del consentimiento."
+      ]
+    },
+
+    "contact": {
+      "title": "Contacto",
+      "description": "Consulta la sección de contacto del portafolio."
+    },
+
+    "controller": "Responsable del tratamiento: Sergio Santos."
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/messages/es-MX.json
+
+TEM ESSE CONTEÚDO 
+
+
+{
+  "privacy": {
+    "title": "Aviso de Privacidad",
+    "description": "Este portafolio cumple con la legislación mexicana y el GDPR.",
+
+    "dataCollection": {
+      "title": "Recopilación de datos",
+      "items": [
+        "No se recopilan datos personales de forma intencional.",
+        "Datos técnicos se usan para seguridad y rendimiento.",
+        "Servicios externos procesan datos de forma anonimizada."
+      ]
+    },
+
+    "cookies": {
+      "title": "Cookies",
+      "items": [
+        "Cookies esenciales para funcionamiento.",
+        "Cookies analíticas solo con consentimiento.",
+        "Puedes cambiar tus preferencias."
+      ]
+    },
+
+    "rights": {
+      "title": "Derechos ARCO",
+      "items": [
+        "Acceso, Rectificación, Cancelación y Oposición.",
+        "Revocación del consentimiento."
+      ]
+    },
+
+    "contact": {
+      "title": "Contacto",
+      "description": "Consulta la sección de contacto del portafolio."
+    },
+
+    "controller": "Responsable del tratamiento: Sergio Santos."
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/services/githubService.ts
+
+TEM ESSE CONTEÚDO 
+
+
+// src/services/githubService.ts
+
+/**
+ * SERVIÇO UNIFICADO GITHUB - PORTFÓLIO SÉRGIO SANTOS
+ * -----------------------------------------------------------------------------
+ * ✔ Next.js 16.2.0: Otimizado para chamadas do lado do servidor (SSR/PPR).
+ * ✔ TypeScript 6.0: Acesso via string literal process.env['KEY'].
+ * ✔ Node 24: Suporte a Iterators assíncronos de alta performance.
+ * ✔ Octokit: Gerenciamento de Rate Limit e Cache.
+ */
+
+import { Octokit, RequestError } from "octokit";
+import { processRepositories } from "@/lib/github-service";
+import type { GitHubRepo, ProcessedProject } from "@/types/github";
+
+// CORREÇÃO TS 6.0: Acesso via colchetes para evitar erro de Index Signature
+const GITHUB_TOKEN = process.env['GITHUB_TOKEN'];
+
+/**
+ * Instância do Octokit com configurações de Resiliência
+ */
+const octokit = new Octokit({
+  auth: GITHUB_TOKEN,
+  
+  // Identificação da aplicação conforme boas práticas do GitHub
+  userAgent: "sergio-santos-portfolio/1.1",
+
+  // Configurações de Request para Node 24 (Timeout agressivo para evitar gargalos)
+  request: {
+    timeout: 7000,
+  },
+});
+
+const DEFAULT_USERNAME = "Santosdevbjj";
+
+/**
+ * Busca e Processa Projetos do GitHub
+ * Otimizado para Next.js 16 (Pode ser usado em Server Components)
+ */
+export async function getGitHubProjects(
+  username: string = DEFAULT_USERNAME
+): Promise<ProcessedProject[]> {
+  if (!username) {
+    console.warn("GitHub Service: username não definido");
+    return [];
+  }
+
+  try {
+    const reposList: GitHubRepo[] = [];
+
+    // Uso de Async Iterator - Padrão recomendado para Node 24 e performance
+    const iterator = octokit.paginate.iterator(
+      octokit.rest.repos.listForUser,
+      {
+        username,
+        per_page: 100,
+        sort: "updated",
+        type: "owner",
+        headers: {
+          "X-GitHub-Api-Version": "2022-11-28",
+          "Accept": "application/vnd.github+json",
+        },
+      }
+    );
+
+    // Loop assíncrono otimizado pelo Turbopack
+    for await (const { data: repos } of iterator) {
+      const normalized = repos.map((repo) => ({
+        ...repo,
+        // Normalização de tópicos para lowercase (Consistência com Dicionários)
+        topics: (repo.topics ?? []).map((t: string) => t.toLowerCase()),
+      })) as unknown as GitHubRepo[];
+
+      reposList.push(...normalized);
+    }
+
+    // Processamento final através da lib de domínio
+    return processRepositories(reposList, username);
+
+  } catch (error) {
+    // Tratamento de erros específico para a API do GitHub
+    if (error instanceof RequestError) {
+      console.error(
+        `GitHub API Error [${error.status}]: ${error.message}`
+      );
+
+      if (error.status === 403) {
+        console.error(
+          "Rate limit atingido ou Token inválido. Verifique o GITHUB_TOKEN na Vercel."
+        );
+      }
+    } else {
+      console.error("Erro inesperado no GitHub Service:", error);
+    }
+
+    // Fallback: retorna lista vazia para não quebrar a renderização da página
+    return [];
+  }
+}
+
+/**
+ * Aliases para compatibilidade com componentes antigos
+ */
+export {
+  getGitHubProjects as getProjects,
+  getGitHubProjects as fetchUserRepos,
+}; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/styles/animations.css
+
+TEM ESSE CONTEÚDO 
+
+
+/* ==========================================================================
+   ANIMATION SYSTEM — NEXT 16.2 + TAILWIND v4.2
+   Otimizado para Performance (GPU Acceleration) e Acessibilidade (WCAG)
+   ========================================================================== */
+
+@layer utilities {
+  /* Animação Principal: Entrada Suave de Baixo para Cima */
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 20px, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  /* Animação Shimmer: Efeito de Esqueleto/Carregamento */
+  @keyframes shimmer {
+    0% {
+      transform: translate3d(-100%, 0, 0);
+    }
+    100% {
+      transform: translate3d(100%, 0, 0);
+    }
+  }
+
+  /* Animação de Pulsação de Brilho (Glow) */
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.5; filter: blur(8px); }
+    50% { opacity: 0.8; filter: blur(12px); }
+  }
+
+  /* ==========================================================================
+     SISTEMA DE CASCATA (STAGGER LOAD)
+     ========================================================================== */
+  .stagger-load > * {
+    opacity: 0;
+    will-change: transform, opacity;
+    /* Cubic-bezier personalizado para uma sensação Premium/Apple-like */
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Delays progressivos otimizados para Next.js App Router */
+  .stagger-load > *:nth-child(1) { animation-delay: 100ms; }
+  .stagger-load > *:nth-child(2) { animation-delay: 200ms; }
+  .stagger-load > *:nth-child(3) { animation-delay: 300ms; }
+  .stagger-load > *:nth-child(4) { animation-delay: 400ms; }
+  .stagger-load > *:nth-child(5) { animation-delay: 500ms; }
+  .stagger-load > *:nth-child(6) { animation-delay: 600ms; }
+
+  /* Utilitário para o efeito Shimmer (Skeleton Screens) */
+  .animate-shimmer {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-slate-100);
+  }
+  .dark .animate-shimmer {
+    background-color: var(--color-slate-800);
+  }
+  .animate-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.08),
+      transparent
+    );
+    animation: shimmer 2s infinite linear;
+  }
+
+  /* ==========================================================================
+     RESPONSIVIDADE E ACESSIBILIDADE
+     ========================================================================== */
+  
+  /* Desativa animações se o usuário preferir redução de movimento (SEO/UX) */
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .stagger-load > * {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  /* Ajuste de escala para dispositivos móveis muito pequenos */
+  @media (max-width: 380px) {
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 10px, 0); /* Menos deslocamento em telas mini */
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/AboutSection.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+/**
+ * ABOUT SECTION COMPONENT - VERSÃO FINAL 2026
+ * -----------------------------------------------------------------------------
+ * ✔ Stack: React 19, TS 6.0, Tailwind 4.2, Next.js 16.2, Node 24
+ * ✔ Fix: Implementação estrita de AboutSectionProps (Resolvido Erro Vercel)
+ * ✔ Foto: public/images/sergio-santos-profile.png
+ * ✔ I18n: Suporte Dinâmico (PT-BR, EN-US, ES-ES, ES-AR, ES-MX)
+ */
+
+'use client';
+
+import Image from 'next/image';
+import type { AboutDictionary } from "@/types/dictionary";
+import StructuredData from "@/components/StructuredData";
+import { ShieldCheck, Database, Cpu, Activity } from 'lucide-react';
+
+export interface AboutSectionProps {
+  readonly dict: AboutDictionary;
+  readonly lang: string; // Obrigatório para o SEO/StructuredData
+}
+
+export default function AboutSection({
+  dict,
+  lang,
+}: AboutSectionProps): React.JSX.Element {
+  
+  // Early return de segurança
+  if (!dict) return <></>;
+
+  const {
+    title,
+    differentialTitle,
+    description,
+    differentialContent,
+    highlights,
+    stats,
+  } = dict;
+
+  return (
+    <section 
+      className="relative w-full overflow-hidden bg-white px-4 py-24 dark:bg-slate-950 md:px-8 lg:px-16"
+      aria-labelledby="about-title"
+    >
+      {/* Integração de SEO Dinâmico */}
+      <StructuredData lang={lang} />
+
+      <div className="mx-auto max-w-7xl">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
+          
+          {/* LADO ESQUERDO: IMAGEM E STATUS (Visual) */}
+          <div className="relative order-2 lg:order-1">
+            <div className="group relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-[3rem] border-8 border-slate-100 shadow-2xl transition-all hover:border-blue-100 dark:border-slate-800 dark:hover:border-blue-900/30">
+              <Image
+                src="/images/sergio-santos-profile.png"
+                alt="Sérgio Santos - Data Scientist & Systems Expert"
+                fill
+                priority
+                className="object-cover object-top transition-transform duration-1000 group-hover:scale-110"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+              
+              {/* Overlay Gradiente */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              
+              {/* Badge de Missão Crítica (Injetado via Dictionary) */}
+              <div className="absolute bottom-6 left-6 right-6 translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                <div className="flex items-center gap-3 rounded-2xl bg-white/95 p-4 backdrop-blur-md shadow-xl dark:bg-slate-900/95">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white animate-pulse">
+                    <ShieldCheck size={24} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-blue-600">Sistemas</p>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">
+                      {stats.automation}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Elementos Decorativos Orbitais */}
+            <div className="absolute -left-10 -top-10 -z-10 h-64 w-64 rounded-full bg-blue-500/10 blur-[100px] dark:bg-blue-600/5" />
+            <div className="absolute -right-10 -bottom-10 -z-10 h-64 w-64 rounded-full bg-emerald-500/10 blur-[100px] dark:bg-emerald-600/5" />
+          </div>
+
+          {/* LADO DIREITO: CONTEÚDO E I18N (Texto) */}
+          <div className="order-1 flex flex-col space-y-10 lg:order-2">
+            <header className="space-y-6">
+              <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-5 py-2 text-xs font-black uppercase tracking-[0.2em] text-blue-700 dark:border-blue-900/30 dark:bg-blue-900/20 dark:text-blue-400">
+                <Activity size={14} className="animate-spin-slow" />
+                {title}
+              </div>
+              
+              <h2
+                id="about-title"
+                className="text-4xl font-black leading-[1.1] tracking-tighter text-slate-900 dark:text-white md:text-5xl lg:text-7xl"
+              >
+                {differentialTitle}
+              </h2>
+            </header>
+
+            <div className="space-y-6 text-lg leading-relaxed text-slate-600 dark:text-slate-300 md:text-xl">
+              <p className="font-semibold text-slate-900 dark:text-slate-100">
+                {description}
+              </p>
+              <div className="relative border-l-4 border-blue-600 py-2 pl-8">
+                <p className="italic opacity-80">
+                  {differentialContent}
+                </p>
+              </div>
+            </div>
+
+            {/* Grid de Expertise (Highlights) */}
+            <ul className="flex flex-wrap gap-3">
+              {highlights.map((item, index) => (
+                <li
+                  key={`${item}-${index}`}
+                  className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-6 py-3 text-sm font-bold text-slate-700 transition-all hover:scale-105 hover:border-blue-300 hover:bg-white dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-blue-700"
+                >
+                  <Cpu size={16} className="text-blue-600" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            {/* Cards de Métricas (Stats) */}
+            <div className="grid grid-cols-1 gap-6 pt-4 sm:grid-cols-2">
+              <StatCard
+                icon={<Database className="text-blue-600" size={20} />}
+                value={stats.experienceValue}
+                label={stats.experienceLabel}
+              />
+              <StatCard
+                icon={<ShieldCheck className="text-emerald-500" size={20} />}
+                value={stats.availabilityValue}
+                label={stats.availabilityLabel}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Sub-componente StatCard Tipado para TS 6.0
+ */
+interface StatCardProps {
+  readonly icon: React.ReactNode;
+  readonly value: string;
+  readonly label: string;
+}
+
+function StatCard({ icon, value, label }: StatCardProps): React.JSX.Element {
+  return (
+    <div className="group flex flex-col gap-4 rounded-[2rem] border border-slate-100 bg-slate-50/30 p-8 transition-all hover:-translate-y-2 hover:border-blue-200 hover:bg-white hover:shadow-2xl dark:border-slate-800 dark:bg-slate-900/30 dark:hover:border-blue-900 dark:hover:bg-slate-900">
+      <div className="flex items-center justify-between">
+        <div className="rounded-xl bg-white p-3 shadow-sm dark:bg-slate-800 group-hover:scale-110 transition-transform">
+          {icon}
+        </div>
+        <span className="text-4xl font-black tracking-tighter text-slate-900 dark:text-white">
+          {value}
+        </span>
+      </div>
+      <p className="text-xs font-bold leading-tight text-slate-500 uppercase tracking-widest dark:text-slate-400">
+        {label}
+      </p>
+    </div>
+  );
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/Alert.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+// src/components/Alert.tsx
+"use client";
+
+import React from "react";
+import clsx from "clsx";
+import {
+  InformationCircleIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/solid";
+
+interface AlertProps {
+  type?: "info" | "success" | "warning" | "error";
+  children: React.ReactNode;
+}
+
+export function Alert({ type = "info", children }: AlertProps) {
+  const baseClasses =
+    "rounded-md p-4 mb-6 border text-sm font-medium flex items-start gap-3";
+
+  const styles: Record<NonNullable<AlertProps["type"]>, string> = {
+    info: "bg-blue-50 text-blue-800 border-blue-200",
+    success: "bg-green-50 text-green-800 border-green-200",
+    warning: "bg-yellow-50 text-yellow-800 border-yellow-200",
+    error: "bg-red-50 text-red-800 border-red-200",
+  };
+
+  const icons: Record<NonNullable<AlertProps["type"]>, React.ReactElement> = {
+    info: <InformationCircleIcon className="h-5 w-5 text-blue-600" />,
+    success: <CheckCircleIcon className="h-5 w-5 text-green-600" />,
+    warning: <ExclamationTriangleIcon className="h-5 w-5 text-yellow-600" />,
+    error: <XCircleIcon className="h-5 w-5 text-red-600" />,
+  };
+
+  return (
+    <div className={clsx(baseClasses, styles[type])}>
+      <span>{icons[type]}</span>
+      <div>{children}</div>
+    </div>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/ArticleCard.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+
+/**
+ * src/components/ArticleCard.tsx
+ * Versão: Abril de 2026
+ * Stack: Next.js 16.2.2 | React 19 | TS 6.0.2 | Tailwind 4.2 | Node 24
+ * Status: COMPATÍVEL COM .MD/.MDX | MULTILÍNGUE (PT, EN, ES-ES, ES-AR, ES-MX)
+ */
+
+import type { GitHubItem } from "@/lib/github/types";
+import type { Dictionary, Locale } from "@/types/dictionary";
+import { Calendar, ChevronRight, FileCode, FileText, BookOpen } from "lucide-react";
+import Link from "next/link";
+import { useMemo } from "react";
+
+interface ArticleCardProps {
+  readonly article: GitHubItem;
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+}
+
+// Mapeamento de cores baseado nas categorias (Tailwind 4.2 OKLCH - Suporte a Wide Gamut)
+const categoryStyles: Record<string, string> = {
+  react: "bg-blue-500/10 text-blue-600 border-blue-200 dark:border-blue-500/30",
+  nextjs: "bg-zinc-500/10 text-zinc-800 border-zinc-200 dark:text-zinc-200 dark:border-zinc-700",
+  typescript: "bg-blue-600/10 text-blue-700 border-blue-300 dark:border-blue-400/30",
+  ia: "bg-purple-500/10 text-purple-600 border-purple-200 dark:border-purple-500/30",
+  python: "bg-yellow-500/10 text-yellow-700 border-yellow-200 dark:border-yellow-500/30",
+  fallback: "bg-emerald-500/10 text-emerald-600 border-emerald-200 dark:border-emerald-500/30",
+};
+
+export function ArticleCard({ article, lang, dict }: ArticleCardProps) {
+  // 1. Detecção de Formato (Suporte a .md e .mdx conforme solicitado)
+  const isMdx = article.name.endsWith('.mdx');
+  
+  // 2. Título dinâmico limpo
+  const displayTitle = useMemo(() => {
+    return article.name
+      .replace(/\.mdx?$/, '') 
+      .replace(/-/g, ' ');
+  }, [article.name]);
+
+  // 3. Internacionalização (PT, EN, ES-ES, ES-AR, ES-MX)
+  // Integrado com src/types/dictionary.ts
+  const labels = useMemo(() => {
+    const isPt = lang.startsWith('pt');
+    const isEn = lang.startsWith('en');
+    
+    return {
+      readMore: dict.articles.readMore || (isPt ? "Ler mais" : isEn ? "Read more" : "Leer más"),
+      typeLabel: isMdx ? "MDX Interactive" : (dict.articles.publishedAt || "Artigo Técnico"),
+      // Fallback de descrição para garantir que nunca fique vazio
+      description: isPt 
+        ? `Explore este conteúdo sobre ${article.category} em nosso repositório oficial.`
+        : isEn 
+          ? `Explore this ${article.category} content in our official repository.`
+          : `Explora este contenido sobre ${article.category} en nuestro repositorio oficial.`
+    };
+  }, [lang, dict, article.category, isMdx]);
+
+  const badgeStyle = categoryStyles[article.category.toLowerCase()] || categoryStyles['fallback'];
+
+  return (
+    <article className="group relative flex flex-col justify-between p-7 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[2rem] hover:border-blue-500/50 dark:hover:border-blue-400/50 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/5 hover:-translate-y-2">
+      
+      {/* Glow Effect (Tailwind 4.2 Utility) */}
+      <div className="absolute top-0 right-0 -z-10 h-24 w-24 bg-blue-500/5 blur-3xl rounded-full group-hover:bg-blue-500/10 transition-colors" />
+
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <span className={`px-4 py-1.5 text-[10px] font-black uppercase tracking-widest border rounded-xl shadow-sm ${badgeStyle}`}>
+            {article.category}
+          </span>
+          {/* Visual differentiation between MD and MDX */}
+          <div className="flex items-center gap-2">
+            {isMdx ? (
+              <FileCode className="size-5 text-purple-500" aria-label="MDX" />
+            ) : (
+              <FileText className="size-5 text-zinc-400" aria-label="Markdown" />
+            )}
+          </div>
+        </div>
+
+        <h3 className="text-xl font-black text-zinc-900 dark:text-zinc-100 leading-tight tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors capitalize">
+          {displayTitle}
+        </h3>
+        
+        <p className="mt-4 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400 line-clamp-3 font-medium">
+          {labels.description}
+        </p>
+      </div>
+
+      <div className="mt-8 flex flex-col gap-5">
+        <div className="flex items-center justify-between border-t border-zinc-100 dark:border-zinc-800/50 pt-5">
+          {/* CORREÇÃO DO ERRO: BookOpen agora é utilizado aqui para indicar leitura */}
+          <div className="flex items-center text-zinc-400 dark:text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
+            <BookOpen className="size-3.5 mr-2 text-emerald-500" />
+            <Calendar className="size-3.5 mr-2 text-blue-500" />
+            <span>{labels.typeLabel}</span>
+          </div>
+          
+          <Link 
+            href={`/${lang}/artigos/${article.category}/${article.name.replace(/\.mdx?$/, '')}`}
+            className="flex items-center text-sm font-black text-blue-600 dark:text-blue-400 group/link"
+          >
+            <span className="mr-1 border-b-2 border-transparent group-hover/link:border-blue-500 transition-all">
+              {labels.readMore}
+            </span>
+            <ChevronRight className="size-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+      </div>
+    </article>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/ArticlesSection.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+/**
+ * ARTICLES SECTION
+ * -----------------------------------------------------------------------------
+ * ✔ TS 6.0 Strict-Safe
+ * ✔ Next.js 16 (Turbopack) & React 19 Ready (Ref handling & Metadata)
+ * ✔ Tailwind CSS 4.2 Optimized (New utility engine)
+ * ✔ Multilíngue (PT / EN / ES-ES / ES-AR / ES-MX)
+ * ✔ 100% Responsivo & Acessível
+ */
+
+import { useEffect, useRef, useState } from 'react';
+import {
+  BookOpen,
+  Award,
+  Calendar,
+  ArrowRight,
+  ExternalLink,
+} from 'lucide-react';
+
+import type {
+  ArticlesSectionDictionary,
+  CommonDictionary,
+  StateDictionary,
+  ArticleItem,
+} from '@/types/dictionary';
+
+import { NavSection, getSectionId } from '@/domain/navigation';
+
+interface ArticlesSectionProps {
+  readonly articles: ArticlesSectionDictionary;
+  readonly common: CommonDictionary;
+  readonly states: StateDictionary;
+}
+
+export default function ArticlesSection({
+  articles,
+  common,
+  states,
+}: ArticlesSectionProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const current = sectionRef.current;
+    if (!current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      id={getSectionId(NavSection.ARTICLES)}
+      className="relative scroll-mt-28 py-20 sm:py-32 overflow-hidden bg-slate-50/50 dark:bg-transparent"
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* HEADER */}
+        <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+          <div className="max-w-2xl">
+            <h2 className="text-4xl sm:text-5xl font-black tracking-tighter text-slate-900 dark:text-white uppercase">
+              {articles.title}
+            </h2>
+            <div className="h-1.5 w-24 bg-blue-600 mt-4 rounded-full" />
+          </div>
+
+          <a
+            href={common.externalLinks.medium}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest text-blue-600 hover:text-blue-500 transition-colors group outline-hidden focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
+          >
+            {articles.mediumProfile}
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </a>
+        </header>
+
+        {/* GRID */}
+        {articles.items && articles.items.length > 0 ? (
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 gap-8 transition-all duration-1000 ease-out ${
+              isVisible
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-10'
+            }`}
+          >
+            {articles.items.map((article: ArticleItem, index) => (
+              <ArticleCard
+                key={`${article.title}-${index}`}
+                article={article}
+                awardLabel={articles.awardWinner}
+                readMoreLabel={articles.readMore}
+                publishedAtLabel={articles.publishedAt}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-[2rem]">
+            <p className="text-slate-500 italic text-lg">
+              {states.errorArticles}
+            </p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+interface ArticleCardProps {
+  readonly article: ArticleItem;
+  readonly awardLabel: string;
+  readonly readMoreLabel: string;
+  readonly publishedAtLabel: string;
+}
+
+function ArticleCard({
+  article,
+  awardLabel,
+  readMoreLabel,
+  publishedAtLabel,
+}: ArticleCardProps) {
+  return (
+    <article
+      className="group relative flex flex-col bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-[2rem] p-6 sm:p-8 transition-all duration-300 hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/5 focus-within:ring-2 focus-within:ring-blue-500/50"
+    >
+      <div className="flex justify-between items-start mb-6">
+        <div
+          className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white"
+        >
+          <BookOpen className="w-6 h-6" aria-hidden="true" />
+        </div>
+
+        {article.isAward && (
+          <span
+            className="flex items-center gap-1.5 px-4 py-1.5 bg-amber-50 dark:bg-amber-900/20 text-amber-600 text-[10px] font-black uppercase tracking-widest rounded-full border border-amber-200 dark:border-amber-800/50 shadow-xs"
+          >
+            <Award className="w-3.5 h-3.5" aria-hidden="true" />
+            {awardLabel}
+          </span>
+        )}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">
+        <span className="flex items-center gap-1">
+          <Calendar className="w-3 h-3 text-blue-500" aria-hidden="true" />
+          {publishedAtLabel} {article.date}
+        </span>
+
+        <span className="hidden sm:block w-1 h-1 bg-slate-300 dark:bg-slate-700 rounded-full" />
+
+        <span className="text-blue-600 dark:text-blue-400 font-black">
+          {article.category}
+        </span>
+      </div>
+
+      <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-4 leading-tight group-hover:text-blue-600 transition-colors">
+        {article.title}
+      </h3>
+
+      <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-8 flex-grow line-clamp-3">
+        {article.description}
+      </p>
+
+      <div className="pt-6 border-t border-slate-100 dark:border-slate-800 mt-auto">
+        <a
+          href={article.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-900 dark:text-white group-hover:text-blue-600 transition-all outline-hidden rounded-lg"
+        >
+          {readMoreLabel}
+          <ExternalLink
+            className="w-4 h-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        </a>
+      </div>
+    </article>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/CareerHighlights.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+
+'use client';
+
+/**
+ * CAREER HIGHLIGHTS: Prova Social e Métricas de Impacto
+ * -----------------------------------------------------------------------------
+ * ✔ Totalmente alinhado com dict.about
+ * ✔ Multilíngue (PT / EN / ES)
+ * ✔ Responsivo (mobile-first)
+ * ✔ Acessível (ARIA + semântica)
+ * ✔ Compatível com TypeScript 6 (strict)
+ * ✔ Compatível com Next.js 16
+ */
+
+import {
+  ShieldCheck,
+  BarChart3,
+  Zap,
+  Activity,
+  Trophy,
+  CheckCircle2,
+} from 'lucide-react';
+
+import type { Dictionary } from '@/types/dictionary';
+
+interface CareerHighlightsProps {
+  readonly dict: Dictionary;
+}
+
+export function CareerHighlights({ dict }: CareerHighlightsProps) {
+  const { about } = dict;
+  const { highlights, stats, differentialTitle, title } = about;
+
+  /**
+   * Ícones associados aos destaques.
+   * Mapeamento estável (índice previsível)
+   */
+  const highlightIconMap = [
+    Activity,
+    Zap,
+    BarChart3,
+  ] as const;
+
+  return (
+    <section
+      aria-labelledby="career-highlights-title"
+      className="mt-14 md:mt-20 space-y-12 md:space-y-20 antialiased"
+    >
+      {/* ───────────────── Header ───────────────── */}
+      <header className="flex items-center gap-4">
+        <span
+          aria-hidden="true"
+          className="h-8 w-1.5 bg-blue-600 dark:bg-blue-500 rounded-full shrink-0"
+        />
+        <h4
+          id="career-highlights-title"
+          className="text-xl md:text-2xl font-black tracking-tight uppercase text-slate-900 dark:text-white"
+        >
+          {differentialTitle}
+        </h4>
+      </header>
+
+      {/* ───────────────── Highlights Grid ───────────────── */}
+      <div
+        role="list"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        {highlights.map((text, index) => {
+          const Icon = highlightIconMap[index] ?? Trophy;
+
+          return (
+            <article
+              key={`highlight-${index}`}
+              role="listitem"
+              className="group relative p-7 md:p-8 rounded-[2.5rem]
+                         bg-slate-50 dark:bg-slate-900/40
+                         border border-slate-200/60 dark:border-slate-800/60
+                         hover:border-blue-500/50 transition-all duration-500
+                         flex flex-col h-full
+                         shadow-sm hover:shadow-xl hover:shadow-blue-500/5"
+            >
+              <div className="relative z-10 flex flex-col h-full">
+                <div
+                  className="mb-6 inline-flex w-fit p-4 rounded-2xl
+                             bg-white dark:bg-slate-800
+                             text-blue-600 dark:text-blue-400
+                             shadow-sm
+                             group-hover:bg-blue-600
+                             group-hover:text-white
+                             transition-colors duration-500"
+                >
+                  <Icon className="w-6 h-6" />
+                </div>
+
+                <p className="text-lg font-bold leading-tight text-slate-900 dark:text-white">
+                  {text}
+                </p>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      {/* ───────────────── KPI Banner ───────────────── */}
+      <div
+        role="region"
+        aria-label="Key performance indicators"
+        className="relative overflow-hidden
+                   rounded-[2.5rem] md:rounded-[3.5rem]
+                   bg-blue-600 dark:bg-blue-700
+                   p-8 md:p-14 text-white
+                   shadow-2xl shadow-blue-600/20"
+      >
+        <ShieldCheck
+          aria-hidden="true"
+          className="absolute -right-12 -top-12
+                     w-48 h-48 md:w-72 md:h-72
+                     text-white/10 rotate-12
+                     pointer-events-none"
+        />
+
+        <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
+          <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+            <div className="p-5 bg-white/10 rounded-3xl backdrop-blur-md border border-white/20">
+              <CheckCircle2 className="w-8 h-8 md:w-10 md:h-10 text-white" />
+            </div>
+
+            <div className="max-w-xs">
+              <h4 className="text-2xl md:text-3xl font-black tracking-tight leading-tight uppercase">
+                {title}
+              </h4>
+            </div>
+          </div>
+
+          <div
+            aria-hidden="true"
+            className="hidden lg:block h-16 w-px bg-white/20"
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 w-full lg:w-auto">
+            <StatItem
+              value={stats.experienceValue}
+              label={stats.experienceLabel}
+            />
+
+            <StatItem
+              value={stats.availabilityValue}
+              label={stats.availabilityLabel}
+              bordered
+            />
+
+            <StatItem
+              fullText={stats.automation}
+              bordered
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                    KPI                                     */
+/* -------------------------------------------------------------------------- */
+
+interface StatItemBase {
+  bordered?: boolean;
+}
+
+interface StatItemValue extends StatItemBase {
+  value: string;
+  label: string;
+  fullText?: never;
+}
+
+interface StatItemFullText extends StatItemBase {
+  fullText: string;
+  value?: never;
+  label?: never;
+}
+
+type StatItemProps = StatItemValue | StatItemFullText;
+
+function StatItem(props: StatItemProps) {
+  let value: string;
+  let label: string;
+
+  if ('fullText' in props) {
+    const trimmed = props.fullText?.trim() ?? '';
+
+    if (!trimmed) {
+      value = '';
+      label = '';
+    } else {
+      const [first, ...rest] = trimmed.split(/\s+/);
+      value = first ?? '';
+      label = rest.join(' ') ?? '';
+    }
+  } else {
+    value = props.value;
+    label = props.label;
+  }
+
+  return (
+    <div
+      className={`text-center ${
+        props.bordered ? 'sm:border-l border-white/10 sm:pl-8' : ''
+      }`}
+    >
+      <span className="block text-4xl md:text-5xl font-black tracking-tighter tabular-nums mb-1">
+        {value}
+      </span>
+      <span className="block text-blue-100 text-[10px] font-black uppercase tracking-[0.2em] opacity-90 max-w-[120px] mx-auto leading-relaxed">
+        {label}
+      </span>
+    </div>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/ConstructionRiskProject.tsx
+
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+import { useState, type ReactNode, useMemo } from 'react';
+import { 
+  BarChart3, 
+  BrainCircuit, 
+  MessageSquare, 
+  ShieldAlert, 
+  TrendingUp, 
+  FileText, 
+  Code2, 
+  Database,
+  Target,
+  ArrowRight
+} from 'lucide-react';
+
+// Importando a tipagem oficial do seu dicionário
+import type { ConstructionDictionary } from '@/types/dictionary';
+
+interface ConstructionRiskProps {
+  dict: ConstructionDictionary;
+}
+
+/**
+ * COMPONENTE: ConstructionRiskProject
+ * -----------------------------------------------------------------------------
+ * ✔ Next.js 16.2.1: Totalmente compatível com as novas APIs de roteamento e cache.
+ * ✔ React 19: Uso de Hooks e padrões de concorrência.
+ * ✔ TypeScript 6.0.2: Tipagem resiliente a falhas de dicionário.
+ * ✔ Tailwind 4.2: Gradientes dinâmicos e suporte a containers responsivos.
+ * ✔ Responsivo: Layout adaptativo do mobile (320px) ao UltraWide.
+ */
+export default function ConstructionRiskProject({ dict }: ConstructionRiskProps) {
+  const [activeTab, setActiveTab] = useState<"pipeline" | "insights" | "decisions">("pipeline");
+
+  // Solução para o erro de Build: Acesso seguro via casting temporário para evitar quebra no TS6
+  // Isso permite que o componente funcione mesmo que o dicionário esteja incompleto.
+  const metrics = useMemo(() => {
+    const m = (dict.metrics as any) || {};
+    return [
+      { 
+        id: 'accuracy', 
+        value: m.accuracy || "94%", 
+        label: m.label || "Precisão", 
+        icon: <Target className="w-5 h-5 text-white" /> 
+      },
+      { 
+        id: 'improvement', 
+        value: "-59%", 
+        label: m.delayReduction || "Redução Atrasos", 
+        icon: <TrendingUp className="w-5 h-5 text-white" /> 
+      },
+      { 
+        id: 'savings', 
+        value: "R$ 248k/ano", 
+        label: m.estSavings || "Economia Est.", 
+        icon: <BarChart3 className="w-5 h-5 text-white" /> 
+      },
+      { 
+        id: 'decision', 
+        value: "Preventiva", 
+        label: m.approach || "Abordagem", 
+        icon: <ShieldAlert className="w-5 h-5 text-white" /> 
+      },
+    ];
+  }, [dict]);
+
+  // Fallbacks de texto para manter multilingue sem quebrar o build
+  const pipeline = (dict as any).pipeline || {};
+  const insights = (dict as any).insights || {};
+
+  return (
+    <section className="w-full max-w-6xl mx-auto overflow-hidden rounded-[2rem] md:rounded-[3rem] border border-blue-400/30 shadow-2xl bg-white dark:bg-slate-950 transition-all duration-500">
+      
+      {/* Header com Gradiente Premium */}
+      <div className="relative p-6 md:p-14 bg-gradient-to-br from-[#2563eb] via-[#1e40af] to-[#020617] text-white overflow-hidden">
+        <div className="absolute top-0 right-0 -mt-20 -mr-20 w-64 h-64 md:w-96 md:h-96 bg-blue-400/20 rounded-full blur-[100px]" />
+        
+        <div className="relative z-10 flex flex-col lg:flex-row justify-between items-start gap-8">
+          <div className="space-y-4 md:space-y-6 flex-1">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-[10px] font-black uppercase tracking-widest">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-200 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-100"></span>
+              </span>
+              {dict.badge}
+            </div>
+            
+            <h2 className="text-3xl md:text-6xl font-black tracking-tighter leading-tight md:leading-[0.85]">
+              {dict.title}
+            </h2>
+            
+            <p className="text-blue-100/80 max-w-2xl text-base md:text-lg font-medium leading-relaxed">
+              {dict.description}
+            </p>
+          </div>
+
+          <a 
+            href="https://github.com/Santosdevbjj/analiseRiscosAtrasoObras" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group w-full md:w-auto flex items-center justify-center gap-3 px-8 py-4 bg-white text-blue-900 rounded-2xl font-black hover:bg-blue-50 transition-all active:scale-95 text-sm shadow-xl shrink-0"
+          >
+            <Code2 size={20} className="group-hover:rotate-12 transition-transform" /> 
+            {dict.viewProject}
+          </a>
+        </div>
+
+        {/* Métricas Responsivas (2 colunas mobile, 4 desktop) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mt-10 relative z-10">
+          {metrics.map((m) => (
+            <div key={m.id} className="p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all">
+              <div className="mb-3 p-2 md:p-3 w-fit rounded-xl bg-white/10 text-blue-200">{m.icon}</div>
+              <div className="text-xl md:text-3xl font-black tracking-tight">{m.value}</div>
+              <div className="text-[9px] md:text-[10px] uppercase tracking-widest text-blue-200/60 font-bold mt-1">
+                {m.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Navegação de Abas */}
+      <nav className="flex px-4 md:px-6 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 overflow-x-auto no-scrollbar">
+        {(['pipeline', 'insights', 'decisions'] as const).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-6 md:px-8 py-6 md:py-7 text-[10px] md:text-xs font-black uppercase tracking-widest transition-all relative whitespace-nowrap outline-none ${
+              activeTab === tab ? "text-blue-600" : "text-slate-400 hover:text-blue-500"
+            }`}
+          >
+            {tab}
+            {activeTab === tab && (
+              <div className="absolute bottom-0 left-6 right-6 h-1 bg-blue-600 rounded-t-full shadow-[0_-4px_10px_rgba(37,99,235,0.4)]" />
+            )}
+          </button>
+        ))}
+      </nav>
+
+      {/* Área de Conteúdo */}
+      <div className="p-6 md:p-14 min-h-[450px] bg-white dark:bg-slate-950/50">
+        {activeTab === "pipeline" && (
+          <div className="grid gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <PipelineItem step="01" title="Business Intelligence" desc={pipeline.step1 || "Análise de contratos."} icon={<FileText />} />
+            <PipelineItem step="02" title="Data Engineering" desc={pipeline.step2 || "Processamento em nuvem."} icon={<Database />} />
+            <PipelineItem step="03" title="EDA & AI" desc={pipeline.step3 || "Modelagem preditiva."} icon={<BrainCircuit />} />
+            <PipelineItem step="04" title="Production" desc={pipeline.step4 || "Dashboards em tempo real."} icon={<MessageSquare />} />
+          </div>
+        )}
+
+        {activeTab === "insights" && (
+          <div className="space-y-8 animate-in fade-in zoom-in-95 duration-500">
+             <div className="grid md:grid-cols-2 gap-6">
+                <InsightCard isTrue={false} title={insights.weatherTitle || "Clima"} detail={insights.weatherDetail || "Baixa correlação com atrasos críticos."} />
+                <InsightCard isTrue={true} title={insights.ratingTitle || "Fornecedores"} detail={insights.ratingDetail || "Fator determinante no sucesso da obra."} />
+             </div>
+             <div className="p-8 md:p-10 rounded-[2rem] bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-xl flex flex-col md:flex-row items-center gap-6 group">
+                <div className="p-5 bg-white/20 rounded-full group-hover:scale-110 transition-transform">
+                  <BrainCircuit size={32} />
+                </div>
+                <div className="flex-1 text-center md:text-left">
+                  <p className="text-lg md:text-2xl font-bold leading-tight">
+                    O histórico do fornecedor impacta 3x mais que o clima local.
+                  </p>
+                </div>
+                <ArrowRight className="hidden md:block opacity-50 group-hover:translate-x-2 transition-transform" />
+             </div>
+          </div>
+        )}
+
+        {activeTab === "decisions" && (
+          <div className="grid md:grid-cols-2 gap-6 animate-in slide-in-from-right-4 duration-500">
+            <DecisionCard title="Arquitetura" choice="Random Forest" alt="Deep Learning" reason="Necessidade de explicabilidade para engenheiros de campo." />
+            <DecisionCard title="Infraestrutura" choice="Cloud Native" alt="On-Premise" reason="Escalabilidade imediata para múltiplas frentes de obra." />
+          </div>
+        )}
+      </div>
+
+      {/* Footer Stack */}
+      <div className="px-6 md:px-14 py-8 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800">
+        <div className="flex flex-wrap gap-2 md:gap-3">
+          {dict.techStack.map((s) => (
+            <span key={s} className="px-4 py-2 bg-white dark:bg-slate-800 text-slate-500 rounded-xl border border-slate-200 dark:border-slate-700 text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:border-blue-500 transition-all cursor-default shadow-sm">
+              {s}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Sub-componentes auxiliares
+function PipelineItem({ step, title, desc, icon }: { step: string, title: string, desc: string, icon: ReactNode }) {
+  return (
+    <div className="flex items-center gap-4 md:gap-6 p-5 rounded-[1.5rem] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 group hover:border-blue-500 transition-all">
+      <div className="hidden sm:block text-3xl font-black text-slate-100 dark:text-slate-800 italic">{step}</div>
+      <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-400 group-hover:text-blue-600 transition-colors">{icon}</div>
+      <div className="flex-1">
+        <h3 className="text-slate-900 dark:text-slate-100 text-sm font-black uppercase">{title}</h3>
+        <p className="text-xs text-slate-500 leading-relaxed mt-1">{desc}</p>
+      </div>
+    </div>
+  );
+}
+
+function InsightCard({ isTrue, title, detail }: { isTrue: boolean, title: string, detail: string }) {
+  return (
+    <div className="p-6 md:p-8 rounded-[1.8rem] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 border-b-4 border-b-blue-500">
+      <div className={`p-3 rounded-xl w-fit mb-4 ${isTrue ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"}`}>
+        {isTrue ? <TrendingUp size={24}/> : <ShieldAlert size={24}/>}
+      </div>
+      <h4 className="text-base font-black text-slate-900 dark:text-slate-100 uppercase mb-2">{title}</h4>
+      <p className="text-xs text-slate-500 italic font-medium leading-relaxed">"{detail}"</p>
+    </div>
+  );
+}
+
+function DecisionCard({ title, choice, alt, reason }: { title: string, choice: string, alt: string, reason: string }) {
+  return (
+    <div className="p-8 rounded-[1.8rem] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+      <span className="text-[9px] uppercase text-slate-400 font-black tracking-widest">{title}</span>
+      <div className="flex items-center gap-3 my-4">
+        <span className="text-[10px] md:text-xs font-black text-white px-4 py-2 bg-blue-600 rounded-lg shadow-lg">{choice}</span>
+        <span className="text-[10px] text-slate-300 italic">vs</span>
+        <span className="text-[10px] md:text-xs text-slate-400 font-bold">{alt}</span>
+      </div>
+      <p className="text-xs text-slate-500 leading-relaxed font-medium">{reason}</p>
+    </div>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/ContactSection.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+/**
+ * src/components/ContactSection.tsx
+ * Versão: 6 de Abril de 2026
+ * Stack: Next.js 16.2.2 | React 19 | TS 6.0.2 | Tailwind 4.2 | Node 24
+ * Status: FIX TS UNUSED VARIABLE | MULTILÍNGUE | RESPONSIVO
+ */
+
+'use client';
+
+import { useState, useCallback, useMemo } from 'react';
+/**
+ * CORREÇÃO TS: Removido 'ExternalLink' que causava erro de build por não ser utilizado.
+ * Mantemos apenas o que é estritamente necessário para o componente.
+ */
+import { Mail, Copy, Check, FileText } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+
+import type { Locale, ContactDictionary, CommonDictionary } from '@/types/dictionary';
+
+interface ContactSectionProps {
+  readonly contact: ContactDictionary;
+  readonly common: CommonDictionary;
+  readonly locale: Locale;
+}
+
+export default function ContactSection({ contact, common, locale }: ContactSectionProps) {
+  const searchParams = useSearchParams();
+  const [copied, setCopied] = useState(false);
+
+  const email = common.externalLinks.email;
+  const linkedinUrl = common.externalLinks.linkedin;
+  const githubUrl = common.externalLinks.github;
+  
+  // Memoização do UTM Source para performance no Turbopack
+  const origin = useMemo(() => {
+    try {
+      return searchParams?.get('utm_source') ?? 'portfolio_direct';
+    } catch {
+      return 'portfolio_direct';
+    }
+  }, [searchParams]);
+
+  const copyToClipboard = useCallback((): void => {
+    if (typeof window === 'undefined' || !navigator?.clipboard) return;
+    navigator.clipboard.writeText(email).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }, [email]);
+
+  const copiedLabel = useMemo(() => {
+    const labels: Record<string, string> = {
+      'pt-BR': 'Copiado!', 
+      'en-US': 'Copied!', 
+      'es-ES': '¡Copiado!', 
+      'es-AR': '¡Copiado!', 
+      'es-MX': '¡Copiado!'
+    };
+    return labels[locale] || 'Copied!';
+  }, [locale]);
+
+  return (
+    <section id="contact" className="relative overflow-hidden bg-white py-20 dark:bg-[#020617] lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-blue-600 p-8 shadow-2xl dark:bg-blue-700 md:rounded-[4rem] md:p-16 lg:p-20">
+          
+          {/* Tailwind 4.2 Utility-first Background Glow */}
+          <div className="absolute -top-24 -right-24 size-96 bg-white/10 blur-[100px] rounded-full pointer-events-none" />
+          
+          <div className="relative z-10 flex flex-col items-center gap-12 lg:flex-row lg:justify-between">
+            <div className="flex-1 text-center lg:text-left">
+              <h2 className="mb-6 text-3xl font-black leading-tight tracking-tighter text-white md:text-5xl lg:text-7xl uppercase italic">
+                {contact.title}
+              </h2>
+              <p className="mx-auto mb-10 max-w-xl text-base font-medium leading-relaxed text-blue-50 opacity-90 md:text-xl lg:mx-0">
+                {contact.subtitle}
+              </p>
+
+              <div className="flex flex-col flex-wrap items-center justify-center gap-4 sm:flex-row lg:justify-start">
+                {/* CTA EMAIL */}
+                <a 
+                  href={`mailto:${email}?subject=Contact from ${origin}`} 
+                  className="flex w-full items-center justify-center gap-3 rounded-2xl bg-white px-8 py-4 text-lg font-black text-blue-600 shadow-lg transition-all hover:scale-105 active:scale-95 sm:w-auto"
+                >
+                  <Mail className="size-6" /> 
+                  {contact.cta}
+                </a>
+
+                {/* BOTÃO COPIAR */}
+                <button 
+                  onClick={copyToClipboard} 
+                  className={`flex w-full items-center justify-center gap-3 rounded-2xl border px-6 py-4 text-base font-bold transition-all active:scale-95 sm:w-auto cursor-pointer ${copied ? 'bg-emerald-500 border-emerald-400 text-white' : 'bg-blue-800/40 border-white/20 text-white hover:bg-blue-800/60'}`}
+                >
+                  {copied ? <Check className="size-5" /> : <Copy className="size-5 opacity-70" />}
+                  {copied ? copiedLabel : contact.emailLabel}
+                </button>
+
+                {/* LINK RESUMO */}
+                <Link 
+                  href={`/${locale}/resume`} 
+                  className="flex w-full items-center justify-center gap-3 rounded-2xl border border-white/30 bg-white/10 px-6 py-4 text-base font-bold text-white backdrop-blur-md transition-all hover:bg-white/20 sm:w-auto"
+                >
+                  <FileText className="size-5" /> 
+                  {contact.cvLabel}
+                </Link>
+              </div>
+
+              {/* DOWNLOAD PDF DINÂMICO */}
+              <div className="mt-8 flex justify-center lg:justify-start">
+                 <a
+                  href={`/pdf/cv-sergio-santos-${locale}.pdf`}
+                  download
+                  className="group text-white/70 hover:text-white text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-3 transition-colors"
+                >
+                  <div className="p-2 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
+                    <svg className="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                  </div>
+                  <span>Download CV ({locale.toUpperCase()})</span>
+                </a>
+              </div>
+            </div>
+
+            {/* REDES SOCIAIS: Usando SVGs Oficiais para marcas (Conforme documentação 2026) */}
+            <div className="flex flex-row gap-4 lg:flex-col lg:gap-6">
+              <a 
+                href={linkedinUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="LinkedIn" 
+                className="group rounded-2xl bg-white p-5 text-blue-600 shadow-xl hover:-translate-y-2 transition-all duration-300"
+              >
+                <svg className="size-8 md:size-10 fill-current" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+              </a>
+              <a 
+                href={githubUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="GitHub" 
+                className="group rounded-2xl bg-slate-900 p-5 text-white shadow-xl hover:-translate-y-2 transition-all duration-300"
+              >
+                <svg className="size-8 md:size-10 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <footer className="mt-16 text-center">
+          <p className="px-4 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500/60">
+            {common.footer}
+          </p>
+        </footer>
+      </div>
+    </section>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/CookieBanner.tsx
+
+TEM ESSE CONTEÚDO 
+
+'use client';
+
+import { useEffect, useState, useCallback, useTransition } from 'react';
+import type { Dictionary } from '@/types/dictionary';
+import type { CookieConsent } from '@/types/cookies';
+
+/**
+ * 🔒 CONFIG
+ */
+const CONSENT_KEY = 'santos-sergio-consent';
+const CONSENT_VERSION = '1.1';
+
+interface CookieBannerProps {
+  readonly dict: Dictionary;
+}
+
+export function CookieBanner({ dict }: CookieBannerProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const { cookie } = dict;
+
+  /**
+   * 🧠 Safe gtag accessor
+   */
+  const getGtag = () => {
+    if (typeof window === 'undefined') return null;
+
+    return window.gtag as ((...args: unknown[]) => void) | undefined;
+  };
+
+  /**
+   * 🧠 Init Consent Mode (DEFAULT DENIED)
+   */
+  const initConsentMode = useCallback(() => {
+    if (typeof window === 'undefined') return;
+
+    window.dataLayer = window.dataLayer || [];
+
+    if (!window.gtag) {
+      window.gtag = (...args: unknown[]) => {
+        window.dataLayer?.push(args);
+      };
+    }
+
+    const gtag = getGtag();
+    if (!gtag) return;
+
+    gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      wait_for_update: 500,
+    });
+  }, []);
+
+  /**
+   * 🚀 Update consent
+   */
+  const updateConsent = useCallback((granted: boolean) => {
+    const gtag = getGtag();
+    if (!gtag) return;
+
+    gtag('consent', 'update', {
+      analytics_storage: granted ? 'granted' : 'denied',
+      ad_storage: granted ? 'granted' : 'denied',
+      ad_user_data: granted ? 'granted' : 'denied',
+      ad_personalization: granted ? 'granted' : 'denied',
+    });
+  }, []);
+
+  /**
+   * 📊 Load GA (lazy)
+   */
+  const loadAnalytics = useCallback(() => {
+    const gaId = process.env['NEXT_PUBLIC_GA_ID'];
+
+    if (!gaId || typeof window === 'undefined') return;
+    if (document.getElementById('ga-script')) return;
+
+    const script = document.createElement('script');
+    script.id = 'ga-script';
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+    script.async = true;
+
+    const inlineScript = document.createElement('script');
+    inlineScript.innerHTML = `
+      window.gtag('js', new Date());
+      window.gtag('config', '${gaId}', { anonymize_ip: true });
+    `;
+
+    document.head.appendChild(script);
+    document.head.appendChild(inlineScript);
+  }, []);
+
+  /**
+   * 🔥 EVENT-DRIVEN CONSENT (INTEGRAÇÃO COM FOOTER)
+   */
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handler = () => {
+      setIsOpen(true);
+    };
+
+    window.addEventListener('open-cookie-settings', handler);
+
+    return () => {
+      window.removeEventListener('open-cookie-settings', handler);
+    };
+  }, []);
+
+  /**
+   * 🔍 Check stored consent
+   */
+  useEffect(() => {
+    initConsentMode();
+
+    try {
+      const stored = localStorage.getItem(CONSENT_KEY);
+
+      if (!stored) {
+        const timer = setTimeout(() => setIsOpen(true), 1200);
+        return () => clearTimeout(timer);
+      }
+
+      const parsed: CookieConsent = JSON.parse(stored);
+
+      if (parsed.version !== CONSENT_VERSION) {
+        setIsOpen(true);
+        return;
+      }
+
+      setAnalyticsEnabled(parsed.analytics);
+      updateConsent(parsed.analytics);
+
+      if (parsed.analytics) loadAnalytics();
+    } catch {
+      setIsOpen(true);
+    }
+  }, [initConsentMode, updateConsent, loadAnalytics]);
+
+  /**
+   * 💾 Persist consent (LGPD + GDPR)
+   */
+  const persistConsent = useCallback(
+    (analytics: boolean) => {
+      startTransition(() => {
+        try {
+          const consent: CookieConsent = {
+            necessary: true,
+            analytics,
+            date: new Date().toISOString(),
+            version: CONSENT_VERSION,
+          };
+
+          const enriched = {
+            ...consent,
+            userAgent: navigator.userAgent,
+            locale: navigator.language,
+          };
+
+          localStorage.setItem(CONSENT_KEY, JSON.stringify(enriched));
+
+          updateConsent(analytics);
+          if (analytics) loadAnalytics();
+
+          const secure =
+            process.env.NODE_ENV === 'production' ? 'Secure;' : '';
+
+          document.cookie = `${CONSENT_KEY}=${
+            analytics ? 'all' : 'essential'
+          }; path=/; max-age=31536000; SameSite=Lax; ${secure}`;
+
+          setIsOpen(false);
+        } catch {
+          setIsOpen(false);
+        }
+      });
+    },
+    [loadAnalytics, updateConsent]
+  );
+
+  /**
+   * 🎯 Actions
+   */
+  const handleAcceptAll = () => persistConsent(true);
+  const handleRejectAll = () => persistConsent(false);
+  const handleSavePreferences = () => persistConsent(analyticsEnabled);
+
+  if (!isOpen) return null;
+
+  return (
+    <aside className="fixed bottom-0 left-0 right-0 z-[200] p-4">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-5 max-w-md mx-auto backdrop-blur-xl">
+
+        <p className="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
+          {cookie.description}
+        </p>
+
+        <label className="flex items-center justify-between mb-4 cursor-pointer">
+          <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+            {cookie.analytics}
+          </span>
+
+          <input
+            type="checkbox"
+            checked={analyticsEnabled}
+            onChange={(e) => setAnalyticsEnabled(e.target.checked)}
+            className="w-4 h-4"
+          />
+        </label>
+
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={handleAcceptAll}
+            disabled={isPending}
+            className="w-full bg-black text-white py-2 rounded-lg text-xs font-bold hover:opacity-90 transition"
+          >
+            {cookie.acceptAll}
+          </button>
+
+          <button
+            onClick={handleRejectAll}
+            disabled={isPending}
+            className="w-full bg-gray-200 dark:bg-slate-700 py-2 rounded-lg text-xs font-bold"
+          >
+            {cookie.rejectAll ?? 'Recusar'}
+          </button>
+
+          <button
+            onClick={handleSavePreferences}
+            disabled={isPending}
+            className="w-full border py-2 rounded-lg text-xs font-bold"
+          >
+            {cookie.savePreferences ?? 'Salvar preferências'}
+          </button>
+        </div>
+      </div>
+    </aside>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/ErrorBox.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+import { useMemo } from 'react';
+import type { ErrorDictionary, ErrorKey } from '@/types/error-dictionary';
+import type { Locale } from '@/types/dictionary';
+import {
+  AlertCircle,
+  RefreshCcw,
+  ShieldAlert,
+  Info,
+  XCircle,
+} from 'lucide-react';
+
+/**
+ * ERROR BOX COMPONENT - NEXT.JS 16.2 & REACT 19
+ * -----------------------------------------------------------------------------
+ * ✔ Stack: TS 6.0, Node 24, Tailwind 4.2 (Oklch Support)
+ * ✔ I18n: Suporte regional para PT, EN, ES (ES/AR/MX)
+ * ✔ Responsivo: Layout flexível com otimização de toque para mobile
+ */
+
+interface ErrorBoxProps {
+  readonly errorKey: ErrorKey;
+  readonly dictionary: ErrorDictionary;
+  readonly lang: Locale;
+  readonly errorId?: string;
+  readonly onRetry?: () => void;
+}
+
+export default function ErrorBox({
+  errorKey,
+  dictionary,
+  lang,
+  errorId,
+  onRetry,
+}: ErrorBoxProps) {
+  
+  // Memoiza os detalhes do erro para evitar recalculação em re-renders do React 19
+  const details = useMemo(() => 
+    dictionary[errorKey] ?? dictionary.InternalServerError, 
+  [errorKey, dictionary]);
+
+  /**
+   * LÓGICA MULTILINGUE PARA O BOTÃO (RETRY LABEL)
+   * Suporte para PT-BR, EN-US e variações de Espanhol (ES, AR, MX)
+   */
+  const retryLabel = useMemo(() => {
+    if (lang.startsWith('pt')) return 'Tentar novamente';
+    if (lang.startsWith('en')) return 'Try again';
+    if (lang.startsWith('es')) {
+      // Diferenciação sutil: Argentina/México costumam usar "Reintentar" ou "Intentar de nuevo"
+      if (lang === 'es-AR' || lang === 'es-MX') return 'Intentar de nuevo';
+      return 'Reintentar'; // Espanhol da Espanha
+    }
+    return 'Tentar novamente';
+  }, [lang]);
+
+  const Icon = useMemo(() => {
+    switch (errorKey) {
+      case 'ValidationError':
+        return <AlertCircle className="w-5 h-5 text-amber-500" />;
+      case 'ForbiddenError':
+      case 'UnauthorizedError':
+        return <ShieldAlert className="w-5 h-5 text-red-600" />;
+      case 'TooManyRequestsError':
+        return <RefreshCcw className="w-5 h-5 text-blue-500 animate-spin" />;
+      default:
+        return <XCircle className="w-5 h-5 text-red-500" />;
+    }
+  }, [errorKey]);
+
+  return (
+    <div 
+      role="alert"
+      className="flex flex-col sm:flex-row gap-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6 shadow-xl shadow-slate-200/50 dark:shadow-none transition-all duration-300"
+    >
+      {/* ÍCONE COM CONTAINER ACELERADO POR GPU */}
+      <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+        {Icon}
+      </div>
+
+      <div className="flex-1 space-y-3">
+        <div className="space-y-1">
+          <h3 className="text-lg font-black tracking-tight text-slate-900 dark:text-white">
+            {details.title}
+          </h3>
+          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+            {details.message}
+          </p>
+        </div>
+
+        {/* LINHA DE INSTRUÇÃO (ACTION) */}
+        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+          <Info className="w-3.5 h-3.5" />
+          <span>{details.action}</span>
+        </div>
+
+        {/* RODAPÉ DO ERRO */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-5 mt-4 border-t border-slate-100 dark:border-slate-900">
+          {errorId ? (
+            <code className="text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-lg border border-blue-100/50 dark:border-blue-800/50">
+              ID: {errorId}
+            </code>
+          ) : (
+            <div /> // Spacer para manter o botão à direita
+          )}
+
+          {onRetry && (
+            <button
+              onClick={onRetry}
+              type="button"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-black text-white bg-slate-900 dark:bg-blue-600 rounded-xl hover:bg-blue-700 dark:hover:bg-blue-500 transition-all active:scale-95 cursor-pointer shadow-lg shadow-blue-500/20"
+            >
+              <RefreshCcw className="w-4 h-4" />
+              {retryLabel}
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/ExperienceSection.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+import { Briefcase, Building2 } from 'lucide-react';
+import type { ReactElement } from 'react';
+
+import type { ExperienceDictionary } from '@/types/dictionary';
+import { NavSection, getSectionId } from '@/domain/navigation';
+
+interface ExperienceSectionProps {
+  readonly experience: ExperienceDictionary;
+}
+
+export default function ExperienceSection({
+  experience,
+}: ExperienceSectionProps): ReactElement | null {
+
+  if (!experience?.items?.length) {
+    return (
+      <section
+        id={getSectionId(NavSection.EXPERIENCE)}
+        className="py-20 lg:py-32 bg-white dark:bg-[#020617]"
+      >
+        <p className="text-center text-slate-500 dark:text-slate-400 text-sm md:text-base">
+          {experience.emptyLabel}
+        </p>
+      </section>
+    );
+  }
+
+  return (
+    <section
+      id={getSectionId(NavSection.EXPERIENCE)}
+      aria-labelledby="experience-heading"
+      className="py-20 lg:py-32 bg-white dark:bg-[#020617] transition-colors antialiased overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-10">
+
+        <header className="mb-16 md:mb-24">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-2.5 bg-blue-600 rounded-xl text-white shadow-lg shadow-blue-600/20">
+              <Briefcase size={20} className="md:w-6 md:h-6" aria-hidden />
+            </div>
+
+            <span className="text-blue-600 dark:text-blue-400 font-bold uppercase tracking-[0.2em] text-xs">
+              {experience.title}
+            </span>
+          </div>
+
+          <h2
+            id="experience-heading"
+            className="text-4xl md:text-6xl font-black tracking-tighter text-slate-900 dark:text-white"
+          >
+            {experience.title}
+          </h2>
+        </header>
+
+        <div className="relative border-l-2 border-slate-100 dark:border-slate-800/50 ml-3 md:ml-12 space-y-12 md:space-y-20">
+          {experience.items.map((item) => (
+            <article
+              key={`${item.company}-${item.period}`}
+              className="relative pl-8 md:pl-20 group"
+            >
+              <div
+                className="absolute -left-[11px] top-2 w-5 h-5 rounded-full
+                           bg-white dark:bg-[#020617]
+                           border-4 border-blue-600
+                           group-hover:scale-125 group-hover:bg-blue-600
+                           transition-all duration-300 z-10"
+                aria-hidden
+              />
+
+              <div className="flex flex-col gap-4">
+
+                <div className="flex flex-wrap items-center gap-3 md:gap-6">
+                  <time
+                    className="inline-flex px-4 py-1 rounded-full text-xs md:text-sm font-bold
+                               bg-blue-50 dark:bg-blue-900/20
+                               text-blue-700 dark:text-blue-400
+                               border border-blue-100 dark:border-blue-800/30"
+                  >
+                    {item.period}
+                  </time>
+
+                  <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+                    <Building2 size={16} aria-hidden />
+                    <span className="font-bold uppercase tracking-wide text-xs md:text-sm">
+                      {item.company}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h3 className="text-2xl md:text-3xl font-black leading-tight text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {item.role}
+                  </h3>
+
+                  <p className="max-w-4xl text-base md:text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+                    {item.description}
+                  </p>
+                </div>
+
+                <div
+                  className="mt-4 h-1 w-8 rounded-full bg-slate-100 dark:bg-slate-800 group-hover:w-24 group-hover:bg-blue-600 transition-all duration-500"
+                  aria-hidden
+                />
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/FeaturedArticle.tsx
+
+
+TEM ESSE CONTEÚDO 
+
+'use client';
+
+/**
+ * FEATURED ARTICLE — Card de Autoridade Técnica
+ * -----------------------------------------------------------------------------
+ * ✔ Totalmente i18n (Dictionary-driven)
+ * ✔ Responsivo (mobile-first)
+ * ✔ Acessível (ARIA + semântica)
+ * ✔ Compatível com Next.js 16
+ * ✔ Compatível com TypeScript 6.0 (strict)
+ */
+
+import { useEffect, useRef } from 'react';
+import Script from 'next/script';
+import { ExternalLink, BookOpen, Award } from 'lucide-react';
+
+import type { Locale, Dictionary } from '@/types/dictionary';
+
+interface FeaturedArticleProps {
+  readonly dict: Dictionary;
+  readonly lang: Locale;
+}
+
+export function FeaturedArticle({ dict, lang }: FeaturedArticleProps) {
+  const ref = useRef<HTMLElement | null>(null);
+  const { articles, states, meta } = dict;
+
+  const featuredArticle = articles.items?.[0];
+
+  /* -------------------------------------------------------------------------- */
+  /*                            Intersection Animation                           */
+  /* -------------------------------------------------------------------------- */
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          node.classList.add('opacity-100', 'translate-y-0');
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  /* -------------------------------------------------------------------------- */
+  /*                                 Guardrails                                  */
+  /* -------------------------------------------------------------------------- */
+  if (!featuredArticle) {
+    return (
+      <section
+        aria-live="polite"
+        className="rounded-2xl border border-slate-200/60 dark:border-slate-800/60
+                   bg-slate-50 dark:bg-slate-900/40 p-6 sm:p-10 text-center"
+      >
+        <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+          {states.errorArticles}
+        </p>
+      </section>
+    );
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   SEO JSON                                  */
+  /* -------------------------------------------------------------------------- */
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: featuredArticle.title,
+    description: featuredArticle.description,
+    inLanguage: lang,
+    author: {
+      '@type': 'Person',
+      name: meta.author,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: meta.author,
+    },
+  };
+
+  return (
+    <>
+      <Script
+        id="schema-featured-article"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema),
+        }}
+      />
+
+      <article
+        ref={ref}
+        aria-labelledby="featured-article-title"
+        className="group relative flex flex-col h-full
+                   bg-white dark:bg-slate-900/40 backdrop-blur-md
+                   rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem]
+                   border border-slate-200/60 dark:border-slate-800/60
+                   p-6 sm:p-10 md:p-14
+                   overflow-hidden transition-all duration-700
+                   hover:-translate-y-3
+                   hover:shadow-[0_40px_80px_-15px_rgba(37,99,235,0.15)]
+                   opacity-0 translate-y-8"
+      >
+        {/* Glow decorativo */}
+        <div
+          aria-hidden="true"
+          className="absolute -top-24 -right-24 w-80 h-80 sm:w-96 sm:h-96
+                     bg-blue-600/5 dark:bg-blue-500/10
+                     rounded-full blur-[100px]
+                     transition-all duration-1000
+                     group-hover:bg-blue-600/20"
+        />
+
+        {/* Header */}
+        <header className="flex items-start justify-between gap-4 mb-8 z-10">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full
+                          bg-amber-50 dark:bg-amber-900/20
+                          border border-amber-200/50 dark:border-amber-800/40">
+            <Award className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <span className="text-[10px] font-black uppercase tracking-[0.15em]
+                             text-amber-900 dark:text-amber-300">
+              {articles.awardWinner}
+            </span>
+          </div>
+
+          <div
+            aria-hidden="true"
+            className="p-3 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-800
+                       text-slate-400 transition-all
+                       group-hover:scale-110 group-hover:text-blue-600
+                       dark:group-hover:text-blue-400"
+          >
+            <BookOpen className="w-6 h-6 sm:w-8 sm:h-8" />
+          </div>
+        </header>
+
+        {/* Conteúdo */}
+        <div className="flex-grow z-10">
+          <h3
+            id="featured-article-title"
+            className="mb-6 font-black tracking-tighter leading-tight
+                       text-slate-900 dark:text-white
+                       transition-colors
+                       group-hover:text-blue-600 dark:group-hover:text-blue-400
+                       text-[clamp(1.4rem,5vw,2.6rem)]"
+          >
+            {featuredArticle.title}
+          </h3>
+
+          <p className="text-base sm:text-lg md:text-xl
+                        text-slate-600 dark:text-slate-400
+                        leading-relaxed font-medium italic
+                        border-l-4 border-slate-100 dark:border-slate-800
+                        pl-5 transition-colors
+                        group-hover:border-blue-500/30">
+            “{featuredArticle.description}”
+          </p>
+        </div>
+
+        {/* CTA */}
+        <footer className="mt-10 z-10">
+          <a
+            href={featuredArticle.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={articles.readMore}
+            className="group/btn relative flex items-center justify-center gap-4
+                       w-full py-5 sm:py-6
+                       bg-slate-900 dark:bg-blue-600
+                       hover:bg-slate-800 dark:hover:bg-blue-500
+                       text-white rounded-2xl
+                       font-black text-[10px] sm:text-xs
+                       uppercase tracking-[0.2em]
+                       transition-all shadow-xl active:scale-[0.97]
+                       overflow-hidden"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-r
+                         from-transparent via-white/10 to-transparent
+                         -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]"
+            />
+
+            <span className="relative z-10">{articles.readMore}</span>
+            <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 relative z-10
+                                     transition-transform
+                                     group-hover/btn:translate-x-1
+                                     group-hover/btn:-translate-y-1" />
+          </a>
+        </footer>
+      </article>
+
+      <style jsx>{`
+        @keyframes shimmer {
+          100% {
+            transform: translateX(100%);
+          }
+        }
+      `}</style>
+    </>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/FeaturedArticleSection.tsx
+
+TEM ESSE CONTEÚDO 
+
+'use client';
+
+import { useEffect, useRef } from 'react';
+import Image from 'next/image';
+import Script from 'next/script';
+import { Trophy, ArrowUpRight, Calendar } from 'lucide-react';
+
+import type {
+  ArticlesSectionDictionary,
+  CommonDictionary,
+} from '@/types/dictionary';
+
+import { NavSection, getSectionId } from '@/domain/navigation';
+
+/**
+ * FEATURED ARTICLE SECTION - REVISADA
+ * ------------------------------------------------------------------
+ * ✔ TS 6.0 strict-safe
+ * ✔ Next.js 16 (Turbopack optimized)
+ * ✔ React 19 (Ref handling e hydration safe)
+ * ✔ Tailwind 4.2 (Modern gradients e utilities)
+ */
+
+interface FeaturedArticleSectionProps {
+  // Ajustado para receber o objeto de artigos e o common separadamente ou via dict
+  readonly articles: ArticlesSectionDictionary;
+  readonly common: CommonDictionary;
+}
+
+export default function FeaturedArticleSection({
+  articles,
+  common,
+}: FeaturedArticleSectionProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Garantia de dados via TS 6 (Optional chaining + null check)
+  const featuredArticle = articles?.items?.[0] ?? null;
+
+  /**
+   * Fail-safe para o Build do Next.js 16
+   */
+  if (!featuredArticle) {
+    return (
+      <section
+        id={getSectionId(NavSection.ARTICLES)}
+        className="py-20 text-center text-slate-500 dark:text-slate-400 font-medium"
+      >
+        {common?.error || "Content unavailable"}
+      </section>
+    );
+  }
+
+  /**
+   * ScrollSpy observer (React 19 safe)
+   */
+  useEffect(() => {
+    const current = sectionRef.current;
+    if (!current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          window.dispatchEvent(
+            new CustomEvent('scrollspy:change', {
+              detail: { id: NavSection.ARTICLES },
+            }),
+          );
+        }
+      },
+      { threshold: 0.2, rootMargin: '-10% 0px -70% 0px' },
+    );
+
+    observer.observe(current);
+    return () => observer.disconnect();
+  }, []);
+
+  /**
+   * Structured Data (SEO / JSON-LD)
+   */
+  const schemaPerson = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Sérgio Santos',
+    jobTitle: common?.role,
+    sameAs: [
+      common?.externalLinks?.linkedin,
+      common?.externalLinks?.github,
+      common?.externalLinks?.medium,
+    ].filter(Boolean),
+  };
+
+  return (
+    <section
+      ref={sectionRef}
+      id={getSectionId(NavSection.ARTICLES)}
+      aria-labelledby="featured-article-title"
+      className="relative scroll-mt-24 py-16 md:py-32 px-4 sm:px-6 lg:px-8
+                 bg-slate-50/30 dark:bg-transparent overflow-hidden"
+    >
+      <Script
+        id="schema-person"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaPerson) }}
+      />
+
+      {/* Background gradients - Tailwind 4.2 Optimized */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 opacity-[0.05] dark:opacity-[0.12] pointer-events-none"
+      >
+        <div className="absolute top-1/4 left-0 w-[300px] md:w-[600px] h-[300px] md:h-[600px]
+                        bg-blue-600 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-soft-light" />
+        <div className="absolute bottom-0 right-0 w-[250px] md:w-[500px] h-[250px] md:h-[500px]
+                        bg-indigo-600 rounded-full blur-[100px] mix-blend-multiply dark:mix-blend-soft-light" />
+      </div>
+
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header */}
+        <header className="flex items-center gap-4 md:gap-6 mb-12 md:mb-16">
+          <div className="p-3 md:p-4 bg-amber-100 dark:bg-amber-900/40
+                          rounded-2xl text-amber-600 dark:text-amber-400
+                          shadow-lg -rotate-2">
+            <Trophy className="w-7 h-7 md:w-10 md:h-10" aria-hidden="true" />
+          </div>
+
+          <h2
+            id="featured-article-title"
+            className="text-3xl md:text-6xl font-black uppercase tracking-tighter italic
+                       text-slate-900 dark:text-white"
+          >
+            {articles.title}
+          </h2>
+        </header>
+
+        {/* Article Card - Bento Style */}
+        <article
+          className="group bg-white dark:bg-slate-900/40 rounded-[2.5rem]
+                     p-6 md:p-12 lg:p-16 border border-slate-200
+                     dark:border-slate-800 shadow-2xl transition-all duration-500
+                     hover:border-blue-500/30 hover:shadow-blue-500/10"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            {/* Image Wrapper */}
+            <div className="relative overflow-hidden rounded-[2rem] shadow-xl
+                            aspect-[4/3] md:aspect-video lg:aspect-square
+                            bg-slate-200 dark:bg-slate-800">
+              <Image
+                src="/images/trofeu-35-edicao.png"
+                alt={featuredArticle.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                priority
+              />
+            </div>
+
+            {/* Content Area */}
+            <div className="flex flex-col">
+              <div className="flex flex-wrap items-center gap-3
+                              text-blue-600 dark:text-blue-400
+                              font-black text-[10px] md:text-xs
+                              uppercase tracking-widest mb-6">
+                <div className="flex items-center gap-1.5
+                                bg-blue-50 dark:bg-blue-900/30
+                                px-3 py-1.5 rounded-full">
+                  <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>
+                    {articles.publishedAt} {featuredArticle.date}
+                  </span>
+                </div>
+
+                {featuredArticle.isAward && (
+                  <span className="bg-amber-100 dark:bg-amber-900/40
+                                   text-amber-700 dark:text-amber-400
+                                   px-3 py-1.5 rounded-full">
+                    {articles.awardWinner}
+                  </span>
+                )}
+              </div>
+
+              <h3 className="text-2xl md:text-5xl font-black mb-6 leading-tight
+                             text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                {featuredArticle.title}
+              </h3>
+
+              <p className="text-base md:text-xl text-slate-600
+                            dark:text-slate-400 mb-10 leading-relaxed font-medium">
+                {featuredArticle.description}
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href={featuredArticle.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-blue-600 hover:bg-blue-700 text-white
+                             px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-xs
+                             inline-flex items-center justify-center
+                             gap-3 transition-all active:scale-95 shadow-lg shadow-blue-500/20"
+                >
+                  {articles.readMore}
+                  <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
+                </a>
+
+                {common?.externalLinks?.medium && (
+                  <a
+                    href={common.externalLinks.medium}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-xs
+                               border border-slate-200 text-slate-600
+                               dark:border-slate-800 dark:text-slate-400
+                               hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors
+                               inline-flex items-center justify-center"
+                  >
+                    {articles.mediumProfile}
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/FeaturedProject.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client'
+
+/**
+ * FEATURED PROJECT
+ * -----------------------------------------------------------------------------
+ * ✔ FIX: Lucide v1.7.0 Brand Icon Deprecation (Github SVG manual)
+ * ✔ Alinhado com ProjectDomain e Dictionary Types
+ * ✔ Multilíngue (PT-BR / EN-US / ES-ES / ES-AR / ES-MX)
+ * ✔ 100% Responsivo & Tailwind 4.2 Optimized
+ * ✔ Compatível com TypeScript 6.0 e Next.js 16 (Turbopack)
+ */
+
+import Script from 'next/script'
+import {
+  Star,
+  ArrowRight,
+  ExternalLink,
+  Database,
+  Cpu,
+  Zap,
+} from 'lucide-react'
+
+import type { Dictionary } from '@/types/dictionary'
+import type { ProjectDomain } from '@/domain/projects'
+
+interface FeaturedProjectProps {
+  readonly project: ProjectDomain
+  readonly dict: Dictionary
+}
+
+export const FeaturedProject = ({
+  project,
+  dict,
+}: FeaturedProjectProps) => {
+  const { projects, states, meta } = dict
+
+  /**
+   * Parsing seguro da descrição:
+   * "Problema | Solução | Impacto"
+   */
+  const descriptionParts = project.description
+    ?.split('|')
+    .map((p) => p.trim())
+    .filter(Boolean) ?? []
+
+  const mainDescription =
+    descriptionParts[0] ||
+    project.description ||
+    states.empty
+
+  const impactText =
+    descriptionParts.length >= 3
+      ? descriptionParts[2]
+      : descriptionParts[1] ?? null
+
+  /**
+   * Filtro de badges para evitar redundância visual
+   */
+  const displayTopics = project.topics.filter(
+    (t) =>
+      ![
+        'portfolio',
+        'featured',
+        'highlight',
+        'main',
+        'destaque',
+        'primeiro',
+      ].includes(t.toLowerCase())
+  )
+
+  /**
+   * Acessa a tradução da categoria conforme Dictionary.ts
+   */
+  const categoryLabel = 
+    projects.categories[project.technology.labelKey]?.labelKey ?? 
+    project.technology.id
+
+  /**
+   * Structured Data (SEO) - Schema.org para Software
+   */
+  const softwareSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: project.name,
+    description: mainDescription,
+    applicationCategory: categoryLabel,
+    operatingSystem: 'Web',
+    author: {
+      '@type': 'Person',
+      name: meta.author,
+    },
+    url: project.homepage ?? project.htmlUrl,
+    keywords: displayTopics.join(', '),
+  }
+
+  return (
+    <>
+      <Script
+        id={`featured-project-${project.id}`}
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(softwareSchema),
+        }}
+      />
+
+      <section className="relative bg-white dark:bg-[#020617] rounded-[2.5rem] lg:rounded-[4rem] border border-slate-200 dark:border-blue-500/10 overflow-hidden group shadow-2xl transition-all duration-700">
+        <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/5 via-transparent to-indigo-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[580px]">
+
+          {/* COLUNA VISUAL */}
+          <div className="relative h-72 sm:h-80 lg:h-auto bg-slate-50 dark:bg-slate-950/40 flex items-center justify-center overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-100 dark:border-slate-800/50">
+
+            <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-20">
+              <div className="bg-blue-600 text-white px-4 py-2 sm:px-5 sm:py-2.5 rounded-2xl text-[9px] sm:text-[10px] font-black uppercase tracking-[0.25em] flex items-center gap-3 shadow-2xl shadow-blue-500/40 transform -rotate-2">
+                <Star size={14} className="fill-amber-300 text-amber-300" />
+                {projects.featuredLabel}
+              </div>
+            </div>
+
+            <div className="relative flex items-center justify-center w-full h-full">
+              <div className="absolute animate-pulse">
+                <Cpu className="w-40 h-40 sm:w-64 sm:h-64 lg:w-[280px] lg:h-[280px] text-blue-500/5 dark:text-blue-400/5" />
+              </div>
+              <div className="relative transform transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-3">
+                <Database className="w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 text-blue-600 dark:text-blue-500 opacity-20 dark:opacity-40" />
+                <Zap className="absolute -top-2 -right-2 w-6 h-6 sm:w-8 sm:h-8 text-amber-500 animate-bounce" />
+              </div>
+            </div>
+          </div>
+
+          {/* COLUNA DE CONTEÚDO */}
+          <div className="p-6 sm:p-10 lg:p-16 xl:p-20 flex flex-col justify-center relative z-10">
+
+            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 lg:mb-10 tracking-tighter text-slate-900 dark:text-white leading-tight capitalize">
+              {project.name.replace(/[_-]/g, ' ')}
+            </h3>
+
+            <p className="text-xs uppercase tracking-widest text-blue-500 font-bold mb-6">
+              {categoryLabel}
+            </p>
+
+            <div className="space-y-8 lg:space-y-10 mb-10 lg:mb-12">
+              <div className="pl-6 border-l-4 border-blue-500">
+                <p className="text-[10px] uppercase font-black tracking-widest text-blue-600 dark:text-blue-400 mb-3">
+                  {projects.firstLabel}
+                </p>
+                <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg md:text-xl font-medium leading-relaxed">
+                  {mainDescription}
+                </p>
+              </div>
+
+              {impactText && (
+                <div className="flex items-center gap-4 p-4 sm:p-5 bg-emerald-50 dark:bg-emerald-500/5 text-emerald-700 dark:text-emerald-400 rounded-[1.5rem] border border-emerald-100 dark:border-emerald-500/10">
+                  <div className="p-2 bg-emerald-500 rounded-lg text-white flex-shrink-0">
+                    <ArrowRight size={18} />
+                  </div>
+                  <div>
+                    <p className="text-[9px] uppercase font-black tracking-tighter opacity-70 mb-0.5">
+                      {projects.impactLabel}
+                    </p>
+                    <p className="font-bold text-xs sm:text-sm md:text-base">
+                      {impactText}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* STACK BADGES */}
+            <div className="flex flex-wrap gap-2 mb-10 lg:mb-14">
+              {displayTopics.slice(0, 8).map((topic) => (
+                <span
+                  key={topic}
+                  className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 text-[9px] sm:text-[10px] uppercase tracking-wider font-black border border-slate-200/50 dark:border-slate-700/50"
+                >
+                  {topic.replace(/-/g, ' ')}
+                </span>
+              ))}
+            </div>
+
+            {/* AÇÕES */}
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
+              <a
+                href={project.htmlUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/btn flex-1 bg-slate-900 dark:bg-blue-600 text-white py-5 sm:py-6 px-8 rounded-2xl font-black uppercase text-[10px] sm:text-xs tracking-[0.25em] flex items-center justify-center gap-4 shadow-xl hover:shadow-blue-500/20 active:scale-95 transition-all"
+              >
+                {/* SVG OFICIAL GITHUB - FIX PARA LUCIDE 1.7.0 */}
+                <svg className="size-5 group-hover/btn:rotate-12 transition-transform fill-current" viewBox="0 0 24 24">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                {projects.viewProject}
+              </a>
+
+              {project.homepage && (
+                <a
+                  href={project.homepage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 border-2 border-slate-200 dark:border-slate-700 hover:border-blue-500/50 dark:hover:border-blue-500/50 py-5 sm:py-6 px-8 rounded-2xl font-black uppercase text-[10px] sm:text-xs tracking-[0.25em] flex items-center justify-center gap-4 transition-all hover:bg-slate-50 dark:hover:bg-slate-900/50"
+                >
+                  <ExternalLink size={20} />
+                  {projects.viewDemo}
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/Footer.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+/**
+ * src/components/Footer.tsx
+ * Versão: 6 de Abril de 2026 (Pós-depreciação de Brand Icons)
+ * Stack: Next.js 16.2.2 | React 19 | TS 6.0.2 | Tailwind 4.2 | Node 24
+ * Status: FIX BRAND ICONS | MULTILÍNGUE | 100% RESPONSIVO
+ */
+
+'use client';
+
+import Link from 'next/link';
+import type { ReactNode, JSX } from 'react';
+import {
+  Mail,
+  Globe,
+  Code2,
+  ExternalLink,
+  ArrowRight,
+} from 'lucide-react';
+
+import type {
+  Locale,
+  CommonDictionary,
+  ContactDictionary,
+  ArticlesSectionDictionary,
+} from '@/types/dictionary';
+
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { NAV_SECTIONS, getNavHash } from '@/domain/navigation';
+
+interface FooterProps {
+  readonly lang: Locale;
+  readonly common: CommonDictionary;
+  readonly contact: ContactDictionary;
+  readonly articles: ArticlesSectionDictionary;
+}
+
+export default function Footer({
+  lang,
+  common,
+  contact,
+  articles,
+}: FooterProps): JSX.Element {
+  // URLs seguras vindas do dicionário common
+  const { linkedin, github, email: mailtoLink } = common.externalLinks;
+
+  return (
+    <footer
+      role="contentinfo"
+      className="mt-24 border-t border-slate-200 dark:border-slate-800/60
+                 bg-slate-50 dark:bg-[#020617] transition-colors"
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16 lg:py-24 space-y-20">
+
+        {/* SECTION: CTA (Call to Action) - Suporte Multilíngue */}
+        <section
+          className="relative overflow-hidden rounded-[2.5rem]
+                     bg-gradient-to-br from-blue-600 to-indigo-700
+                     text-white p-8 md:p-12 lg:p-16
+                     flex flex-col lg:flex-row justify-between
+                     items-start lg:items-center gap-10"
+        >
+          {/* Efeito Visual Tailwind 4.2 */}
+          <div className="absolute -right-20 -top-20 size-64 bg-white/10 blur-[80px] rounded-full pointer-events-none" />
+          
+          <div className="relative z-10 max-w-xl">
+            <h3 className="text-2xl md:text-4xl font-black tracking-tight mb-4 italic uppercase">
+              {contact.ctaTitle || articles.title}
+            </h3>
+            <p className="text-sm md:text-base font-medium leading-relaxed text-blue-50/90">
+              {contact.subtitle}
+            </p>
+          </div>
+
+          <a
+            href={`mailto:${mailtoLink}`}
+            className="group relative z-10 inline-flex
+                       items-center gap-3 bg-white text-blue-700
+                       px-8 py-4 rounded-2xl text-xs
+                       font-black uppercase tracking-wider
+                       hover:bg-blue-50 transition-all hover:scale-[1.02] active:scale-95 shadow-xl shadow-blue-950/20"
+          >
+            {contact.cta}
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </a>
+        </section>
+
+        {/* GRID: LINKS & INFO - Totalmente Responsivo */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+
+          {/* COL 1: IDENTIDADE */}
+          <div className="space-y-6">
+            <div className="flex flex-col gap-1">
+              <span className="text-3xl font-black tracking-tighter uppercase
+                               text-slate-900 dark:text-white">
+                Sérgio<span className="text-blue-600"> Santos</span>
+              </span>
+              <p className="text-[10px] font-bold uppercase tracking-widest
+                            text-slate-400 dark:text-slate-500 leading-tight">
+                {common.role}
+              </p>
+            </div>
+
+            <div
+              className="inline-flex items-center gap-2.5
+                         px-4 py-2 rounded-full
+                         bg-white dark:bg-slate-900
+                         border border-slate-200 dark:border-slate-800
+                         text-[10px] font-black uppercase
+                         tracking-[0.2em] text-slate-500 shadow-sm"
+            >
+              <Globe className="w-3.5 h-3.5 text-blue-500" aria-hidden="true" />
+              {lang.toUpperCase()}
+            </div>
+          </div>
+
+          {/* COL 2: NAVEGAÇÃO */}
+          <nav aria-label={common.navigation}>
+            <h4 className={STYLES.footerTitle}>
+              {common.navigation}
+            </h4>
+            <ul className="space-y-3">
+              {NAV_SECTIONS.map((section) => (
+                <li key={section}>
+                  <Link
+                    href={`/${lang}${getNavHash(section)}`}
+                    className={STYLES.footerLink}
+                  >
+                    {common.nav[section] || section}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* COL 3: SELETOR DE IDIOMA (PT, EN, ES-ES, ES-AR, ES-MX) */}
+          <div>
+            <h4 className={STYLES.footerTitle}>
+              {common.languageSwitcher}
+            </h4>
+            <div className="max-w-[200px]">
+              <LanguageSwitcher currentLang={lang} />
+            </div>
+          </div>
+
+          {/* COL 4: CONTATO & SOCIAL (Fix: Brand SVGs) */}
+          <div className="space-y-6">
+            <h4 className={STYLES.footerTitle}>
+              {contact.title}
+            </h4>
+
+            <a href={`mailto:${mailtoLink}`} className="group block space-y-3 focus:outline-none">
+              <div className="flex items-center gap-3 text-sm font-bold
+                             text-slate-500 group-hover:text-blue-600
+                             transition-colors">
+                <Mail className="w-4 h-4" aria-hidden="true" />
+                <span>{contact.emailLabel}</span>
+              </div>
+
+              <p className="break-all rounded-xl border border-transparent
+                           bg-slate-100/50 dark:bg-slate-800/30
+                           p-4 text-[11px] font-mono font-bold
+                           text-slate-400 group-hover:border-blue-500/30 
+                           group-focus:border-blue-500/30 transition-all">
+                {common.email}
+              </p>
+            </a>
+
+            <div className="flex gap-3 pt-2">
+              {/* LinkedIn SVG Manual */}
+              <SocialIcon href={linkedin} label="LinkedIn">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+              </SocialIcon>
+
+              {/* GitHub SVG Manual */}
+              <SocialIcon href={github} label="GitHub">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+              </SocialIcon>
+            </div>
+          </div>
+        </div>
+
+        {/* FINAL: COPYRIGHT */}
+        <div className="pt-10 border-t border-slate-200
+                       dark:border-slate-800/80
+                       flex flex-col md:flex-row
+                       items-center justify-between gap-8">
+          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center md:text-left">
+            {common.footer}
+          </div>
+
+          <div className="flex items-center gap-2 text-[10px] font-black uppercase text-slate-500">
+            <Code2 className="w-4 h-4 text-blue-600" aria-hidden="true" />
+            {common.builtWith}
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* --- COMPONENTES AUXILIARES --- */
+
+interface SocialIconProps {
+  readonly href: string;
+  readonly label: string;
+  readonly children: ReactNode;
+}
+
+function SocialIcon({ href, label, children }: SocialIconProps): JSX.Element {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="group flex items-center gap-2 rounded-xl border border-slate-200
+                 dark:border-slate-800
+                 bg-white dark:bg-slate-900
+                 p-2.5 text-slate-400
+                 hover:text-blue-600 hover:border-blue-600/30 
+                 transition-all hover:scale-110 active:scale-95 shadow-sm"
+    >
+      {children}
+      <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-40 transition-opacity" />
+    </a>
+  );
+}
+
+const STYLES = {
+  footerTitle:
+    'mb-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500',
+  footerLink:
+    'inline-block text-sm font-bold text-slate-500 hover:text-blue-600 hover:translate-x-1 transition-all focus:text-blue-600 outline-none',
+}; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/HeroSection.tsx
+
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+/**
+ * HERO SECTION — SÉRGIO SANTOS
+ *
+ * ✔ Next.js 16 (App Router)
+ * ✔ TypeScript 6 strict safe
+ * ✔ 100% tipado
+ * ✔ Multilingue (pt-BR | en-US | es-*)
+ * ✔ Totalmente responsivo
+ * ✔ Arquitetura desacoplada
+ */
+
+import type { Dictionary } from "@/types/dictionary"
+import { getSectionId, NavSection } from "@/domain/navigation"
+
+interface HeroSectionProps {
+  readonly dictionary: Pick<
+    Dictionary,
+    "hero" | "contact" | "about" | "metrics" | "meta"
+  >
+}
+
+export default function HeroSection({
+  dictionary,
+}: HeroSectionProps): React.JSX.Element {
+
+  const { hero, contact, about, metrics, meta } = dictionary
+
+  const projectsHash = `#${getSectionId(NavSection.PROJECTS)}`
+  const cvPath = `/pdf/cv-sergio-santos-${meta.locale}.pdf`
+
+  return (
+    <section
+      id="home"
+      aria-labelledby="hero-title"
+      className="relative flex min-h-[95vh] w-full items-center justify-center overflow-hidden
+                 bg-slate-50 px-6 py-20 dark:bg-slate-950"
+    >
+      <div className="container relative z-10 mx-auto flex flex-col items-center text-center">
+
+        {/* Badge */}
+        <div className="mb-8 inline-flex items-center rounded-full border border-blue-200
+                        bg-blue-50/50 px-4 py-1.5 dark:border-blue-800/50 dark:bg-blue-900/20">
+          <span className="text-[10px] font-black uppercase tracking-[0.25em]
+                           text-blue-700 dark:text-blue-300 md:text-xs">
+            {hero.greeting}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h1
+          id="hero-title"
+          className="mb-6 max-w-4xl text-4xl font-extrabold tracking-tight
+                     text-slate-900 dark:text-white
+                     sm:text-5xl md:text-6xl lg:text-7xl"
+        >
+          {hero.title}{" "}
+          <span className="block bg-gradient-to-r from-blue-600 to-cyan-500
+                           bg-clip-text text-transparent sm:inline">
+            {hero.subtitle}
+          </span>
+        </h1>
+
+        {/* Headline */}
+        <p className="mb-12 max-w-2xl text-lg font-medium leading-relaxed
+                      text-slate-600 dark:text-slate-400 md:text-xl">
+          {hero.headline}
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:gap-6">
+
+          <a
+            href={projectsHash}
+            className="inline-flex h-14 items-center justify-center rounded-xl
+                       bg-blue-600 px-8 text-base font-bold text-white
+                       transition-all hover:bg-blue-700 hover:shadow-lg
+                       hover:shadow-blue-500/25 active:scale-95"
+          >
+            {hero.ctaPrimary}
+          </a>
+
+          <a
+            href={cvPath}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-14 items-center justify-center rounded-xl
+                       border border-slate-200 bg-white px-8 text-base font-bold
+                       text-slate-700 transition-all hover:bg-slate-50
+                       dark:border-slate-800 dark:bg-slate-900
+                       dark:text-slate-200 dark:hover:bg-slate-800
+                       active:scale-95"
+          >
+            {contact.cvLabel}
+          </a>
+
+        </div>
+
+        {/* Availability Indicator */}
+        <div className="mt-16 flex items-center gap-2 text-sm font-medium
+                        text-slate-500 dark:text-slate-500">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping
+                             rounded-full bg-green-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full
+                             bg-green-500" />
+          </span>
+
+          <span>
+            {about.stats.availabilityLabel}:{" "}
+            <b className="text-slate-700 dark:text-slate-300">
+              {metrics.availability}
+            </b>
+          </span>
+        </div>
+
+      </div>
+
+      {/* Background Glow */}
+      <div
+        aria-hidden="true"
+        className="absolute left-1/2 top-1/2 -z-10 h-[600px] w-[600px]
+                   -translate-x-1/2 -translate-y-1/2
+                   opacity-10 blur-[120px] dark:opacity-[0.05]"
+      >
+        <div className="h-full w-full rounded-full bg-blue-600" />
+      </div>
+
+    </section>
+  )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/LanguageSwitcher.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+import { useEffect, useState, Suspense } from 'react';
+import Link from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
+
+import { i18n } from '@/i18n-config';
+import type { Locale } from '@/types/dictionary';
+import { LOCALE_COOKIE, LOCALE_COOKIE_OPTIONS } from '@/lib/locale-cookie';
+
+interface LanguageSwitcherProps {
+  readonly currentLang: Locale;
+  readonly ariaLabel?: string;
+}
+
+/**
+ * MAPEAMENTO REGIONAL (Bandeiras e Labels)
+ * ✔ TS 6 Strict Mapping
+ * ✔ Suporte regional para ES, AR e MX
+ */
+const REGIONAL_DATA: Record<Locale, { label: string; flag: string; title: string }> = {
+  'pt-BR': { label: 'PT', flag: '🇧🇷', title: 'Português (Brasil)' },
+  'en-US': { label: 'EN', flag: '🇺🇸', title: 'English (US)' },
+  'es-ES': { label: 'ES', flag: '🇪🇸', title: 'Español (España)' },
+  'es-AR': { label: 'AR', flag: '🇦🇷', title: 'Español (Argentina)' },
+  'es-MX': { label: 'MX', flag: '🇲🇽', title: 'Español (México)' },
+};
+
+function LanguageSwitcherContent({
+  currentLang,
+  ariaLabel,
+}: LanguageSwitcherProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Persistência de preferência via Cookie (Node 24 / Client Side)
+  const writeLocaleCookie = (locale: Locale) => {
+    if (typeof document === 'undefined') return;
+    document.cookie =
+      `${LOCALE_COOKIE}=${locale}; ` +
+      `path=${LOCALE_COOKIE_OPTIONS.path}; ` +
+      `max-age=${LOCALE_COOKIE_OPTIONS.maxAge}; ` +
+      `SameSite=${LOCALE_COOKIE_OPTIONS.sameSite}` +
+      (window.location.protocol === 'https:' ? '; Secure' : '');
+  };
+
+  // Cálculo de rotas otimizado para Next.js 16.2.0
+  const availableLocales = i18n.locales as readonly Locale[];
+
+  if (!mounted) {
+    return (
+      <div className="h-9 w-44 sm:w-52 rounded-xl bg-slate-200/20 dark:bg-slate-800/20 animate-pulse" />
+    );
+  }
+
+  return (
+    <nav
+      aria-label={ariaLabel ?? 'Language selector'}
+      className="inline-flex items-center gap-1 rounded-xl border border-slate-200/50
+                 bg-white/40 p-1 backdrop-blur-md shadow-sm
+                 dark:border-slate-800/50 dark:bg-slate-900/40"
+    >
+      {availableLocales.map((locale) => {
+        const isActive = currentLang === locale;
+        const region = REGIONAL_DATA[locale];
+
+        // Lógica de Reescrita de URL amigável ao SEO
+        const segments = pathname?.split('/').filter(Boolean) ?? [];
+        if (segments[0] && (availableLocales as readonly string[]).includes(segments[0])) {
+          segments[0] = locale;
+        } else {
+          segments.unshift(locale);
+        }
+
+        const path = `/${segments.join('/')}`;
+        const query = searchParams?.toString();
+        const href = query ? `${path}?${query}` : path;
+
+        return (
+          <Link
+            key={locale}
+            href={href}
+            hrefLang={locale}
+            title={region.title}
+            onClick={() => writeLocaleCookie(locale)}
+            className={`flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[10px] font-black uppercase
+                        transition-all duration-300 focus:outline-none
+                        focus:ring-2 focus:ring-blue-500/50
+                        ${
+                          isActive
+                            ? 'bg-blue-600 text-white shadow-lg scale-105 z-10'
+                            : 'text-slate-500 hover:bg-white/60 dark:text-slate-400 dark:hover:bg-slate-800/60 hover:text-blue-600'
+                        }`}
+            aria-current={isActive ? 'true' : undefined}
+          >
+            <span className="text-xs filter saturate-[0.8] group-hover:saturate-100">
+              {region.flag}
+            </span>
+            <span className={isActive ? 'opacity-100' : 'opacity-70'}>
+              {region.label}
+            </span>
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
+
+/**
+ * COMPONENTE PRINCIPAL COM BOUNDARY DE SUSPENSE
+ * Essencial para Next.js 16 ao usar useSearchParams para evitar erro de build
+ */
+export function LanguageSwitcher(props: LanguageSwitcherProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="h-9 w-44 sm:w-52 rounded-xl bg-slate-200/20 dark:bg-slate-800/20 animate-pulse" />
+      }
+    >
+      <LanguageSwitcherContent {...props} />
+    </Suspense>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/Navbar.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+
+'use client'
+
+import { useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
+import { Menu, X, FileText, Download } from 'lucide-react'
+
+import type { SupportedLocale } from "@/dictionaries/locales"
+import type { CommonDictionary, ContactDictionary } from '@/types/dictionary'
+import { NAV_SECTIONS, getNavHash } from '@/domain/navigation'
+import { getResumePath, getResumeDownloadName } from '@/lib/resume/resumePdfMap'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { useScrollSpy } from '@/contexts/scroll-spy.client'
+
+interface NavbarProps {
+  readonly lang: SupportedLocale;
+  readonly common: CommonDictionary;
+  readonly contact: ContactDictionary;
+}
+
+/**
+ * NAVBAR MULTILINGUE - SÉRGIO SANTOS
+ * Suporte: PT-BR, EN-US, ES-ES, ES-AR, ES-MX
+ * Stack: Next.js 16.2.0, React 19, Tailwind 4.2
+ */
+export default function Navbar({ lang, common, contact }: NavbarProps) {
+  const { nav, theme, menu } = common
+  const { activeSection } = useScrollSpy()
+  const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  // Controle de Scroll para efeito Glassmorphism
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Lock scroll quando menu mobile está aberto
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = isOpen ? 'hidden' : ''
+    }
+    return () => {
+      if (typeof document !== 'undefined') document.body.style.overflow = ''
+    }
+  }, [isOpen])
+
+  // Memoização dos links baseada no dicionário (React 19)
+  const internalLinks = useMemo(() => 
+    NAV_SECTIONS.map((section) => ({
+      id: section,
+      href: `/${lang}${getNavHash(section)}`,
+      label: nav[section as keyof typeof nav] || section,
+    })), [lang, nav]
+  );
+
+  // Mapeamento dinâmico para os PDFs regionais
+  const resumeData = useMemo(() => ({
+    href: getResumePath(lang),
+    label: contact.cvLabel || 'CV',
+    downloadName: getResumeDownloadName(lang)
+  }), [lang, contact.cvLabel]);
+
+  return (
+    <nav 
+      role="navigation" 
+      aria-label={common.navigation}
+      className={`fixed top-0 z-[100] w-full transition-all duration-500 ${
+        isScrolled 
+          ? 'bg-white/90 dark:bg-[#020617]/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 py-3 shadow-sm' 
+          : 'bg-transparent py-6'
+      }`}
+    >
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-10">
+        
+        {/* Logo Estilizada */}
+        <Link href={`/${lang}`} className="relative z-[110] outline-none group">
+          <span className="text-xl md:text-2xl font-black tracking-tighter uppercase text-slate-900 dark:text-white transition-colors">
+            SÉRGIO<span className="text-blue-600 group-hover:text-blue-500 transition-colors"> SANTOS</span>
+          </span>
+        </Link>
+
+        {/* Desktop Navigation - Totalmente Responsivo */}
+        <div className="hidden lg:flex items-center gap-8">
+          <div className="flex gap-7">
+            {internalLinks.map((link) => (
+              <Link 
+                key={link.id} 
+                href={link.href}
+                className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all hover:text-blue-600 ${
+                  activeSection === link.id 
+                    ? 'text-blue-600 after:content-[""] after:block after:w-full after:h-0.5 after:bg-blue-600 after:mt-1' 
+                    : 'text-slate-500 dark:text-slate-400'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="h-4 w-px bg-slate-200 dark:bg-slate-800" />
+
+          {/* Botão de CV: Dinâmico por Idioma (PT, EN, ES) */}
+          <a 
+            href={resumeData.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            download={resumeData.downloadName}
+            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-[10px] font-black uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-lg shadow-blue-500/20"
+          >
+            <Download size={14} />
+            {resumeData.label}
+          </a>
+
+          <div className="flex items-center gap-4">
+            <LanguageSwitcher currentLang={lang} />
+            <ThemeToggle labels={theme} />
+          </div>
+        </div>
+
+        {/* Mobile UI Controls */}
+        <div className="flex items-center gap-3 lg:hidden relative z-[110]">
+          <a 
+            href={resumeData.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2.5 bg-blue-600 text-white rounded-full shadow-lg active:scale-90 transition-transform"
+            aria-label={`${resumeData.label} (${lang})`}
+          >
+            <FileText size={20} />
+          </a>
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2 text-slate-900 dark:text-white focus:outline-none"
+            aria-expanded={isOpen}
+            aria-label={isOpen ? menu.close : menu.open}
+          >
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu Overlay - Tailwind 4.2 Smooth Transitions */}
+      <div 
+        className={`lg:hidden fixed inset-0 z-[100] bg-white dark:bg-[#020617] transition-all duration-500 ease-in-out ${
+          isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        }`}
+      >
+        <div className="flex flex-col h-full justify-center p-10 gap-8">
+          {internalLinks.map((link, idx) => (
+            <Link 
+              key={link.id} 
+              href={link.href}
+              onClick={() => setIsOpen(false)}
+              className="text-4xl font-black text-slate-900 dark:text-white flex items-baseline gap-4 group"
+            >
+              <span className="text-blue-600 text-sm font-mono opacity-70">0{idx + 1}</span>
+              <span className="group-hover:translate-x-3 transition-transform duration-300">{link.label}</span>
+            </Link>
+          ))}
+          
+          <div className="mt-10 pt-10 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center gap-6">
+             <div className="flex flex-col gap-2">
+               <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                 {common.languageSwitcher}
+               </span>
+               <LanguageSwitcher currentLang={lang} />
+             </div>
+             <div className="flex flex-col gap-2">
+               <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                 {theme.system}
+               </span>
+               <ThemeToggle labels={theme} />
+             </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/PageWrapper.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client'
+
+import type { ReactNode, ReactElement } from 'react'
+import { ScrollSpyProvider } from '@/contexts/scroll-spy.client'
+import type { CommonDictionary } from '@/types/dictionary'
+
+/**
+ * ID estável e type-safe do main.
+ * Nunca traduzido.
+ */
+export const MAIN_CONTENT_ID = 'main-content' as const
+
+interface PageWrapperProps {
+  readonly children: ReactNode
+  readonly common: CommonDictionary
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                SKIP LINK                                   */
+/* -------------------------------------------------------------------------- */
+
+interface SkipLinkProps {
+  readonly label: string
+  readonly targetId: string
+}
+
+function SkipLink({
+  label,
+  targetId,
+}: SkipLinkProps): ReactElement {
+  return (
+    <a
+      href={`#${targetId}`}
+      className="
+        sr-only
+        focus:not-sr-only
+        focus:fixed
+        focus:top-4
+        focus:left-4
+        focus:z-50
+        focus:rounded-xl
+        focus:bg-background
+        focus:px-4
+        focus:py-2
+        focus:text-sm
+        focus:font-medium
+        focus:shadow-lg
+        transition
+      "
+    >
+      {label}
+    </a>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              PAGE WRAPPER                                  */
+/* -------------------------------------------------------------------------- */
+
+export default function PageWrapper({
+  children,
+  common,
+}: PageWrapperProps): ReactElement {
+  return (
+    <ScrollSpyProvider>
+      <div className="min-h-screen flex flex-col bg-background text-foreground">
+
+        {/* Acessibilidade multilíngue */}
+        <SkipLink
+          label={common.skipToContent}
+          targetId={MAIN_CONTENT_ID}
+        />
+
+        <main
+          id={MAIN_CONTENT_ID}
+          className="flex-1 outline-none"
+          tabIndex={-1}
+        >
+          {children}
+        </main>
+
+      </div>
+    </ScrollSpyProvider>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/PortfolioGrid.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+import { useMemo } from 'react';
+import { ProjectCard } from './ProjectCard';
+
+import type { ProjectDomain } from '@/domain/projects';
+import type { Dictionary } from '@/types/dictionary';
+
+interface PortfolioGridProps {
+  readonly projects?: readonly ProjectDomain[];
+  readonly lang: string;
+  readonly dict: Dictionary;
+}
+
+interface ProjectGroup {
+  readonly name: string;
+  readonly projects: ProjectDomain[];
+}
+
+export function PortfolioGrid({
+  projects = [],
+  dict
+}: PortfolioGridProps) {
+
+  const states = dict?.states;
+  const labels = dict?.projects;
+
+  const groupedProjects = useMemo((): ProjectGroup[] => {
+
+    if (!projects || projects.length === 0) return [];
+
+    const groups = new Map<string, ProjectDomain[]>();
+
+    projects.forEach((project) => {
+
+      const rawCategory =
+        project?.technology?.labelKey ?? "Outros";
+
+      const category = String(rawCategory);
+
+      const current = groups.get(category) ?? [];
+
+      groups.set(category, [...current, project]);
+
+    });
+
+    return Array.from(groups.entries()).map(
+      ([name, groupProjects]) => ({
+        name,
+        projects: [...groupProjects].sort((a, b) => {
+
+          if (a.isFirst && !b.isFirst) return -1;
+          if (!a.isFirst && b.isFirst) return 1;
+
+          if (a.isFeatured && !b.isFeatured) return -1;
+          if (!a.isFeatured && b.isFeatured) return 1;
+
+          const nameA = a.name ?? "";
+          const nameB = b.name ?? "";
+
+          return nameA.localeCompare(nameB);
+
+        })
+      })
+    );
+
+  }, [projects]);
+
+  if (!projects || projects.length === 0) {
+    return (
+      <section
+        id="projects"
+        className="py-24 text-center px-6"
+      >
+
+        <h3 className="text-3xl font-black mb-4">
+          {states?.emptyProjects?.title ?? "No projects"}
+        </h3>
+
+        <p className="text-slate-500">
+          {states?.emptyProjects?.description ?? "Coming soon"}
+        </p>
+
+      </section>
+    );
+  }
+
+  return (
+
+    <section id="projects" className="py-24">
+
+      <div className="container mx-auto px-6 max-w-7xl">
+
+        <header className="mb-20">
+
+          <h2 className="text-5xl font-black">
+            {labels?.title ?? "Projects"}
+          </h2>
+
+        </header>
+
+        <div className="space-y-24">
+
+          {groupedProjects.map((group) => (
+
+            <div key={group.name}>
+
+              <h3 className="text-sm font-bold uppercase mb-10 text-blue-600">
+                {group.name}
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                {group.projects.map((project) => (
+
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    dict={dict}
+                  />
+
+                ))}
+
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </div>
+
+    </section>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/ProjectCard.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+
+/**
+ * src/components/ProjectCard.tsx
+ * Versão: 6 de Abril de 2026 (Pós-depreciação de Brand Icons)
+ * Stack: Next.js 16.2.2 | React 19 | TS 6.0.2 | Tailwind 4.2 | Node 24
+ * Status: FIX BRAND ICONS | MULTILÍNGUE | 100% RESPONSIVO
+ */
+
+'use client';
+
+import {
+  ExternalLink,
+  Folder,
+  Star,
+  Target,
+  Lightbulb,
+  TrendingUp,
+} from 'lucide-react';
+
+import type { Dictionary } from '@/types/dictionary';
+import type { ProjectDomain } from '@/domain/projects';
+
+interface ProjectCardProps {
+  readonly project: ProjectDomain;
+  readonly dict: Dictionary;
+}
+
+export function ProjectCard({ project, dict }: ProjectCardProps) {
+  // Acesso seguro ao dicionário de projetos (suporta PT-BR, EN-US, ES-ES, ES-AR, ES-MX)
+  const labels = dict?.projects;
+
+  // 1. Extração de descrições estruturadas com Pipes (|)
+  const descParts = project.description?.includes('|')
+    ? project.description.split('|').map(p => p.trim())
+    : [project.description];
+
+  const problemText = descParts[0] || '';
+  const solutionText = descParts[1] || '';
+  const impactText = descParts[2] || '';
+
+  // 2. Formatação de Tags Técnicas (Tailwind 4.2 Optimized)
+  const formatTechTag = (topic: string): string => {
+    const uppercaseTechs = new Set([
+      'aws', 'ml', 'ai', 'sql', 'etl', 'genai', 'api', 'bi', 'neo4j', 'ia', 'nextjs'
+    ]);
+
+    const lower = topic.toLowerCase();
+    if (uppercaseTechs.has(lower)) return lower.toUpperCase();
+
+    return topic
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, l => l.toUpperCase());
+  };
+
+  /**
+   * 3. RESOLUÇÃO DO ERRO DE CATEGORIA
+   * Mapeia a tecnologia para o label correto no dicionário multilingue.
+   */
+  const getCategoryLabel = () => {
+    const techKey = project.technology.labelKey;
+    const categoryObj = labels?.categories[techKey] || labels?.categories?.dev;
+    return categoryObj?.labelKey || "Project";
+  };
+
+  return (
+    <article className="group relative flex h-full w-full flex-col rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl dark:border-slate-800/60 dark:bg-slate-950/40 md:p-8">
+      
+      {/* Badge de Destaque */}
+      {project.isFeatured && (
+        <div className="absolute -top-3 right-6 z-10">
+          <span className="flex items-center gap-1.5 rounded-full bg-blue-600 px-4 py-1.5 text-[10px] font-black uppercase tracking-wider text-white shadow-lg shadow-blue-500/20">
+            <Star size={10} fill="currentColor" />
+            {labels?.featuredLabel || "Featured"}
+          </span>
+        </div>
+      )}
+
+      <header className="mb-6 flex items-start justify-between">
+        <div className="rounded-xl bg-slate-100 p-3 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white dark:bg-slate-800 dark:text-blue-400">
+          <Folder size={24} strokeWidth={2.5} />
+        </div>
+
+        <div className="flex gap-1">
+          {project.htmlUrl && (
+            <a
+              href={project.htmlUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={labels?.viewProject}
+              className="rounded-lg p-2.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white"
+            >
+              {/* SVG MANUAL GITHUB - FIX PARA LUCIDE 1.7.0 */}
+              <svg className="size-5 fill-current" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+            </a>
+          )}
+
+          {project.homepage && (
+            <a
+              href={project.homepage}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={labels?.viewDemo}
+              className="rounded-lg p-2.5 text-slate-400 transition hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-800 dark:hover:text-blue-400"
+            >
+              <ExternalLink size={20} />
+            </a>
+          )}
+        </div>
+      </header>
+
+      {/* Área de Conteúdo */}
+      <div className="flex flex-grow flex-col">
+        <h3 className="mb-5 text-xl font-black tracking-tight text-slate-900 dark:text-white md:text-2xl">
+          {project.name.replace(/[_-]/g, ' ')}
+        </h3>
+
+        <div className="space-y-5 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+          {problemText && (
+            <CaseSection
+              icon={<Target size={14} className="text-red-500" />}
+              label={labels?.problem || "Problem"}
+              text={problemText}
+            />
+          )}
+
+          {solutionText && (
+            <CaseSection
+              icon={<Lightbulb size={14} className="text-amber-500" />}
+              label={labels?.solution || "Solution"}
+              text={solutionText}
+            />
+          )}
+
+          {impactText && (
+            <CaseSection
+              icon={<TrendingUp size={14} className="text-emerald-500" />}
+              label={labels?.impactLabel || "Impact"}
+              text={impactText}
+            />
+          )}
+        </div>
+      </div>
+
+      <footer className="mt-8 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-5 dark:border-slate-800/50">
+        <span className="rounded-full bg-blue-50 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-blue-700 dark:bg-blue-900/20 dark:text-blue-300">
+          {getCategoryLabel()}
+        </span>
+
+        {project.topics
+          .filter(t => !['portfolio', 'featured', 'destaque', 'primeiro'].includes(t.toLowerCase()))
+          .slice(0, 3)
+          .map(tech => (
+            <span
+              key={tech}
+              className="rounded-full border border-slate-200 px-3 py-1 text-[9px] font-bold uppercase tracking-tight text-slate-500 dark:border-slate-700 dark:text-slate-400"
+            >
+              {formatTechTag(tech)}
+            </span>
+          ))}
+      </footer>
+    </article>
+  );
+}
+
+/**
+ * Sub-componente CaseSection Tipado
+ */
+interface CaseSectionProps {
+  readonly icon: React.ReactNode;
+  readonly label: string;
+  readonly text: string;
+}
+
+function CaseSection({ icon, label, text }: CaseSectionProps) {
+  return (
+    <div className="group/item">
+      <div className="mb-1.5 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 dark:text-slate-500">
+        {icon}
+        {label}
+      </div>
+      <p className="font-medium text-slate-700 dark:text-slate-200">
+        {text}
+      </p>
+    </div>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/ProjectSection.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client'
+
+import { useMemo, useState } from 'react'
+import { Database, Filter, FolderSearch } from 'lucide-react'
+
+import { ProjectCard } from '@/components/ProjectCard'
+import type { Locale, Dictionary, ProjectCategories, CategoryDetail } from '@/types/dictionary'
+import type { ProjectDomain } from '@/domain/projects'
+
+/**
+ * PROJECT SECTION COMPONENT
+ * -----------------------------------------------------------------------------
+ * ✔ Stack: React 19, TS 6.0, Tailwind 4.2 (OK)
+ * ✔ I18n: Suporte PT/EN/ES via Dictionary (OK)
+ * ✔ Responsividade: Grid adaptativo e scroll lateral em mobile (OK)
+ * ✔ Correção: Tipagem de CategoryDetail para Object.entries (OK)
+ */
+
+type CategoryKey = keyof ProjectCategories
+type ActiveCategory = 'all' | CategoryKey
+
+interface ProjectSectionProps {
+  readonly projects: ReadonlyArray<ProjectDomain>
+  readonly lang: Locale
+  readonly dict: Dictionary
+}
+
+export default function ProjectSection({
+  projects,
+  dict,
+}: ProjectSectionProps) {
+  const [activeCategory, setActiveCategory] = useState<ActiveCategory>('all')
+
+  const projectDict = dict.projects
+  const statesDict = dict.states
+
+  // Correção da Tipagem: Object.entries agora reconhece que o valor é CategoryDetail
+  const categoryEntries = Object.entries(projectDict.categories) as Array<[CategoryKey, CategoryDetail]>
+
+  const filteredProjects = useMemo(() => {
+    const base =
+      activeCategory === 'all'
+        ? projects
+        : projects.filter(
+            p => p.technology.labelKey === activeCategory,
+          )
+
+    // Ordenação robusta (TS 6.0 optimized)
+    return [...base].sort((a, b) => {
+      if (a.isFirst !== b.isFirst) return a.isFirst ? -1 : 1
+      if (a.isFeatured !== b.isFeatured) return a.isFeatured ? -1 : 1
+      return 0
+    })
+  }, [projects, activeCategory])
+
+  return (
+    <section
+      id="projects"
+      aria-labelledby="projects-title"
+      className="py-16 bg-white dark:bg-[#020617] transition-colors duration-300"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <header className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10 mb-16">
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-500/20">
+                <Database className="w-6 h-6" />
+              </div>
+              <h2
+                id="projects-title"
+                className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white"
+              >
+                {projectDict.title}
+              </h2>
+            </div>
+
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400 ml-1">
+              {filteredProjects.length} {statesDict.emptyProjects.cta}
+            </p>
+          </div>
+
+          <nav aria-label={dict.common.navigation} className="w-full lg:w-auto">
+            <div className="flex items-center gap-2 mb-4 text-[9px] font-black uppercase tracking-widest text-slate-400">
+              <Filter className="w-3 h-3" />
+              {dict.common.navigation}
+            </div>
+
+            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
+              <FilterButton
+                active={activeCategory === 'all'}
+                onClick={() => setActiveCategory('all')}
+                label={projectDict.viewAll}
+              />
+
+              {categoryEntries.map(([key, category]) => (
+                <FilterButton
+                  key={key}
+                  active={activeCategory === key}
+                  onClick={() => setActiveCategory(key)}
+                  // Acessamos .labelKey conforme definido no seu JSON/Interface
+                  label={category.labelKey}
+                />
+              ))}
+            </div>
+          </nav>
+        </header>
+
+        {/* Grid Responsivo Tailwind 4.2 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[400px]">
+          {filteredProjects.length > 0 ? (
+            filteredProjects.map(project => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                dict={dict}
+              />
+            ))
+          ) : (
+            <EmptyState
+              title={statesDict.emptyProjects.title}
+              message={statesDict.emptyProjects.description}
+            />
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function FilterButton({
+  active,
+  label,
+  onClick,
+}: {
+  active: boolean
+  label: string
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`whitespace-nowrap px-6 py-2.5 rounded-xl border-2 text-[9px] font-black uppercase tracking-widest transition-all duration-300 cursor-pointer ${
+        active
+          ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
+          : 'border-slate-200 text-slate-500 hover:border-blue-400 hover:text-blue-500 dark:border-slate-800'
+      }`}
+    >
+      {label}
+    </button>
+  )
+}
+
+function EmptyState({
+  title,
+  message,
+}: {
+  title: string
+  message: string
+}) {
+  return (
+    <div className="col-span-full flex flex-col items-center justify-center py-24 rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
+      <div className="p-4 rounded-full bg-slate-50 dark:bg-slate-900 mb-6">
+        <FolderSearch className="w-12 h-12 text-slate-300 dark:text-slate-700" />
+      </div>
+      <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{title}</h3>
+      <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+        {message}
+      </p>
+    </div>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/ProxyPage.tsx
+
+
+TEM ESSE CONTEÚDO 
+
+
+
+'use client';
+
+// src/components/ProxyPage.tsx
+
+import type { ReactNode } from "react";
+import { notFound } from "next/navigation";
+
+import type { Locale } from "@/types/dictionary";
+import { isValidLocale } from "@/dictionaries/locales";
+
+interface ProxyPageProps {
+  lang: Locale;
+  children: ReactNode;
+}
+
+/**
+ * ProxyPage (Server Component)
+ * -----------------------------------------------------------------------------
+ * Responsável por:
+ * - Validar locale dinamicamente
+ * - Servir como wrapper seguro para páginas multilíngues
+ *
+ * ✔ Next.js 16 App Router compliant
+ * ✔ TypeScript 6 strict safe
+ * ✔ Multilíngue (pt, en, es)
+ * ✔ SSR safe
+ * ✔ Sem render props (arquitetura moderna)
+ */
+export default function ProxyPage({
+  lang,
+  children,
+}: ProxyPageProps) {
+  if (!isValidLocale(lang)) {
+    notFound();
+  }
+
+  return <>{children}</>;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/ShareArticle.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+/**
+ * src/components/ShareArticle.tsx
+ * Versão: Abril de 2026
+ * Stack: Next.js 16.2.2 | React 19 | TS 6.0.2 | Tailwind 4.2 | Node 24
+ * Status: COMPATÍVEL COM .MD/.MDX | MULTILÍNGUE (PT, EN, ES-ES, ES-AR, ES-MX)
+ */
+
+"use client";
+
+import { useEffect, useState, useMemo } from "react";
+import type { Dictionary, Locale } from "@/types/dictionary";
+
+interface ShareArticleProps {
+  readonly title: string;
+  readonly dict: Dictionary;
+  readonly lang: Locale;
+}
+
+export default function ShareArticle({ title, dict, lang }: ShareArticleProps) {
+  const [shareUrl, setShareUrl] = useState<string>("");
+
+  // Hidratação segura da URL no lado do cliente (Node 24 Runtime ready)
+  useEffect(() => {
+    setShareUrl(window.location.href);
+  }, []);
+
+  /**
+   * LÓGICA DE TRADUÇÃO REGIONALIZADA (I18N) - TS 6.0 Strict
+   * Diferencia nuances entre as variantes de espanhol e português.
+   */
+  const labels = useMemo(() => {
+    const isPt = lang.startsWith("pt");
+    const isEn = lang.startsWith("en");
+    const isEs = lang.startsWith("es");
+
+    return {
+      question: isPt 
+        ? "Gostou do conteúdo?" 
+        : isEn 
+          ? "Enjoyed the content?" 
+          : lang === "es-AR"
+            ? "¿Te ha gustado o servido o contenido?" // Nuance argentina
+            : isEs 
+              ? "¿Te gustó el contenido?" // Espanha e México
+              : "Gostou do conteúdo?",
+      button: isPt 
+        ? "Compartilhar no LinkedIn" 
+        : isEn 
+          ? "Share on LinkedIn" 
+          : isEs 
+            ? "Compartir en LinkedIn"
+            : "Compartilhar no LinkedIn"
+    };
+  }, [lang]);
+
+  // Memorização da URL de compartilhamento para evitar recálculos no React 19
+  const linkedinUrl = useMemo(() => {
+    return `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+  }, [shareUrl]);
+
+  return (
+    <section className="mt-16 pt-10 border-t border-zinc-200 dark:border-zinc-800/60 not-prose animate-in fade-in duration-700">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+        
+        {/* TEXTO INFORMATIVO - RESPONSIVO E ACESSÍVEL */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="h-1 w-4 bg-blue-600 rounded-full" />
+            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 dark:text-blue-400">
+              {labels.question}
+            </h3>
+          </div>
+          <p className="text-sm md:text-base text-zinc-500 dark:text-zinc-400 font-medium max-w-sm leading-relaxed">
+            {dict.contact.subtitle}
+          </p>
+        </div>
+
+        {/* BOTÃO DE COMPARTILHAMENTO - TAILWIND 4.2 ENGINE */}
+        <a
+          href={linkedinUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${labels.button}: ${title}`}
+          className="group relative inline-flex items-center justify-center gap-4 bg-[#0077b5] hover:bg-[#005c8d] text-white px-10 py-5 rounded-[1.5rem] font-black text-xs md:text-sm uppercase tracking-widest transition-all duration-500 hover:scale-[1.03] active:scale-95 shadow-2xl shadow-blue-500/20"
+        >
+          {/* ÍCONE LINKEDIN COM ANIMAÇÃO TURBOPACK */}
+          <svg 
+            className="w-5 h-5 fill-current transition-transform duration-700 group-hover:rotate-12" 
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+          </svg>
+          
+          <span className="relative z-10">
+            {labels.button}
+          </span>
+
+          {/* EFEITO VISUAL 2026: GLASSMORPHISM OVERLAY */}
+          <div className="absolute inset-0 rounded-[1.5rem] bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </a>
+      </div>
+    </section>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/StructuredData.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+// src/components/StructuredData.tsx
+export default function StructuredData({ lang }: { lang: string }) {
+  const baseUrl = "https://portfoliosantossergio.vercel.app";
+  
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "name": "Sérgio Santos",
+        "jobTitle": "Cientista de Dados",
+        "url": `${baseUrl}/${lang}`,
+        "image": `${baseUrl}/images/sergio-santos-profile.png`,
+        "description": "Especialista em Ciência de Dados e Sistemas Críticos.",
+        "sameAs": [
+          "https://www.linkedin.com/in/santossergioluiz",
+          "https://github.com/Santosdevbjj"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "url": `${baseUrl}/${lang}`,
+        "name": "Sérgio Santos Portfolio",
+        "inLanguage": lang
+      }
+    ]
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/TableOfContents.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+/**
+ * src/components/TableOfContents.tsx
+ * Versão: Abril de 2026
+ * Stack: Next.js 16.2.2 | React 19 | TS 6.0.2 | Tailwind 4.2 | Node 24
+ * Status: COMPATÍVEL COM .MD/.MDX | MULTILÍNGUE (PT, EN, ES-ES, ES-AR, ES-MX)
+ */
+
+"use client";
+
+import { useEffect, useState, useMemo, useCallback } from "react";
+import type { Dictionary, Locale } from "@/types/dictionary";
+
+interface Heading {
+  id: string;
+  text: string;
+  level: number;
+}
+
+interface TableOfContentsProps {
+  readonly dict: Dictionary;
+  readonly lang: Locale; 
+}
+
+export default function TableOfContents({ dict, lang }: TableOfContentsProps) {
+  const [headings, setHeadings] = useState<Heading[]>([]);
+  const [activeId, setActiveId] = useState<string>("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  /**
+   * I18N REGIONAL (TS 6.0 Safe):
+   * Baseado no dicionário e na localidade atual.
+   */
+  const tocTitle = useMemo(() => {
+    const isPt = lang.startsWith("pt");
+    const isEn = lang.startsWith("en");
+    
+    if (isPt) return "Índice do Artigo";
+    if (isEn) return "Table of Contents";
+    
+    // Variantes de Espanhol (Regionalismo 2026)
+    if (lang === "es-AR") return "Contenido del Artículo";
+    if (lang === "es-MX") return "Tabla de Contenido";
+    return "Índice de Contenidos"; // es-ES fallback
+  }, [lang]);
+
+  const extractHeadings = useCallback(() => {
+    const article = document.querySelector("article");
+    if (!article) return;
+
+    const elements = Array.from(article.querySelectorAll("h2, h3")).map((elem) => {
+      const text = elem.textContent || "";
+      const id = elem.id || text.toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/[^\w-]/g, "");
+      
+      if (!elem.id) elem.id = id;
+      
+      return { id, text, level: Number(elem.tagName.charAt(1)) };
+    });
+
+    setHeadings(elements);
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(extractHeadings, 150);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveId(entry.target.id);
+        });
+      },
+      { rootMargin: "-100px 0% -60% 0%", threshold: 1.0 }
+    );
+
+    document.querySelectorAll("article h2, article h3").forEach((h) => observer.observe(h));
+    
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [extractHeadings]);
+
+  if (headings.length === 0) return null;
+
+  return (
+    <nav className="w-full lg:w-72 not-prose" aria-label={tocTitle}>
+      {/* MOBILE ACCORDION */}
+      <div className="lg:hidden mb-8">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full flex flex-col gap-1 p-5 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl transition-all active:scale-95"
+        >
+          <div className="flex items-center justify-between w-full">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 dark:text-blue-400">
+              {tocTitle}
+            </span>
+            <div className={`transition-transform duration-500 ${isOpen ? 'rotate-180' : ''}`}>
+              <svg className="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+          <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400 truncate w-full text-left">
+            {headings.find(h => h.id === activeId)?.text || dict.common.loading}
+          </span>
+        </button>
+      </div>
+
+      {/* DESKTOP SIDEBAR */}
+      <div className={`
+        ${isOpen ? 'max-h-[80vh] opacity-100 mb-10' : 'max-h-0 opacity-0 lg:max-h-none lg:opacity-100'} 
+        overflow-y-auto lg:overflow-visible transition-all duration-700
+        lg:border-l lg:border-zinc-200 lg:dark:border-zinc-800 lg:pl-8
+      `}>
+        <h4 className="hidden lg:block text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400 dark:text-zinc-600 mb-8">
+          {tocTitle}
+        </h4>
+        
+        <ul className="space-y-5">
+          {headings.map((h) => (
+            <li key={h.id} style={{ paddingLeft: h.level > 2 ? '1.25rem' : '0' }} className="relative">
+              <a 
+                href={`#${h.id}`}
+                onClick={(e) => {
+                  setIsOpen(false);
+                  e.preventDefault();
+                  document.getElementById(h.id)?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className={`
+                  text-sm font-bold block leading-snug transition-all duration-300
+                  ${activeId === h.id 
+                    ? "text-blue-600 dark:text-blue-400 translate-x-2" 
+                    : "text-zinc-400 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-200"
+                  }
+                `}
+              >
+                {activeId === h.id && (
+                  <span className="absolute -left-8 lg:-left-[33px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.5)]" />
+                )}
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/ThemeToggle.tsx
+
+TEM ESSE CONTEÚDO 
+
+'use client'
+
+import * as React from 'react'
+import { Moon, Sun, Monitor } from 'lucide-react'
+import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes'
+import type { CommonDictionary } from '@/types/dictionary'
+import clsx from 'clsx'
+
+/* THEME PROVIDER */
+export function ThemeProvider({ children }: { readonly children: React.ReactNode }) {
+  return (
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      {children}
+    </NextThemesProvider>
+  )
+}
+
+/* THEME TOGGLE */
+interface ThemeToggleProps {
+  readonly labels: CommonDictionary['theme']
+}
+
+export function ThemeToggle({ labels }: ThemeToggleProps) {
+  const { resolvedTheme, setTheme, theme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return <div className="w-11 h-11 rounded-xl bg-slate-200/20 animate-pulse" />
+  }
+
+  const cycleTheme = () => {
+    const themes = ['light', 'dark', 'system'] as const
+    const currentTheme = (theme as typeof themes[number]) || 'system'
+    const nextIndex = (themes.indexOf(currentTheme) + 1) % themes.length
+    setTheme(themes[nextIndex] ?? 'system')
+  }
+
+  const themeKey = (theme as keyof typeof labels) || 'system'
+  const currentLabel = labels[themeKey] || labels.system
+
+  const buttonClasses = clsx(
+    'group relative w-11 h-11 flex items-center justify-center rounded-xl',
+    'bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800/60',
+    'backdrop-blur-md hover:scale-105 active:scale-95',
+    'transition-all duration-300 shadow-sm ring-brand-500/50 hover:ring-2'
+  )
+
+  return (
+    <button
+      type="button"
+      onClick={cycleTheme}
+      aria-label={currentLabel}
+      title={currentLabel}
+      role="switch"
+      aria-checked={resolvedTheme === 'dark'}
+      className={buttonClasses}
+    >
+      <div className="relative w-5 h-5 flex items-center justify-center">
+        {resolvedTheme === 'dark' ? (
+          <Moon
+            className="text-amber-400 transition-all duration-500 group-hover:rotate-12"
+            size={20}
+          />
+        ) : (
+          <Sun
+            className="text-amber-600 transition-all duration-500 group-hover:rotate-90"
+            size={20}
+          />
+        )}
+        {theme === 'system' && (
+          <Monitor
+            size={12}
+            className="absolute -bottom-1 -right-1 text-slate-400 opacity-70"
+          />
+        )}
+      </div>
+    </button>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/error-display.tsx
+
+TEM ESSE CONTEÚDO 
+
+'use client';
+
+import { useMemo } from 'react';
+import type { ErrorDictionary, ErrorKey } from '@/types/error-dictionary';
+import type { Locale } from '@/types/dictionary';
+import { RefreshCcw, AlertTriangle, Fingerprint } from 'lucide-react';
+
+/**
+ * ERROR DISPLAY COMPONENT - SÉRGIO SANTOS PORTFOLIO
+ * -----------------------------------------------------------------------------
+ * ✔ Stack: Next.js 16.2, React 19, TS 6.0, Tailwind 4.2
+ * ✔ I18n: Suporte regional (PT-BR, EN-US, ES-ES, ES-AR, ES-MX)
+ * ✔ Responsivo: Mobile-first com foco em legibilidade e acessibilidade
+ */
+
+interface ErrorDisplayProps {
+  readonly errorKey: ErrorKey;
+  readonly errorId?: string;
+  readonly dictionary: ErrorDictionary;
+  readonly lang: Locale;
+  readonly reset: () => void;
+}
+
+export function ErrorDisplay({
+  errorKey,
+  errorId,
+  dictionary,
+  lang,
+  reset,
+}: ErrorDisplayProps) {
+  
+  // Memoização dos dados do erro para estabilidade no React 19
+  const errorData = useMemo(() => 
+    dictionary[errorKey] ?? dictionary.InternalServerError, 
+  [errorKey, dictionary]);
+
+  /**
+   * TRADUÇÃO REGIONAL DO BOTÃO (I18N)
+   * Abrange as variações solicitadas de Espanhol e Português/Inglês
+   */
+  const buttonLabel = useMemo(() => {
+    const isPt = lang.startsWith('pt');
+    const isEn = lang.startsWith('en');
+    const isEs = lang.startsWith('es');
+
+    if (isPt) return 'Tentar novamente';
+    if (isEn) return 'Try again';
+    if (isEs) {
+      // Diferenciação regional para Argentina e México vs Espanha
+      return (lang === 'es-AR' || lang === 'es-MX') 
+        ? 'Intentar de nuevo' 
+        : 'Reintentar';
+    }
+    return 'Tentar novamente';
+  }, [lang]);
+
+  return (
+    <div className="w-full max-w-2xl mx-auto px-6 py-20 flex flex-col items-center text-center animate-in fade-in zoom-in duration-500">
+      
+      {/* ÍCONE DE ESTADO DE ERRO */}
+      <div className="mb-8 p-5 rounded-3xl bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/50">
+        <AlertTriangle className="w-12 h-12 text-red-500" strokeWidth={1.5} />
+      </div>
+
+      <h1 className="mb-4 text-3xl font-black tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+        {errorData.title}
+      </h1>
+
+      <p className="mb-10 text-lg text-slate-600 dark:text-slate-400 max-w-md leading-relaxed">
+        {errorData.message}
+      </p>
+
+      {/* CONTAINER DE AÇÃO E ID TÉCNICO */}
+      <div className="w-full mb-10 rounded-[2rem] border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 p-8 backdrop-blur-sm">
+        <p className="text-sm font-bold text-slate-700 dark:text-slate-300">
+          {errorData.action}
+        </p>
+
+        {errorId && (
+          <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col items-center gap-2">
+            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+              <Fingerprint className="w-3 h-3" />
+              <span>Reference ID</span>
+            </div>
+            <code className="px-4 py-2 rounded-lg bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[11px] font-mono font-bold text-blue-600 dark:text-blue-400 shadow-sm">
+              {errorId}
+            </code>
+          </div>
+        )}
+      </div>
+
+      {/* BOTÃO DE RESET COM FEEDBACK TÁTIL */}
+      <button
+        onClick={reset}
+        className="group flex items-center gap-3 rounded-2xl bg-slate-900 dark:bg-blue-600 px-10 py-4 font-black text-white hover:bg-slate-800 dark:hover:bg-blue-700 transition-all active:scale-[0.96] shadow-2xl shadow-blue-500/20"
+      >
+        <RefreshCcw className="w-5 h-5 transition-transform duration-500 group-hover:rotate-180" />
+        <span className="tracking-tight">{buttonLabel}</span>
+      </button>
+    </div>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/mdx-layout.tsx
+
+TEM ESSE CONTEÚDO 
+
+/**
+ * src/components/mdx-layout.tsx
+ * Versão: Abril de 2026
+ * Stack: Next.js 16.2.2 | React 19 | TS 6.0.2 | Tailwind 4.2 | Node 24
+ * Status: TOTALMENTE RESPONSIVO & MULTILÍNGUE (PT, EN, ES-ES, ES-AR, ES-MX)
+ */
+
+'use client';
+
+import Link from "next/link";
+import { useMemo } from "react";
+import TableOfContents from "./TableOfContents";
+import ShareArticle from "./ShareArticle";
+import type { Dictionary, Locale } from "@/types/dictionary";
+
+interface MdxLayoutProps {
+  readonly children: React.ReactNode;
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+}
+
+export default function MdxLayout({ children, lang, dict }: MdxLayoutProps) {
+  
+  /**
+   * SEO & TITLES (TS 6.0 Safe):
+   * Recupera o título da página de artigos de forma resiliente.
+   */
+  const articlesTitle = useMemo(() => {
+    // Acesso seguro ao dicionário evitando 'undefined' em tempo de execução
+    const pageSeoTitle = dict.seo.pages?.["articles"]?.title;
+    return pageSeoTitle ?? dict.articles?.title ?? "Artigos";
+  }, [dict]);
+
+  /**
+   * I18N DINÂMICO (Português, Inglês, Espanhol Regional):
+   * Constrói a navegação baseada na gramática correta de cada localidade.
+   */
+  const backLabel = useMemo(() => {
+    const action = dict.states.emptyProjects.cta; // Ex: "Voltar" / "Back" / "Volver"
+    
+    if (lang.startsWith('pt')) return `${action} para ${articlesTitle}`;
+    if (lang.startsWith('en')) return `${action} to ${articlesTitle}`;
+    
+    // Suporte para es-ES, es-AR, es-MX
+    if (lang.startsWith('es')) {
+      const preposition = lang === 'es-AR' ? 'hacia' : 'a'; // Ajuste sutil regional
+      return `${action} ${preposition} ${articlesTitle}`;
+    }
+
+    return `${action} ${articlesTitle}`;
+  }, [lang, dict, articlesTitle]);
+
+  // Título para o ShareArticle (Fallback seguro)
+  const currentTitle = dict.articles.items?.[0]?.title ?? articlesTitle;
+
+  return (
+    <main className="min-h-screen bg-zinc-50 dark:bg-zinc-950 pt-24 pb-20 selection:bg-blue-500/20 transition-colors duration-700">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-12">
+        
+        {/* COLUNA DO CONTEÚDO (Prioridade Mobile) */}
+        <article className="flex-1 min-w-0 order-2 lg:order-1 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+          
+          {/* BREADCRUMB RESPONSIVO */}
+          <nav className="mb-12" aria-label="Breadcrumb">
+            <Link 
+              href={`/${lang}/artigos`} 
+              className="group inline-flex items-center text-[10px] font-black uppercase tracking-[0.25em] text-zinc-500 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 transition-all"
+            >
+              <span className="mr-4 flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-200 dark:border-zinc-800 group-hover:border-blue-500 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-sm">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                </svg>
+              </span>
+              {backLabel}
+            </Link>
+          </nav>
+
+          {/* MOTOR DE TIPOGRAFIA TAILWIND 4.2 - SUPORTE .MD E .MDX */}
+          <div className="prose prose-zinc dark:prose-invert 
+            max-w-none
+            sm:prose-lg
+            lg:prose-xl
+            prose-headings:font-black prose-headings:tracking-tighter
+            prose-h1:text-5xl md:text-6xl lg:text-7xl prose-h1:leading-[0.9] prose-h1:mb-12
+            prose-p:leading-relaxed prose-p:text-zinc-600 dark:prose-p:text-zinc-400
+            prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:decoration-2 prose-a:underline-offset-4
+            prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:bg-blue-50/30 dark:prose-blockquote:bg-blue-900/10 prose-blockquote:py-2 prose-blockquote:rounded-r-3xl
+            prose-pre:rounded-[2rem] prose-pre:border prose-pre:border-zinc-200 dark:prose-pre:border-zinc-800 prose-pre:bg-zinc-950 prose-pre:shadow-2xl
+            prose-img:rounded-[2.5rem] prose-img:shadow-premium prose-img:mx-auto">
+            {children}
+          </div>
+
+          {/* FOOTER DO ARTIGO: SHARE & INTERAÇÃO */}
+          <footer className="mt-24 pt-12 border-t border-zinc-200 dark:border-zinc-900">
+            <ShareArticle 
+              title={currentTitle} 
+              dict={dict} 
+              lang={lang} 
+            />
+          </footer>
+        </article>
+
+        {/* SIDEBAR (Sticky no Desktop) */}
+        <aside className="lg:w-80 w-full order-1 lg:order-2">
+          <div className="lg:sticky lg:top-32 space-y-10">
+            
+            {/* Componente de Sumário (TOC) */} 
+            <TableOfContents dict={dict} lang={lang} />
+            
+            {/* CARD DO AUTOR - RESPONSIVIDADE TAILWIND 4.2 */}
+            <div className="hidden lg:block p-8 rounded-[3rem] bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="h-1 w-8 bg-blue-600 rounded-full" />
+                <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
+                  {dict.meta.author}
+                </h4>
+              </div>
+              
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed italic">
+                "{dict.hero.headline}"
+              </p>
+              
+              <div className="mt-8 pt-6 border-t border-zinc-50 dark:border-zinc-800/50">
+                <div className="flex items-center justify-between text-[9px] font-bold text-zinc-400 uppercase tracking-widest">
+                  <span>{dict.about.stats.automation}</span>
+                  <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </aside>
+      </div>
+    </main>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/profile-form.tsx
+
+TEM ESSE CONTEÚDO 
+
+'use client';
+
+import { useActionState, useMemo, useRef } from 'react';
+import { updateProfileAction } from '@/actions/user-actions';
+import type { ErrorKey } from '@/types/error-dictionary';
+import type { Locale } from '@/types/dictionary';
+import { getErrorDictionary } from '@/dictionaries/errors';
+import ErrorBox from '@/components/ErrorBox';
+import { Loader2, Save, User } from 'lucide-react';
+
+/**
+ * PROFILE FORM COMPONENT - SÉRGIO SANTOS PORTFOLIO
+ * -----------------------------------------------------------------------------
+ * ✔ React 19: useActionState para gerenciamento de formulários nativo
+ * ✔ Next.js 16.2: Server Actions com feedback de UI pendente
+ * ✔ Tailwind 4.2: Input ring focus e transições suaves
+ * ✔ Fix: Removido retryLabel (agora gerenciado internamente pelo ErrorBox via prop lang)
+ */
+
+interface ProfileFormProps {
+  readonly locale: string;
+}
+
+export function ProfileForm({ locale }: ProfileFormProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  
+  // Cast seguro para o tipo Locale do dicionário
+  const lang = locale as Locale;
+
+  // React 19 Hook para Server Actions
+  const [state, formAction, isPending] = useActionState(
+    updateProfileAction,
+    null
+  );
+
+  // Memoiza o dicionário de erros para performance (Node 24 / React 19)
+  const errorDict = useMemo(() => {
+    return getErrorDictionary(lang);
+  }, [lang]);
+
+  /**
+   * TRADUÇÕES DO FORMULÁRIO (I18N REGIONAL)
+   */
+  const i18n = useMemo(() => {
+    const isEn = lang.startsWith('en');
+    const isEs = lang.startsWith('es');
+    const isAr = lang === 'es-AR';
+    const isMx = lang === 'es-MX';
+
+    return {
+      placeholder: isEn ? 'Full name' : isEs ? 'Nombre completo' : 'Nome completo',
+      save: isPending 
+        ? (isEn ? 'Saving...' : isEs ? 'Guardando...' : 'Salvando...') 
+        : (isEn ? 'Save Changes' : isEs ? (isAr || isMx ? 'Guardar Cambios' : 'Guardar') : 'Salvar Alterações'),
+      success: isEn 
+        ? 'Profile updated successfully!' 
+        : isEs ? '¡Perfil actualizado con éxito!' : 'Perfil atualizado com sucesso!'
+    };
+  }, [lang, isPending]);
+
+  return (
+    <div className="w-full max-w-lg mx-auto p-1 sm:p-0 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <form action={formAction} className="space-y-6 bg-white dark:bg-slate-900 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-premium">
+        
+        <div className="space-y-2">
+          <label 
+            htmlFor="name" 
+            className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 ml-1"
+          >
+            {i18n.placeholder}
+          </label>
+          <div className="relative group">
+            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+            <input
+              ref={inputRef}
+              id="name"
+              name="name"
+              type="text"
+              placeholder={i18n.placeholder}
+              className="w-full bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 pl-11 pr-4 py-3.5 text-sm sm:text-base focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+              required
+            />
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          disabled={isPending}
+          className="w-full flex items-center justify-center gap-3 bg-slate-900 dark:bg-blue-600 hover:bg-blue-700 text-white font-black py-4 px-6 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.97] shadow-lg shadow-blue-500/20"
+        >
+          {isPending ? (
+            <Loader2 className="w-5 h-5 animate-spin" />
+          ) : (
+            <Save className="w-5 h-5" />
+          )}
+          <span className="tracking-tight">{i18n.save}</span>
+        </button>
+      </form>
+
+      {/* FEEDBACK DE ERRO */}
+      {state?.success === false && state.error && (
+        <div className="mt-6">
+          <ErrorBox
+            errorKey={state.error.name as ErrorKey}
+            dictionary={errorDict}
+            lang={lang} // Prop necessária para as traduções internas do ErrorBox
+            errorId={state.error.errorId}
+            onRetry={() => inputRef.current?.focus()}
+          />
+        </div>
+      )}
+
+      {/* FEEDBACK DE SUCESSO */}
+      {state?.success && (
+        <div className="mt-6 p-4 rounded-2xl bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800/50 flex items-center justify-center gap-3 text-green-700 dark:text-green-400 font-bold text-sm animate-in zoom-in duration-300">
+          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          {i18n.success}
+        </div>
+      )}
+    </div>
+  );
+} 
 
 
 
