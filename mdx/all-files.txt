@@ -14928,3 +14928,4850 @@ export function ProfileForm({ locale }: ProfileFormProps) {
 
 
 
+
+
+
+O ARQUIVO src/components/error/ErrorBoundaryView.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+import { useMemo, useEffect } from 'react';
+import { getErrorDictionary } from '@/dictionaries/errors';
+import {
+  type SupportedLocale,
+  isSupportedLocale,
+} from '@/lib/i18n/locale';
+import type { ErrorKey } from '@/types/error-dictionary';
+import type { Locale } from '@/types/dictionary';
+import { ErrorDisplay } from '@/components/error-display';
+
+/**
+ * ERROR BOUNDARY VIEW - SÉRGIO SANTOS PORTFOLIO
+ * -----------------------------------------------------------------------------
+ * ✔ Next.js 16.2.0: Suporte a global-error.tsx (PPR Ready)
+ * ✔ React 19: Otimização de renderização e hidratação concorrente
+ * ✔ TS 6.0 FIX: Proteção contra undefined em acessos de array (browserLangs)
+ * ✔ Multilíngue: Detecção automática PT, EN, ES (ES-ES, ES-AR, ES-MX)
+ * ✔ Responsivo: Layout fluido com Tailwind 4.2
+ */
+
+interface ErrorBoundaryViewProps {
+  readonly error: Error & { digest?: string };
+  readonly reset: () => void;
+  readonly withHtmlWrapper?: boolean;
+}
+
+export function ErrorBoundaryView({
+  error,
+  reset,
+  withHtmlWrapper = false,
+}: ErrorBoundaryViewProps) {
+  
+  useEffect(() => {
+    // Monitoramento de erros críticos em ambiente Node 24 (Vercel)
+    if (process.env.NODE_ENV === 'production') {
+      console.error('[Critical Error Boundary Event]:', {
+        digest: error.digest,
+        message: error.message,
+        name: error.name
+      });
+    }
+  }, [error]);
+
+  /**
+   * RESOLUÇÃO DINÂMICA DE IDIOMA:
+   * Implementação robusta para TS 6.0 evitando erros de 'possibly undefined'.
+   */
+  const locale = useMemo<SupportedLocale>(() => {
+    // SSR Fallback
+    if (typeof navigator === 'undefined') return 'pt-BR';
+    
+    const browserLangs = navigator.languages || [navigator.language];
+    
+    // 1. Tenta encontrar um locale suportado exato
+    const preferred = browserLangs.find(lang => isSupportedLocale(lang));
+    if (preferred) return preferred as SupportedLocale;
+
+    // 2. Fallbacks seguros usando Optional Chaining para TS 6.0
+    const primary = browserLangs[0]; // Pode ser undefined
+    
+    if (primary?.startsWith('en')) return 'en-US';
+    if (primary?.startsWith('es')) return 'es-ES';
+
+    return 'pt-BR';
+  }, []);
+
+  const dictionary = useMemo(() => getErrorDictionary(locale), [locale]);
+
+  const errorKey = useMemo<ErrorKey>(() => {
+    const knownErrors: string[] = [
+      'NotFoundError',
+      'ValidationError',
+      'UnauthorizedError',
+      'ForbiddenError',
+      'TooManyRequestsError',
+      'UnprocessableEntityError',
+      'MethodNotAllowedError'
+    ];
+
+    return knownErrors.includes(error.name)
+      ? (error.name as ErrorKey)
+      : 'InternalServerError';
+  }, [error.name]);
+
+  /**
+   * INTERFACE DE ERRO (Totalmente Responsiva)
+   */
+  const content = (
+    <div className="min-h-[75vh] w-full flex items-center justify-center p-6 sm:p-12 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+      <ErrorDisplay
+        errorKey={errorKey}
+        dictionary={dictionary}
+        lang={locale as Locale}
+        reset={reset}
+        {...(error.digest ? { errorId: error.digest } : {})}
+      />
+    </div>
+  );
+
+  // Renderização para global-error.tsx (Erro de raiz)
+  if (withHtmlWrapper) {
+    return (
+      <html lang={locale}>
+        <body className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-blue-100 dark:selection:bg-blue-500/30">
+          <main className="w-full h-full">
+            {content}
+          </main>
+        </body>
+      </html>
+    );
+  }
+
+  return content;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/featured/FeaturedGrid.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+import ProjectCard from './ProjectCard';
+import type { FeaturedProject } from './projects.data';
+import type { Locale, Dictionary } from '@/types/dictionary';
+
+interface FeaturedGridProps {
+  readonly projects: readonly FeaturedProject[];
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+}
+
+/**
+ * Grid de projetos em destaque.
+ *
+ * ✔ Layout responsivo (Mobile → Desktop)
+ * ✔ Destaque visual para o primeiro projeto (Bento-style)
+ * ✔ Multilíngue por delegação (dict + lang)
+ * ✔ Alinhado com TS 6 e Next.js 16
+ */
+export default function FeaturedGrid({
+  projects,
+  lang,
+  dict,
+}: FeaturedGridProps) {
+  if (!projects.length) {
+    return (
+      <div
+        role="status"
+        aria-live="polite"
+        className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400"
+      >
+        <p className="text-sm">
+          {dict.states.emptyProjects.title}
+        </p>
+        <p className="mt-2 text-xs">
+          {dict.states.emptyProjects.description}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      role="list"
+      aria-label={dict.projects.featuredLabel}
+      className="
+        grid grid-cols-1 gap-8
+        sm:grid-cols-2
+        lg:grid-cols-3 lg:auto-rows-fr
+      "
+    >
+      {projects.map((project, index) => (
+        <div key={project.id} role="listitem">
+          <ProjectCard
+            project={project}
+            lang={lang}
+            dict={dict}
+            featured={index === 0}
+          />
+        </div>
+      ))}
+    </div>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/featured/FeaturedProjectsSection.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+// src/components/featured/FeaturedProjectsSection.tsx
+import FeaturedGrid from './FeaturedGrid';
+import type { Locale, Dictionary } from '@/types/dictionary';
+import { NavSection, getSectionId } from '@/domain/navigation';
+
+interface FeaturedProjectsSectionProps {
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+}
+
+export default function FeaturedProjectsSection({ lang, dict }: FeaturedProjectsSectionProps) {
+  
+  // 1. Extração segura dos dados brutos do JSON
+  const rawProjects = Array.isArray(dict.projects?.featuredProjects) 
+    ? dict.projects.featuredProjects 
+    : [];
+
+  // 2. Mapeamento para o formato que o FeaturedGrid espera (name, repoUrl, etc)
+  const projects = rawProjects.slice(0, 3).map((proj: any) => ({
+    id: proj.id || String(Math.random()),
+    name: proj.title || "Projeto",
+    description: proj.description || "",
+    repoUrl: proj.github || proj.repoUrl || "#",
+    liveUrl: proj.demo || proj.liveUrl || "",
+    image: proj.image || "/images/projects/placeholder.jpg",
+    categories: proj.categories || (proj.category ? [proj.category] : ["Tech"]),
+    priority: proj.priority || 1
+  }));
+
+  // Se não houver nada, não renderiza a seção
+  if (projects.length === 0) return null;
+
+  const sectionId = getSectionId(NavSection.PROJECTS);
+  const headingId = `${sectionId}-heading`;
+
+  return (
+    <section 
+      id={sectionId} 
+      className="relative border-y border-slate-100 bg-white py-24 dark:border-slate-900 dark:bg-[#020617]/50 sm:py-32"
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <header className="mb-16 max-w-3xl">
+          <span className="mb-4 inline-block rounded-full bg-blue-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+            {dict.projects?.featuredLabel || "Destaques"}
+          </span>
+          <h2 
+            id={headingId} 
+            className="mb-6 text-4xl font-black tracking-tight dark:text-white sm:text-5xl uppercase italic"
+          >
+            {dict.projects?.title || "Projetos"}
+          </h2>
+        </header>
+
+        {/* Enviando os projetos mapeados para o Grid */}
+        <FeaturedGrid
+          projects={projects as any}
+          lang={lang}
+          dict={dict}
+        />
+      </div>
+    </section>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/featured/ProjectCard.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+import type { FeaturedProject } from './projects.data';
+import type { Dictionary, Locale } from '@/types/dictionary';
+
+interface ProjectCardProps {
+  readonly project: FeaturedProject;
+  readonly lang: Locale;
+  readonly dict: Dictionary;
+  readonly featured?: boolean;
+}
+
+/**
+ * Card de projeto em destaque otimizado.
+ *
+ * ✔ Arquitetura: Client Component (compatível com Next.js 16)
+ * ✔ Estilo: Tailwind CSS 4.2 (uso de backdrop-blur e transições suaves)
+ * ✔ Tipagem: TypeScript 6.0 (Readonly props e Records)
+ * ✔ I18n: Suporte multilíngue completo via dicionário e lang
+ */
+export default function ProjectCard({
+  project,
+  lang,
+  dict,
+  featured = false,
+}: ProjectCardProps) {
+  return (
+    <article
+      id={project.id}
+      className={`
+        relative flex h-full flex-col justify-between
+        rounded-3xl border transition-all duration-500 ease-out
+        p-6 sm:p-8 backdrop-blur-sm
+        
+        /* Cores e Bordas - Modo Claro */
+        bg-white/70 border-slate-200 shadow-sm
+        hover:border-blue-500/50 hover:shadow-2xl hover:-translate-y-2
+        
+        /* Cores e Bordas - Modo Escuro */
+        dark:bg-slate-900/50 dark:border-slate-800 dark:hover:border-blue-400/50
+        
+        /* Layout Bento-style para o item em destaque */
+        ${featured ? 'lg:col-span-2' : ''}
+      `}
+    >
+      {/* Área de Conteúdo Texto */}
+      <div className="space-y-4">
+        <header>
+          <h3
+            className={`
+              font-black tracking-tight text-slate-900 dark:text-white transition-colors
+              ${featured ? 'text-2xl sm:text-4xl italic' : 'text-xl sm:text-2xl'}
+            `}
+          >
+            {project.name}
+          </h3>
+        </header>
+
+        <p className="text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
+          {project.description[lang]}
+        </p>
+
+        {/* Categorias / Badges (Opcional - usando os dados do project) */}
+        {project.categories && (
+          <div className="flex flex-wrap gap-2 pt-2">
+            {project.categories.map((cat) => (
+              <span 
+                key={cat}
+                className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400"
+              >
+                {cat}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Rodapé do Card: Ação Principal */}
+      <footer className="mt-8 flex items-center">
+        <a
+          href={project.repoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="
+            group/link inline-flex items-center gap-2
+            text-xs font-black uppercase tracking-[0.2em]
+            text-blue-600 dark:text-blue-400
+            focus:outline-none focus-visible:ring-2
+            focus-visible:ring-blue-500 focus-visible:ring-offset-2
+            dark:focus-visible:ring-offset-slate-900
+          "
+          aria-label={`${dict.projects.viewProject}: ${project.name}`}
+        >
+          <span className="border-b-2 border-transparent group-hover/link:border-blue-600 transition-all">
+            {dict.projects.viewProject}
+          </span>
+          <span className="transform group-hover/link:translate-x-1 transition-transform" aria-hidden="true">
+            →
+          </span>
+        </a>
+      </footer>
+
+      {/* Efeito Decorativo sutil de luz (Tailwind 4.2) */}
+      <div className="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-blue-500/10 transition-colors" />
+    </article>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/featured/projects.data.ts
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+// src/components/featured/projects.data.ts
+
+import type { SupportedLocale } from "@/dictionaries/locales";
+
+/**
+ * Modelo de projeto destacado (Featured).
+ * Atualizado para as novas categorias do portfólio.
+ */
+export interface FeaturedProject {
+  readonly id: string;
+  readonly name: string;
+  readonly repoUrl: string;
+  readonly priority: 1 | 2 | 3;
+  readonly categories: readonly string[]; // Agora aceita as novas categorias (1 a 17)
+  readonly description: Record<SupportedLocale, string>;
+}
+
+/**
+ * Lista oficial dos 3 projetos destacados.
+ * Categorias atualizadas para o novo padrão de 17 itens.
+ */
+export const featuredProjects = [
+  {
+    id: "analise-riscos-atraso-obras",
+    name: "Análise de Riscos de Atraso em Obras",
+    repoUrl:
+      "https://github.com/Santosdevbjj/analiseRiscosAtrasoObras",
+    priority: 1,
+    categories: ["Ciência de Dados", "Banco de Dados"],
+    description: {
+      "pt-BR":
+        "Projeto de ciência de dados para análise preditiva de riscos de atraso em obras.",
+      "en-US":
+        "Data science project focused on predictive risk analysis for construction delays.",
+      "es-ES":
+        "Proyecto de ciencia de datos para el análisis predictivo de riesgos de retraso en obras.",
+      "es-AR":
+        "Proyecto de ciencia de datos para el análisis predictivo de riesgos de retraso en obras.",
+      "es-MX":
+        "Proyecto de ciencia de datos para el análisis predictivo de riesgos de retraso en obras.",
+    },
+  },
+  {
+    id: "analise-dados-na-pratica",
+    name: "Análise de Dados na Prática",
+    repoUrl:
+      "https://github.com/Santosdevbjj/analiseDadosNaPratica",
+    priority: 2,
+    categories: ["Ciência de Dados", "Neo4J"],
+    description: {
+      "pt-BR":
+        "Projeto prático focado em análise exploratória de dados e geração de insights.",
+      "en-US":
+        "Hands-on project focused on exploratory data analysis and insight generation.",
+      "es-ES":
+        "Proyecto práctico centrado en análisis exploratorio de datos y generación de insights.",
+      "es-AR":
+        "Proyecto práctico centrado en análisis exploratorio de datos y generación de insights.",
+      "es-MX":
+        "Proyecto práctico centrado en análisis exploratorio de datos y generación de insights.",
+    },
+  },
+  {
+    id: "genai-pipeline-etl-python",
+    name: "GenAI Pipeline ETL em Python",
+    repoUrl:
+      "https://github.com/Santosdevbjj/genAIpipeETLPython",
+    priority: 3,
+    categories: ["Python", "Azure Databricks"],
+    description: {
+      "pt-BR":
+        "Pipeline ETL moderno em Python com integração de IA generativa.",
+      "en-US":
+        "Modern Python ETL pipeline with generative AI integration.",
+      "es-ES":
+        "Pipeline ETL moderno en Python con integración de IA generativa.",
+      "es-AR":
+        "Pipeline ETL moderno en Python con integración de IA generativa.",
+      "es-MX":
+        "Pipeline ETL moderno en Python con integración de IA generativa.",
+    },
+  },
+] as const satisfies readonly FeaturedProject[];
+
+/**
+ * Tipo derivado automaticamente.
+ */
+export type FeaturedProjectId =
+  (typeof featuredProjects)[number]["id"]; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/navigation/Breadcrumbs.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+import { useMemo } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { ChevronRight, Home } from 'lucide-react';
+
+import { generateBreadcrumbs } from '@/lib/seo/breadcrumbs';
+import type { Locale, Dictionary } from '@/types/dictionary';
+
+/**
+ * BREADCRUMBS NAVIGATION COMPONENT - SÉRGIO SANTOS PORTFOLIO
+ * -----------------------------------------------------------------------------
+ * ✔ Stack: Next.js 16.2.0, React 19, TS 6.0, Node 24
+ * ✔ Tailwind 4.2: Utiliza o novo sistema de aninhamento e oklch colors
+ * ✔ I18n: Suporte regional ES (Espanha, Argentina, México) + PT & EN
+ * ✔ UX: Mobile-friendly com scroll horizontal e gradiente de indicação de overflow
+ */
+
+interface BreadcrumbsProps {
+  readonly lang: Locale;
+  readonly baseUrl: string;
+  readonly dictionary: Dictionary;
+}
+
+export function Breadcrumbs({ lang, baseUrl, dictionary }: BreadcrumbsProps) {
+  const pathname = usePathname();
+
+  /**
+   * MEMOIZAÇÃO DE SEGMENTOS:
+   * Evita cálculos desnecessários no React 19 durante re-renders de transição.
+   */
+  const breadcrumbs = useMemo(() => {
+    if (!pathname) return [];
+    // Nota: Certifique-se que generateBreadcrumbs suporte as novas chaves regionais de espanhol
+    return generateBreadcrumbs(pathname, lang, dictionary, baseUrl);
+  }, [pathname, lang, dictionary, baseUrl]);
+
+  // Regra de Negócio: Não exibir na Home (/) ou se houver erro na geração
+  if (breadcrumbs.length <= 1) return null;
+
+  /**
+   * TRADUÇÃO DO LABEL DE ACESSIBILIDADE:
+   * Garante conformidade com WCAG em todos os idiomas.
+   */
+  const navLabel = useMemo(() => {
+    return dictionary.common?.navigation || (
+      lang.startsWith('pt') ? 'Navegação Breadcrumb' :
+      lang.startsWith('es') ? 'Navegación secundaria' :
+      'Breadcrumb navigation'
+    );
+  }, [dictionary.common, lang]);
+
+  return (
+    <nav 
+      aria-label={navLabel}
+      className="relative mb-8 w-full"
+    >
+      <div className="flex items-center overflow-x-auto no-scrollbar scroll-smooth">
+        <ol className="flex items-center flex-nowrap gap-2 text-sm font-medium text-slate-500 dark:text-slate-400">
+          {breadcrumbs.map((crumb, index) => {
+            const isLast = index === breadcrumbs.length - 1;
+            const isFirst = index === 0;
+
+            return (
+              <li 
+                key={`${crumb.item}-${index}`} 
+                className="flex items-center gap-2 shrink-0"
+              >
+                {/* SEPARADOR (Oculto no primeiro item) */}
+                {!isFirst && (
+                  <ChevronRight 
+                    size={14} 
+                    className="text-slate-300 dark:text-slate-700 shrink-0" 
+                    aria-hidden="true"
+                  />
+                )}
+
+                {isLast ? (
+                  /* ITEM ATIVO: Estilo Premium com Tailwind 4.2 Glassmorphism */
+                  <span 
+                    className="rounded-lg bg-slate-100 dark:bg-slate-900 px-3 py-1.5 font-black text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 transition-all duration-500"
+                    aria-current="page"
+                  >
+                    <span className="max-w-[140px] truncate block sm:max-w-none">
+                      {crumb.name}
+                    </span>
+                  </span>
+                ) : (
+                  /* LINKS DE NAVEGAÇÃO: Feedback visual haptic e hover */
+                  <Link
+                    href={crumb.item}
+                    className="group flex items-center gap-1.5 py-1.5 transition-all duration-300 hover:text-blue-600 dark:hover:text-blue-400 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md"
+                  >
+                    {isFirst && (
+                      <Home 
+                        size={15} 
+                        className="shrink-0 transition-transform group-hover:scale-110" 
+                      />
+                    )}
+                    <span className="max-w-[100px] truncate sm:max-w-none group-hover:underline decoration-blue-500/30 underline-offset-4">
+                      {crumb.name}
+                    </span>
+                  </Link>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+
+      {/* GRADIENTE DE OVERFLOW INDICATOR (Tailwind 4.2 Utility) */}
+      <div className="absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white dark:from-slate-950 pointer-events-none sm:hidden" />
+    </nav>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/pdf/PdfSafeLoader.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client'
+
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
+
+// Importação dinâmica com SSR desativado para evitar o erro de 'pipeline' do Node 24
+const PdfViewer = dynamic(() => import('./PdfViewer'), { 
+  ssr: false,
+  loading: () => (
+    <div className="h-[600px] flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900/50 gap-4 rounded-2xl">
+      <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-600 border-t-transparent"></div>
+      <p className="text-slate-500 font-medium animate-pulse">Iniciando visualizador...</p>
+    </div>
+  )
+})
+
+interface PdfSafeLoaderProps {
+  fileUrl: string
+  lang: string
+}
+
+/**
+ * Este componente isola completamente a biblioteca react-pdf do servidor.
+ * Alinhado com Next.js 16 e TypeScript 6.0 RC.
+ */
+export default function PdfSafeLoader({ fileUrl, lang }: PdfSafeLoaderProps) {
+  return (
+    <Suspense fallback={<div className="h-[600px] bg-slate-100 dark:bg-slate-800 animate-pulse rounded-2xl" />}>
+      <PdfViewer fileUrl={fileUrl} lang={lang} />
+    </Suspense>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/pdf/PdfViewer.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client'
+
+import { useState, useEffect, useCallback } from "react"
+
+/**
+ * Interface rigorosa para as traduções
+ */
+interface ViewerTranslations {
+  prev: string;
+  next: string;
+  loading: string;
+}
+
+/**
+ * Dicionário interno para os controles do visualizador
+ * Suporte nativo: PT-BR, EN-US, ES-ES, ES-AR, ES-MX
+ */
+const viewerI18n: Record<string, ViewerTranslations> = {
+  "pt-BR": { prev: "Anterior", next: "Próximo", loading: "Carregando PDF..." },
+  "en-US": { prev: "Previous", next: "Next", loading: "Loading PDF..." },
+  "es-ES": { prev: "Anterior", next: "Siguiente", loading: "Cargando PDF..." },
+  "es-AR": { prev: "Anterior", next: "Siguiente", loading: "Cargando PDF..." },
+  "es-MX": { prev: "Anterior", next: "Siguiente", loading: "Cargando PDF..." },
+};
+
+// Fallback seguro usando asserção de tipo para satisfazer o compilador TS 6.0
+const defaultT = viewerI18n["pt-BR"] as ViewerTranslations;
+
+interface PdfViewerProps {
+  readonly fileUrl: string;
+  readonly lang: string;
+}
+
+export default function PdfViewer({ fileUrl, lang }: PdfViewerProps) {
+  const [instance, setInstance] = useState<{
+    Document: any;
+    Page: any;
+  } | null>(null);
+  
+  const [numPages, setNumPages] = useState<number | null>(null);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [containerWidth, setContainerWidth] = useState<number>(800);
+
+  /**
+   * RESOLUÇÃO DEFINITIVA DO TYPE ERROR:
+   * O compilador agora tem certeza absoluta que 't' não será undefined.
+   */
+  const t: ViewerTranslations = viewerI18n[lang] ?? defaultT;
+
+  const updateWidth = useCallback(() => {
+    if (typeof window === "undefined") return;
+    
+    // Breakpoints fluídos para Tailwind 4.2
+    const width = window.innerWidth > 1024 
+      ? 900 
+      : window.innerWidth > 640 
+        ? window.innerWidth - 64 
+        : window.innerWidth - 32;
+    setContainerWidth(width);
+  }, []);
+
+  useEffect(() => {
+    const loadPdfLib = async () => {
+      try {
+        // Carregamento dinâmico (Lazy) para evitar conflitos de SSR no build da Vercel
+        const ReactPdf = await import('react-pdf');
+        const { pdfjs } = ReactPdf;
+        
+        // Imports de estilo nativos da biblioteca
+        await import('react-pdf/dist/Page/TextLayer.css');
+        await import('react-pdf/dist/Page/AnnotationLayer.css');
+
+        // Configuração do Worker via CDN segura para Node 24
+        pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+        
+        setInstance({
+          Document: ReactPdf.Document,
+          Page: ReactPdf.Page
+        });
+      } catch (error) {
+        console.error("Falha ao carregar bibliotecas de PDF:", error);
+      }
+    };
+
+    loadPdfLib();
+    updateWidth();
+    
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, [updateWidth]);
+
+  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
+    setNumPages(numPages);
+    setPageNumber(1);
+  };
+
+  if (!instance) {
+    return (
+      <div className="h-[600px] flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900/50 gap-4 rounded-2xl">
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-600 border-t-transparent"></div>
+        <p className="text-slate-500 font-medium animate-pulse">{t.loading}</p>
+      </div>
+    );
+  }
+
+  const { Document, Page } = instance;
+
+  return (
+    <div className="flex flex-col items-center w-full animate-in fade-in slide-in-from-bottom-4 duration-1000">
+      
+      {/* Container Visual do PDF - Design Moderno Responsivo */}
+      <div className="bg-white dark:bg-slate-900 shadow-2xl dark:shadow-blue-900/10 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
+        <Document 
+          file={fileUrl} 
+          onLoadSuccess={onDocumentLoadSuccess}
+          loading={<div className="h-[600px] w-full bg-slate-100 dark:bg-slate-800 animate-pulse" />}
+        >
+          <Page 
+            pageNumber={pageNumber} 
+            width={containerWidth} 
+            renderTextLayer={true} 
+            renderAnnotationLayer={true}
+            className="transition-all duration-300"
+          />
+        </Document>
+      </div>
+
+      {/* Paginação Multilingue (PT, EN, ES variantes) */}
+      <div className="flex flex-wrap items-center justify-center gap-6 my-12 px-4">
+        <button 
+          disabled={pageNumber <= 1}
+          onClick={() => setPageNumber(p => p - 1)}
+          className="group flex items-center gap-2 px-8 py-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 disabled:opacity-30 disabled:cursor-not-allowed hover:border-blue-600 hover:text-blue-600 transition-all cursor-pointer font-bold"
+        >
+          <span className="group-hover:-translate-x-1 transition-transform">←</span>
+          {t.prev}
+        </button>
+
+        <div className="flex flex-col items-center min-w-[120px]">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-black">Página / Page</span>
+          <span className="text-2xl font-black text-blue-600">
+            {pageNumber} <span className="text-slate-300 dark:text-slate-700 mx-1">/</span> {numPages ?? '--'}
+          </span>
+        </div>
+
+        <button 
+          disabled={pageNumber >= (numPages ?? 1)}
+          onClick={() => setPageNumber(p => p + 1)}
+          className="group flex items-center gap-2 px-8 py-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 disabled:opacity-30 disabled:cursor-not-allowed hover:border-blue-600 hover:text-blue-600 transition-all cursor-pointer font-bold"
+        >
+          {t.next}
+          <span className="group-hover:translate-x-1 transition-transform">→</span>
+        </button>
+      </div>
+    </div>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/pdf/ResumeLangSelector.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+
+'use client'
+
+import { useTransition, type JSX } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
+import { Check, Languages, Loader2 } from 'lucide-react'
+import type { SupportedLocale } from "@/dictionaries/locales"
+
+interface ResumeLangSelectorProps {
+  readonly currentLang: SupportedLocale;
+  readonly dict: {
+    selectLanguage: string;
+    languages: Record<SupportedLocale, string>;
+  };
+}
+
+export function ResumeLangSelector({ currentLang, dict }: ResumeLangSelectorProps): JSX.Element {
+  const router = useRouter()
+  const pathname = usePathname()
+  const [isPending, startTransition] = useTransition()
+
+  const locales: SupportedLocale[] = ['pt-BR', 'en-US', 'es-ES']
+
+  const handleLangChange = (newLang: SupportedLocale) => {
+    if (newLang === currentLang || isPending) return;
+
+    // Regex robusta: substitui o código de idioma logo após a primeira barra
+    // Exemplo: /pt-BR/resume -> /en-US/resume
+    const segments = pathname.split('/')
+    segments[1] = newLang
+    const newPathname = segments.join('/')
+    
+    startTransition(() => {
+      // O segredo está no { scroll: false }
+      // Isso impede que o Next.js jogue o usuário para o topo da página
+      router.push(newPathname, { scroll: false })
+    })
+  }
+
+  return (
+    <section className="flex flex-col gap-3 p-5 bg-white dark:bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl">
+      <div className="flex items-center justify-between mb-1">
+        <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+          {isPending ? (
+            <Loader2 size={16} className="animate-spin text-blue-500" />
+          ) : (
+            <Languages size={16} className="text-blue-500" />
+          )}
+          <span className="text-[10px] font-black uppercase tracking-[0.15em]">
+            {dict.selectLanguage}
+          </span>
+        </div>
+        
+        {isPending && (
+          <span className="text-[10px] text-blue-500 font-bold animate-pulse">
+            UPDATING...
+          </span>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2">
+        {locales.map((langCode) => {
+          const isActive = currentLang === langCode
+          
+          return (
+            <button
+              key={langCode}
+              onClick={() => handleLangChange(langCode)}
+              disabled={isPending}
+              type="button"
+              className={`
+                relative flex items-center justify-between px-4 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all
+                ${isActive 
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30 translate-x-1' 
+                  : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white'
+                }
+                ${isPending ? 'opacity-70 cursor-wait' : 'cursor-pointer active:scale-95'}
+              `}
+            >
+              <span>{dict.languages[langCode]}</span>
+              {isActive && (
+                <Check size={14} strokeWidth={4} className="text-white" />
+              )}
+            </button>
+          )
+        })}
+      </div>
+    </section>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/profile/ProfileForm.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+import { useActionState } from 'react';
+import { updateProfileAction } from '@/actions/user-actions';
+import type { Dictionary, Locale } from '@/types/dictionary';
+import type { ErrorDictionary } from '@/types/error-dictionary';
+
+interface ProfileFormProps {
+  readonly dict: Dictionary & { errors: ErrorDictionary }; // Integrando o dicionário de erros
+  readonly lang: Locale;
+}
+
+export default function ProfileForm({ dict, lang }: ProfileFormProps) {
+  /**
+   * React 19 useActionState: 
+   * Gerencia pendência e estado sem necessidade de useEffect ou useState manual.
+   */
+  const [state, formAction, isPending] = useActionState(updateProfileAction, null);
+
+  return (
+    <div className="w-full max-w-xl mx-auto p-4 sm:p-6 lg:p-8 transition-all duration-300">
+      <form action={formAction} className="flex flex-col gap-6">
+        
+        {/* Campo de Nome */}
+        <div className="flex flex-col gap-2">
+          <label 
+            htmlFor="name" 
+            className="text-sm font-semibold text-zinc-700 dark:text-zinc-300"
+          >
+            {dict.about.title}
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            disabled={isPending}
+            placeholder="Seu nome técnico"
+            className="w-full px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 
+                     bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100
+                     focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                     disabled:opacity-50 disabled:cursor-not-allowed transition-all outline-hidden"
+          />
+        </div>
+
+        {/* ÁREA DE ERROS (Totalmente Integrada ao Dicionário) */}
+        {state?.success === false && (
+          <div className="flex flex-col gap-2 p-4 rounded-xl border border-red-200 dark:border-red-900/30 
+                        bg-red-50 dark:bg-red-950/20 animate-in fade-in slide-in-from-top-2">
+            <div className="flex items-center gap-2 text-red-700 dark:text-red-400 font-bold">
+              <span className="text-lg">⚠️</span>
+              {/* Tradução Dinâmica do Título do Erro */}
+              <h3>{dict.errors[state.error.name].title}</h3>
+            </div>
+            <p className="text-sm text-red-600 dark:text-red-300">
+              {/* Tradução Dinâmica da Mensagem de Erro */}
+              {dict.errors[state.error.name].message}
+            </p>
+            <div className="mt-1 text-xs text-red-500/80 italic">
+              {/* Sugestão de Ação do Dicionário */}
+              <strong>Ação:</strong> {dict.errors[state.error.name].action}
+            </div>
+            <span className="text-[10px] opacity-50 font-mono">ID: {state.error.errorId}</span>
+          </div>
+        )}
+
+        {/* FEEDBACK DE SUCESSO */}
+        {state?.success === true && (
+          <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 
+                        dark:border-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-medium">
+            ✅ {dict.states.loading === 'Carregando...' ? 'Perfil atualizado!' : 'Profile updated!'}
+          </div>
+        )}
+
+        {/* Botão de Submissão */}
+        <button
+          type="submit"
+          disabled={isPending}
+          className="relative w-full py-3 px-6 rounded-xl font-bold text-white
+                   bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500
+                   active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100
+                   shadow-lg shadow-blue-500/20 transition-all cursor-pointer overflow-hidden"
+        >
+          <span className={isPending ? "opacity-0" : "opacity-100"}>
+            {dict.contact.buttonText || 'Salvar Alterações'}
+          </span>
+          
+          {isPending && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            </div>
+          )}
+        </button>
+      </form>
+    </div>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/projects/ProjectCategoryBadge.tsx
+
+
+TEM ESSE CONTEÚDO 
+
+
+// src/components/projects/ProjectCategoryBadge.tsx
+
+interface ProjectCategoryBadgeProps {
+  /**
+   * Nome da categoria vindo do github-service ou featuredProjects.
+   * Ex: "Ciência de Dados", "Neo4J", "C# / .NET"
+   */
+  readonly label: string;
+  /**
+   * Opcional: destaque visual
+   */
+  readonly highlight?: boolean;
+}
+
+/**
+ * Badge de categoria de projeto unificado.
+ * * ✔ Aceita as 17 novas categorias dinâmicas
+ * ✔ TS 6 compliant & Next.js 16 (RSC-safe)
+ * ✔ Estilo consistente com o portfólio
+ */
+export function ProjectCategoryBadge({
+  label,
+  highlight = false,
+}: ProjectCategoryBadgeProps) {
+  // Proteção contra valores nulos ou vazios
+  if (!label || typeof label !== 'string' || !label.trim()) return null;
+
+  return (
+    <span
+      className={[
+        'inline-flex items-center',
+        'rounded-full px-2.5 py-0.5',
+        'text-[11px] font-semibold tracking-wide',
+        'transition-colors duration-200',
+        'whitespace-nowrap uppercase',
+        highlight
+          ? 'bg-blue-600 text-white dark:bg-blue-500'
+          : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-200 dark:border-blue-800',
+      ].join(' ')}
+    >
+      {label}
+    </span>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/projects/ProjectsGrid.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client'
+
+// src/components/projects/ProjectsGrid.tsx
+
+import type { Locale } from '@/types/dictionary'
+import type { Dictionary } from '@/types/dictionary'
+import { ProjectCategoryBadge } from './ProjectCategoryBadge'
+import type { Project } from '@/types/project'
+
+interface ProjectsGridProps {
+  readonly projects: readonly Project[]
+  readonly lang: Locale
+  readonly dict: Dictionary
+}
+
+/**
+ * Grid de projetos unificado.
+ * ✔ 100% Tipado (Type-Safe) após atualização do dicionário
+ * ✔ Suporta os projetos processados do GitHub (Pipes |)
+ * ✔ TS 6 compliant & Next.js 16
+ */
+export function ProjectsGrid({
+  projects,
+  lang,
+  dict,
+}: ProjectsGridProps) {
+  if (!projects.length) {
+    return (
+      <div className="py-12 text-center">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+          {dict.states.emptyProjects.title}
+        </h3>
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+          {dict.states.emptyProjects.description}
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div
+      className="
+        grid grid-cols-1 gap-6
+        sm:grid-cols-2
+        lg:grid-cols-3
+        auto-rows-fr
+      "
+    >
+      {projects.map((project) => (
+        <article
+          key={project.id}
+          className="
+            flex flex-col justify-between
+            rounded-2xl border border-neutral-200
+            p-6 shadow-sm transition-all
+            hover:shadow-md
+            dark:border-neutral-800
+            dark:bg-neutral-900
+          "
+        >
+          <div className="space-y-4">
+            <header className="flex items-start justify-between gap-2">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                {project.name}
+              </h3>
+              {(project.isHead || project.isFeatured) && (
+                <span className="shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                  {project.isHead ? 'TOP' : 'FEATURED'}
+                </span>
+              )}
+            </header>
+
+            {/* Renderização da Categoria Principal */}
+            <div className="flex flex-wrap gap-2">
+              <ProjectCategoryBadge
+                label={project.category} 
+              />
+            </div>
+
+            {/* Seção de Conteúdo (Pipes |) - Agora com tipagem nativa do dict */}
+            <div className="space-y-2 text-sm">
+              <p className="text-slate-600 dark:text-slate-400 line-clamp-3">
+                <span className="font-semibold text-slate-800 dark:text-slate-200">
+                  {dict.projects.problem}:
+                </span>{" "}
+                {project.problem}
+              </p>
+              
+              {project.solution && (
+                <p className="text-slate-600 dark:text-slate-400 line-clamp-3">
+                  <span className="font-semibold text-slate-800 dark:text-slate-200">
+                    {dict.projects.solution}:
+                  </span>{" "}
+                  {project.solution}
+                </p>
+              )}
+            </div>
+
+            {/* Lista de Tecnologias */}
+            <div className="flex flex-wrap gap-1 mt-auto pt-2">
+              {project.technologies.slice(0, 5).map((tech) => (
+                <span 
+                  key={tech}
+                  className="text-[10px] text-neutral-500 bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-400 px-2 py-0.5 rounded border border-neutral-200 dark:border-neutral-700"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <footer className="mt-6 flex items-center gap-4 border-t border-neutral-100 dark:border-neutral-800 pt-4">
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold text-blue-600 hover:underline dark:text-blue-400"
+            >
+              GitHub
+            </a>
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-bold text-emerald-600 hover:underline dark:text-emerald-400"
+              >
+                Live Demo
+              </a>
+            )}
+          </footer>
+        </article>
+      ))}
+    </div>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/seo/BreadcrumbsJsonLd.tsx
+
+TEM ESSE CONTEÚDO 
+
+'use client';
+
+import { useMemo } from 'react';
+import { usePathname } from 'next/navigation';
+import type { Locale, Dictionary } from '@/types/dictionary';
+
+/**
+ * BREADCRUMBS JSON-LD COMPONENT - PORTFÓLIO SÉRGIO SANTOS
+ * -----------------------------------------------------------------------------
+ * ✔ Stack: React 19, TS 6.0, Next.js 16.2 (Turbopack), Node 24
+ * ✔ Fix: Erro de tipo 'home' inexistente no CommonDictionary
+ * ✔ I18n: Suporte total a pt-BR, en-US, es-ES, es-AR, es-MX
+ */
+
+interface BreadcrumbsJsonLdProps {
+  readonly lang: Locale;
+  readonly baseUrl: string;
+  readonly dict: Dictionary;
+}
+
+export function BreadcrumbsJsonLd({ lang, baseUrl, dict }: BreadcrumbsJsonLdProps) {
+  const pathname = usePathname();
+
+  const jsonLdString = useMemo(() => {
+    if (!pathname) return null;
+
+    // 1. Limpeza da URL Base
+    const cleanBaseUrl = baseUrl.replace(/\/+$/, '');
+    
+    // 2. Quebra do caminho em segmentos
+    const segments = pathname.split('/').filter(Boolean);
+    
+    // Se o primeiro segmento for o idioma (ex: pt-BR), removemos para processar o restante
+    if (segments[0] === lang) {
+      segments.shift();
+    }
+
+    // 3. Inicialização com a Home (Item 1)
+    // CORREÇÃO: Usando dict.seo.siteName ou fallback fixo para evitar erro de TS
+    const breadcrumbList = [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': dict.seo.siteName || (lang.startsWith('pt') ? 'Início' : 'Home'),
+        'item': `${cleanBaseUrl}/${lang}`,
+      },
+    ];
+
+    // 4. Lógica Dinâmica para Segmentos
+    let currentPath = `/${lang}`;
+    
+    segments.forEach((segment, index) => {
+      currentPath += `/${segment}`;
+      
+      let translatedName = segment;
+
+      // Mapeamento baseado nas chaves existentes no seu CommonDictionary.nav
+      if (segment === 'artigos') translatedName = dict.common.nav.articles;
+      if (segment === 'projects' || segment === 'projetos') translatedName = dict.common.nav.projects;
+      if (segment === 'experience') translatedName = dict.common.nav.experience;
+      if (segment === 'about') translatedName = dict.common.nav.about;
+      if (segment === 'contact') translatedName = dict.common.nav.contact;
+      if (segment === 'resume') translatedName = dict.resume.selectLanguage;
+      
+      // Formatação para slugs de artigos
+      if (index > 0 && segments[index - 1] === 'artigos') {
+        translatedName = segment
+          .replace(/-/g, ' ')
+          .replace(/\b\w/g, (l) => l.toUpperCase());
+      }
+
+      breadcrumbList.push({
+        '@type': 'ListItem',
+        'position': index + 2,
+        'name': translatedName,
+        'item': `${cleanBaseUrl}${currentPath}`,
+      });
+    });
+
+    try {
+      const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': breadcrumbList,
+      };
+
+      return JSON.stringify(schema);
+    } catch (error) {
+      console.error('[SEO Error]: Falha ao gerar JSON-LD Breadcrumbs', error);
+      return null;
+    }
+  }, [pathname, lang, dict, baseUrl]);
+
+  if (!jsonLdString) return null;
+
+  return (
+    <script
+      type="application/ld+json"
+      id={`json-ld-breadcrumbs-${lang}`}
+      key={`json-ld-breadcrumbs-${pathname}-${lang}`}
+      dangerouslySetInnerHTML={{ __html: jsonLdString }}
+    />
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/seo/JsonLd.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+/**
+ * JSON-LD SCHEMA COMPONENT - PORTFÓLIO SÉRGIO SANTOS
+ * -----------------------------------------------------------------------------
+ * ✔ Stack: Next.js 16.2.0, React 19, TS 6.0, Node 24
+ * ✔ SEO: Suporte a Schema.org (Person, Article, SoftwareSourceCode, WebSite)
+ * ✔ I18n: Compatível com PT-BR, EN-US, ES-ES, ES-AR, ES-MX
+ */
+
+import { useMemo } from 'react';
+
+/**
+ * Tipagens Estritas para Schema.org (TS 6.0)
+ */
+interface BaseSchema {
+  readonly '@context': 'https://schema.org';
+  readonly '@type': string;
+}
+
+export interface PersonSchema extends BaseSchema {
+  readonly '@type': 'Person';
+  name: string;
+  url: string;
+  image?: string;
+  jobTitle?: string;
+  description?: string;
+  sameAs?: string[];
+}
+
+export interface WebsiteSchema extends BaseSchema {
+  readonly '@type': 'WebSite';
+  name: string;
+  url: string;
+  description?: string;
+  inLanguage?: string;
+}
+
+export interface ArticleSchema extends BaseSchema {
+  readonly '@type': 'Article' | 'BlogPosting';
+  headline: string;
+  description: string;
+  datePublished: string;
+  dateModified?: string;
+  author: {
+    '@type': 'Person';
+    name: string;
+    url?: string;
+  };
+  image?: string;
+  url: string;
+}
+
+export interface ProjectSchema extends BaseSchema {
+  readonly '@type': 'SoftwareSourceCode';
+  name: string;
+  description: string;
+  codeRepository: string;
+  programmingLanguage?: string | string[];
+  runtimePlatform?: string;
+  author: {
+    '@type': 'Person';
+    name: string;
+  };
+}
+
+export type JsonLdSchema =
+  | PersonSchema
+  | ArticleSchema
+  | ProjectSchema
+  | WebsiteSchema
+  | Record<string, unknown>;
+
+export interface JsonLdProps {
+  readonly schema: JsonLdSchema | JsonLdSchema[];
+}
+
+/**
+ * Componente JsonLd
+ * Injeta dados estruturados de forma segura para SEO de Missão Crítica.
+ */
+export default function JsonLd({ schema }: JsonLdProps) {
+  // Memoização para evitar re-stringify em cada render do React 19
+  const serializedSchemas = useMemo(() => {
+    const schemas = Array.isArray(schema) ? schema : [schema];
+    return schemas.map((item) => {
+      try {
+        return JSON.stringify(item);
+      } catch (e) {
+        console.error('[JSON-LD Serialization Error]:', e);
+        return null;
+      }
+    }).filter(Boolean) as string[];
+  }, [schema]);
+
+  if (serializedSchemas.length === 0) return null;
+
+  return (
+    <>
+      {serializedSchemas.map((jsonString, index) => (
+        <script
+          key={`jsonld-${index}-${jsonString.length}`}
+          type="application/ld+json"
+          // React 19 lida com dangerouslySetInnerHTML de forma ultra-eficiente
+          dangerouslySetInnerHTML={{ __html: jsonString }}
+        />
+      ))}
+    </>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/seo/OpenGraph.tsx
+
+TEM ESSE CONTEÚDO 
+
+'use client';
+
+/**
+ * OPEN GRAPH & SOCIAL METADATA COMPONENT - SÉRGIO SANTOS
+ * -----------------------------------------------------------------------------
+ * ✔ Stack: Next.js 16.2.0, React 19 (Hoisting), TS 6.0, Node 24
+ * ✔ SEO: OpenGraph (Facebook/LinkedIn) & Twitter Cards dinâmicos
+ * ✔ I18n: Mapeamento inteligente para pt-BR, en-US, es-ES, es-AR, es-MX
+ * ✔ Assets: Vinculação automática com /public/og/ e /public/icons/
+ */
+
+import { useMemo } from 'react';
+import type { Locale } from '@/types/dictionary';
+
+interface OpenGraphProps {
+  readonly title: string;
+  readonly description: string;
+  readonly url: string;
+  readonly locale: Locale;
+  readonly type?: 'website' | 'article' | 'profile';
+  readonly twitterHandle?: string;
+  readonly overrideImage?: string; // Para casos específicos onde não queira a padrão do idioma
+}
+
+export default function OpenGraph({
+  title,
+  description,
+  url,
+  locale,
+  type = 'website',
+  twitterHandle = '@santossergioluiz',
+  overrideImage,
+}: OpenGraphProps) {
+  
+  /**
+   * RESOLUÇÃO DINÂMICA DE ASSETS BASEADA NO IDIOMA:
+   * Garante que o card do LinkedIn/WhatsApp exiba a imagem no idioma correto.
+   */
+  const assets = useMemo(() => {
+    // Normaliza o locale para o padrão OpenGraph (ex: pt_BR)
+    const ogLocale = locale.replace('-', '_');
+    
+    // Define a imagem baseada na estrutura de pastas informada
+    const dynamicOgImage = overrideImage || `/og/og-image-${locale}.png`;
+
+    return {
+      ogLocale,
+      ogImage: dynamicOgImage,
+      favicon: '/icons/favicon.ico',
+      appleTouch: '/icons/apple-touch-icon.png'
+    };
+  }, [locale, overrideImage]);
+
+  return (
+    <>
+      {/* METADADOS PRIMÁRIOS */}
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <link rel="canonical" href={url} />
+
+      {/* OPEN GRAPH (LinkedIn, Facebook, WhatsApp) */}
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={url} />
+      <meta property="og:site_name" content="Sérgio Santos | Portfólio" />
+      <meta property="og:type" content={type} />
+      <meta property="og:locale" content={assets.ogLocale} />
+      <meta property="og:image" content={assets.ogImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:type" content="image/png" />
+      <meta property="og:image:alt" content={`Preview do Portfólio de Sérgio Santos - ${locale}`} />
+
+      {/* TWITTER CARDS */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content={twitterHandle} />
+      <meta name="twitter:creator" content={twitterHandle} />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={assets.ogImage} />
+
+      {/* ICONS & FAVICONS (Injeção via React 19 Hoisting) */}
+      <link rel="icon" href={assets.favicon} sizes="any" />
+      <link rel="apple-touch-icon" href={assets.appleTouch} />
+      <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+    </>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/components/ui/CategoryBadge.tsx
+
+TEM ESSE CONTEÚDO 
+
+/**
+ * src/components/ui/CategoryBadge.tsx
+ * Componente otimizado para React 19 e TypeScript 6.
+ * Focado em performance e conformidade com Tailwind 4.2.
+ */
+
+interface CategoryBadgeProps {
+  category: string;
+}
+
+/**
+ * Mapeamento de Cores e Nomes baseados na estrutura do seu GitHub
+ * Utiliza o novo motor do Tailwind 4.2 para cores e transparências.
+ */
+const categoryMap: Record<string, { label: string; class: string }> = {
+  'ia-artigos': { 
+    label: 'IA Generativa', 
+    class: 'bg-purple-100/80 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800' 
+  },
+  'low_code': { 
+    label: 'Low-Code', 
+    class: 'bg-blue-100/80 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800' 
+  },
+  'aws-artigos': { 
+    label: 'AWS Cloud', 
+    class: 'bg-orange-100/80 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-800' 
+  },
+  'azure-cloud-native': { 
+    label: 'Azure', 
+    class: 'bg-cyan-100/80 text-cyan-700 border-cyan-200 dark:bg-cyan-900/30 dark:text-cyan-300 dark:border-cyan-800' 
+  },
+  'data-artigos': { 
+    label: 'Data Engineering', 
+    class: 'bg-green-100/80 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800' 
+  },
+  'java-artigos': { 
+    label: 'Java Specialist', 
+    class: 'bg-red-100/80 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800' 
+  },
+  'typescript-artigos': { 
+    label: 'TypeScript', 
+    class: 'bg-blue-50/80 text-blue-600 border-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20' 
+  },
+  'autoconhecimento': { 
+    label: 'Soft Skills', 
+    class: 'bg-slate-100/80 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700' 
+  },
+  'dio_Campus_Expert_14': { 
+    label: 'Campus Expert', 
+    class: 'bg-yellow-100/80 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800' 
+  },
+};
+
+export function CategoryBadge({ category }: CategoryBadgeProps) {
+  // Fallback inteligente para pastas futuras
+  const config = categoryMap[category] || { 
+    label: category.replace(/-/g, ' ').replace(/artigos/g, '').trim().toUpperCase(), 
+    class: 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400' 
+  };
+
+  return (
+    <span 
+      className={`
+        inline-flex items-center px-2.5 py-0.5 
+        rounded-full text-[10px] font-black uppercase tracking-wider
+        border backdrop-blur-sm transition-all duration-300
+        ${config.class}
+      `}
+    >
+      {config.label}
+    </span>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/error.tsx
+
+TEM ESSE CONTEÚDO 
+
+'use client';
+
+/**
+ * NEXT.JS 16 ERROR HANDLER
+ * Captura erros de páginas e componentes filhos.
+ */
+
+import { ErrorBoundaryView } from '@/components/error/ErrorBoundaryView';
+
+interface ErrorProps {
+  error: Error & { digest?: string };
+  reset: () => void;
+}
+
+export default function ErrorPage({ error, reset }: ErrorProps) {
+  return (
+    <div className="container mx-auto px-4">
+      <ErrorBoundaryView error={error} reset={reset} />
+    </div>
+  );
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/global-error.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+'use client';
+
+/**
+ * NEXT.JS 16 GLOBAL ERROR HANDLER
+ * Substitui o Root Layout em caso de erro crítico na aplicação.
+ */
+
+import { ErrorBoundaryView } from '@/components/error/ErrorBoundaryView';
+
+interface GlobalErrorProps {
+  error: Error & { digest?: string };
+  reset: () => void;
+}
+
+export default function GlobalError({ error, reset }: GlobalErrorProps) {
+  return (
+    <ErrorBoundaryView
+      error={error}
+      reset={reset}
+      withHtmlWrapper={true}
+    />
+  );
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/globals.css
+
+TEM ESSE CONTEÚDO 
+
+
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "../styles/animations.css";
+
+/* ========================================================================== */
+/* DARK MODE CONFIG — Tailwind v4.2 Native Variant */
+/* ========================================================================== */
+@variant dark (&:where(.dark, .dark *));
+
+/* ========================================================================== */
+/* GLOBAL DESIGN SYSTEM — OKLCH + Next 16.2 */
+/* ========================================================================== */
+@theme {
+  --color-brand-50: oklch(0.97 0.01 256.4);
+  --color-brand-100: oklch(0.92 0.04 256.4);
+  --color-brand-500: oklch(0.62 0.17 256.4);
+  --color-brand-700: oklch(0.45 0.12 256.4);
+  --color-brand-900: oklch(0.28 0.07 256.4);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-montserrat), sans-serif;
+
+  --shadow-premium: 0 20px 50px -12px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 20px color-mix(in oklch, var(--color-brand-500), transparent 70%);
+}
+
+/* ========================================================================== */
+/* BASE LAYER & THEME VARIABLES */
+/* ========================================================================== */
+@layer base {
+  :root {
+    --background: oklch(0.98 0.01 256.4);
+    --foreground: oklch(0.15 0.02 256.4);
+    --card: oklch(1 0 0);
+    --border: oklch(0.92 0.01 256.4);
+    color-scheme: light;
+  }
+
+  .dark {
+    --background: oklch(0.12 0.02 256.4);
+    --foreground: oklch(0.95 0.01 256.4);
+    --card: oklch(0.18 0.02 256.4);
+    --border: oklch(0.25 0.02 256.4);
+    color-scheme: dark;
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* AJUSTE FINO DE TIPOGRAFIA (TAILWIND 4.2 PROSE) */
+  /* Força legibilidade máxima em artigos técnicos no Dark Mode */
+  /* -------------------------------------------------------------------------- */
+  .prose-invert {
+    --tw-prose-body: var(--color-slate-300);
+    --tw-prose-headings: var(--color-white);
+    --tw-prose-links: var(--color-blue-400);
+    --tw-prose-bold: var(--color-white);
+    --tw-prose-counters: var(--color-slate-400);
+    --tw-prose-bullets: var(--color-slate-600);
+    --tw-prose-hr: var(--color-slate-800);
+    --tw-prose-quotes: var(--color-slate-100);
+    --tw-prose-quote-borders: var(--color-blue-500);
+    --tw-prose-code: var(--color-white);
+    --tw-prose-pre-code: var(--color-slate-200);
+    --tw-prose-pre-bg: var(--color-slate-900);
+    --tw-prose-th-borders: var(--color-slate-700);
+    --tw-prose-td-borders: var(--color-slate-800);
+  }
+
+  html {
+    @apply scroll-smooth antialiased;
+    background-color: var(--background);
+  }
+
+  body {
+    @apply min-h-screen flex flex-col transition-colors duration-500;
+    color: var(--foreground);
+    background-color: var(--background);
+    font-family: var(--font-sans);
+    /* Suporte total para entalhes de dispositivos móveis (iOS/Android) */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+}
+
+/* ========================================================================== */
+/* COMPONENTS LAYER — Design System Otimizado */
+/* ========================================================================== */
+@layer components {
+  .main-container {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12;
+  }
+
+  .glass-effect {
+    @apply backdrop-blur-xl transition-all duration-300 border shadow-sm;
+    background-color: color-mix(in oklch, var(--card) 75%, transparent);
+    border-color: color-mix(in oklch, var(--border) 50%, transparent);
+  }
+} 
+
+/* ========================================================================== */
+/* UTILITIES & CUSTOM OVERRIDES */
+/* ========================================================================== */
+@layer base {
+  /* Scrollbar Premium Responsiva */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-100 dark:bg-slate-950;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-blue-500/50 rounded-full border-2 border-transparent bg-clip-content hover:bg-blue-500 transition-colors;
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/layout.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+import './globals.css'
+import { ThemeProvider } from '@/components/ThemeToggle'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/opengraph-image.tsx
+
+TEM ESSE CONTEÚDO 
+
+import { ImageResponse } from "next/og"
+
+export const runtime = "edge"
+
+export const size = {
+  width: 1200,
+  height: 630,
+}
+
+export const contentType = "image/png"
+
+export default function Image() {
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          background: "#020617",
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: "80px",
+          color: "white",
+        }}
+      >
+        <h1 style={{ fontSize: 72, fontWeight: 700 }}>
+          Sergio Santos
+        </h1>
+
+        <p style={{ fontSize: 36, marginTop: 20 }}>
+          Software Engineer
+        </p>
+
+        <p style={{ fontSize: 28, marginTop: 40 }}>
+          portfoliosantossergio.vercel.app
+        </p>
+      </div>
+    ),
+    size
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/resume-sitemap.ts
+
+TEM ESSE CONTEÚDO 
+
+
+import type { MetadataRoute } from "next";
+import { SUPPORTED_LOCALES, DEFAULT_LOCALE } from "@/dictionaries/locales";
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = "https://portfoliosantossergio.vercel.app";
+  const now = new Date();
+
+  return SUPPORTED_LOCALES.flatMap((lang) => [
+    // Rota HTML do currículo (A que o Google prefere indexar)
+    {
+      url: `${baseUrl}/${lang}/resume`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+      alternates: {
+        languages: {
+          "pt-BR": `${baseUrl}/pt-BR/resume`,
+          "en-US": `${baseUrl}/en-US/resume`,
+          "es-ES": `${baseUrl}/es-ES/resume`,
+          "es-AR": `${baseUrl}/es-AR/resume`,
+          "es-MX": `${baseUrl}/es-MX/resume`,
+          "x-default": `${baseUrl}/${DEFAULT_LOCALE}/resume`,
+        }
+      }
+    },
+    // O arquivo PDF propriamente dito (Para aparecer na busca de documentos)
+    {
+      url: `${baseUrl}/pdf/cv-sergio-santos-${lang}.pdf`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8
+    }
+  ]);
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/robots.ts
+
+TEM ESSE CONTEÚDO 
+
+
+import type { MetadataRoute } from "next";
+
+export default function robots(): MetadataRoute.Robots {
+  const baseUrl = "https://portfoliosantossergio.vercel.app";
+
+  return {
+    rules: [
+      {
+        userAgent: "*",
+        allow: [
+          "/", 
+          "/*/projects", 
+          "/*/artigos", 
+          "/*/about", 
+          "/*/resume",
+          "/pdf/cv-sergio-santos-*.pdf", // Nome específico dos seus PDFs
+          "/images/", 
+          "/og/",
+          "/artigos/*.png",
+          "/icons/"
+        ],
+        disallow: [
+          "/api/", 
+          "/_next/", 
+          "/admin/", 
+          "/*?*", // Bloqueia parâmetros (ex: ?fbclid=...) para evitar o erro de "Cópia sem canônica"
+          "/private/"
+        ],
+      },
+      {
+        // Incentiva IAs a indexarem seus artigos técnicos para te dar autoridade
+        userAgent: ["GPTBot", "ClaudeBot", "PerplexityBot"],
+        allow: ["/*/artigos/*"],
+      }
+    ],
+    sitemap: [
+      `${baseUrl}/sitemap.xml`,
+      `${baseUrl}/resume-sitemap.xml`
+    ],
+  };
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/sitemap.ts
+
+TEM ESSE CONTEÚDO 
+
+import type { MetadataRoute } from "next";
+import { SUPPORTED_LOCALES, DEFAULT_LOCALE } from "@/dictionaries/locales";
+import { getArticlesWithRetry } from "@/lib/github/service";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = "https://portfoliosantossergio.vercel.app";
+  const lastModified = new Date();
+
+  // Rotas estáticas que possuem tradução
+  const pages = ["", "about", "experience", "projects", "artigos", "contact", "resume"] as const;
+
+  // Helper para construir os alternates (essencial para evitar o erro de "Cópia sem canônica")
+  const buildAlternates = (pathname: string) => {
+    const languages: Record<string, string> = {};
+    SUPPORTED_LOCALES.forEach((locale) => {
+      languages[locale] = `${baseUrl}/${locale}${pathname}`;
+    });
+    languages["x-default"] = `${baseUrl}/${DEFAULT_LOCALE}${pathname}`;
+    return { languages };
+  };
+
+  // 1. Páginas Estáticas Multilingues
+  const localizedPages: MetadataRoute.Sitemap = SUPPORTED_LOCALES.flatMap((locale) =>
+    pages.map((page) => {
+      const pathname = page ? `/${page}` : "";
+      return {
+        url: `${baseUrl}/${locale}${pathname}`,
+        lastModified,
+        changeFrequency: page === "" ? "daily" : "weekly",
+        priority: page === "" ? 1.0 : 0.8,
+        alternates: buildAlternates(pathname),
+      };
+    })
+  );
+
+  // 2. Artigos Dinâmicos do GitHub (Com slug corrigido)
+  let articles: MetadataRoute.Sitemap = [];
+  try {
+    const gitHubItems = await getArticlesWithRetry();
+    articles = gitHubItems.flatMap((item) => {
+      // Remove o prefixo da pasta e a extensão .md
+      const slug = item.path.split('/').pop()?.replace(/\.md$/, "") || "";
+      
+      return SUPPORTED_LOCALES.map((locale) => ({
+        url: `${baseUrl}/${locale}/artigos/${slug}`,
+        lastModified,
+        changeFrequency: "weekly",
+        priority: 0.7,
+        alternates: buildAlternates(`/artigos/${slug}`),
+      }));
+    });
+  } catch (e) {
+    console.error("❌ Erro ao gerar sitemap de artigos:", e);
+  }
+
+  // 3. Imagens Estratégicas (Importante para aparecer no Google Images)
+  const keyImages: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/images/sergio-santos-profile.png`,
+      lastModified,
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/images/trofeus-vencedor-dio.png`,
+      lastModified,
+      priority: 0.6,
+    }
+  ];
+
+  return [...localizedPages, ...articles, ...keyImages];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/twitter-image.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+import { ImageResponse } from "next/og"
+
+export const runtime = "edge"
+
+export const size = {
+  width: 1200,
+  height: 630,
+}
+
+export const contentType = "image/png"
+
+export default function Image() {
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          background: "#0f172a",
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: "80px",
+          color: "white",
+        }}
+      >
+        <h1 style={{ fontSize: 70, fontWeight: 700 }}>
+          Sergio Santos
+        </h1>
+
+        <p style={{ fontSize: 34, marginTop: 20 }}>
+          Software Engineer
+        </p>
+
+        <p style={{ fontSize: 26, marginTop: 40 }}>
+          GitHub • LinkedIn • Portfolio
+        </p>
+      </div>
+    ),
+    size
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/api/og/article/route.tsx
+
+TEM ESSE CONTEÚDO 
+
+import { ImageResponse } from 'next/og';
+import { NextRequest } from 'next/server';
+
+
+// Tipagem rigorosa para TypeScript 6.0
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  
+  // Extração de parâmetros com segurança
+  const lang = searchParams.get('lang') || 'pt-BR';
+  const slugParam = searchParams.get('slug') || '';
+  const slugArray = slugParam.split('/');
+  const rawTitle = slugArray[slugArray.length - 1] || 'Artigo';
+  
+  const displayTitle = decodeURIComponent(rawTitle)
+    .replace(/-/g, ' ')
+    .toUpperCase();
+
+  // Dicionário Multilíngue robusto
+  const dict: Record<string, string> = {
+    'pt-BR': 'ARTIGO TÉCNICO',
+    'en-US': 'TECHNICAL ARTICLE',
+    'es-ES': 'ARTÍCULO TÉCNICO',
+    'es-AR': 'ARTÍCULO TÉCNICO',
+    'es-MX': 'ARTÍCULO TÉCNICO',
+  };
+
+  const label = dict[lang] || dict['pt-BR'];
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          background: 'linear-gradient(to bottom right, #020617, #111827)',
+          width: '1200px',
+          height: '630px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '80px',
+          fontFamily: 'sans-serif',
+          position: 'relative',
+        }}
+      >
+        {/* Design Style Tailwind 4.2: Gradiente de borda superior */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '15px',
+          background: 'linear-gradient(90deg, #3b82f6, #60a5fa, #2563eb)',
+        }} />
+
+        {/* Badge de Idioma/Categoria */}
+        <div style={{
+          background: 'rgba(59, 130, 246, 0.1)',
+          padding: '8px 20px',
+          borderRadius: '20px',
+          border: '1px solid rgba(59, 130, 246, 0.3)',
+          color: '#60a5fa',
+          fontSize: '24px',
+          fontWeight: 700,
+          marginBottom: '30px',
+          letterSpacing: '0.1em'
+        }}>
+          {label}
+        </div>
+
+        {/* Título Principal: Responsivo visualmente */}
+        <div style={{
+          fontSize: displayTitle.length > 40 ? '48px' : '65px',
+          fontWeight: 900,
+          textAlign: 'center',
+          color: 'white',
+          lineHeight: 1.1,
+          maxWidth: '1000px',
+          display: 'flex',
+        }}>
+          {displayTitle}
+        </div>
+
+        {/* Footer com Branding de Sênior */}
+        <div style={{
+          position: 'absolute',
+          bottom: '50px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '15px'
+        }}>
+          <div style={{ color: '#94a3b8', fontSize: '22px', fontWeight: 500 }}>
+            SÉRGIO SANTOS | PORTFOLIO
+          </div>
+          <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#475569' }} />
+          <div style={{ color: '#3b82f6', fontSize: '22px' }}>
+            portfoliosantossergio.vercel.app
+          </div>
+        </div>
+      </div>
+    ),
+    {
+      width: 1200,
+      height: 630,
+    }
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/api/post-og/route.tsx
+
+TEM ESSE CONTEÚDO 
+
+import { ImageResponse } from 'next/og'
+import type { NextRequest } from 'next/server'
+
+export const size = {
+  width: 1200,
+  height: 630,
+}
+
+export const contentType = 'image/png'
+
+// -------------------- Helpers --------------------
+
+const sanitizeText = (value: string, max = 120): string =>
+  value.replace(/\s+/g, ' ').trim().slice(0, max)
+
+const sanitizePositiveInt = (
+  value: string | null,
+  fallback: number,
+): number => {
+  const n = Number(value)
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : fallback
+}
+
+const formatDateSafe = (): string => {
+  const d = new Date()
+  const day = String(d.getUTCDate()).padStart(2, '0')
+  const month = String(d.getUTCMonth() + 1).padStart(2, '0')
+  const year = d.getUTCFullYear()
+  return `${day}/${month}/${year}`
+}
+
+// -------------------- I18N --------------------
+
+type Locale = 'pt' | 'en' | 'es'
+
+const getReadingLabel = (locale: Locale) => {
+  switch (locale) {
+    case 'en':
+      return 'MIN READ'
+    case 'es':
+      return 'MIN DE LECTURA'
+    default:
+      return 'MIN DE LEITURA'
+  }
+}
+
+const normalizeLocale = (value: string | null): Locale => {
+  if (!value) return 'pt'
+  if (value.startsWith('en')) return 'en'
+  if (value.startsWith('es')) return 'es'
+  return 'pt'
+}
+
+// -------------------- Handler --------------------
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url)
+
+    const locale = normalizeLocale(searchParams.get('lang'))
+
+    const title = sanitizeText(
+      searchParams.get('title') ?? 'Sérgio Santos',
+      90,
+    )
+
+    const description = sanitizeText(
+      searchParams.get('description') ?? 'Data Specialist',
+      160,
+    )
+
+    const author = sanitizeText(
+      searchParams.get('author') ?? 'Sérgio Santos',
+      40,
+    )
+
+    const date =
+      sanitizeText(searchParams.get('created-at') ?? '', 20) ||
+      formatDateSafe()
+
+    const readingTime = sanitizePositiveInt(
+      searchParams.get('reading-time'),
+      5,
+    )
+
+    const readingLabel = getReadingLabel(locale)
+
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            backgroundColor: '#020617',
+            backgroundImage:
+              'radial-gradient(circle at 25px 25px, #1e293b 2%, transparent 0%)',
+            backgroundSize: '50px 50px',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%',
+              padding: 60,
+              background:
+                'linear-gradient(to top, #020617 0%, rgba(2,6,23,0.88) 100%)',
+            }}
+          >
+            {/* Reading Time */}
+            <div
+              style={{
+                display: 'flex',
+                alignSelf: 'flex-start',
+                backgroundColor: '#ff4500',
+                padding: '8px 16px',
+                borderRadius: 8,
+                marginBottom: 28,
+              }}
+            >
+              <span
+                style={{
+                  color: '#ffffff',
+                  fontSize: 16,
+                  fontWeight: 700,
+                  letterSpacing: 0.5,
+                }}
+              >
+                {readingTime} {readingLabel}
+              </span>
+            </div>
+
+            {/* Title */}
+            <div
+              style={{
+                fontSize: 64,
+                fontWeight: 900,
+                color: '#ffffff',
+                lineHeight: 1.1,
+                marginBottom: 22,
+                maxWidth: 1000,
+              }}
+            >
+              {title}
+            </div>
+
+            {/* Description */}
+            <div
+              style={{
+                fontSize: 26,
+                color: '#94a3b8',
+                lineHeight: 1.4,
+                marginBottom: 42,
+                maxWidth: 900,
+              }}
+            >
+              {description}
+            </div>
+
+            {/* Footer */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderTop: '1px solid rgba(255,69,0,0.35)',
+                paddingTop: 28,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div
+                  style={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor: '#ff4500',
+                    borderRadius: 12,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: 14,
+                  }}
+                >
+                  <span
+                    style={{
+                      color: '#ffffff',
+                      fontSize: 24,
+                      fontWeight: 700,
+                    }}
+                  >
+                    {author.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+
+                <span
+                  style={{
+                    color: '#ffffff',
+                    fontSize: 22,
+                    fontWeight: 600,
+                  }}
+                >
+                  {author}
+                </span>
+              </div>
+
+              <span
+                style={{
+                  color: '#64748b',
+                  fontSize: 20,
+                }}
+              >
+                {date}
+              </span>
+            </div>
+          </div>
+        </div>
+      ),
+      {
+        ...size,
+        headers: {
+          'Cache-Control': 'public, immutable, max-age=31536000',
+        },
+      },
+    )
+  } catch {
+    return new Response('Failed to generate OG image', {
+      status: 500,
+    })
+  }
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/api/resume-preview/route.ts
+
+TEM ESSE CONTEÚDO 
+
+import { NextRequest, NextResponse } from "next/server"
+
+const BASE_URL = "https://portfoliosantossergio.vercel.app"
+
+const supportedLangs = ["pt-BR","en-US","es-ES","es-AR","es-MX"] as const
+
+type Lang = typeof supportedLangs[number]
+
+const contentMap: Record<Lang, {
+  name: string
+  role: string
+  description: string
+  keywords: string[]
+}> = {
+
+  "pt-BR": {
+    name: "Sérgio Santos",
+    role: "Especialista em Ciência de Dados e IA",
+    description: "Currículo profissional com foco em Data Science, IA e Engenharia de Software.",
+    keywords: [
+      "currículo cientista de dados",
+      "engenheiro de IA",
+      "machine learning currículo"
+    ]
+  },
+
+  "en-US": {
+    name: "Sergio Santos",
+    role: "Data Science and AI Specialist",
+    description: "Professional resume focused on Data Science, AI and Software Engineering.",
+    keywords: [
+      "data scientist resume",
+      "AI engineer CV",
+      "machine learning engineer resume"
+    ]
+  },
+
+  "es-ES": {
+    name: "Sergio Santos",
+    role: "Especialista en Ciencia de Datos e IA",
+    description: "Currículum profesional enfocado en Data Science, IA y desarrollo de software.",
+    keywords: [
+      "currículum data scientist",
+      "ingeniero IA",
+      "machine learning CV"
+    ]
+  },
+
+  "es-AR": {
+    name: "Sergio Santos",
+    role: "Especialista en Ciencia de Datos e IA",
+    description: "Currículum profesional enfocado en ciencia de datos, IA y software.",
+    keywords: [
+      "curriculum data science",
+      "ingeniero IA",
+      "machine learning CV"
+    ]
+  },
+
+  "es-MX": {
+    name: "Sergio Santos",
+    role: "Especialista en Ciencia de Datos e IA",
+    description: "Currículum profesional enfocado en Data Science, IA y desarrollo de software.",
+    keywords: [
+      "curriculum data science",
+      "ingeniero IA",
+      "machine learning CV"
+    ]
+  }
+}
+
+function getPdfUrl(lang: string) {
+  return `${BASE_URL}/pdf/cv-sergio-santos-${lang}.pdf`
+}
+
+export async function GET(req: NextRequest) {
+
+  const { searchParams } = new URL(req.url)
+
+  let lang = searchParams.get("lang") || "en-US"
+
+  if (!supportedLangs.includes(lang as Lang)) {
+    lang = "en-US"
+  }
+
+  const typedLang = lang as Lang
+
+  const data = contentMap[typedLang]
+
+  const response = {
+    lang: typedLang,
+
+    name: data.name,
+    role: data.role,
+    description: data.description,
+
+    pdfUrl: getPdfUrl(typedLang),
+
+    resumePage: `${BASE_URL}/${typedLang}/resume`,
+
+    keywords: data.keywords,
+
+    alternates: supportedLangs.map(l => ({
+      lang: l,
+      url: `${BASE_URL}/${l}/resume`
+    }))
+  }
+
+  return NextResponse.json(response, {
+    headers: {
+      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400"
+    }
+  })
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/api/users/route.ts
+
+TEM ESSE CONTEÚDO 
+
+
+// src/app/api/users/route.ts
+
+import { NextRequest, NextResponse } from "next/server";
+import {
+  NotFoundError,
+  MethodNotAllowedError,
+} from "@/lib/errors";
+import { handleApiError } from "@/lib/http/handleApiError";
+
+/**
+ * Entity type (strict TS 6 safe)
+ */
+interface User {
+  readonly id: string;
+  readonly name: string;
+}
+
+/**
+ * GET /api/users
+ *
+ * ✔ Next.js 16 App Router
+ * ✔ TypeScript 6 strict safe
+ * ✔ Multilíngue via handleApiError
+ * ✔ Integrado ao ErrorDictionary
+ * ✔ Arquitetura preparada para DB real
+ */
+export async function GET(
+  request: NextRequest
+): Promise<NextResponse> {
+  try {
+    /**
+     * Simulação de busca
+     * (Substituir por banco futuramente)
+     */
+    const user: User | null = null;
+
+    if (!user) {
+      /**
+       * A chave real será resolvida
+       * pelo ErrorDictionary via handleApiError
+       */
+      throw new NotFoundError();
+    }
+
+    return NextResponse.json(
+      { data: user },
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+        },
+      }
+    );
+  } catch (error: unknown) {
+    return handleApiError(error, request);
+  }
+}
+
+/**
+ * Bloqueia outros métodos explicitamente
+ * Boa prática REST + alinhado ao seu MethodNotAllowedError
+ */
+export async function POST(): Promise<NextResponse> {
+  return handleApiError(
+    new MethodNotAllowedError(),
+    undefined
+  );
+}
+
+export async function PUT(): Promise<NextResponse> {
+  return handleApiError(
+    new MethodNotAllowedError(),
+    undefined
+  );
+}
+
+export async function DELETE(): Promise<NextResponse> {
+  return handleApiError(
+    new MethodNotAllowedError(),
+    undefined
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/[lang]/loading.tsx
+
+TEM ESSE CONTEÚDO 
+
+/**
+ * LOADING: Skeleton Screen
+ * -----------------------------------------------------------------------------
+ * Totalmente responsivo, multilíngue (PT, EN, ES-ES, ES-AR, ES-MX)
+ * Alinhado com Next.js 16 e TypeScript 6.0.
+ */
+
+import { getDictionary } from '@/dictionaries'
+import type { Locale } from '@/types/dictionary'
+
+interface LoadingProps {
+  params: Promise<{
+    lang: Locale
+  }>
+}
+
+export default async function Loading({ params }: LoadingProps) {
+  // Garantir a resolução do params antes de acessar lang (Obrigatório no Next.js 15/16)
+  const resolvedParams = await params;
+  const lang = resolvedParams?.lang || 'pt-BR';
+  
+  // Busca o dicionário para manter a acessibilidade (aria-label)
+  const dictionary = await getDictionary(lang);
+  const label = dictionary.common?.loading || "Carregando...";
+
+  return (
+    <div
+      className="min-h-screen bg-slate-50 dark:bg-[#020617] overflow-hidden"
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+    >
+      {/* Acessibilidade para Screen Readers */}
+      <span className="sr-only">{label}</span>
+
+      {/* 🦴 Skeleton Navbar */}
+      <div className="w-full h-20 border-b border-slate-200/50 dark:border-slate-800/50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md" />
+
+      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-16 pb-20">
+        {/* 🦴 Skeleton Hero Section */}
+        <section className="space-y-8 mb-24">
+          <div className="h-6 w-48 bg-blue-600/10 dark:bg-blue-600/20 rounded-full animate-pulse border border-blue-600/20" />
+
+          <div className="space-y-4">
+            <div className="h-12 md:h-16 w-full max-w-3xl bg-slate-200 dark:bg-slate-800/80 rounded-3xl animate-pulse" />
+            <div className="h-12 md:h-16 w-2/3 max-w-xl bg-slate-200 dark:bg-slate-800/80 rounded-3xl animate-pulse" />
+          </div>
+
+          <div className="space-y-3">
+            <div className="h-5 w-full max-w-lg bg-slate-200/60 dark:bg-slate-800/40 rounded-xl animate-pulse" />
+            <div className="h-5 w-3/4 max-w-sm bg-slate-200/60 dark:bg-slate-800/40 rounded-xl animate-pulse" />
+          </div>
+
+          <div className="flex gap-4 pt-4">
+            <div className="h-12 w-40 bg-slate-200 dark:bg-slate-800 rounded-2xl animate-pulse" />
+            <div className="h-12 w-12 bg-slate-200 dark:bg-slate-800 rounded-2xl animate-pulse" />
+          </div>
+        </section>
+
+        {/* 🦴 Skeleton Projects Grid */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="relative overflow-hidden min-h-[420px] bg-white dark:bg-slate-900/40 rounded-[2.5rem] border border-slate-200/60 dark:border-slate-800/60 p-8 flex flex-col justify-end"
+            >
+              <div className="space-y-6">
+                <div className="flex gap-2">
+                  <div className="h-6 w-16 bg-slate-200 dark:bg-slate-800 rounded-lg animate-pulse" />
+                  <div className="h-6 w-16 bg-slate-200 dark:bg-slate-800 rounded-lg animate-pulse" />
+                </div>
+                <div className="h-7 w-full bg-slate-200 dark:bg-slate-800 rounded-xl animate-pulse" />
+                <div className="space-y-3">
+                  <div className="h-4 w-full bg-slate-200/50 dark:bg-slate-800/50 rounded-md animate-pulse" />
+                  <div className="h-4 w-5/6 bg-slate-200/50 dark:bg-slate-800/50 rounded-md animate-pulse" />
+                </div>
+                <div className="flex justify-between items-center pt-4 border-t border-slate-100 dark:border-slate-800">
+                  <div className="h-5 w-24 bg-slate-200 dark:bg-slate-800 rounded-lg animate-pulse" />
+                  <div className="h-8 w-8 bg-slate-200 dark:bg-slate-800 rounded-full animate-pulse" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </section>
+      </div>
+    </div>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/[lang]/manifest.ts
+
+TEM ESSE CONTEÚDO 
+
+// src/app/[lang]/manifest.ts
+import type { MetadataRoute } from 'next';
+import { getDictionary } from '@/dictionaries';
+import { normalizeLocale } from '@/dictionaries/locales';
+import type { Locale } from '@/types/dictionary';
+
+interface ManifestProps {
+  params: Promise<{ lang: string }>;
+}
+
+/**
+ * Geração de Manifesto PWA - Next.js 16.2.0 (Turbopack)
+ * -----------------------------------------------------------------------------
+ * ✔ TypeScript 6.0 Safe: Acesso via Index Signature ['home']
+ * ✔ React 19: Params como Promise (await params)
+ * ✔ Multilingue: PT-BR, EN-US, ES-ES, ES-AR, ES-MX
+ * ✔ Responsividade: Screenshots configurados para Mobile e Desktop
+ */
+export default async function manifest(
+  { params }: ManifestProps
+): Promise<MetadataRoute.Manifest> {
+  
+  // No Next.js 16.2, params deve ser aguardado
+  const { lang: rawLang } = await params;
+  
+  // Normalização rigorosa do locale
+  const lang = normalizeLocale(rawLang) as Locale;
+  const dict = await getDictionary(lang);
+
+  /**
+   * FIX TYPE ERROR: 
+   * Como dict.seo.pages vem de um JSON dinâmico (Index Signature), 
+   * o TS 6.0 exige o acesso via ['home'].
+   */
+  const homePage = dict.seo.pages?.['home'];
+  const homeTitle = homePage?.title || dict.seo.siteName;
+
+  // Cor do tema Slate-950 (Tailwind 4.2 default dark)
+  const themeColor = '#020617';
+
+  return {
+    id: `sergio-santos-pwa-${lang}`,
+    lang: lang,
+    dir: 'ltr',
+    name: dict.seo.siteName,
+    short_name: "Sérgio Santos",
+    description: dict.seo.description,
+    start_url: `/${lang}/`,
+    scope: `/${lang}/`,
+    display: 'standalone',
+    background_color: themeColor,
+    theme_color: themeColor,
+    orientation: 'portrait',
+    categories: [
+      'technology',
+      'education',
+      'portfolio',
+      'software',
+      'data-science'
+    ],
+    icons: [
+      {
+        src: '/icons/icon.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/icons/icon.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
+      {
+        src: '/icons/apple-touch-icon.png',
+        sizes: '180x180',
+        type: 'image/png',
+      },
+    ],
+    screenshots: [
+      {
+        /**
+         * CORREÇÃO DE CAMINHO: 
+         * Aponta para public/og/og-image-[lang].png conforme sua estrutura
+         */
+        src: `/og/og-image-${lang}.png`,
+        sizes: '1200x630',
+        type: 'image/png',
+        form_factor: 'wide',
+        label: `${homeTitle} - Desktop`,
+      },
+      {
+        // Screenshot mobile para PWA responsivo
+        src: `/og/og-image-${lang}.png`,
+        sizes: '1200x630',
+        type: 'image/png',
+        form_factor: 'narrow',
+        label: `${homeTitle} - Mobile`,
+      }
+    ],
+  };
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/[lang]/metadata.ts
+
+TEM ESSE CONTEÚDO 
+
+// src/app/[lang]/metadata.ts
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { getDictionary } from '@/dictionaries';
+import { isValidLocale, SUPPORTED_LOCALES } from '@/dictionaries/locales';
+import type { Locale } from '@/types/dictionary';
+
+// SITE_URL dinâmico via variável de ambiente ou fallback seguro
+const SITE_URL = process.env['NEXT_PUBLIC_SITE_URL'] ?? 'https://portfoliosantossergio.vercel.app';
+
+interface MetadataProps {
+  params: Promise<{
+    lang: string;
+  }>;
+}
+
+/**
+ * Geração de Metadados Dinâmicos - Next.js 16.2.0 (Turbopack Ready)
+ * -----------------------------------------------------------------------------
+ * ✔ TypeScript 6.0 Safe: Acesso via Index Signature ['home']
+ * ✔ React 19: Params como Promise
+ * ✔ Multilingue: Suporte a 5 locales e imagens OG localizadas na pasta /og/
+ */
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
+  const { lang: rawLang } = await params;
+
+  if (!isValidLocale(rawLang)) {
+    notFound();
+  }
+
+  const lang = rawLang as Locale;
+  const dict = await getDictionary(lang);
+
+  /**
+   * FIX TYPE ERROR: 
+   * Como dict.seo.pages é um objeto dinâmico, o TS 6.0 exige o acesso via ['home'].
+   */
+  const homePage = dict.seo.pages?.['home'];
+  const pageTitle = homePage?.title ?? dict.seo.siteName;
+  const pageDescription = homePage?.description ?? dict.seo.description;
+
+  // Mapa de imagens na pasta /og/ conforme sua estrutura física
+  const ogImageMap: Record<Locale, string> = {
+    'pt-BR': 'og/og-image-pt-BR.png',
+    'en-US': 'og/og-image-en-US.png',
+    'es-ES': 'og/og-image-es-ES.png',
+    'es-AR': 'og/og-image-es-AR.png',
+    'es-MX': 'og/og-image-es-MX.png',
+  };
+
+  const ogLocaleMap: Record<Locale, string> = {
+    'pt-BR': 'pt_BR',
+    'en-US': 'en_US',
+    'es-ES': 'es_ES',
+    'es-AR': 'es_AR',
+    'es-MX': 'es_MX',
+  };
+
+  const finalOgImage = `${SITE_URL}/${ogImageMap[lang]}`;
+  
+  // Mapeamento de links alternativos para SEO multilingue
+  const languages = SUPPORTED_LOCALES.reduce((acc, loc) => {
+    acc[loc] = `${SITE_URL}/${loc}`;
+    return acc;
+  }, {} as Record<string, string>);
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: pageTitle,
+      template: `%s | ${dict.seo.siteName}`,
+    },
+    description: pageDescription,
+    alternates: {
+      canonical: `${SITE_URL}/${lang}`,
+      languages: {
+        ...languages,
+        'x-default': `${SITE_URL}/pt-BR`,
+      },
+    },
+    openGraph: {
+      type: 'website',
+      locale: ogLocaleMap[lang],
+      url: `${SITE_URL}/${lang}`,
+      siteName: dict.seo.siteName,
+      title: pageTitle,
+      description: pageDescription,
+      images: [
+        {
+          url: finalOgImage,
+          width: 1200,
+          height: 630,
+          alt: pageTitle,
+          type: 'image/png',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: pageTitle,
+      description: pageDescription,
+      images: [finalOgImage],
+    },
+    icons: {
+      icon: [
+        { url: '/icons/favicon.ico', sizes: 'any' },
+        { url: '/icons/icon.png', type: 'image/png', sizes: '32x32' },
+        { url: '/icons/icon.svg', type: 'image/svg+xml' },
+      ],
+      apple: [
+        { url: '/icons/apple-touch-icon.png', sizes: '180x180' },
+        { url: '/icons/apple-icon.png', sizes: '180x180' },
+      ],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+  };
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/[lang]/not-found.tsx
+
+TEM ESSE CONTEÚDO 
+
+'use client';
+
+import { useParams, useRouter } from 'next/navigation';
+import { useMemo } from 'react';
+import { getErrorDictionary } from '@/dictionaries/errors';
+import { isSupportedLocale, type SupportedLocale } from '@/lib/i18n/locale';
+import { ErrorDisplay } from '@/components/error-display';
+import type { Locale } from '@/types/dictionary';
+
+/**
+ * NEXT.JS 16.2.0 & TYPESCRIPT 6.0 - PÁGINA 404 PERSONALIZADA
+ * -----------------------------------------------------------------------------
+ * ✔ FIX: Inclusão da prop 'lang' no ErrorDisplay para evitar erro de build
+ * ✔ REACT 19: Memoização de dicionário para performance em Node 24
+ * ✔ MULTILINGUE: Suporte regional (PT-BR, EN-US, ES-ES, ES-AR, ES-MX)
+ * ✔ DESIGN: Tailwind 4.2 Engine com transição Dark Mode
+ */
+export default function NotFound() {
+  const params = useParams();
+  const router = useRouter();
+
+  /**
+   * RESOLUÇÃO DO LOCALE (TS 6.0 Safe):
+   * Captura o idioma da URL de forma segura para Next 16.2.
+   */
+  const resolvedLocale = useMemo((): SupportedLocale => {
+    const langParam = params?.['lang']; 
+    const currentLang = typeof langParam === 'string' ? langParam : 'pt-BR';
+    
+    return isSupportedLocale(currentLang) ? currentLang : 'pt-BR';
+  }, [params]);
+
+  /**
+   * CARREGAMENTO DO DICIONÁRIO:
+   * Obtém as mensagens específicas de erro (NotFoundError, etc).
+   */
+  const dictionary = useMemo(() => 
+    getErrorDictionary(resolvedLocale), 
+  [resolvedLocale]);
+
+  const handleReset = () => {
+    /**
+     * NAVEGAÇÃO SEGURA:
+     * Redireciona para a home do idioma atual (ex: /es-AR/ ou /pt-BR/).
+     */
+    router.push(`/${resolvedLocale}`);
+  };
+
+  return (
+    <main 
+      className="flex min-h-[90vh] w-full items-center justify-center px-6 py-24 bg-white dark:bg-slate-950 transition-colors duration-700"
+      aria-live="polite"
+    >
+      <div className="w-full max-w-2xl flex flex-col items-center">
+        {/* FIX DO DEPLOY: 
+          Agora passamos a prop 'lang' exigida pelo ErrorDisplayProps revisado.
+        */}
+        <ErrorDisplay
+          errorKey="NotFoundError"
+          dictionary={dictionary}
+          lang={resolvedLocale as Locale}
+          reset={handleReset}
+        />
+        
+        {/* RODAPÉ DE BRANDING (Tailwind 4.2 utility classes) */}
+        <div className="mt-16 animate-in fade-in slide-in-from-bottom-2 duration-1000 delay-300">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 dark:text-slate-700">
+            Sérgio Santos | Portfolio 2026
+          </p>
+        </div>
+      </div>
+    </main>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/[lang]/template.tsx
+
+TEM ESSE CONTEÚDO 
+
+/**
+ * TEMPLATE: Global [lang]
+ * -----------------------------------------------------------------------------
+ * Alinhado com Next.js 16 e TS 6.0.
+ * Responsivo, acessível e focado em performance de renderização.
+ */
+
+import type { ReactNode } from 'react'
+
+interface TemplateProps {
+  readonly children: ReactNode
+}
+
+export default function Template({ children }: TemplateProps) {
+  return (
+    <div
+      className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-background text-foreground antialiased"
+    >
+      <main
+        id="template-root"
+        className="relative flex w-full flex-1 flex-col focus-visible:outline-none"
+        tabIndex={-1}
+      >
+        {children}
+      </main>
+    </div>
+  )
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/[lang]/page.tsx
+
+TEM ESSE CONTEÚDO 
+
+// src/app/[lang]/page.tsx
+import type { Metadata, Viewport } from "next";
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { Suspense } from "react";
+import type { JSX } from "react";
+
+// SEO & Schema
+import { buildMetadata } from "@/lib/seo";
+import { personSchema, websiteSchema } from "@/lib/schema"; // Importação necessária adicionada
+
+// Dicionários e Tipos
+import type { Locale, ConstructionDictionary, Dictionary } from "@/types/dictionary";
+import type { ErrorDictionary } from "@/types/error-dictionary";
+import type { ProjectDomain } from "@/domain/projects";
+import { resolveProjectTechnology } from "@/domain/projects";
+import { getServerDictionary } from "@/lib/getServerDictionary";
+import { getPortfolioRepos } from "@/lib/github";
+import { getArticlesWithRetry } from "@/lib/github/service";
+import { locales, normalizeLocale, type SupportedLocale } from "@/dictionaries/locales";
+
+// Componentes de UI
+import ProxyPage from "@/components/ProxyPage";
+import HeroSection from "@/components/HeroSection";
+import AboutSection from "@/components/AboutSection";
+import ExperienceSection from "@/components/ExperienceSection";
+import ContactSection from "@/components/ContactSection";
+import PdfSafeLoader from "@/components/pdf/PdfSafeLoader";
+import { ResumeLangSelector } from "@/components/pdf/ResumeLangSelector";
+import { PortfolioGrid } from "@/components/PortfolioGrid";
+import { CareerHighlights } from "@/components/CareerHighlights";
+import ConstructionRiskProject from "@/components/ConstructionRiskProject";
+import ProfileForm from "@/components/profile/ProfileForm";
+import { CategoryBadge } from "@/components/ui/CategoryBadge";
+
+export function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#020617",
+  viewportFit: "cover",
+};
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang: rawLang } = await params;
+  const locale = normalizeLocale(rawLang) as SupportedLocale;
+  
+  if (!locales.includes(locale)) return {};
+  
+  const dict = await getServerDictionary(locale);
+  
+  // buildMetadata agora cuida da Canonical Tag para evitar erro de cópia
+  return buildMetadata({
+    title: dict?.seo?.title,
+    description: dict?.seo?.description,
+    lang: locale,
+    path: "", // Path vazio pois já estamos na home do idioma selecionado
+    image: `/og/og-image-${locale}.png`
+  });
+}
+
+function normalizeProjects(repos: any[]): ProjectDomain[] {
+  if (!Array.isArray(repos)) return [];
+  return repos
+    .map((repo, index): ProjectDomain => {
+      const topics = Array.isArray(repo?.topics) ? repo.topics.map((t: string) => t.toLowerCase()) : [];
+      return {
+        id: String(repo?.id ?? index),
+        name: (repo?.name ?? "Projeto").replace(/-/g, " "),
+        description: repo?.description ?? "",
+        htmlUrl: repo?.html_url ?? "",
+        homepage: repo?.homepage ?? null,
+        topics,
+        technology: resolveProjectTechnology(topics),
+        isPortfolio: topics.includes("portfolio"),
+        isFeatured: topics.includes("featured") || index < 2,
+        isFirst: index === 0,
+      };
+    })
+    .filter((p) => p.isPortfolio && p.htmlUrl);
+}
+
+async function ResilientPortfolio({ lang, dict }: { lang: Locale, dict: Dictionary }) {
+  try {
+    const repos = await getPortfolioRepos("Santosdevbjj").catch(() => []);
+    const projects = normalizeProjects(repos);
+    return <PortfolioGrid projects={projects} lang={lang} dict={dict} />;
+  } catch (error) {
+    return <div className="text-center py-10 opacity-50">Serviço temporariamente indisponível.</div>;
+  }
+}
+
+async function ResilientProfileForm({ lang, dict }: { lang: Locale, dict: Dictionary }) {
+  let errorDict: ErrorDictionary = {} as ErrorDictionary;
+  try {
+    const errorModule = await import(`@/dictionaries/errors/${lang}.json`);
+    errorDict = errorModule.default;
+  } catch (e) {
+    console.warn("Dicionário de erro não encontrado.");
+  }
+  return <ProfileForm lang={lang} dict={{ ...dict, errors: errorDict }} />;
+}
+
+export default async function HomePage({ params }: { params: Promise<{ lang: string }> }): Promise<JSX.Element> {
+  const { lang: rawLang } = await params;
+  const locale = normalizeLocale(rawLang);
+  
+  if (!locales.includes(locale)) notFound();
+  const lang = locale as Locale;
+
+  const dict = await getServerDictionary(lang);
+  if (!dict) notFound();
+
+  const pdfFile = `/pdf/cv-sergio-santos-${lang}.pdf`;
+  const githubArticles = await getArticlesWithRetry(1);
+  const latestArticle = githubArticles[0] || null;
+
+  // Gerar os dados estruturados (Schema.org)
+  const jsonLd = [personSchema(), websiteSchema(lang)];
+
+  return (
+    <ProxyPage lang={lang}>
+      {/* Injeção de Dados Estruturados para o Google Search Console */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      <main className="flex min-h-screen flex-col bg-white dark:bg-[#020617]">
+        
+        <HeroSection dictionary={dict} />
+
+        <section className="py-12 px-4">
+          <div className="mx-auto max-w-7xl">
+            <Suspense fallback={<div className="h-48 animate-pulse bg-slate-100 dark:bg-slate-800 rounded-[3rem]" />}>
+              {dict.construction && <ConstructionRiskProject dict={dict.construction as ConstructionDictionary} />}
+            </Suspense>
+          </div>
+        </section>
+
+        <section className="py-10 bg-slate-50 dark:bg-slate-900/20 border-y border-slate-100 dark:border-slate-800/50">
+          <Suspense fallback={<div className="h-20 animate-pulse bg-blue-50/50 dark:bg-blue-900/10 rounded-full mx-auto max-w-3xl" />}>
+            <ResilientProfileForm lang={lang} dict={dict} />
+          </Suspense>
+        </section>
+
+        <AboutSection dict={dict.about} lang={lang} />
+        
+        <div className="mx-auto max-w-7xl px-4 py-16">
+          <CareerHighlights dict={dict} />
+        </div>
+
+        <ExperienceSection experience={dict.experience} />
+
+        <section id="projects" className="py-24">
+          <Suspense fallback={<div className="h-96 animate-pulse bg-slate-50 dark:bg-slate-900/40 rounded-[3rem] max-w-7xl mx-auto" />}>
+            <ResilientPortfolio lang={lang} dict={dict} />
+          </Suspense>
+        </section>
+
+        <section className="py-24 space-y-12 bg-slate-50/30 dark:bg-transparent">
+          
+          <div id="resume" className="max-w-7xl mx-auto px-4">
+            <div className="text-center mb-10">
+              <h2 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">
+                Curriculum <span className="text-blue-600">Vitae</span>
+              </h2>
+              <div className="mt-6 max-w-xs mx-auto">
+                <ResumeLangSelector currentLang={lang} dict={dict.resume} />
+              </div>
+            </div>
+            <div className="bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl overflow-hidden border border-blue-100 dark:border-blue-900/30">
+              <PdfSafeLoader fileUrl={pdfFile} lang={lang} />
+            </div>
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            {/* CARD DO ARTIGO PREMIADO - Linkado com os troféus oficiais */}
+            <div className="group relative flex flex-col bg-white dark:bg-slate-900 border border-blue-100 dark:border-blue-900/30 rounded-[3rem] p-8 md:p-12 shadow-xl hover:shadow-blue-500/10 transition-all">
+              <div className="flex flex-col h-full">
+                <div className="flex items-start justify-between mb-8">
+                  <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden shadow-lg border-2 border-blue-50 rotate-[-3deg] group-hover:rotate-0 transition-transform">
+                    <Image 
+                      src="/images/trofeus-vencedor-dio.png" 
+                      alt="Troféu DIO Sérgio Santos" 
+                      fill 
+                      className="object-cover" 
+                    />
+                  </div>
+                  <span className="bg-blue-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg shadow-blue-500/30">
+                    🏆 {dict.articles.awardWinner}
+                  </span>
+                </div>
+                <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 leading-tight">
+                  Low-Code na Saúde: Como Criar Apps Médicos em Semanas
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base leading-relaxed mb-8">
+                  35ª Competição da DIO (Set/2025). Publicado no Medium em três idiomas.
+                </p>
+                <div className="mt-auto space-y-6">
+                  <div className="flex flex-wrap gap-4 items-center py-4 border-y border-slate-100 dark:border-slate-800">
+                    <a href="https://medium.com/@sergiosantosluiz/low-code-na-sa%C3%BAde-como-criar-apps-m%C3%A9dicos-em-semanas-1c6f05c2c89e" target="_blank" rel="noopener" className="hover:scale-110 transition-transform text-2xl">🇧🇷</a>
+                    <a href="https://medium.com/@sergiosantosluiz/low-code-in-healthcare-how-to-build-medical-apps-in-weeks-2679bf08ba77" target="_blank" rel="noopener" className="hover:scale-110 transition-transform text-2xl">🇺🇸</a>
+                    <a href="https://medium.com/@sergiosantosluiz/low-code-en-la-salud-c%C3%B3mo-crear-apps-m%C3%A9dicos-em-semanas-5474e7dddfad" target="_blank" rel="noopener" className="hover:scale-110 transition-transform text-2xl">🇪🇸</a>
+                  </div>
+                  <a href={dict.common.externalLinks.medium} target="_blank" rel="noopener" className="inline-flex items-center text-blue-600 dark:text-blue-400 font-black text-sm hover:underline">
+                    📚 {dict.articles.mediumProfile} <span className="ml-2">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <Link 
+              href={`/${lang}/artigos`} 
+              className="group relative flex flex-col bg-slate-900 dark:bg-blue-950/20 border border-blue-900/30 rounded-[3rem] p-8 md:p-12 shadow-2xl overflow-hidden hover:border-blue-500 transition-all"
+            >
+              <div className="relative z-10 h-full flex flex-col">
+                <div className="flex items-center justify-between mb-8">
+                  <div className="p-3 bg-white rounded-xl shadow-inner">
+                    <Image src="/icons/icon.svg" width={28} height={28} alt="GitHub" />
+                  </div>
+                  {latestArticle && <CategoryBadge category={latestArticle.category} />}
+                </div>
+                
+                <div className="space-y-4 mb-10">
+                  <h3 className="text-2xl font-black text-white leading-none">
+                    {latestArticle ? latestArticle.name.replace('.md', '') : "Artigos Técnicos"}
+                  </h3>
+                  <p className="text-slate-300 text-sm md:text-base leading-relaxed">
+                    Cloud, IA Generativa e Engenharia de Software aplicadas a problemas reais.
+                  </p>
+                </div>
+
+                <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-between text-blue-400 font-black text-sm">
+                  <span>Explore {githubArticles.length} publicações</span>
+                  <span className="group-hover:translate-x-2 transition-transform">Ler Artigos →</span>
+                </div>
+              </div>
+              <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-blue-600/10 blur-[100px] rounded-full group-hover:bg-blue-600/20 transition-colors" />
+            </Link>
+          </div>
+        </section>
+
+        <ContactSection contact={dict.contact} common={dict.common} locale={lang} />
+      </main>
+    </ProxyPage>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/[lang]/layout.tsx
+
+TEM ESSE CONTEÚDO 
+
+// src/app/[lang]/layout.tsx
+
+import type { Metadata, Viewport } from "next";
+import { notFound } from "next/navigation";
+import { Inter } from "next/font/google";
+import type { ReactNode } from "react";
+
+// Configurações de Dicionário e Locales
+import { locales, type SupportedLocale, normalizeLocale } from "@/dictionaries/locales";
+import { getServerDictionary } from "@/lib/getServerDictionary";
+import { ScrollSpyProvider } from "@/contexts/scroll-spy.client";
+import { buildMetadata } from "@/lib/seo";
+
+// Componentes de Layout e SEO
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { CookieBanner } from "@/components/CookieBanner";
+import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
+import { BreadcrumbsJsonLd } from "@/components/seo/BreadcrumbsJsonLd";
+import OpenGraph from "@/components/seo/OpenGraph";
+import StructuredData from "@/components/StructuredData";
+
+// Tailwind CSS 4.2 Engine
+import "@/app/globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
+/**
+ * Next.js 16.2.2: Geração Estática de Parâmetros para os Locales (PPR Ready)
+ */
+export async function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
+
+/**
+ * Geração de Metadados Dinâmicos (SEO Multilingue e Regional)
+ */
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ lang: string }> 
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const locale = normalizeLocale(lang) as SupportedLocale;
+
+  if (!locales.includes(locale)) notFound();
+
+  const dict = await getServerDictionary(locale);
+  const baseUrl = process.env['NEXT_PUBLIC_SITE_URL'] ?? "https://portfoliosantossergio.vercel.app";
+
+  const metadata = buildMetadata({
+    title: dict.seo.title,
+    description: dict.seo.description,
+    path: `/${locale}`,
+  });
+
+  return {
+    ...metadata,
+    metadataBase: new URL(baseUrl),
+    verification: {
+      google: "0eQpOZSmJw5rFx70_NBmJCSkcBbwTs-qAJzfts5s-R0",
+    },
+    alternates: {
+      canonical: `${baseUrl}/${locale}`,
+      languages: {
+        "pt-BR": `${baseUrl}/pt-BR`,
+        "en-US": `${baseUrl}/en-US`,
+        "es-ES": `${baseUrl}/es-ES`,
+        "es-AR": `${baseUrl}/es-AR`,
+        "es-MX": `${baseUrl}/es-MX`,
+        "x-default": `${baseUrl}/pt-BR`,
+      },
+    },
+    openGraph: {
+      ...metadata.openGraph,
+      locale: locale.replace("-", "_"),
+      images: [
+        {
+          url: `/og/og-image-${locale}.png`,
+          width: 1200,
+          height: 630,
+          alt: dict.seo.title,
+        },
+      ],
+    },
+    icons: {
+      icon: [
+        { url: "/icons/icon.svg", type: "image/svg+xml" },
+        { url: "/icons/icon.png", type: "image/png" },
+      ],
+      shortcut: "/icons/favicon.ico",
+      apple: [
+        { url: "/icons/apple-touch-icon.png" },
+        { url: "/icons/apple-icon.png" },
+      ]
+    }
+  };
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#020617",
+  viewportFit: "cover",
+};
+
+export default async function LangLayout(props: {
+  children: ReactNode;
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await props.params;
+  const locale = normalizeLocale(lang) as SupportedLocale;
+
+  // Validação de segurança para o locale
+  if (!locales.includes(locale)) notFound();
+
+  const dict = await getServerDictionary(locale);
+  const baseUrl = process.env['NEXT_PUBLIC_SITE_URL'] ?? "https://portfoliosantossergio.vercel.app";
+  
+  // Extrai o prefixo (pt, en, es) para a tag html
+  const htmlLang = locale.split("-")[0];
+
+  return (
+    <html 
+      lang={htmlLang} 
+      className={`${inter.variable} scroll-smooth`} 
+      suppressHydrationWarning
+    >
+      <head>
+        <OpenGraph 
+          title={dict.seo.title}
+          description={dict.seo.description}
+          url={`${baseUrl}/${locale}`}
+          locale={locale}
+        />
+        <StructuredData lang={locale} />
+        
+        {/* NOTA: O Google Analytics foi removido daqui para conformidade LGPD/GDPR.
+          A inicialização do 'gtag' e o carregamento do script agora ocorrem 
+          dentro do componente CookieBanner.tsx somente após o consentimento.
+        */}
+      </head>
+
+      <body className="antialiased min-h-screen bg-white dark:bg-[#020617] text-slate-900 dark:text-slate-50 selection:bg-blue-500/30 transition-colors duration-300">
+        
+        <div className="flex flex-col min-h-screen">
+          <ScrollSpyProvider>
+            {/* Skip to Content - Acessibilidade (WCAG 2.1) */}
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-[210] bg-blue-600 text-white px-6 py-3 rounded-xl font-bold shadow-2xl transition-all"
+            >
+              {dict.common.skipToContent}
+            </a>
+
+            <Navbar lang={locale} common={dict.common} contact={dict.contact} />
+
+            <main id="main-content" className="flex-grow flex flex-col focus:outline-none">
+              <BreadcrumbsJsonLd lang={locale} dict={dict} baseUrl={baseUrl} />
+              
+              {/* Container Responsivo para Breadcrumbs */}
+              <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-6">
+                <Breadcrumbs lang={locale} dictionary={dict} baseUrl={baseUrl} />
+              </div>
+
+              {/* Seção Principal de Conteúdo */}
+              <section className="flex-grow w-full overflow-x-hidden">
+                {props.children}
+              </section>
+            </main>
+
+            <Footer 
+              lang={locale} 
+              common={dict.common} 
+              contact={dict.contact} 
+              articles={dict.articles} 
+            />
+
+            {/* Banner de Cookies: Centralizador da Privacidade (GDPR/LGPD/CCPA).
+              Este componente injeta o Google Analytics dinamicamente se permitido.
+            */}
+            <CookieBanner dict={dict} />
+          </ScrollSpyProvider>
+        </div>
+      </body>
+    </html>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/[lang]/artigos/page.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+/**
+ * src/app/[lang]/artigos/page.tsx
+ * Stack: Next.js 16.2.2 | React 19 | TS 6.0.2 | Tailwind 4.2 | Node 24
+ * Status: CORRIGIDO - SUPORTE MD/MDX & MULTILÍNGUE TOTAL
+ */
+import { getArticlesWithRetry } from "@/lib/github/service";
+import { ArticleCard } from "@/components/ArticleCard";
+import MdxLayout from "@/components/mdx-layout";
+import { getServerDictionary } from "@/lib/getServerDictionary";
+import { headers } from "next/headers";
+import type { Locale } from "@/types/dictionary";
+import type { GitHubItem } from "@/lib/github/types";
+import { normalizeLocale } from "@/dictionaries/locales";
+
+interface PageProps {
+  params: Promise<{ lang: string }>;
+}
+
+export default async function ArticlesListPage({ params }: PageProps) {
+  // Garantia de renderização dinâmica no Next 16.2
+  const resolvedParams = await params;
+  await headers();
+  
+  const lang = normalizeLocale(resolvedParams.lang) as Locale;
+  
+  const [allArticles, dict] = await Promise.all([
+    getArticlesWithRetry(),
+    getServerDictionary(lang)
+  ]);
+
+  // Agrupamento resiliente por categoria
+  const categories = allArticles.reduce((acc, art) => {
+    const catName = art.category || "geral";
+    if (!acc[catName]) acc[catName] = [];
+    acc[catName].push(art);
+    return acc;
+  }, {} as Record<string, GitHubItem[]>);
+
+  // Título estilizado dinâmico (Safe split)
+  const titleText = dict.articles.title || "Artigos Técnicos";
+  const titleParts = titleText.split(' ');
+  const firstWord = titleParts[0];
+  const restOfTitle = titleParts.slice(1).join(' ');
+
+  return (
+    <MdxLayout lang={lang} dict={dict}>
+      <div className="not-prose max-w-7xl mx-auto px-4 py-12 md:py-24">
+        <header className="mb-20 animate-in fade-in slide-in-from-bottom-6 duration-1000">
+          <h1 className="text-6xl md:text-9xl font-black tracking-tighter uppercase italic text-zinc-900 dark:text-white leading-[0.8] mb-8">
+            {firstWord}<br />
+            <span className="text-blue-600 dark:text-blue-500">{restOfTitle}</span>
+          </h1>
+          <div className="h-2 w-24 bg-blue-600 rounded-full shadow-[0_10px_40px_rgba(37,99,235,0.4)]" />
+        </header>
+
+        <div className="space-y-32">
+          {Object.entries(categories).map(([category, articles]) => (
+            <section key={category} className="scroll-mt-32">
+              <div className="flex items-center gap-6 mb-12">
+                <h2 className="text-xs font-black uppercase tracking-[0.4em] text-blue-600 dark:text-blue-400 bg-blue-500/5 px-4 py-2 rounded-lg">
+                  {category.replace(/-/g, ' ')}
+                </h2>
+                <div className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+                {articles.map((article) => (
+                  <ArticleCard 
+                    key={article.path} 
+                    article={article} 
+                    lang={lang} 
+                    dict={dict} 
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+
+        {allArticles.length === 0 && (
+          <div className="py-40 text-center">
+            <p className="text-zinc-500 font-bold uppercase tracking-widest">{dict.states.empty}</p>
+          </div>
+        )}
+
+        <footer className="mt-40 pt-20 border-t border-zinc-100 dark:border-zinc-900 flex flex-col items-center">
+          <img src="/images/trofeus-vencedor-dio.png" alt="Winner" className="h-32 w-auto mb-6 hover:scale-110 transition-transform duration-500" />
+          <p className="text-[10px] font-black uppercase tracking-[0.6em] text-zinc-400">Technical Excellence 2026</p>
+        </footer>
+      </div>
+    </MdxLayout>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/[lang]/artigos/[...slug]/page.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+/**
+ * src/app/[lang]/artigos/[...slug]/page.tsx
+ * Stack: Next.js 16.2.2 | React 19 | TS 6.0.2 | Tailwind 4.2
+ * Status: FIX MDX LOADING - Suporte a múltiplos idiomas e extensões
+ */
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { headers } from "next/headers";
+
+import type { Locale } from "@/types/dictionary";
+import MdxLayout from "@/components/mdx-layout";
+import ShareArticle from "@/components/ShareArticle";
+import { getArticlesWithRetry } from "@/lib/github/service";
+import { getServerDictionary } from "@/lib/getServerDictionary";
+import { normalizeLocale, SUPPORTED_LOCALES } from "@/dictionaries/locales";
+
+interface PageProps {
+  params: Promise<{ slug: string[]; lang: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lang, slug } = await params;
+  const title = slug[slug.length - 1]?.replace(/-/g, " ").toUpperCase() || "Artigo";
+  const siteUrl = "https://portfoliosantossergio.vercel.app";
+  const ogImage = `${siteUrl}/og/og-image-${lang}.png`;
+
+  return {
+    title: `${title} | SÉRGIO SANTOS`,
+    description: `Artigo técnico sobre Engenharia e IA no idioma ${lang}.`,
+    openGraph: {
+      url: `${siteUrl}/${lang}/artigos/${slug.join("/")}`,
+      images: [{ url: ogImage }],
+      type: "article",
+    },
+  };
+}
+
+export async function generateStaticParams() {
+  try {
+    const articles = await getArticlesWithRetry();
+    if (!articles || articles.length === 0) throw new Error("No articles");
+
+    return articles.flatMap((art) => {
+      const cleanSlug = art.path
+        .replace(/^artigos\//, "")
+        .replace(/\.(md|mdx)$/, "")
+        .split("/");
+      
+      return SUPPORTED_LOCALES.map((locale) => ({ 
+        lang: locale, 
+        slug: cleanSlug 
+      }));
+    });
+  } catch {
+    return SUPPORTED_LOCALES.map((locale) => ({ lang: locale, slug: ["index"] }));
+  }
+}
+
+export default async function ArtigoDetalhePage({ params }: PageProps) {
+  const resolvedParams = await params;
+  await headers(); 
+
+  const { slug, lang: rawLang } = resolvedParams;
+  const lang = normalizeLocale(rawLang) as Locale;
+  const dict = await getServerDictionary(lang);
+
+  const pathStr = slug.join("/");
+  const baseUrl = `https://raw.githubusercontent.com/Santosdevbjj/myArticles/main/artigos/${pathStr}`;
+  
+  // Tenta carregar .mdx primeiro, se falhar, tenta .md
+  let content = "";
+  let success = false;
+
+  for (const ext of ['.mdx', '.md']) {
+    try {
+      const res = await fetch(`${baseUrl}${ext}`, { next: { revalidate: 3600 } });
+      if (res.ok) {
+        content = await res.text();
+        success = true;
+        break;
+      }
+    } catch (e) { continue; }
+  }
+
+  if (!success) return notFound();
+
+  // Extração do Título do corpo do Markdown
+  const match = content.match(/^#\s+(.*)$/m);
+  const articleTitle = match?.[1]?.trim() ?? slug[slug.length - 1]?.replace(/-/g, " ");
+
+  return (
+    <MdxLayout lang={lang} dict={dict}>
+      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-12 md:py-24 px-4 transition-colors">
+        <article className="max-w-4xl mx-auto">
+          
+          <header className="mb-20 animate-in fade-in slide-in-from-top-4 duration-1000">
+            <div className="flex items-center gap-3 mb-8">
+              <span className="h-px w-12 bg-blue-600" />
+              <span className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-600 dark:text-blue-400">
+                {dict.articles.publishedAt} • 2026
+              </span>
+            </div>
+            
+            <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-zinc-900 dark:text-white leading-[1.1] mb-12">
+              {articleTitle}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <span className="px-4 py-1.5 bg-blue-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/20">
+                {lang}
+              </span>
+              <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest border border-zinc-200 dark:border-zinc-800 px-4 py-1.5 rounded-full">
+                Technical Archive
+              </span>
+            </div>
+          </header>
+
+          <div className="prose prose-zinc dark:prose-invert max-w-none 
+            prose-headings:font-black prose-headings:tracking-tighter
+            prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline prose-a:border-b-2 prose-a:border-blue-500/30 hover:prose-a:border-blue-500
+            prose-pre:rounded-[2rem] prose-pre:bg-zinc-950 prose-pre:border prose-pre:border-zinc-800
+            prose-img:rounded-[2.5rem] prose-img:shadow-2xl">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {content}
+            </ReactMarkdown>
+          </div>
+          
+          <footer className="mt-32 pt-16 border-t border-zinc-200 dark:border-zinc-800/50">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-12">
+              <ShareArticle title={articleTitle || ""} dict={dict} lang={lang} />
+              
+              <div className="flex flex-col items-center md:items-end gap-4">
+                <a 
+                  href={`/pdf/cv-sergio-santos-${lang}.pdf`} 
+                  target="_blank"
+                  className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-10 py-5 rounded-[1.5rem] font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-2xl active:scale-95"
+                >
+                  {dict.contact.cvLabel}
+                </a>
+              </div>
+            </div>
+
+            <div className="mt-24 flex flex-col items-center opacity-20 hover:opacity-100 transition-opacity duration-700">
+              <img src="/images/trofeus-vencedor-dio.png" alt="Awards" className="h-20 mb-4 grayscale" />
+              <p className="text-[8px] font-black uppercase tracking-[1em] text-zinc-500">Innovation Leader</p>
+            </div>
+          </footer>
+        </article>
+      </div>
+    </MdxLayout>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/[lang]/resume/page.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+import type { Metadata } from "next";
+import PdfSafeLoader from "@/components/pdf/PdfSafeLoader";
+// CORREÇÃO: Importação nomeada conforme definido no componente
+import { ResumeLangSelector } from "@/components/pdf/ResumeLangSelector";
+import { getResumePath } from "@/lib/resume/resumePdfMap";
+import { SUPPORTED_LOCALES, type SupportedLocale, isValidLocale } from "@/dictionaries/locales";
+import { getServerDictionary } from "@/lib/getServerDictionary";
+
+/**
+ * REQUISITOS TÉCNICOS ATENDIDOS:
+ * ✔ Next.js 16 (App Router) - Params as Promise
+ * ✔ React 19 - Server Component assíncrono
+ * ✔ TypeScript 6.0 - Named Import Fix
+ * ✔ Tailwind CSS 4.2 - Shadow & Interactivity
+ */
+
+interface Props {
+  params: Promise<{ lang: string }>;
+}
+
+
+export function generateStaticParams() {
+  return SUPPORTED_LOCALES.map((lang) => ({
+    lang,
+  }));
+}
+
+/**
+ * SEO Metadata - Otimizado para Next.js 16
+ */
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { lang: rawLang } = await params;
+  const lang = isValidLocale(rawLang) ? (rawLang as SupportedLocale) : "pt-BR";
+  const siteUrl = "https://portfoliosantossergio.vercel.app";
+  
+  const titles: Record<SupportedLocale, string> = {
+    "pt-BR": "Currículo | Sérgio Santos",
+    "en-US": "Resume | Sérgio Santos",
+    "es-ES": "Currículum | Sérgio Santos",
+    "es-AR": "Currículum | Sérgio Santos",
+    "es-MX": "Currículum | Sérgio Santos",
+  };
+
+  const currentTitle = titles[lang] || titles["pt-BR"];
+
+  return {
+    title: currentTitle,
+    description: "Cientista de Dados especialista em Sistemas Críticos e Missão Crítica.",
+    metadataBase: new URL(siteUrl),
+    alternates: {
+      canonical: `${siteUrl}/${lang}/resume`,
+      languages: Object.fromEntries(
+        SUPPORTED_LOCALES.map((l) => [l, `${siteUrl}/${l}/resume`])
+      ),
+    },
+  };
+}
+
+/**
+ * Página do Currículo
+ */
+export default async function ResumePage({ params }: Props) {
+  // 1. Aguarda os parâmetros da URL (Regra Next.js 16)
+  const { lang: langParam } = await params;
+  
+  // 2. Valida e normaliza o idioma
+  const lang = isValidLocale(langParam) ? (langParam as SupportedLocale) : "pt-BR";
+  
+  // 3. Busca o dicionário para passar ao Seletor (Regra i18n)
+  const dict = await getServerDictionary(lang);
+  
+  // 4. Obtém o caminho do PDF
+  const pdfUrl = getResumePath(lang);
+
+  // Mapeamento de interface simples para o cabeçalho
+  const uiMap: Record<SupportedLocale, { h1: string; p: string }> = {
+    "pt-BR": { h1: "Currículo Vitae", p: "Versão oficial para Ciência de Dados e Engenharia." },
+    "en-US": { h1: "Resume / CV", p: "Official version for Data Science and Engineering." },
+    "es-ES": { h1: "Currículum Vitae", p: "Versión oficial para España." },
+    "es-AR": { h1: "Currículum Vitae", p: "Versión oficial para Argentina." },
+    "es-MX": { h1: "Currículum Vitae", p: "Versión oficial para México." },
+  };
+
+  const ui = uiMap[lang];
+
+  return (
+    <main className="mx-auto w-full max-w-6xl px-4 py-12 min-h-screen animate-in fade-in duration-700">
+      
+      {/* HEADER */}
+      <header className="text-center mb-12">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-slate-900 dark:text-white mb-6 uppercase tracking-tighter">
+          {ui.h1}
+        </h1>
+        <div className="w-20 h-2 bg-blue-600 mx-auto mb-8 rounded-full shadow-lg shadow-blue-500/20" />
+        <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-medium">
+          {ui.p}
+        </p>
+      </header>
+
+      {/* SELETOR DE IDIOMAS INTEGRADO */}
+      <nav className="mb-16 flex justify-center" aria-label="Seletor de idioma">
+        <ResumeLangSelector 
+          currentLang={lang} 
+          dict={dict.resume} 
+        />
+      </nav>
+
+      {/* VISUALIZADOR DE PDF */}
+      <section className="w-full flex justify-center transition-all duration-500">
+        <div className="w-full max-w-5xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
+          <PdfSafeLoader fileUrl={pdfUrl} lang={lang} />
+        </div>
+      </section>
+    </main>
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+O ARQUIVO src/app/projects/[slug]/opengraph-image.tsx
+
+TEM ESSE CONTEÚDO 
+
+
+import { ImageResponse } from 'next/og';
+import { Octokit } from 'octokit';
+
+/**
+ * CONFIGURAÇÃO DE RUNTIME E CACHE (Next.js 16.2 + Node 24)
+ * -----------------------------------------------------------------------------
+ * runtime: 'nodejs' para suporte completo a bibliotecas nativas no Node 24.
+ * revalidate: 86400 (24 horas) para persistência no Vercel Edge Cache.
+ */
+export const runtime = 'nodejs';
+export const revalidate = 86400;
+
+// Configurações da imagem para Redes Sociais
+export const alt = 'GitHub Project Detail - Sérgio Santos';
+export const size = { width: 1200, height: 630 };
+export const contentType = 'image/png';
+
+/**
+ * ACESSO SEGURO (TS 6.0)
+ * Em conformidade com o erro do log: acesso via ['CHAVE'] para index signatures.
+ */
+const GITHUB_TOKEN = process.env['GITHUB_TOKEN'];
+
+// Instância do Octokit protegida
+const octokit = new Octokit({ 
+  auth: GITHUB_TOKEN,
+  request: { timeout: 5000 } 
+});
+
+interface RepoData {
+  name: string;
+  description: string;
+  timestamp: number;
+}
+
+/**
+ * SIMPLE MEMORY CACHE (Node 24 Optimized)
+ */
+const repoCache = new Map<string, RepoData>();
+const CACHE_TTL = 1000 * 60 * 60; // 1 hora
+
+async function getCachedRepoData(username: string, slug: string): Promise<{ name: string; description: string }> {
+  const now = Date.now();
+  const cached = repoCache.get(slug);
+
+  if (cached && (now - cached.timestamp < CACHE_TTL)) {
+    return { name: cached.name, description: cached.description };
+  }
+
+  // Chamada à API com suporte a Stale-While-Revalidate (Next 16 pattern)
+  const { data } = await octokit.rest.repos.get({
+    owner: username,
+    repo: slug,
+    headers: {
+      'cache-control': 's-maxage=86400, stale-while-revalidate=3600'
+    }
+  });
+
+  const result = {
+    name: data.name,
+    description: data.description || "Data Engineering & AI Solutions",
+    timestamp: now
+  };
+
+  repoCache.set(slug, result);
+  return { name: result.name, description: result.description };
+}
+
+/**
+ * COMPONENTE PRINCIPAL (React 19 Server Component)
+ */
+export default async function OgImage({ params }: { params: Promise<{ slug: string }> }) {
+  // Next.js 16.2 exige await para params
+  const { slug } = await params;
+  const username = "Santosdevbjj";
+
+  let repoData = { 
+    name: slug, 
+    description: "Engenharia de Dados & Automação" 
+  };
+
+  try {
+    const data = await getCachedRepoData(username, slug);
+    repoData = data;
+  } catch (error) {
+    console.error(`❌ [OG-IMAGE] Erro:`, error);
+  }
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          backgroundColor: '#020617', // Slate 950 (Tailwind 4.2 Core)
+          backgroundImage: 'radial-gradient(circle at 0% 0%, #1e1b4b 0%, #020617 100%)',
+          padding: '80px',
+        }}
+      >
+        {/* Linha Decorativa Lateral - Estilo Moderno */}
+        <div style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          width: '12px',
+          backgroundColor: '#3b82f6', // Blue 500
+        }} />
+
+        {/* Badge Dinâmico */}
+        <div style={{
+          display: 'flex',
+          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          border: '1px solid rgba(59, 130, 246, 0.3)',
+          color: '#60a5fa', // Blue 400
+          padding: '10px 20px',
+          borderRadius: '12px',
+          fontSize: '22px',
+          fontWeight: '900',
+          marginBottom: '32px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em'
+        }}>
+          GitHub Repository
+        </div>
+
+        {/* Nome do Projeto - Tipografia de Impacto */}
+        <h1 style={{
+          fontSize: '92px',
+          fontWeight: '900',
+          color: 'white',
+          margin: 0,
+          lineHeight: 1,
+          letterSpacing: '-0.04em',
+          display: 'flex',
+        }}>
+          {repoData.name.replace(/-/g, ' ')}
+        </h1>
+
+        {/* Descrição - Layout Multiline */}
+        <p style={{
+          fontSize: '34px',
+          color: '#94a3b8',
+          marginTop: '24px',
+          maxWidth: '850px',
+          lineHeight: 1.4,
+          fontWeight: '400',
+        }}>
+          {repoData.description}
+        </p>
+
+        {/* Footer Consistente com a Identidade */}
+        <div style={{
+          display: 'flex',
+          marginTop: 'auto',
+          width: '100%',
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ color: '#3b82f6', fontSize: '20px', fontWeight: '800', textTransform: 'uppercase', marginBottom: '4px' }}>
+              Lead Engineer
+            </span>
+            <span style={{ color: 'white', fontSize: '38px', fontWeight: '900' }}>
+              Sérgio Santos
+            </span>
+          </div>
+          
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '12px',
+            backgroundColor: 'white',
+            padding: '12px 24px',
+            borderRadius: '16px'
+          }}>
+            <span style={{ color: '#020617', fontSize: '24px', fontWeight: '800' }}>
+              portfolio/santos
+            </span>
+          </div>
+        </div>
+      </div>
+    ),
+    { ...size }
+  );
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
